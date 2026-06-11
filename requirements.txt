@@ -3,3 +3,6 @@ pandas
 numpy
 requests
 openpyxl
+# Para atualizar_tarifarios_gas.py (scraping dos futuros OMIP + parse de tabelas HTML)
+selenium
+lxml
