@@ -10,7 +10,7 @@
 # Fase 2B (site): corre DEPOIS da 2A porque precos-horarios lê o xlsx fresco
 #   → atualizar_omie_dados_atuais.py  → data/omie/omie_dados_atuais.csv
 #   → atualizar_precos-horarios_csv.py → data/omie/precos-horarios.csv
-#   → gerar_records.py                 → data/omie/records_omie.json (incremental)
+#   → gerar_records_omie.py                 → data/omie/records_omie.json (incremental)
 # Deploy: xlsx + CSVs do simulador para o espaço Hugging Face (transição;
 #   o nome do xlsx no HF mantém o emoji por compatibilidade).
 #
@@ -122,10 +122,10 @@ jobs:
           python scripts/atualizar_precos-horarios_csv.py >> logs/diaria_omie.log 2>&1
 
       - name: Executar Fase 2B - records.json (incremental)
-        # Para recalcular do zero: python scripts/gerar_records.py --full
+        # Para recalcular do zero: python scripts/gerar_records_omie.py --full
         run: |
           echo "=== FASE 2B (records) INICIADA: $(date) ===" >> logs/diaria_omie.log
-          python scripts/gerar_records.py >> logs/diaria_omie.log 2>&1
+          python scripts/gerar_records_omie.py >> logs/diaria_omie.log 2>&1
           echo "=== FASE 2B TERMINADA: $(date) ===" >> logs/diaria_omie.log
 
       - name: Fazer commit dos ficheiros da Fase 2B
