@@ -40,15 +40,15 @@ jobs:
 
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Configurar Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
       - name: Cache das dependências Python
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
@@ -98,7 +98,7 @@ jobs:
       # O log NÃO é committed (evita inchar o histórico) — vai só como artefacto.
       - name: Fazer upload do log como artefacto
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: log-tarifarios-eletricidade
           path: logs/tarifarios_eletricidade.log

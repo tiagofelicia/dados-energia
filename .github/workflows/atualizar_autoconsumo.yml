@@ -3,8 +3,11 @@
 # Fase 1: atualizar_mibel_ano_atual_ACUM.py
 #   → data/omie/MIBEL_ano_atual_ACUM.csv (partilhado com o workflow dos
 #     tarifários de eletricidade — horários sem sobreposição)
-# Fase 2: atualizar_autoconsumo.py (só corre se a Fase 1 trouxe dados novos)
+# Fase 2: atualizar_autoconsumo.py
 #   → escreve preços OMIE reais no xlsx do simulador (aba OMIE_CICLOS, col. H)
+#   Nota: corre SEMPRE (sem condicional de mudanças na Fase 1) — o MIBEL é
+#   partilhado e normalmente já foi atualizado pelo workflow da eletricidade
+#   nessa manhã, pelo que a Fase 1 daqui raramente deteta mudanças.
 # Deploy: copia o xlsx para o espaço Hugging Face (transição — o simulador
 #   publicado lê o xlsx de lá; o nome no HF mantém o emoji por
 #   compatibilidade com os URLs já publicados).
@@ -32,15 +35,15 @@ jobs:
 
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Configurar Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
       - name: Cache das dependências Python
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
@@ -63,41 +66,33 @@ jobs:
           echo "=== FASE 1 (MIBEL CSV) TERMINADA: $(date) ===" >> logs/autoconsumo.log
 
       - name: Fazer commit do MIBEL_ano_atual_ACUM.csv
-        id: commit_fase1 # ID CRÍTICO para os passos seguintes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "BOT: Atualização (Fase 1) MIBEL_ano_atual_ACUM.csv"
           file_pattern: "data/omie/MIBEL_ano_atual_ACUM.csv"
 
       # =========================================================
-      # FASE 2 — Excel do simulador (só se a Fase 1 mudou algo)
+      # FASE 2 — Excel do simulador (corre sempre)
       # =========================================================
       - name: Executar Fase 2 (atualizar_autoconsumo.py)
-        if: steps.commit_fase1.outputs.changes_detected == 'true'
         run: |
-          echo "=== FASE 2 (AUTOCONSUMO) INICIADA (Houve Mudanças): $(date) ===" >> logs/autoconsumo.log
+          echo "=== FASE 2 (AUTOCONSUMO) INICIADA: $(date) ===" >> logs/autoconsumo.log
           python scripts/atualizar_autoconsumo.py >> logs/autoconsumo.log 2>&1
           echo "=== FASE 2 (AUTOCONSUMO) TERMINADA: $(date) ===" >> logs/autoconsumo.log
-
-      - name: Registar que a Fase 2 foi ignorada
-        if: steps.commit_fase1.outputs.changes_detected == 'false'
-        run: |
-          echo "=== FASE 2 (AUTOCONSUMO) IGNORADA (Sem Mudanças na Fase 1): $(date) ===" >> logs/autoconsumo.log
 
       # O log NÃO é committed — vai só como artefacto.
       - name: Fazer upload do log como artefacto
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: log-autoconsumo
           path: logs/autoconsumo.log
           retention-days: 30
 
       # =========================================================
-      # DEPLOY — Hugging Face (transição; só se o Excel foi atualizado)
+      # DEPLOY — Hugging Face (transição)
       # =========================================================
       - name: Enviar ficheiro para o Hugging Face
-        if: steps.commit_fase1.outputs.changes_detected == 'true'
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
