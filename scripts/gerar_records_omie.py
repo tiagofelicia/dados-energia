@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-gerar_records.py — Gera/atualiza data/omie/records_omie.json com recordes históricos OMIE.
+gerar_records_omie.py — Gera/atualiza data/omie/records_omie.json com recordes históricos OMIE.
 
 Modos:
-  python gerar_records.py --full   Lê TODOS os omie_historico_*.csv + omie_dados_atuais.csv
+  python gerar_records_omie.py --full   Lê TODOS os omie_historico_*.csv + omie_dados_atuais.csv
                                    (deve correr na 1ª vez ou em rebuilds periódicos)
-  python gerar_records.py          Modo incremental: usa records_omie.json existente +
+  python gerar_records_omie.py          Modo incremental: usa records_omie.json existente +
                                    omie_dados_atuais.csv (default — para corridas diárias).
                                    Se records_omie.json não existir, faz fallback automático para --full.
 
