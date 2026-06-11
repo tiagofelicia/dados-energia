@@ -1,0 +1,109 @@
+# Atualiza a base de dados do Simulador de Tarifários de Gás Natural.
+#
+# atualizar_tarifarios_gas.py:
+#   → MIBGAS spot (mibgas.es) + futuros de gás OMIP (via Selenium/Chrome)
+#   → substitui as abas 'MIBGAS' e 'Info' do xlsx do simulador
+# Deploy: copia o xlsx para o espaço Hugging Face (transição — o simulador
+#   publicado lê o xlsx de lá; o nome no HF mantém o emoji por
+#   compatibilidade com os URLs já publicados).
+#
+# O xlsx atualizado NÃO é committed: no git, o xlsx é a base de tarifários
+# mantida manualmente; o bot usa-o em runtime e envia o fresco para o HF.
+#
+# Migrado do repo simulador-tarifarios-gas (Python/Streamlit, legado).
+
+name: Atualizar Tarifários Gás Natural (MIBGAS)
+
+on:
+  schedule:
+    # 18:55 UTC -> 19:55 Lisboa (verão) / 18:55 (inverno)
+    - cron: '55 18 * * *'
+
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  update-excel-and-push-to-hf:
+    name: Executar Atualização MIBGAS
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # O scraping dos futuros OMIP precisa de browser (página com JavaScript)
+      - name: Instalar Chrome
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Executar atualização MIBGAS
+        run: |
+          mkdir -p logs
+          echo "=== MIBGAS INICIADO: $(date) ===" >> logs/tarifarios_gas.log
+          python scripts/atualizar_tarifarios_gas.py >> logs/tarifarios_gas.log 2>&1
+          echo "=== MIBGAS TERMINADO: $(date) ===" >> logs/tarifarios_gas.log
+
+      # O log NÃO é committed — vai só como artefacto.
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: log-tarifarios-gas
+          path: logs/tarifarios_gas.log
+          retention-days: 30
+
+      # =========================================================
+      # DEPLOY — Hugging Face (transição)
+      # =========================================================
+      - name: Enviar ficheiro para o Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          # Guard: sem o secret HF_TOKEN o clone fica anónimo e o push falha.
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::Secret HF_TOKEN não configurado em Settings → Secrets and variables → Actions deste repositório."
+            exit 1
+          fi
+
+          FICHEIRO_LOCAL="data/simuladores/simulador-tarifarios-gas/tarifarios_gas_natural_Tiago_Felicia.xlsx"
+          # No HF mantém o nome antigo (com emoji) — é o URL que o simulador publicado usa
+          FICHEIRO_HF="Tarifarios_🔥_Gas_Natural_Tiago_Felicia.xlsx"
+          REPO_HF="tiagofelicia/simulador-tarifarios-gas-natural"
+
+          echo "Clonando o repositório $REPO_HF..."
+          git lfs install
+
+          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS existentes
+          # (vamos substituir o xlsx de qualquer forma).
+          GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
+
+          cp -f "$FICHEIRO_LOCAL" "hf_repo/$FICHEIRO_HF"
+
+          cd hf_repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git lfs track "*.xlsx"
+          git add .gitattributes
+          git add "$FICHEIRO_HF"
+
+          git commit -m "🔥 HF: Atualização automática MIBGAS via GitHub Actions" || echo "Sem alterações para enviar"
+          git push

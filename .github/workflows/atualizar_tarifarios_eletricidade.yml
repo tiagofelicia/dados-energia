@@ -85,11 +85,15 @@ jobs:
           python scripts/atualizar_tarifarios_eletricidade.py >> logs/tarifarios_eletricidade.log 2>&1
           echo "=== FASE 2 (TARIFÁRIOS) TERMINADA: $(date) ===" >> logs/tarifarios_eletricidade.log
 
-      - name: Fazer commit do Excel e CSVs do simulador
+      # O xlsx atualizado NÃO é committed (binário de 4,8 MB sem delta —
+      # inflaria o histórico ~10 MB/dia). No git, o xlsx é a base de
+      # tarifários mantida manualmente; o bot usa-o em runtime, exporta os
+      # CSVs (estes sim, committed) e envia o xlsx fresco para o HF abaixo.
+      - name: Fazer commit dos CSVs do simulador
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "🔌 BOT: Atualização Tarifários Eletricidade (xlsx + CSVs)"
-          file_pattern: "data/simuladores/simulador-tarifarios-eletricidade/*.xlsx data/simuladores/simulador-tarifarios-eletricidade/csv/*"
+          commit_message: "🔌 BOT: Atualização Tarifários Eletricidade (CSVs)"
+          file_pattern: "data/simuladores/simulador-tarifarios-eletricidade/csv/*"
 
       # O log NÃO é committed (evita inchar o histórico) — vai só como artefacto.
       - name: Fazer upload do log como artefacto
@@ -107,6 +111,12 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          # Guard: sem o secret HF_TOKEN o clone fica anónimo e o push falha.
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::Secret HF_TOKEN não configurado em Settings → Secrets and variables → Actions deste repositório."
+            exit 1
+          fi
+
           FICHEIRO_LOCAL="data/simuladores/simulador-tarifarios-eletricidade/tarifarios_eletricidade_Tiago_Felicia.xlsx"
           # No HF mantém o nome antigo (com emoji) — é o URL que os simuladores publicados usam
           FICHEIRO_HF="Tarifarios_🔌_Eletricidade_Tiago_Felicia.xlsx"
@@ -114,11 +124,12 @@ jobs:
           REPO_HF="tiagofelicia/simulador-tarifarios-eletricidade"
 
           echo "Clonando o repositório $REPO_HF..."
-          sudo apt-get update
-          sudo apt-get install -y git-lfs
           git lfs install
 
-          git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
+          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS existentes
+          # (vamos substituir o xlsx de qualquer forma — poupa tempo e evita
+          # falhas de smudge no checkout).
+          GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
 
           cp -f "$FICHEIRO_LOCAL" "hf_repo/$FICHEIRO_HF"
           mkdir -p hf_repo/data/csv

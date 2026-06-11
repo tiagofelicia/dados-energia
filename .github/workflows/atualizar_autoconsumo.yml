@@ -1,0 +1,133 @@
+# Atualiza a base de dados do Simulador de Autoconsumo.
+#
+# Fase 1: atualizar_mibel_ano_atual_ACUM.py
+#   → data/omie/MIBEL_ano_atual_ACUM.csv (partilhado com o workflow dos
+#     tarifários de eletricidade — horários sem sobreposição)
+# Fase 2: atualizar_autoconsumo.py (só corre se a Fase 1 trouxe dados novos)
+#   → escreve preços OMIE reais no xlsx do simulador (aba OMIE_CICLOS, col. H)
+# Deploy: copia o xlsx para o espaço Hugging Face (transição — o simulador
+#   publicado lê o xlsx de lá; o nome no HF mantém o emoji por
+#   compatibilidade com os URLs já publicados).
+#
+# O xlsx atualizado NÃO é committed: no git, o xlsx é a base mantida
+# manualmente; o bot usa-o em runtime e envia o fresco para o HF.
+#
+# Migrado do repo autoconsumo (Python/Streamlit, legado).
+
+name: Atualizar Autoconsumo (Fase 1 e 2)
+
+on:
+  schedule:
+    # 13:00 UTC -> 14:00 Lisboa (verão) / 13:00 (inverno)
+    - cron: '00 13 * * *'
+
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  run-python-job:
+    name: Executar Atualização MIBEL e Autoconsumo
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # =========================================================
+      # FASE 1 — MIBEL (intermédio partilhado em data/omie/)
+      # =========================================================
+      - name: Executar Fase 1 (atualizar_mibel_ano_atual_ACUM.py)
+        run: |
+          mkdir -p logs
+          echo "=== FASE 1 (MIBEL CSV) INICIADA: $(date) ===" >> logs/autoconsumo.log
+          python scripts/atualizar_mibel_ano_atual_ACUM.py >> logs/autoconsumo.log 2>&1
+          echo "=== FASE 1 (MIBEL CSV) TERMINADA: $(date) ===" >> logs/autoconsumo.log
+
+      - name: Fazer commit do MIBEL_ano_atual_ACUM.csv
+        id: commit_fase1 # ID CRÍTICO para os passos seguintes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "BOT: Atualização (Fase 1) MIBEL_ano_atual_ACUM.csv"
+          file_pattern: "data/omie/MIBEL_ano_atual_ACUM.csv"
+
+      # =========================================================
+      # FASE 2 — Excel do simulador (só se a Fase 1 mudou algo)
+      # =========================================================
+      - name: Executar Fase 2 (atualizar_autoconsumo.py)
+        if: steps.commit_fase1.outputs.changes_detected == 'true'
+        run: |
+          echo "=== FASE 2 (AUTOCONSUMO) INICIADA (Houve Mudanças): $(date) ===" >> logs/autoconsumo.log
+          python scripts/atualizar_autoconsumo.py >> logs/autoconsumo.log 2>&1
+          echo "=== FASE 2 (AUTOCONSUMO) TERMINADA: $(date) ===" >> logs/autoconsumo.log
+
+      - name: Registar que a Fase 2 foi ignorada
+        if: steps.commit_fase1.outputs.changes_detected == 'false'
+        run: |
+          echo "=== FASE 2 (AUTOCONSUMO) IGNORADA (Sem Mudanças na Fase 1): $(date) ===" >> logs/autoconsumo.log
+
+      # O log NÃO é committed — vai só como artefacto.
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: log-autoconsumo
+          path: logs/autoconsumo.log
+          retention-days: 30
+
+      # =========================================================
+      # DEPLOY — Hugging Face (transição; só se o Excel foi atualizado)
+      # =========================================================
+      - name: Enviar ficheiro para o Hugging Face
+        if: steps.commit_fase1.outputs.changes_detected == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          # Guard: sem o secret HF_TOKEN o clone fica anónimo e o push falha.
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::Secret HF_TOKEN não configurado em Settings → Secrets and variables → Actions deste repositório."
+            exit 1
+          fi
+
+          FICHEIRO_LOCAL="data/simuladores/simulador-autoconsumo/autoconsumo_Tiago_Felicia.xlsx"
+          # No HF mantém o nome antigo (com emoji) — é o URL que o simulador publicado usa
+          FICHEIRO_HF="☀️_Autoconsumo_Tiago_Felicia.xlsx"
+          REPO_HF="tiagofelicia/simulador-autoconsumo"
+
+          echo "Clonando o repositório $REPO_HF..."
+          git lfs install
+
+          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS existentes
+          # (vamos substituir o xlsx de qualquer forma).
+          GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
+
+          cp -f "$FICHEIRO_LOCAL" "hf_repo/$FICHEIRO_HF"
+
+          cd hf_repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git lfs track "*.xlsx"
+          git add .gitattributes
+          git add "$FICHEIRO_HF"
+
+          git commit -m "☀️ HF: Atualização automática do xlsx de Autoconsumo via GitHub Actions" || echo "Sem alterações para enviar"
+          git push
