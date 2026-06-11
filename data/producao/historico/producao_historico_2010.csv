@@ -1,4 +1,4 @@
-dia,hora,intervalo,Hídrica,Eólica,Solar,Biomassa,Ondas,Gás Natural - Ciclo Combinado,Gás natural - Cogeração,Carvão,Outra Térmica,Importação,Exportação,Bombagem,Injeção de Baterias,Consumo Baterias,Consumo
+﻿dia,hora,intervalo,Hídrica,Eólica,Solar,Biomassa,Ondas,Gás Natural - Ciclo Combinado,Gás natural - Cogeração,Carvão,Outra Térmica,Importação,Exportação,Bombagem,Injeção de Baterias,Consumo Baterias,Consumo
 01/01/2010,00:15,[00:00-00:15[,3209.3,2202.2,0.0,211.2,0.0,569.6,371.9,218.8,75.1,0.0,1185.0,115.3,0.0,0.0,5534.1
 01/01/2010,00:30,[00:15-00:30[,3212.6,2163.9,0.0,208.6,0.0,606.4,351.6,218.0,40.2,0.0,1240.2,23.1,0.0,0.0,5514.9
 01/01/2010,00:45,[00:30-00:45[,3139.7,2219.6,0.0,204.4,0.0,596.8,348.7,220.8,34.8,0.0,1281.2,0.0,0.0,0.0,5458.1
