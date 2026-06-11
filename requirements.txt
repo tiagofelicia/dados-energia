@@ -1,0 +1,5 @@
+# Dependências dos scripts de atualização (GitHub Actions)
+pandas
+numpy
+requests
+openpyxl
