@@ -1,0 +1,37 @@
+name: Atualizar Mapa de Precos (ENTSO-E)
+
+on:
+  schedule:
+    # Todos os dias às 12:00 e às 14:00 UTC
+    - cron: '0 12 * * *'
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-map-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests tzdata
+
+      - name: Run ENTSO-E price update script
+        env:
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+        run: python scripts/atualizar_mapa_precos_entsoe.py
+
+      - name: Commit updated data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Atualizar dados mapa de precos (ENTSO-E)"
+          file_pattern: "data/mapa_precos_qh/*.json"
