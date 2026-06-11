@@ -1,0 +1,64 @@
+# Nome do Workflow
+name: Atualizar Dados de Produção (REN)
+
+on:
+  # Permite correr manualmente a partir do separador "Actions"
+  workflow_dispatch:
+  
+  # Horário (CRON)
+  schedule:
+    # minuto 15  a cada 4 horas (*/4)
+    - cron: '15 */4 * * *'
+
+jobs:
+  build-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Necessário para fazer commit
+      
+    steps:
+      # 1. Faz o checkout do código do seu repositório
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      # 2. Configura o ambiente Python
+      - name: Configurar Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 3. Instala as bibliotecas necessárias para o script da REN
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests
+
+      # 4. Corre o seu script Python da REN
+      - name: Correr script de atualização da REN
+        run: python scripts/atualizar_producao_REN.py # (Caminho para o seu script)
+
+      # 4b. Corre o script da Produção por Bombagem (diária, serviço 1363)
+      - name: Atualizar Produção por Bombagem (diária)
+        run: python scripts/atualizar_producao_bombagem.py # incremental: últimos 7 dias
+
+      # 4c. Atualiza recordes históricos (incremental)
+      - name: Atualizar recordes de produção (incremental)
+        run: python scripts/gerar_records_producao.py
+
+      # 5. Faz commit e push do ficheiro de dados atualizado
+      - name: Fazer Commit e Push dos dados atualizados
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Mensagem de commit personalizada
+          commit_message: "Atualização automática dos dados de produção REN"
+
+          # Ficheiros que este workflow deve guardar
+          file_pattern: "data/producao_dados_atuais.csv data/producao_bombagem_diaria.csv data/records_producao.json"
+          
+          # Copiado do seu ficheiro (mantém o 'main' ou mude para 'master' se for o seu caso)
+          branch: main 
+          push_options: '--force-with-lease'
+          repository: .
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>

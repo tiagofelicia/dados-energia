@@ -1,0 +1,37 @@
+name: Atualizar Mapa de Producao
+
+on:
+  schedule:
+    # Todos os dias as 14:30, 18:30 e 22:30 UTC
+    - cron: '30 14 * * *'
+    - cron: '30 18 * * *'
+    - cron: '00 23 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  update-production-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests tzdata
+
+      - name: Run production update script
+        run: python scripts/atualizar_mapa_producao.py
+
+      - name: Commit updated data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Atualizar dados mapa de producao europeu"
+          file_pattern: "data/mapa_producao/*.json"
