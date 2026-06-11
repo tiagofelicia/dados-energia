@@ -1,4 +1,4 @@
-dia,hora,intervalo,Simples,BD,BS,TD,TS,preco_pt,preco_es
+﻿dia,hora,intervalo,Simples,BD,BS,TD,TS,preco_pt,preco_es
 01/01/2010,00:15,[00:00-00:15[,S,V,V,V,V,0.00,0.00
 01/01/2010,00:30,[00:15-00:30[,S,V,V,V,V,0.00,0.00
 01/01/2010,00:45,[00:30-00:45[,S,V,V,V,V,0.00,0.00
