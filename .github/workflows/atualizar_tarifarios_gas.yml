@@ -21,6 +21,10 @@ on:
 
   workflow_dispatch: # Permite execução manual
 
+# Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   update-excel-and-push-to-hf:
     name: Executar Atualização MIBGAS

@@ -26,6 +26,10 @@ on:
 
   workflow_dispatch: # Permite execução manual
 
+# Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   run-python-job:
     name: Executar Atualização MIBEL e Autoconsumo
@@ -66,7 +70,7 @@ jobs:
           echo "=== FASE 1 (MIBEL CSV) TERMINADA: $(date) ===" >> logs/autoconsumo.log
 
       - name: Fazer commit do MIBEL_ano_atual_ACUM.csv
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "BOT: Atualização (Fase 1) MIBEL_ano_atual_ACUM.csv"
           file_pattern: "data/omie/MIBEL_ano_atual_ACUM.csv"

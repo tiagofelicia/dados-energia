@@ -31,6 +31,10 @@ on:
 
   workflow_dispatch: # Permite execução manual
 
+# Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   run-python-job:
     name: Executar Atualização Tarifários Eletricidade
@@ -71,7 +75,7 @@ jobs:
           echo "=== FASE 1 (MIBEL CSV) TERMINADA: $(date) ===" >> logs/tarifarios_eletricidade.log
 
       - name: Fazer commit do MIBEL_ano_atual_ACUM.csv
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "BOT: Atualização (Fase 1) MIBEL_ano_atual_ACUM.csv"
           file_pattern: "data/omie/MIBEL_ano_atual_ACUM.csv"
@@ -90,7 +94,7 @@ jobs:
       # tarifários mantida manualmente; o bot usa-o em runtime, exporta os
       # CSVs (estes sim, committed) e envia o xlsx fresco para o HF abaixo.
       - name: Fazer commit dos CSVs do simulador
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "🔌 BOT: Atualização Tarifários Eletricidade (CSVs)"
           file_pattern: "data/simuladores/simulador-tarifarios-eletricidade/csv/*"
