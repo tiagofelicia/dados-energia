@@ -1,64 +1,66 @@
-# Nome do Workflow
+# Atualiza os dados de produção elétrica de Portugal (REN Data Hub).
+#
+# atualizar_producao_REN.py       → data/producao/producao_dados_atuais.csv
+# atualizar_producao_bombagem.py  → data/producao/producao_bombagem_diaria.csv
+#                                   (incremental: últimos 7 dias)
+# gerar_records_producao.py       → data/producao/records_producao.json
+#                                   (incremental; --full para recalcular)
+#
+# Migrado do repo do site (tiagofelicia.github.io).
+
 name: Atualizar Dados de Produção (REN)
 
 on:
-  # Permite correr manualmente a partir do separador "Actions"
-  workflow_dispatch:
-  
-  # Horário (CRON)
   schedule:
-    # minuto 15  a cada 4 horas (*/4)
+    # minuto 15, a cada 4 horas
     - cron: '15 */4 * * *'
+
+  workflow_dispatch: # Permite execução manual
+
+# Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-commit:
+    name: Executar Atualização REN
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Necessário para fazer commit
-      
+      contents: write
+
     steps:
-      # 1. Faz o checkout do código do seu repositório
-      - name: Checkout do Repositório
-        uses: actions/checkout@v4
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
 
-      # 2. Configura o ambiente Python
-      - name: Configurar Python 3.10
-        uses: actions/setup-python@v5
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
-      # 3. Instala as bibliotecas necessárias para o script da REN
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
-          pip install pandas requests
+          pip install -r requirements.txt
 
-      # 4. Corre o seu script Python da REN
-      - name: Correr script de atualização da REN
-        run: python scripts/atualizar_producao_REN.py # (Caminho para o seu script)
+      - name: Atualizar produção (REN)
+        run: python scripts/atualizar_producao_REN.py
 
-      # 4b. Corre o script da Produção por Bombagem (diária, serviço 1363)
-      - name: Atualizar Produção por Bombagem (diária)
-        run: python scripts/atualizar_producao_bombagem.py # incremental: últimos 7 dias
+      - name: Atualizar produção por bombagem (diária)
+        run: python scripts/atualizar_producao_bombagem.py
 
-      # 4c. Atualiza recordes históricos (incremental)
       - name: Atualizar recordes de produção (incremental)
         run: python scripts/gerar_records_producao.py
 
-      # 5. Faz commit e push do ficheiro de dados atualizado
-      - name: Fazer Commit e Push dos dados atualizados
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Fazer commit dos dados atualizados
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          # Mensagem de commit personalizada
-          commit_message: "Atualização automática dos dados de produção REN"
-
-          # Ficheiros que este workflow deve guardar
-          file_pattern: "data/producao_dados_atuais.csv data/producao_bombagem_diaria.csv data/records_producao.json"
-          
-          # Copiado do seu ficheiro (mantém o 'main' ou mude para 'master' se for o seu caso)
-          branch: main 
-          push_options: '--force-with-lease'
-          repository: .
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          commit_message: "BOT: Atualização automática dos dados de produção REN"
+          file_pattern: "data/producao/producao_dados_atuais.csv data/producao/producao_bombagem_diaria.csv data/producao/records_producao.json"
