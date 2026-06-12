@@ -47,6 +47,14 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+# Serializa os workflows que fazem commit/push a este repo — impede que duas
+# execuções simultâneas (do mesmo workflow ou de workflows diferentes) gerem
+# pushes non-fast-forward. A execução em curso nunca é cancelada; em fila
+# fica apenas a execução mais recente.
+concurrency:
+  group: commits-dados-energia
+  cancel-in-progress: false
+
 jobs:
   run-python-job:
     name: Executar Atualização Diária OMIE
