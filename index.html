@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dados Abertos de Energia — Portugal | Tiago Felícia</title>
+<meta name="description" content="Dados abertos do mercado de energia em Portugal: preços OMIE/OMIP, produção REN, mapas europeus ENTSO-E. CSV e JSON atualizados automaticamente várias vezes por dia. Licença CC BY 4.0.">
+<link rel="canonical" href="https://dados.tiagofelicia.pt/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dados Abertos de Energia — Portugal">
+<meta property="og:description" content="Preços OMIE/OMIP, produção REN e mapas europeus em CSV/JSON, atualizados automaticamente. Licença CC BY 4.0.">
+<meta property="og:url" content="https://dados.tiagofelicia.pt/">
+<meta property="og:locale" content="pt_PT">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<link rel="icon" type="image/png" href="https://www.tiagofelicia.pt/images/favicon-96x96.png" sizes="96x96">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DataCatalog",
+  "name": "Dados Abertos de Energia — Portugal (Tiago Felícia)",
+  "url": "https://dados.tiagofelicia.pt/",
+  "description": "Preços do mercado diário OMIE e futuros OMIP, produção elétrica em Portugal (REN), preços e mix de produção europeus (ENTSO-E, Energy-Charts), e dados regulados ERSE/E-Redes. Atualização automática várias vezes por dia.",
+  "inLanguage": "pt-PT",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {
+    "@type": "Person",
+    "@id": "https://www.tiagofelicia.pt/#person",
+    "name": "Tiago Felícia",
+    "url": "https://www.tiagofelicia.pt/"
+  }
+}
+</script>
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --acento-2: #3498db; --borda: #dde4ea; --code-bg: #eef2f6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --acento-2: #3b82f6; --borda: #334155; --code-bg: #0f172a;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+header { background: #2c3e50; color: #fff; padding: 36px 20px 30px; text-align: center; }
+header h1 { margin: 0 0 6px; font-size: 1.7rem; }
+header p { margin: 0 auto; max-width: 720px; color: #cbd5e1; font-size: 1rem; }
+header .badges { margin-top: 14px; }
+header .badges a { display: inline-block; margin: 3px 5px; padding: 5px 14px; border: 1px solid #4a627a; border-radius: 20px; color: #e2e8f0; text-decoration: none; font-size: .85rem; }
+header .badges a:hover { background: #4a627a; }
+main { max-width: 980px; margin: 0 auto; padding: 24px 16px 60px; }
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 20px 22px; margin: 18px 0; }
+h2 { font-size: 1.2rem; margin: 0 0 12px; color: var(--texto); border-bottom: 2px solid var(--acento-2); padding-bottom: 8px; }
+h3 { font-size: 1.02rem; margin: 18px 0 6px; }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 8px 0 4px; }
+th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+th { color: var(--texto-2); font-weight: 600; white-space: nowrap; }
+td:last-child { white-space: nowrap; color: var(--texto-2); }
+code { background: var(--code-bg); border: 1px solid var(--borda); border-radius: 4px; padding: 1px 6px; font-size: .85em; word-break: break-all; }
+pre { background: var(--code-bg); border: 1px solid var(--borda); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-size: .82rem; line-height: 1.5; }
+pre code { background: none; border: none; padding: 0; }
+.nota { font-size: .85rem; color: var(--texto-2); }
+footer { text-align: center; padding: 22px 16px 40px; color: var(--texto-2); font-size: .85rem; }
+footer a { color: var(--acento); }
+@media (max-width: 640px) { td:last-child { white-space: normal; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ Dados Abertos de Energia — Portugal</h1>
+  <p>Preços OMIE/OMIP, produção elétrica REN, mapas europeus e dados regulados, em CSV/JSON,
+     <strong>atualizados automaticamente</strong> várias vezes por dia a partir de fontes oficiais.</p>
+  <div class="badges">
+    <a href="https://www.tiagofelicia.pt" rel="noopener">🏠 tiagofelicia.pt</a>
+    <a href="https://github.com/tiagofelicia/dados-energia" rel="noopener">📦 Repositório GitHub</a>
+    <a href="https://creativecommons.org/licenses/by/4.0/deed.pt" rel="noopener">📄 Licença CC BY 4.0</a>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <h2>Como aceder</h2>
+  <p>Todos os ficheiros são públicos, sem registo nem chave de API. Base dos URLs:</p>
+  <pre><code>https://dados.tiagofelicia.pt/data/&lt;caminho&gt;</code></pre>
+  <p>Exemplos:</p>
+<pre><code># curl
+curl -s https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv
+
+# Python / pandas
+import pandas as pd
+df = pd.read_csv("https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv")
+
+# JavaScript (CORS aberto: Access-Control-Allow-Origin: *)
+const r = await fetch("https://dados.tiagofelicia.pt/data/omie/records_omie.json");
+const recordes = await r.json();</code></pre>
+  <p class="nota">Espelho alternativo (mesmos caminhos): <code>https://raw.githubusercontent.com/tiagofelicia/dados-energia/main/data/…</code></p>
+</section>
+
+<section>
+  <h2>🔌 Preços de mercado — <code>data/omie/</code></h2>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
+    <tr><td><a href="data/omie/omie_dados_atuais.csv">omie_dados_atuais.csv</a></td>
+        <td>Preços quarto-horários PT/ES do ano corrente (€/MWh), incluindo datas futuras estimadas via futuros OMIP. Inclui classificação dos períodos horários BTN (Simples, Bi, Tri).</td>
+        <td>~5×/dia útil</td></tr>
+    <tr><td><code>historico/omie_historico_<em>AAAA</em>.csv</code></td>
+        <td>Séries anuais 2010–presente, mesmo schema. Ex.: <a href="data/omie/historico/omie_historico_2024.csv">2024</a></td>
+        <td>Fecho de ano</td></tr>
+    <tr><td><a href="data/omie/precos-horarios.csv">precos-horarios.csv</a></td>
+        <td>Preço final quarto-horário por tarifário indexado e opção horária (<a href="https://www.tiagofelicia.pt/formulas-tarifarios-indexados" rel="noopener">fórmulas</a>).</td>
+        <td>~5×/dia útil</td></tr>
+    <tr><td><a href="data/omie/records_omie.json">records_omie.json</a></td>
+        <td>Recordes históricos OMIE (dia/hora mais caro e mais barato, etc.) + agregados.</td>
+        <td>Diária</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>🏭 Produção elétrica (Portugal) — <code>data/producao/</code></h2>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
+    <tr><td><a href="data/producao/producao_dados_atuais.csv">producao_dados_atuais.csv</a></td>
+        <td>Produção por fonte (Hídrica, Eólica, Solar, …), importação/exportação, bombagem, baterias e consumo — potência média (MW) por intervalo de 15 min, ano corrente. Fonte: REN.</td>
+        <td>A cada 4 h</td></tr>
+    <tr><td><code>historico/producao_historico_<em>AAAA</em>.csv</code></td>
+        <td>Séries anuais 2010–presente, mesmo schema. Ex.: <a href="data/producao/historico/producao_historico_2024.csv">2024</a></td>
+        <td>Fecho de ano</td></tr>
+    <tr><td><a href="data/producao/producao_bombagem_diaria.csv">producao_bombagem_diaria.csv</a></td>
+        <td>Consumo diário em bombagem hidroelétrica (GWh), desde 2010.</td>
+        <td>A cada 4 h</td></tr>
+    <tr><td><a href="data/producao/records_producao.json">records_producao.json</a></td>
+        <td>Recordes (dia mais renovável, maior consumo, pico) + agregados mensais.</td>
+        <td>A cada 4 h</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>🗺️ Europa — <code>data/mapas/</code></h2>
+  <table>
+    <tr><th>Caminho</th><th>Conteúdo</th><th>Atualização</th></tr>
+    <tr><td><code>precos_qh/<em>AAAA-MM</em>.json</code></td>
+        <td>Preços day-ahead por zona de mercado europeia (ENTSO-E), um ficheiro por mês desde 2018-01. Por dia/zona: média, mín, máx e valores quarto-horários (€/MWh). Ex.: <a href="data/mapas/precos_qh/2026-06.json">2026-06</a> · <a href="data/mapas/precos_qh/metadata.json">metadata</a></td>
+        <td>2×/dia</td></tr>
+    <tr><td><code>producao/<em>AAAA-MM</em>.json</code></td>
+        <td>Mix de produção diário por país europeu (GWh/dia por tecnologia + consumo), desde 2026-01. Fonte: Energy-Charts. Ex.: <a href="data/mapas/producao/2026-06.json">2026-06</a> · <a href="data/mapas/producao/metadata.json">metadata</a></td>
+        <td>3×/dia</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>📋 Dados regulados (ERSE / E-Redes) — <code>data/regulado/</code></h2>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
+    <tr><td><a href="data/regulado/perfis_erse_9.json">perfis_erse_9.json</a></td>
+        <td>Perfis de consumo BTN publicados pela ERSE.</td>
+        <td>Anual</td></tr>
+    <tr><td><a href="data/regulado/Perdas_calculadas_2026_TF.csv">Perdas_calculadas_2026_TF.csv</a></td>
+        <td>Fatores de perdas (1+perdas) calculados para BT e MT, a partir dos perfis da E-Redes.</td>
+        <td>Anual</td></tr>
+    <tr><td><a href="data/regulado/tos_municipios.json">tos_municipios.json</a></td>
+        <td>Taxa de Ocupação do Subsolo por município + ORD/CUR de gás natural respetivo.</td>
+        <td>Quando há alterações</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Fontes, licença e citação</h2>
+  <p>Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
+     <a href="https://www.omie.es" rel="noopener">OMIE</a>,
+     <a href="https://www.omip.pt" rel="noopener">OMIP</a>,
+     <a href="https://datahub.ren.pt" rel="noopener">REN</a>,
+     <a href="https://transparency.entsoe.eu" rel="noopener">ENTSO-E</a>,
+     <a href="https://www.energy-charts.info" rel="noopener">Energy-Charts</a> (Fraunhofer ISE),
+     <a href="https://www.erse.pt" rel="noopener">ERSE</a> e
+     <a href="https://www.e-redes.pt" rel="noopener">E-Redes</a>.
+     Os dados originais pertencem às respetivas entidades; este serviço disponibiliza compilações e séries derivadas, organizadas para consumo direto.</p>
+  <p>As compilações estão licenciadas sob <a href="https://creativecommons.org/licenses/by/4.0/deed.pt" rel="noopener">CC BY 4.0</a> —
+     pode copiar, redistribuir e adaptar, inclusive comercialmente, desde que dê crédito. Citação sugerida:</p>
+  <pre><code>Dados: Tiago Felícia — www.tiagofelicia.pt (fontes originais: OMIE, REN, ENTSO-E),
+via dados.tiagofelicia.pt</code></pre>
+  <p class="nota">Os dados são disponibilizados "tal como estão", sem garantias — podem existir falhas, atrasos ou correções retroativas nas fontes originais. Os nomes e caminhos dos ficheiros são estáveis; alterações serão anunciadas no <a href="https://github.com/tiagofelicia/dados-energia" rel="noopener">repositório</a>.</p>
+</section>
+
+<section>
+  <h2>Veja os dados em ação</h2>
+  <p>Estes dados alimentam as ferramentas gratuitas de <a href="https://www.tiagofelicia.pt" rel="noopener">tiagofelicia.pt</a>:
+     <a href="https://www.tiagofelicia.pt/eletricidade-tiagofelicia" rel="noopener">simulador de tarifários de eletricidade</a>,
+     <a href="https://www.tiagofelicia.pt/gas-natural-tiagofelicia" rel="noopener">gás natural</a>,
+     <a href="https://www.tiagofelicia.pt/autoconsumo-tiagofelicia" rel="noopener">autoconsumo solar</a>,
+     <a href="https://www.tiagofelicia.pt/omie-diario" rel="noopener">dashboard OMIE diário</a>,
+     <a href="https://www.tiagofelicia.pt/balanco-historico" rel="noopener">balanço energético</a> e
+     <a href="https://www.tiagofelicia.pt/mapa-precos" rel="noopener">mapas europeus</a>.</p>
+</section>
+
+</main>
+
+<footer>
+  © 2022–2026 <a href="https://www.tiagofelicia.pt" rel="noopener">Tiago Felícia</a> ·
+  Dados sob <a href="https://creativecommons.org/licenses/by/4.0/deed.pt" rel="noopener">CC BY 4.0</a> ·
+  Sugestões e erros: <a href="https://www.tiagofelicia.pt/contacto" rel="noopener">contacto</a>
+</footer>
+
+</body>
+</html>

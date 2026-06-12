@@ -6,3 +6,5 @@ openpyxl
 # Para atualizar_tarifarios_gas.py (scraping dos futuros OMIP + parse de tabelas HTML)
 selenium
 lxml
+# Para os mapas (ENTSO-E / Energy-Charts) — fusos horários
+tzdata

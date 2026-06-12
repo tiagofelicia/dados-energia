@@ -6,30 +6,32 @@ Este repositório alimenta os simuladores e dashboards de **[www.tiagofelicia.pt
 
 ## Como aceder
 
-Todos os ficheiros são públicos e podem ser lidos diretamente via GitHub raw:
+Todos os ficheiros são públicos, sem registo nem chave de API. Página de apresentação: **[dados.tiagofelicia.pt](https://dados.tiagofelicia.pt/)**.
 
 ```
-https://raw.githubusercontent.com/tiagofelicia/dados-energia/main/data/<caminho>
+https://dados.tiagofelicia.pt/data/<caminho>
 ```
 
 Exemplos:
 
 ```bash
 # curl
-curl -s https://raw.githubusercontent.com/tiagofelicia/dados-energia/main/data/omie/omie_dados_atuais.csv
+curl -s https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv
 ```
 
 ```python
 # Python / pandas
 import pandas as pd
-df = pd.read_csv("https://raw.githubusercontent.com/tiagofelicia/dados-energia/main/data/omie/omie_dados_atuais.csv")
+df = pd.read_csv("https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv")
 ```
 
 ```js
-// JavaScript
-const r = await fetch("https://raw.githubusercontent.com/tiagofelicia/dados-energia/main/data/omie/records.json");
+// JavaScript (CORS aberto: Access-Control-Allow-Origin: *)
+const r = await fetch("https://dados.tiagofelicia.pt/data/omie/records_omie.json");
 const recordes = await r.json();
 ```
+
+Espelho alternativo (mesmos caminhos): `https://raw.githubusercontent.com/tiagofelicia/dados-energia/main/data/<caminho>`
 
 ## Estrutura
 
@@ -50,7 +52,7 @@ data/
 | `omie_dados_atuais.csv` | Preços quarto-horários do ano corrente, incluindo datas futuras estimadas a partir dos futuros OMIP | ~5×/dia útil |
 | `historico/omie_historico_AAAA.csv` | Séries históricas anuais (2010–presente), mesmo schema | Fecho de ano |
 | `precos-horarios.csv` | Preço quarto-horário final por tarifário indexado e opção horária (inclui bloco `TABELA_CONSTANTES` no fim) | ~5×/dia útil |
-| `records.json` | Recordes históricos OMIE (dia/hora mais caro e mais barato, etc.) | Diária (incremental) |
+| `records_omie.json` | Recordes históricos OMIE (dia/hora mais caro e mais barato, etc.) | Diária (incremental) |
 | `MIBEL_ano_atual_ACUM.csv` | ⚙️ Intermédio de pipeline — preços horários PT/ES acumulados dos últimos 12 meses. Não recomendado para consumo direto | ~5×/dia útil |
 
 Schema de `omie_dados_atuais.csv` e dos históricos:
@@ -118,7 +120,7 @@ As compilações e os datasets derivados deste repositório estão licenciados s
 
 Pode copiar, redistribuir e adaptar os dados, inclusive para fins comerciais, desde que dê o devido crédito. Forma de citação sugerida:
 
-> Dados: Tiago Felícia — [www.tiagofelicia.pt](https://www.tiagofelicia.pt) (fontes originais: OMIE, REN, ENTSO-E), via [github.com/tiagofelicia/dados-energia](https://github.com/tiagofelicia/dados-energia)
+> Dados: Tiago Felícia — [www.tiagofelicia.pt](https://www.tiagofelicia.pt) (fontes originais: OMIE, REN, ENTSO-E), via [dados.tiagofelicia.pt](https://dados.tiagofelicia.pt/)
 
 ## Avisos
 
