@@ -3,15 +3,13 @@
 # atualizar_mapa_precos_entsoe.py → data/mapas/precos_qh/AAAA-MM.json + metadata.json
 #
 # Requer o secret ENTSOE_TOKEN (token da API da Transparency Platform).
-# Migrado do repo do site (tiagofelicia.github.io).
 
 name: Atualizar Mapa de Precos (ENTSO-E)
 
 on:
   schedule:
-    # Todos os dias às 12:00 e às 14:00 UTC
-    - cron: '0 12 * * *'
-    - cron: '0 14 * * *'
+    # Todos os dias às 15:00 UTC
+    - cron: '0 15 * * *'
 
   workflow_dispatch: # Permite execução manual
 

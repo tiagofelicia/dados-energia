@@ -1,7 +1,3 @@
-# Pipeline diário OMIE — substitui o antigo atualizar_tarifarios_eletricidade.yml
-# e o atualizacao_diaria.yml do repo do site, fundidos (a Fase 1 era duplicada
-# e os horários colidiam).
-#
 # Fase 1: atualizar_mibel_ano_atual_ACUM.py
 #   → data/omie/MIBEL_ano_atual_ACUM.csv (preços OMIE horários PT/ES, ~12 meses)
 # Fase 2A (eletricidade): atualizar_tarifarios_eletricidade.py
@@ -17,28 +13,24 @@
 # O xlsx atualizado NÃO é committed (binário sem delta inflaria o histórico).
 # No git, o xlsx é a base de tarifários mantida manualmente.
 
-name: Atualização Diária OMIE + Tarifários Eletricidade (Fases 1 e 2)
+name: Atualização Diária OMIE + Tarifários Eletricidade
 
 on:
   schedule:
     # === GRUPO 1: Manhã (Todos os dias) ===
-    # Horário VERÃO (WEST=UTC+1) -> 11:50, 11:55, 12:10 (Local)
-    - cron: '50 10 * * *'
+    # Horário VERÃO (WEST=UTC+1) -> 11:55, 12:10 (Local)
     - cron: '55 10 * * *'
     - cron: '10 11 * * *'
-    # Horário INVERNO (WET=UTC+0) -> 11:50, 11:55, 12:10 (Local)
-    #- cron: '50 11 * * *'
+    # Horário INVERNO (WET=UTC+0) -> 11:55, 12:10 (Local)
     #- cron: '55 11 * * *'
     #- cron: '10 12 * * *'
 
     # === GRUPO 2: Tarde (Seg-Sex) ===
-    # Horário VERÃO (WEST=UTC+1) -> 18:15, 18:30, 19:00 (Local)
+    # Horário VERÃO (WEST=UTC+1) -> 18:15, 19:00 (Local)
     - cron: '15 17 * * 1-5'
-    - cron: '30 17 * * 1-5'
     - cron: '00 18 * * 1-5'
-    # Horário INVERNO (WET=UTC+0) -> 18:15, 18:30, 19:00 (Local)
+    # Horário INVERNO (WET=UTC+0) -> 18:15, 19:00 (Local)
     #- cron: '15 18 * * 1-5'
-    #- cron: '30 18 * * 1-5'
     #- cron: '00 19 * * 1-5'
 
   workflow_dispatch: # Permite execução manual

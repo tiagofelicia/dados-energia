@@ -1,16 +1,14 @@
 # Atualiza o mix de produção elétrica por país europeu (Energy-Charts).
 #
 # atualizar_mapa_producao.py → data/mapas/producao/AAAA-MM.json + metadata.json
-#
-# Migrado do repo do site (tiagofelicia.github.io).
+
 
 name: Atualizar Mapa de Producao
 
 on:
   schedule:
-    # Todos os dias às 14:30, 18:30 e 23:00 UTC
+    # Todos os dias às 14:30 e 23:00 UTC
     - cron: '30 14 * * *'
-    - cron: '30 18 * * *'
     - cron: '00 23 * * *'
 
   workflow_dispatch: # Permite execução manual

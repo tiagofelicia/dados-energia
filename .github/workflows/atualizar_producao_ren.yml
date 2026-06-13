@@ -5,8 +5,6 @@
 #                                   (incremental: últimos 7 dias)
 # gerar_records_producao.py       → data/producao/records_producao.json
 #                                   (incremental; --full para recalcular)
-#
-# Migrado do repo do site (tiagofelicia.github.io).
 
 name: Atualizar Dados de Produção (REN)
 

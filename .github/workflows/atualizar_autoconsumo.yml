@@ -15,9 +15,8 @@
 # O xlsx atualizado NÃO é committed: no git, o xlsx é a base mantida
 # manualmente; o bot usa-o em runtime e envia o fresco para o HF.
 #
-# Migrado do repo autoconsumo (Python/Streamlit, legado).
 
-name: Atualizar Autoconsumo (Fase 1 e 2)
+name: Atualizar Autoconsumo
 
 on:
   schedule:

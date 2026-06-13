@@ -9,8 +9,6 @@
 #
 # O xlsx atualizado NÃO é committed: no git, o xlsx é a base de tarifários
 # mantida manualmente; o bot usa-o em runtime e envia o fresco para o HF.
-#
-# Migrado do repo simulador-tarifarios-gas (Python/Streamlit, legado).
 
 name: Atualizar Tarifários Gás Natural (MIBGAS)
 
