@@ -106,13 +106,13 @@ const recordes = await r.json();</code></pre>
     <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
     <tr><td><a href="data/omie/omie_dados_atuais.csv">omie_dados_atuais.csv</a></td>
         <td>Preços quarto-horários PT/ES do ano corrente (€/MWh), incluindo datas futuras estimadas via futuros OMIP. Inclui classificação dos períodos horários BTN (Simples, Bi, Tri).</td>
-        <td>~5×/dia útil</td></tr>
+        <td>~2×/dia útil</td></tr>
     <tr><td><code>historico/omie_historico_<em>AAAA</em>.csv</code></td>
         <td>Séries anuais 2010–presente, mesmo schema. Ex.: <a href="data/omie/historico/omie_historico_2024.csv">2024</a></td>
         <td>Fecho de ano</td></tr>
     <tr><td><a href="data/omie/precos-horarios.csv">precos-horarios.csv</a></td>
         <td>Preço final quarto-horário por tarifário indexado e opção horária (<a href="https://www.tiagofelicia.pt/formulas-tarifarios-indexados" rel="noopener">fórmulas</a>).</td>
-        <td>~5×/dia útil</td></tr>
+        <td>~1×/dia útil</td></tr>
     <tr><td><a href="data/omie/records_omie.json">records_omie.json</a></td>
         <td>Recordes históricos OMIE (dia/hora mais caro e mais barato, etc.) + agregados.</td>
         <td>Diária</td></tr>
@@ -144,10 +144,10 @@ const recordes = await r.json();</code></pre>
     <tr><th>Caminho</th><th>Conteúdo</th><th>Atualização</th></tr>
     <tr><td><code>precos_qh/<em>AAAA-MM</em>.json</code></td>
         <td>Preços day-ahead por zona de mercado europeia (ENTSO-E), um ficheiro por mês desde 2018-01. Por dia/zona: média, mín, máx e valores quarto-horários (€/MWh). Ex.: <a href="data/mapas/precos_qh/2026-06.json">2026-06</a> · <a href="data/mapas/precos_qh/metadata.json">metadata</a></td>
-        <td>2×/dia</td></tr>
+        <td>1×/dia</td></tr>
     <tr><td><code>producao/<em>AAAA-MM</em>.json</code></td>
         <td>Mix de produção diário por país europeu (GWh/dia por tecnologia + consumo), desde 2026-01. Fonte: Energy-Charts. Ex.: <a href="data/mapas/producao/2026-06.json">2026-06</a> · <a href="data/mapas/producao/metadata.json">metadata</a></td>
-        <td>3×/dia</td></tr>
+        <td>1×/dia</td></tr>
   </table>
 </section>
 
