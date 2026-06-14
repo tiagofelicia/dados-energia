@@ -65,8 +65,8 @@ jobs:
       - name: Atualizar recordes de produção (incremental)
         run: python scripts/gerar_records_producao.py
 
-      - name: Fazer commit dos dados atualizados
-        uses: stefanzweifel/git-auto-commit-action@v7
+      - name: Fazer commit dos dados atualizados (com retry)
+        uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualização automática dos dados de produção REN"
           file_pattern: "data/producao/producao_dados_atuais.csv data/producao/producao_bombagem_diaria.csv data/producao/records_producao.json"

@@ -86,8 +86,8 @@ jobs:
           python scripts/atualizar_mibel_ano_atual_ACUM.py >> logs/diaria_omie.log 2>&1
           echo "=== FASE 1 (MIBEL CSV) TERMINADA: $(date) ===" >> logs/diaria_omie.log
 
-      - name: Fazer commit do MIBEL_ano_atual_ACUM.csv
-        uses: stefanzweifel/git-auto-commit-action@v7
+      - name: Fazer commit do MIBEL_ano_atual_ACUM.csv (com retry)
+        uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualização (Fase 1) MIBEL_ano_atual_ACUM.csv"
           file_pattern: "data/omie/MIBEL_ano_atual_ACUM.csv"
@@ -102,8 +102,8 @@ jobs:
           echo "=== FASE 2A (TARIFÁRIOS) TERMINADA: $(date) ===" >> logs/diaria_omie.log
 
       # O xlsx atualizado NÃO é committed — só os CSVs exportados.
-      - name: Fazer commit dos CSVs do simulador
-        uses: stefanzweifel/git-auto-commit-action@v7
+      - name: Fazer commit dos CSVs do simulador (com retry)
+        uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "🔌 BOT: Atualização Tarifários Eletricidade (CSVs)"
           file_pattern: "data/simuladores/simulador-tarifarios-eletricidade/csv/*"
@@ -128,8 +128,8 @@ jobs:
           python scripts/gerar_records_omie.py >> logs/diaria_omie.log 2>&1
           echo "=== FASE 2B TERMINADA: $(date) ===" >> logs/diaria_omie.log
 
-      - name: Fazer commit dos ficheiros da Fase 2B
-        uses: stefanzweifel/git-auto-commit-action@v7
+      - name: Fazer commit dos ficheiros da Fase 2B (com retry)
+        uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualização (Fase 2) Ficheiros OMIE processados"
           file_pattern: "data/omie/omie_dados_atuais.csv data/omie/precos-horarios.csv data/omie/records_omie.json"

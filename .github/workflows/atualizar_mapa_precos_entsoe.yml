@@ -60,8 +60,8 @@ jobs:
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
         run: python scripts/atualizar_mapa_precos_entsoe.py
 
-      - name: Fazer commit dos dados atualizados
-        uses: stefanzweifel/git-auto-commit-action@v7
+      - name: Fazer commit dos dados atualizados (com retry)
+        uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualizar dados mapa de precos (ENTSO-E)"
           file_pattern: "data/mapas/precos_qh/*.json"

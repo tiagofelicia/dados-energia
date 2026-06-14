@@ -76,8 +76,8 @@ jobs:
           python scripts/atualizar_mibel_ano_atual_ACUM.py >> logs/autoconsumo.log 2>&1
           echo "=== FASE 1 (MIBEL CSV) TERMINADA: $(date) ===" >> logs/autoconsumo.log
 
-      - name: Fazer commit do MIBEL_ano_atual_ACUM.csv
-        uses: stefanzweifel/git-auto-commit-action@v7
+      - name: Fazer commit do MIBEL_ano_atual_ACUM.csv (com retry)
+        uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualização (Fase 1) MIBEL_ano_atual_ACUM.csv"
           file_pattern: "data/omie/MIBEL_ano_atual_ACUM.csv"

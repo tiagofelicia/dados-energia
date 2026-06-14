@@ -49,8 +49,8 @@ jobs:
       - name: Atualizar mix de produção europeu
         run: python scripts/atualizar_mapa_producao.py
 
-      - name: Fazer commit dos dados atualizados
-        uses: stefanzweifel/git-auto-commit-action@v7
+      - name: Fazer commit dos dados atualizados (com retry)
+        uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualizar dados mapa de producao europeu"
           file_pattern: "data/mapas/producao/*.json"
