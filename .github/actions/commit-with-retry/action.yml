@@ -1,0 +1,71 @@
+# Commit + push com retry resiliente a corridas (non-fast-forward).
+#
+# Wraps stefanzweifel/git-auto-commit-action: se o push for rejeitado por
+# corrida com outro bot que entretanto comitou (acontece quando o
+# `concurrency` falha em serializar — ex.: pipelines lentos como ENTSO-E),
+# faz rebase sobre origin/main e re-tenta até 3 vezes.
+#
+# Como os bots editam ficheiros DISJUNTOS (mapas/precos_qh/ vs producao/
+# vs omie/ etc.), o rebase é sempre trivial — zero merge conflicts esperados.
+#
+# Uso nos workflows:
+#   - uses: ./.github/actions/commit-with-retry
+#     with:
+#       commit_message: "BOT: Atualizar dados X"
+#       file_pattern: "data/X/*.json"
+
+name: Commit with retry
+description: stefanzweifel/git-auto-commit-action com retry+rebase em caso de race
+
+inputs:
+  commit_message:
+    description: Mensagem do commit
+    required: true
+  file_pattern:
+    description: Padrão de ficheiros para o git add (file_pattern da action)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Commit (primário)
+      id: commit_primario
+      continue-on-error: true
+      uses: stefanzweifel/git-auto-commit-action@v7
+      with:
+        commit_message: ${{ inputs.commit_message }}
+        file_pattern: ${{ inputs.file_pattern }}
+
+    - name: Retry com rebase se o primário falhou
+      # outcome='failure' E o commit local foi feito (i.e., havia alterações).
+      # Se changes_detected='false', a action terminou OK sem commitar nada.
+      if: steps.commit_primario.outcome == 'failure' && steps.commit_primario.outputs.changes_detected == 'true'
+      shell: bash
+      run: |
+        echo "::warning::Push rejeitado (provável race com outro workflow). A rebasear e retentar..."
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+        for attempt in 1 2 3; do
+          # Pequeno jitter para evitar rebatidas síncronas se 2 workflows
+          # falham ao mesmo tempo.
+          sleep $((RANDOM % 8 + 3))
+
+          # --autostash: nenhuma alteração na working tree (já fizemos commit),
+          # mas é defensivo. -X theirs: o nosso commit ganha em conflitos
+          # textuais (cenário não esperado — bots editam ficheiros disjuntos).
+          if ! git pull --rebase --autostash -X theirs origin "${GITHUB_REF_NAME:-main}"; then
+            git rebase --abort 2>/dev/null || true
+            echo "::error::Rebase falhou na tentativa $attempt — conflito não resolvível automaticamente"
+            exit 1
+          fi
+
+          if git push; then
+            echo "Push bem-sucedido na tentativa $attempt"
+            exit 0
+          fi
+          echo "Tentativa $attempt falhou; nova corrida — a rebasear de novo..."
+        done
+
+        echo "::error::Push falhou após 3 tentativas com rebase. Investigar manualmente."
+        exit 1
