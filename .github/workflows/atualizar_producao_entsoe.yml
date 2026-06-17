@@ -62,8 +62,8 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependências
-        # O script só usa a stdlib; o tzdata garante o zoneinfo em qualquer runner.
-        run: python -m pip install --upgrade pip tzdata
+        # entsoe_client.py usa requests; tzdata garante o zoneinfo em qualquer runner.
+        run: python -m pip install --upgrade pip requests tzdata
 
       - name: Verificar secret ENTSOE_TOKEN
         env:
