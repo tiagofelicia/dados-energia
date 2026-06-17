@@ -254,7 +254,16 @@ def _parse_period_points(period_elem):
 
 
 def parse_timeseries_points(xml_text):
-    """Devolve lista de (unix_ts_utc, value) somada por timestamp através de todas as TimeSeries."""
+    """Devolve lista de (unix_ts_utc, value), um valor por timestamp.
+
+    Usado para grandezas ESCALARES por timestamp (A44 preço, A65 load, A71 total
+    generation forecast). NÃO somar TimeSeries sobrepostas: a ENTSO-E pode devolver
+    várias TimeSeries para o mesmo período (revisões/versões, ou 60min + 15min — caso
+    do preço day-ahead de Espanha, que vinha ~3x inflacionado por ser somado). Fica-se
+    com o ÚLTIMO valor por timestamp (ordem do documento ≈ revisão mais recente).
+    Para séries não-sobrepostas (ex.: 1 TimeSeries/dia) o resultado é idêntico ao de
+    antes — cada timestamp aparece uma só vez.
+    """
     if not xml_text:
         return []
     if "No matching data found" in xml_text or "<Acknowledgement_MarketDocument" in xml_text:
@@ -271,7 +280,7 @@ def parse_timeseries_points(xml_text):
             if _strip_ns(period.tag) != 'Period':
                 continue
             for k, v in _parse_period_points(period):
-                by_ts[k] = by_ts.get(k, 0.0) + v
+                by_ts[k] = v  # último valor por timestamp (não somar sobreposições)
     return sorted(by_ts.items())
 
 
