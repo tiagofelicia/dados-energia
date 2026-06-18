@@ -284,6 +284,151 @@ def parse_timeseries_points(xml_text):
     return sorted(by_ts.items())
 
 
+def parse_day_ahead_prices(xml_text):
+    """Parse robusto de A44 (preço day-ahead), alinhado com atualizar_mapa_precos_entsoe.py:
+      - filtra contract_MarketAgreement.type == 'A01' (descarta A07/intradiário — ES, p.ex.,
+        devolve A01 *e* A07, o que inflacionava/desfasava o preço);
+      - descarta classificationSequence position != '1' (mantém None ou '1' — DE-LU/AT publicam Seq 1+2);
+      - forward-fill de posições ausentes (sparse encoding ENTSO-E);
+      - normaliza para 15 min (expande PT60M/PT30M em quartos idênticos).
+    Devolve [(unix_ts_utc, price), ...] ordenado, 1 valor por timestamp (resolução mais fina vence).
+    """
+    if not xml_text:
+        return []
+    if "No matching data found" in xml_text or "<Acknowledgement_MarketDocument" in xml_text:
+        return []
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError:
+        return []
+
+    _RES_SEC = {"PT15M": 900, "PT30M": 1800, "PT45M": 2700, "PT60M": 3600, "PT1H": 3600}
+
+    def _res_seconds(res):
+        if not res:
+            return None
+        r = res.strip().upper()
+        if r in _RES_SEC:
+            return _RES_SEC[r]
+        if r.startswith("PT"):
+            body = r[2:]
+            try:
+                if body.endswith("M"):
+                    return int(body[:-1]) * 60
+                if body.endswith("H"):
+                    return int(body[:-1]) * 3600
+            except ValueError:
+                return None
+        return None
+
+    def _to_utc(s):
+        if not s:
+            return None
+        try:
+            dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+        return dt.astimezone(timezone.utc) if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+    parsed_ts = []
+    has_any_a01 = False
+    for ts in root.iter():
+        if _strip_ns(ts.tag) != "TimeSeries":
+            continue
+        seq = None
+        contract = None
+        for ch in list(ts):
+            tag = _strip_ns(ch.tag)
+            if tag == "classificationSequence_AttributeInstanceComponent.position":
+                seq = (ch.text or "").strip()
+            elif tag == "contract_MarketAgreement.type":
+                contract = (ch.text or "").strip()
+                if contract == "A01":
+                    has_any_a01 = True
+
+        ts_points = []
+        for period in ts.iter():
+            if _strip_ns(period.tag) != "Period":
+                continue
+            start_s = end_s = resolution = None
+            points = []
+            for child in period:
+                tag = _strip_ns(child.tag)
+                if tag == "timeInterval":
+                    for sub in child:
+                        if _strip_ns(sub.tag) == "start":
+                            start_s = sub.text
+                        elif _strip_ns(sub.tag) == "end":
+                            end_s = sub.text
+                elif tag == "resolution":
+                    resolution = child.text
+                elif tag == "Point":
+                    pos = price = None
+                    for sub in child:
+                        st = _strip_ns(sub.tag)
+                        if st == "position":
+                            try:
+                                pos = int(sub.text)
+                            except (TypeError, ValueError):
+                                pass
+                        elif st == "price.amount":
+                            try:
+                                price = float(sub.text)
+                            except (TypeError, ValueError):
+                                pass
+                    if pos is not None and price is not None:
+                        points.append((pos, price))
+            if not (start_s and resolution and points):
+                continue
+            start_dt = _to_utc(start_s)
+            res_sec = _res_seconds(resolution)
+            if start_dt is None or not res_sec:
+                continue
+            points.sort(key=lambda x: x[0])
+            max_pos = points[-1][0]
+            expected_pos = max_pos
+            end_dt = _to_utc(end_s)
+            if end_dt is not None:
+                dur = (end_dt - start_dt).total_seconds()
+                if dur > 0:
+                    expected_pos = int(dur // res_sec)
+            fill_to = max(max_pos, expected_pos)
+            pos_to_price = dict(points)
+            res_str = "PT15M" if res_sec == 900 else (resolution or "").strip().upper()
+            quarters = max(1, res_sec // 900)
+            last = None
+            for p in range(1, fill_to + 1):
+                if p in pos_to_price:
+                    last = pos_to_price[p]
+                if last is None:
+                    continue
+                pt_utc = start_dt + timedelta(seconds=res_sec * (p - 1))
+                if quarters > 1:
+                    for q in range(quarters):
+                        ts_points.append((int((pt_utc + timedelta(minutes=15 * q)).timestamp()), last, "PT15M"))
+                else:
+                    ts_points.append((int(pt_utc.timestamp()), last, res_str))
+        if ts_points:
+            parsed_ts.append({"seq": seq, "contract": contract, "points": ts_points})
+
+    if not parsed_ts:
+        return []
+    kept = parsed_ts
+    if has_any_a01:
+        kept = [t for t in kept if t["contract"] == "A01"]
+    kept = [t for t in kept if (not t["seq"]) or t["seq"] == "1"]
+
+    res_prio = {"PT15M": 3, "PT30M": 2, "PT60M": 1, "PT1H": 1}
+    best = {}
+    for t in kept:
+        for ts_int, price, res in t["points"]:
+            pr = res_prio.get(res, 1)
+            cur = best.get(ts_int)
+            if cur is None or pr >= cur[0]:
+                best[ts_int] = (pr, price)
+    return sorted((ts, pv[1]) for ts, pv in best.items())
+
+
 def _is_consumption_ts(ts_elem):
     """Detecta se um TimeSeries representa consumo (ex: bombagem) por presença de outBiddingZone_Domain.mRID."""
     has_in = False
@@ -445,7 +590,8 @@ def fetch_day_ahead_prices(eic, start_dt, end_dt, token):
         'periodEnd': _fmt_period(end_dt),
     }
     xml = _get(params, token)
-    return parse_timeseries_points(xml)
+    # Parser dedicado: filtra A01 (descarta A07/intradiário) + Sequence 1, forward-fill, 15 min.
+    return parse_day_ahead_prices(xml)
 
 
 def fetch_cross_border_physical_flow(in_eic, out_eic, start_dt, end_dt, token):
