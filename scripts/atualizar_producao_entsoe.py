@@ -1,5 +1,5 @@
 """
-Script de recolha INTRA-DIARIA para a pagina producao-eletricidade.html.
+Script de recolha INTRA-DIARIA para a pagina balanco-europa.html.
 
 Fonte unica: ENTSO-E Transparency Platform (web-api.tp.entsoe.eu).
 Obrigatorio: variavel de ambiente ENTSOE_TOKEN.
