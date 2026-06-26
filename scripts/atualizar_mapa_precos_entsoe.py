@@ -8,8 +8,7 @@ Token: deve estar em variavel de ambiente ENTSOE_TOKEN
 Modo diario (default):  python atualizar_mapa_precos_entsoe.py
 Modo backfill:          python atualizar_mapa_precos_entsoe.py --backfill
 
-Gera ficheiros em data/mapa_precos_qh/ (formato compativel com o anterior,
-mas com campos extra: 'resolution' e 'values' [lista de precos]).
+Gera ficheiros em data/mapa_precos_qh/.
 
 Formato:
 {
@@ -38,6 +37,16 @@ import requests
 
 
 API_URL = "https://web-api.tp.entsoe.eu/api"
+
+# Fonte secundaria (fallback) quando o ENTSO-E nao publica uma zona/dia.
+# API publica do Fraunhofer ISE (Energy-Charts), sem token, CC BY 4.0.
+# Para varias zonas (ex: DE-LU) usa fontes independentes do ENTSO-E
+# (Bundesnetzagentur/SMARD), pelo que apanha dias que o ENTSO-E nao tem.
+ENERGY_CHARTS_URL = "https://api.energy-charts.info/price"
+# Zonas do nosso mapa que o Energy-Charts NAO cobre. Para estas mantem-se
+# apenas o ENTSO-E (o fallback e simplesmente saltado).
+ENERGY_CHARTS_UNSUPPORTED = {"IE(SEM)", "AL", "MK", "XK"}
+
 # Caminho ancorado no diretório do script (e não no cwd), para funcionar
 # tanto quando é corrido a partir da raiz do repositório como de scripts/.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -50,6 +59,7 @@ BACKFILL_END = None   # None = ate ontem; ou "2026-12-31"
 # Mapeamento: codigo curto (compatibilidade com frontend) -> EIC ENTSO-E
 ZONE_EIC = {
     "AT": "10YAT-APG------L",
+    "AL": "10YAL-KESH-----5",
     "BE": "10YBE----------2",
     "BG": "10YCA-BULGARIA-R",
     "CH": "10YCH-SWISSGRIDZ",
@@ -76,10 +86,8 @@ ZONE_EIC = {
     "IT-SACODC": "10Y1001A1001A893",
     "LT": "10YLT-1001A0008Q",
     "LV": "10YLV-1001A00074",
-    "AL": "10YAL-KESH-----5",
     "ME": "10YCS-CG-TSO---S",
     "MK": "10YMK-MEPSO----8",
-    "XK": "10Y1001C--00100H",
     "NL": "10YNL----------L",
     "NO1": "10YNO-1--------2",
     "NO2": "10YNO-2--------T",
@@ -96,6 +104,7 @@ ZONE_EIC = {
     "SE4": "10Y1001A1001A47J",
     "SI": "10YSI-ELES-----O",
     "SK": "10YSK-SEPS-----K",
+    "XK": "10Y1001C--00100H",
 }
 
 ZONE_TIMEZONES = {
@@ -350,6 +359,78 @@ def parse_entsoe_xml(xml_text):
     return flat
 
 
+# ----- Energy-Charts (fallback) ----------------------------------------------
+
+def fetch_energy_charts_json(bzn, start_date, end_date, max_retries=3):
+    """Consulta day-ahead prices do Energy-Charts para uma bidding zone.
+
+    O Energy-Charts faz rate limiting (HTTP 429); fazemos retry com backoff,
+    respeitando o cabecalho Retry-After quando presente.
+    """
+    params = {
+        "bzn": bzn,
+        "start": start_date.isoformat(),
+        "end": end_date.isoformat(),
+    }
+    for attempt in range(max_retries):
+        resp = requests.get(ENERGY_CHARTS_URL, params=params, timeout=60)
+        if VERBOSE:
+            print(f"  [HTTP {resp.status_code}] energy-charts bzn={bzn} "
+                  f"{start_date}->{end_date}")
+        if resp.status_code == 200:
+            try:
+                return resp.json()
+            except ValueError:
+                return None
+        if resp.status_code in (204, 404):
+            return None
+        if resp.status_code == 429 and attempt < max_retries - 1:
+            try:
+                wait = float(resp.headers.get("Retry-After", ""))
+            except ValueError:
+                wait = 0
+            wait = max(wait, 2 ** attempt * 3)  # 3s, 6s, 12s...
+            if VERBOSE:
+                print(f"  [429] rate limit; nova tentativa em {wait:.0f}s")
+            time.sleep(wait)
+            continue
+        resp.raise_for_status()
+        return None
+    return None
+
+
+def parse_energy_charts(data):
+    """Converte a resposta do Energy-Charts (unix_seconds[]+price[]) em pontos
+    (utc_dt, price, resolution) — mesmo formato que parse_entsoe_xml.
+
+    Normaliza tudo para PT15M: pontos horarios (PT60M) ou semi-horarios (PT30M)
+    sao expandidos em N quartos identicos (4 e 2 respetivamente), tal como o
+    parser do ENTSO-E faz, garantindo sempre 96 valores por dia local.
+    """
+    if not data:
+        return []
+    secs = data.get("unix_seconds") or []
+    prices = data.get("price") or []
+    if not secs or not prices:
+        return []
+
+    # Resolucao (em segundos) inferida do espacamento entre timestamps.
+    res_sec = 3600
+    if len(secs) >= 2:
+        res_sec = secs[1] - secs[0]
+    quarters_per_point = max(1, res_sec // (15 * 60))
+
+    points = []
+    for s, p in zip(secs, prices):
+        if p is None:
+            continue
+        base_utc = datetime.fromtimestamp(s, tz=timezone.utc)
+        price = float(p)
+        for q in range(quarters_per_point):
+            points.append((base_utc + timedelta(minutes=15 * q), price, "PT15M"))
+    return points
+
+
 # ----- Agregacao -------------------------------------------------------------
 
 def group_by_local_day(points, tz_name):
@@ -498,6 +579,14 @@ def save_metadata(latest_date):
 
 # ----- Datas -----------------------------------------------------------------
 
+def iter_days(start_date, end_date):
+    """Itera dias [start_date, end_date] inclusive."""
+    d = start_date
+    while d <= end_date:
+        yield d
+        d += timedelta(days=1)
+
+
 def local_day_to_utc_range(day, tz_name):
     """Converte um dia local [00:00, 24:00) para intervalo UTC."""
     tz = ZoneInfo(tz_name)
@@ -526,8 +615,51 @@ def get_month_ranges(start_date, end_date):
 
 # ----- Main ------------------------------------------------------------------
 
-def fetch_zone_range(token, zone, start_date, end_date):
-    """Busca todos os pontos para uma zona/intervalo. Devolve dict {dia_local: stats}."""
+def _daily_from_points(points, tz, start_str, end_str, source=None):
+    """Agrupa pontos por dia local, calcula stats e filtra ao intervalo.
+
+    Partilhado pelo ENTSO-E e pelo Energy-Charts. Se 'source' for indicado,
+    e anexado a cada stats (ex: 'energy-charts') para rastrear a origem.
+    """
+    daily = group_by_local_day(points, tz)
+    result = {}
+    for day_str, day_points in daily.items():
+        if day_str < start_str or day_str > end_str:
+            continue
+        stats = compute_day_stats(day_points)
+        if stats:
+            if source:
+                stats["source"] = source
+            result[day_str] = stats
+    return result
+
+
+def fetch_zone_range_energy_charts(zone, start_date, end_date):
+    """Fallback: busca a zona/intervalo no Energy-Charts. Devolve {dia: stats}."""
+    if zone in ENERGY_CHARTS_UNSUPPORTED:
+        return {}
+    tz = ZONE_TIMEZONES.get(zone, "Europe/Berlin")
+    # Os codigos de bidding zone do Energy-Charts coincidem com os nossos.
+    data = fetch_energy_charts_json(zone, start_date, end_date)
+    points = parse_energy_charts(data)
+    if not points:
+        return {}
+    return _daily_from_points(
+        points, tz, start_date.isoformat(), end_date.isoformat(),
+        source="energy-charts",
+    )
+
+
+def fetch_zone_range(token, zone, start_date, end_date, fallback_end_date=None):
+    """Busca todos os pontos para uma zona/intervalo. Devolve dict {dia_local: stats}.
+
+    Primario: ENTSO-E. Fallback (por dia em falta): Energy-Charts.
+
+    'fallback_end_date' limita ate que dia o fallback e tentado. Em modo diario
+    deve ser 'amanha' (o horizonte real do day-ahead): assim nao se tenta o
+    fallback para 'depois-de-amanha', que nunca existe e so e pedido para
+    preencher slots iniciais de zonas EET. Se None, usa end_date (backfill).
+    """
     tz = ZONE_TIMEZONES.get(zone, "Europe/Berlin")
     eic = ZONE_EIC[zone]
 
@@ -535,26 +667,37 @@ def fetch_zone_range(token, zone, start_date, end_date):
     utc_start, _ = local_day_to_utc_range(start_date, tz)
     _, utc_end = local_day_to_utc_range(end_date, tz)
 
-    xml = fetch_entsoe_xml(token, eic, utc_start, utc_end)
-    if not xml:
-        return {}
-    points = parse_entsoe_xml(xml)
-    if not points:
-        return {}
-
-    daily = group_by_local_day(points, tz)
     # Filtrar apenas dias dentro do intervalo pedido. Zonas a leste de CET
     # (UTC+2/+3 — BG, EE, FI, GR, etc.) recebem dias parciais nos extremos
     # porque os periodos ENTSO-E sao em CET e "espalham-se" por 2 dias locais.
     start_str = start_date.isoformat()
     end_str = end_date.isoformat()
+
     result = {}
-    for day_str, day_points in daily.items():
-        if day_str < start_str or day_str > end_str:
-            continue
-        stats = compute_day_stats(day_points)
-        if stats:
-            result[day_str] = stats
+    xml = fetch_entsoe_xml(token, eic, utc_start, utc_end)
+    if xml:
+        points = parse_entsoe_xml(xml)
+        if points:
+            result = _daily_from_points(points, tz, start_str, end_str)
+
+    # Fallback Energy-Charts: preencher dias INTEIROS que o ENTSO-E nao trouxe.
+    # Nunca mistura as duas fontes dentro do mesmo dia. Uma falha do fallback
+    # nunca descarta os dados ja obtidos do ENTSO-E.
+    fb_end = fallback_end_date or end_date
+    missing = [d.isoformat() for d in iter_days(start_date, fb_end)
+               if d.isoformat() not in result]
+    if missing:
+        try:
+            ec = fetch_zone_range_energy_charts(zone, start_date, fb_end)
+        except Exception as e:
+            if VERBOSE:
+                print(f"  [fallback] erro Energy-Charts {zone}: {e}")
+            ec = {}
+        for day_str in missing:
+            if day_str in ec:
+                result[day_str] = ec[day_str]
+                if VERBOSE:
+                    print(f"  [fallback] {zone} {day_str} via Energy-Charts")
     return result
 
 
@@ -631,7 +774,10 @@ def main():
                     time.sleep(0.5)
                 print(f"{zone_days} dias")
             else:
-                daily = fetch_zone_range(token, zone, start_date, end_date)
+                # Fallback so ate 'amanha' (horizonte day-ahead); 'depois-de-
+                # amanha' so serve para slots EET e nunca existe noutra fonte.
+                daily = fetch_zone_range(token, zone, start_date, end_date,
+                                         fallback_end_date=tomorrow)
                 for day_str, stats in daily.items():
                     ym = day_str[:7]
                     if ym not in monthly_cache:
