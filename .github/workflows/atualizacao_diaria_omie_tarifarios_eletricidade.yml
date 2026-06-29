@@ -18,10 +18,12 @@ name: Atualização Diária OMIE + Tarifários Eletricidade
 on:
   schedule:
     # === GRUPO 1: Manhã (Todos os dias) ===
-    # Horário VERÃO (WEST=UTC+1) -> 11:00, 12:10 (Local)
+    # Horário VERÃO (WEST=UTC+1) -> 10:00, 11:00, 12:10 (Local)
+    - cron: '0 09 * * *'
     - cron: '0 10 * * *'
     - cron: '10 11 * * *'
-    # Horário INVERNO (WET=UTC+0) -> 11:00, 12:10 (Local)
+    # Horário INVERNO (WET=UTC+0) -> 10:00, 11:00, 12:10 (Local)
+    #- cron: '00 10 * * *'
     #- cron: '00 11 * * *'
     #- cron: '10 12 * * *'
 
