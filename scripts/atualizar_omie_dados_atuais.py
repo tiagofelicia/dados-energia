@@ -19,6 +19,9 @@ print("✅ Bibliotecas carregadas para [Atualizar omie dados atuais]")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 FICHEIRO_CSV = os.path.join(ROOT_DIR, "data", "omie", "omie_dados_atuais.csv")        # output final
+# Versão leve só com as tabelas de metadados/futuros (~3 KB vs ~1,8 MB): consumida
+# pelo modo anual do simulador de eletricidade e, futuramente, pela página omip.html
+FICHEIRO_FUTUROS_CSV = os.path.join(ROOT_DIR, "data", "omie", "futuros_omip.csv")
 FICHEIRO_MIBEL_CSV = os.path.join(ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACUM.csv") # input
 
 print(f"ℹ️ Fonte de dados: '{FICHEIRO_MIBEL_CSV}'")
@@ -604,6 +607,22 @@ def run_analysis_process():
         except Exception as e:
             print(f"❌ Erro ao escrever o ficheiro CSV final: {e}")
             raise
+
+        # --- 5f. Versão leve só com as tabelas (mesmo formato/secções, sem os dados QH) ---
+        # Falha aqui não deve travar o pipeline: o ficheiro grande continua a servir de fallback.
+        try:
+            with open(FICHEIRO_FUTUROS_CSV, 'w', encoding='utf-8-sig', newline='') as f:
+                f.write("TABELA_ATUALIZACOES\n")
+                df_atualizacao.to_csv(f, index=False, header=True)
+                if not futuros_pt.empty:
+                    f.write("\nTABELA_FUTUROS_PT\n")
+                    futuros_pt.to_csv(f, index=False, decimal='.', float_format='%.2f')
+                if not futuros_es.empty:
+                    f.write("\nTABELA_FUTUROS_ES\n")
+                    futuros_es.to_csv(f, index=False, decimal='.', float_format='%.2f')
+            print(f"✅ Ficheiro leve '{FICHEIRO_FUTUROS_CSV}' criado com sucesso.")
+        except Exception as e:
+            print(f"⚠️ Erro ao escrever o ficheiro leve de futuros (não fatal): {e}")
 
     except Exception as e:
         import traceback
