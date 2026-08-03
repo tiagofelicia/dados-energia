@@ -5,9 +5,90 @@
 import pandas as pd
 import requests
 import re
+import sys
 from datetime import datetime
 import io
 import csv
+
+# Windows: quando o output é redirecionado (ficheiro de log, pipe), o stdout usa
+# cp1252 e qualquer emoji dos prints lança UnicodeEncodeError, abortando o script.
+# Forçar UTF-8 com errors='replace' torna os prints seguros em qualquer contexto.
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except (AttributeError, OSError):
+    pass  # Python < 3.7 ou stream não reconfigurável — segue sem alterar
+
+# ============================================================
+# 0. CONSTANTES ESPERADAS NO XLSX DE CONFIGURAÇÃO
+# ============================================================
+# Todas as constantes que os cálculos usam (folha "Constantes" do xlsx).
+# Serve para dois fins: validar que existem antes de calcular, e filtrar
+# a TABELA_CONSTANTES escrita no CSV de saída.
+CHAVES_CONSTANTES_UTILIZADAS = {
+    # Tarifários
+    'Alfa_CGS', 'Alfa_K',
+    'Coop_CS_CR', 'Coop_K', 'Coop_GO',
+    'EDP_H_K1', 'EDP_H_K2',
+    'EZU_K', 'EZU_CGS',
+    'Galp_Ci',
+    'G9_K1', 'G9_K2', 'G9_K3',
+    'Iberdrola_Dinamico_Q', 'Iberdrola_mFRR',
+    'Meo_CG', 'Meo_K',
+    'Repsol_FA', 'Repsol_Q_Tarifa',
+    'Plenitude_CGS', 'Plenitude_GDOs', 'Plenitude_Fee',
+    'Financiamento_TSE',
+    # TAR Energia
+    'TAR_Energia_Simples',
+    'TAR_Energia_Bi_Vazio', 'TAR_Energia_Bi_ForaVazio',
+    'TAR_Energia_Tri_Vazio', 'TAR_Energia_Tri_Cheias', 'TAR_Energia_Tri_Ponta',
+    'TAR_Energia_Tri_27.6_Vazio', 'TAR_Energia_Tri_27.6_Cheias', 'TAR_Energia_Tri_27.6_Ponta',
+}
+
+
+def validar_constantes(constantes_dict):
+    """
+    Avisa se alguma constante usada nos cálculos falta ou não é numérica.
+
+    Sem esta verificação o problema passa despercebido: `constantes_dict.get(k, 0.0)`
+    devolve 0 para chaves em falta, pelo que os preços saem SILENCIOSAMENTE errados
+    (um tarifário inteiro pode ficar a 0 €/kWh) em vez de rebentar com erro.
+    Causa típica: xlsx local desatualizado, ou constante renomeada só no código.
+    """
+    em_falta, invalidas = [], []
+    for chave in sorted(CHAVES_CONSTANTES_UTILIZADAS):
+        if chave not in constantes_dict:
+            em_falta.append(chave)
+            continue
+        valor = constantes_dict[chave]
+        try:
+            if pd.isna(valor):
+                invalidas.append(chave)
+                continue
+            float(valor)
+        except (TypeError, ValueError):
+            invalidas.append(chave)
+
+    if not em_falta and not invalidas:
+        print(f"   - Constantes validadas: {len(CHAVES_CONSTANTES_UTILIZADAS)} chaves OK.")
+        return True
+
+    # Sem emoji de propósito: em consola/log com codificação cp1252 (Windows, output
+    # redirecionado) um emoji lança UnicodeEncodeError — e este é justamente o caminho
+    # que só corre quando algo está mal.
+    print("=" * 72)
+    print("*** ATENCAO: problema nas constantes do xlsx de configuracao!")
+    if em_falta:
+        print(f"   - EM FALTA ({len(em_falta)}): {', '.join(em_falta)}")
+    if invalidas:
+        print(f"   - VAZIAS/NAO NUMERICAS ({len(invalidas)}): {', '.join(invalidas)}")
+    print("   Os tarifarios que as usam vao sair com precos ERRADOS (0 ou NaN).")
+    print("   Verifique se o xlsx local esta atualizado (o .bat NAO o atualiza -")
+    print("   isso e a Fase 2A, que so corre no workflow):")
+    print("   data/simuladores/simulador-tarifarios-eletricidade/tarifarios_eletricidade_Tiago_Felicia.xlsx")
+    print("=" * 72)
+    return False
+
 
 # ============================================================
 # 1. CARREGADOR DE DADOS LOCAIS
@@ -72,7 +153,10 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
         
         constantes_df = pd.read_excel(excel_bytes, sheet_name="Constantes")
         constantes_dict = dict(zip(constantes_df["constante"], constantes_df["valor_unitário"]))
-        
+
+        # Guarda: constantes em falta dariam preços a 0 sem qualquer erro visível
+        validar_constantes(constantes_dict)
+
         # O read_excel precisa de "reiniciar" o cursor dos bytes
         excel_bytes.seek(0) 
         omie_perdas_ciclos = pd.read_excel(excel_bytes, sheet_name="OMIE_PERDAS_CICLOS")
@@ -135,7 +219,7 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
     resultados = []
     comercializadores = [
         "Alfa Power Index BTN", "Coopérnico Base", "Coopérnico GO", "EDP Indexada Horária",
-        "EZU Tarifa Indexada", "Galp Plano Dinâmico", "G9 Smart Dynamic",
+        "EZU Tarifa Indexada", "Galp Plano Dinâmico", "G9 Smart Dynamic SPOT 8!",
         "MeoEnergia Tarifa Dinâmica", "Repsol Leve Sem Mais",
         "Iberdrola - Simples Indexado Dinâmico", "Plenitude - Tendência",
     ]
@@ -269,26 +353,8 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
     print("✅ Cálculos concluídos.")
 
     # Filtrar apenas as constantes efetivamente utilizadas nos cálculos
-    chaves_utilizadas = {
-        # Tarifários
-        'Alfa_CGS', 'Alfa_K',
-        'Coop_CS_CR', 'Coop_K', 'Coop_GO',
-        'EDP_H_K1', 'EDP_H_K2',
-        'EZU_K', 'EZU_CGS',
-        'Galp_Ci',
-        'G9_FA', 'G9_CGS', 'G9_AC',
-        'Iberdrola_Dinamico_Q', 'Iberdrola_mFRR',
-        'Meo_K',
-        'Repsol_FA', 'Repsol_Q_Tarifa',
-        'Plenitude_CGS', 'Plenitude_GDOs', 'Plenitude_Fee',
-        'Financiamento_TSE',
-        # TAR Energia
-        'TAR_Energia_Simples',
-        'TAR_Energia_Bi_Vazio', 'TAR_Energia_Bi_ForaVazio',
-        'TAR_Energia_Tri_Vazio', 'TAR_Energia_Tri_Cheias', 'TAR_Energia_Tri_Ponta',
-        'TAR_Energia_Tri_27.6_Vazio', 'TAR_Energia_Tri_27.6_Cheias', 'TAR_Energia_Tri_27.6_Ponta',
-    }
-    constantes_utilizadas = {k: v for k, v in constantes_dict.items() if k in chaves_utilizadas}
+    # (lista única em CHAVES_CONSTANTES_UTILIZADAS, no topo do ficheiro)
+    constantes_utilizadas = {k: v for k, v in constantes_dict.items() if k in CHAVES_CONSTANTES_UTILIZADAS}
 
     return df_quarto_horario_final, df_horario_final, constantes_utilizadas
 
@@ -315,21 +381,17 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
     elif "Galp Plano Dinâmico" in nome_tarifario:
         return (omie_kwh + constantes_dict.get('Galp_Ci', 0.0)) * perdas    
     
-    elif "G9 Smart Dynamic" in nome_tarifario:
+    elif "G9 Smart Dynamic SPOT 8!" in nome_tarifario:
         # REGRA G9: Se o valor OMIE for negativo, considera-se 0.
         omie_kwh_g9 = max(0, omie_kwh)
-        return (omie_kwh_g9 * constantes_dict.get('G9_FA', 0.0) * perdas + constantes_dict.get('G9_CGS', 0.0) + constantes_dict.get('G9_AC', 0.0))
+        return (omie_kwh_g9 * perdas * constantes_dict.get('G9_K1', 0.0) + constantes_dict.get('G9_K2', 0.0) + constantes_dict.get('G9_K3', 0.0))
     
     elif "MeoEnergia Tarifa Dinâmica" in nome_tarifario:
-        # REGRA MEO 1: (omie_kwh + Meo_K) não pode ser negativo
-        base_meo = omie_kwh + constantes_dict.get('Meo_K', 0.0)
-        base_limitada = max(0, base_meo)
-        
-        # Calcula o resultado da fórmula
-        resultado_formula = base_limitada * perdas
-        
-        # REGRA MEO 2: Se o resultado final for negativo, aplica-se €0
-        return max(0, resultado_formula)    
+        # Fórmula: (OMIE + Meo_CG) * (1 + FP) + Meo_K
+        resultado_formula = (omie_kwh + constantes_dict.get('Meo_CG', 0.0)) * perdas + constantes_dict.get('Meo_K', 0.0)
+
+        # REGRA MEO: se o resultado for negativo, aplica-se €0 ao período temporal
+        return max(0, resultado_formula)
     
     elif "Repsol Leve Sem Mais" in nome_tarifario:
         return (omie_kwh * perdas * constantes_dict.get('Repsol_FA', 0.0) + constantes_dict.get('Repsol_Q_Tarifa', 0.0)) + constantes_dict.get('Financiamento_TSE', 0.0)
