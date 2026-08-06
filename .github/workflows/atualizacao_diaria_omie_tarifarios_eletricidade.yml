@@ -5,6 +5,9 @@
 #   → exporta as abas como CSVs individuais + manifest.json
 # Fase 2B (site): corre DEPOIS da 2A porque precos-horarios lê o xlsx fresco
 #   → atualizar_omie_dados_atuais.py  → data/omie/omie_dados_atuais.csv
+#   → atualizar_omip_historico.py     → data/omie/historico/omip_historico_<ANO>.csv
+#     (acumula a sessão OMIP; o omip.pt só publica o dia em curso, pelo que uma
+#      sessão não guardada perde-se — ver cabeçalho do script)
 #   → atualizar_precos-horarios_csv.py → data/omie/precos-horarios.csv
 #   → gerar_records_omie.py                 → data/omie/records_omie.json (incremental)
 # Deploy: xlsx + CSVs do simulador para o espaço Hugging Face (transição;
@@ -116,6 +119,14 @@ jobs:
           echo "=== FASE 2B (omie_dados_atuais) INICIADA: $(date) ===" >> logs/diaria_omie.log
           python scripts/atualizar_omie_dados_atuais.py >> logs/diaria_omie.log 2>&1
 
+      # Acumula a sessão OMIP que o passo anterior escreveu em futuros_omip.csv.
+      # Idempotente (upsert por data de sessão): as 4 execuções diárias, os fins
+      # de semana e os feriados não duplicam nem sujam o diff.
+      - name: Executar Fase 2B - omip_historico
+        run: |
+          echo "=== FASE 2B (omip_historico) INICIADA: $(date) ===" >> logs/diaria_omie.log
+          python scripts/atualizar_omip_historico.py >> logs/diaria_omie.log 2>&1
+
       - name: Executar Fase 2B - precos-horarios
         run: |
           echo "=== FASE 2B (precos-horarios) INICIADA: $(date) ===" >> logs/diaria_omie.log
@@ -132,7 +143,7 @@ jobs:
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualização (Fase 2) Ficheiros OMIE processados"
-          file_pattern: "data/omie/omie_dados_atuais.csv data/omie/futuros_omip.csv data/omie/precos-horarios.csv data/omie/records_omie.json"
+          file_pattern: "data/omie/omie_dados_atuais.csv data/omie/futuros_omip.csv data/omie/precos-horarios.csv data/omie/records_omie.json data/omie/historico/omip_historico_*.csv"
 
       # O log NÃO é committed — vai só como artefacto.
       - name: Fazer upload do log como artefacto
