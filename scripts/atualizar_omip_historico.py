@@ -13,11 +13,9 @@ print("✅ Bibliotecas carregadas para [Atualizar OMIP histórico]")
 # ===================================================================
 # ---- CONTEXTO ----
 # ===================================================================
-# O omip.pt publica apenas o ficheiro da sessão em curso
-# (sites/default/files/dados/eod/omipdaily.xlsx) e deixou de disponibilizar
-# histórico — não existem ficheiros datados. O snapshot que o
-# atualizar_omie_dados_atuais.py escreve é sobrescrito a cada execução, pelo
-# que cada sessão não guardada se perde definitivamente.
+# O snapshot que o atualizar_omie_dados_atuais.py escreve contém a sessão em
+# curso e é reescrito a cada execução. Para que a série fique preservada, cada
+# sessão tem de ser acumulada no dia em que passa pelo pipeline.
 #
 # Este script acumula esse snapshot num histórico anual:
 #
@@ -60,6 +58,9 @@ COLUNAS = ["Data", "Zona", "Contrato", "Valor"]
 SECCOES = {"FUTUROS_PT": "PT", "FUTUROS_ES": "ES"}
 # Prefixo esperado do código de contrato em cada zona (validação)
 PREFIXO_ZONA = {"PT": "FPB", "ES": "FTB"}
+# Fonte para o modo --do-omip (ver ler_omip_direto)
+URL_OMIP_XLSX = "https://www.omip.pt/sites/default/files/dados/eod/omipdaily.xlsx"
+CODIGO_ZONA = [("FPB", "PT"), ("FTB", "ES")]
 # ===================================================================
 
 
@@ -144,6 +145,53 @@ def ler_snapshot(texto):
             linhas.append((zona, contrato, valor))
 
     return data_sessao, linhas
+
+
+def ler_omip_direto(url=URL_OMIP_XLSX):
+    """
+    Lê a sessão diretamente do omipdaily.xlsx do omip.pt, sem passar pelo resto
+    do pipeline.
+
+    Serve para os dias em que o workflow não corre — avaria do GitHub Actions,
+    execução cancelada, runner em fila —, permitindo recolher a sessão à mão e
+    fazer commit do histórico no mesmo dia, para não ficar de fora da série.
+
+    O parsing dos contratos é o do atualizar_omie_dados_atuais.py, para não
+    haver duas implementações a divergir. Os imports são locais de propósito:
+    o caminho normal (ler o snapshot já escrito) continua a depender apenas da
+    biblioteca padrão, para o passo do workflow não ganhar dependências.
+
+    Devolve (data_sessao, [(zona, contrato, valor_float), ...]), tal como
+    ler_snapshot() e na mesma ordem que o snapshot — reprocessar a mesma sessão
+    pelos dois caminhos dá exatamente as mesmas linhas.
+    """
+    import io
+
+    import pandas as pd
+    import requests
+
+    from atualizar_omie_dados_atuais import extrair_dados_futuros_omip
+
+    resposta = requests.get(url, timeout=20)
+    resposta.raise_for_status()
+    conteudo = resposta.content
+
+    with io.BytesIO(conteudo) as memoria:
+        celula = pd.read_excel(memoria, sheet_name="OMIP Daily", header=None,
+                               skiprows=4, usecols="E", nrows=1).iloc[0, 0]
+    data_relatorio = pd.to_datetime(celula, dayfirst=True)
+
+    linhas = []
+    for codigo, zona in CODIGO_ZONA:
+        df = extrair_dados_futuros_omip(codigo, data_relatorio, conteudo)
+        for _, registo in df.iterrows():
+            contrato = str(registo["Contrato"]).strip()
+            valor = registo["Valor"]
+            if not contrato or pd.isna(valor):
+                continue
+            linhas.append((zona, contrato, float(valor)))
+
+    return data_relatorio.strftime("%d/%m/%Y"), linhas
 
 
 def ler_historico(caminho):
@@ -265,26 +313,39 @@ def main():
         "--historico", default=PASTA_HISTORICO,
         help="Pasta dos históricos anuais. Por omissão, data/omie/historico/."
     )
+    parser.add_argument(
+        "--do-omip", action="store_true",
+        help="Ignora o snapshot e lê a sessão diretamente do omipdaily.xlsx do "
+             "omip.pt. Para os dias em que o workflow não corre — exige pandas, "
+             "openpyxl e requests."
+    )
     args = parser.parse_args()
 
-    print(f"ℹ️ Snapshot: '{args.snapshot}'")
     print(f"ℹ️ Histórico: '{args.historico}'")
 
-    try:
-        with open(args.snapshot, "r", encoding="utf-8-sig") as f:
-            texto = f.read()
-    except FileNotFoundError:
-        print(f"❌ Snapshot não encontrado: '{args.snapshot}'")
-        return 1
-
-    try:
-        data_sessao, linhas = ler_snapshot(texto)
-    except ValueError as e:
-        print(f"❌ Snapshot inválido: {e}")
-        return 1
+    if args.do_omip:
+        print(f"ℹ️ Fonte: {URL_OMIP_XLSX} (modo direto, sem o pipeline)")
+        try:
+            data_sessao, linhas = ler_omip_direto()
+        except Exception as e:
+            print(f"❌ Falhou a leitura direta do omip.pt: {e}")
+            return 1
+    else:
+        print(f"ℹ️ Snapshot: '{args.snapshot}'")
+        try:
+            with open(args.snapshot, "r", encoding="utf-8-sig") as f:
+                texto = f.read()
+        except FileNotFoundError:
+            print(f"❌ Snapshot não encontrado: '{args.snapshot}'")
+            return 1
+        try:
+            data_sessao, linhas = ler_snapshot(texto)
+        except ValueError as e:
+            print(f"❌ Snapshot inválido: {e}")
+            return 1
 
     if not linhas:
-        print("❌ Snapshot sem contratos — nada para acumular.")
+        print("❌ Sem contratos na fonte — nada para acumular.")
         return 1
 
     pt = sum(1 for zona, _, _ in linhas if zona == "PT")
