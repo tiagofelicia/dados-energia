@@ -20,6 +20,20 @@ Comportamento:
         – o ano do CSV é diferente do ano corrente (rollover de ano).
   • Cada pedido tem retry com exponential backoff (3 tentativas: 2s, 4s, 8s).
   • Timeout de 60s (REN datahub tem latência variável).
+
+Endpoint:
+  A REN descontinuou /service/download/csv/{id} (passou a devolver 404) e
+  substituiu-o por /service/exports/csv?...&country=PT&modelId={id}. O novo
+  export usa vírgula como separador (o antigo usava ponto-e-vírgula) — o
+  separador é detetado automaticamente a partir da linha de cabeçalho.
+
+Gás Natural (ATENÇÃO):
+  O export novo repete o TOTAL de Gás Natural nas duas colunas de gás; a
+  separação Ciclo Combinado / Cogeração deixou de existir na série a 15 min.
+  Ver corrigir_colunas_gas(): o total fica em 'Gás Natural - Ciclo Combinado'
+  e 'Gás natural - Cogeração' fica a 0. Consequência: --ano-completo apaga a
+  separação real que já esteja gravada em dias anteriores à mudança — para
+  tapar buracos, preferir --from/--to sobre apenas os dias em falta.
 """
 
 import argparse
@@ -35,7 +49,7 @@ import requests
 # --- 1. CONFIGURAÇÕES ---
 
 API_REN_SERVICE_ID = "1354"
-URL_REN_API = f"https://datahub.ren.pt/service/download/csv/{API_REN_SERVICE_ID}"
+URL_REN_API = "https://datahub.ren.pt/service/exports/csv"
 # Caminho ancorado no diretório do script (e não no cwd), para funcionar
 # tanto quando é corrido a partir da raiz do repositório como de scripts/.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -48,8 +62,58 @@ HEADERS = {
     'Expires': '0',
 }
 
+COL_GAS_CC = 'Gás Natural - Ciclo Combinado'
+COL_GAS_COG = 'Gás natural - Cogeração'
+
 
 # --- 2. BUSCA NA API ---
+
+def ler_csv_ren(texto):
+    """
+    Lê o CSV da REN (2 linhas de metadados antes da linha de nomes de colunas).
+    Deteta o separador a partir do cabeçalho: o export novo usa ',', o antigo ';'.
+    """
+    linhas = texto.splitlines()
+    cabecalho = linhas[2] if len(linhas) > 2 else ''
+    sep = ';' if cabecalho.count(';') > cabecalho.count(',') else ','
+    return pd.read_csv(io.StringIO(texto), sep=sep, skiprows=2, engine='python')
+
+
+def corrigir_colunas_gas(df):
+    """
+    O export novo (/service/exports/csv, modelId 1354) devolve o TOTAL de Gás
+    Natural repetido nas DUAS colunas de gás — a separação Ciclo Combinado /
+    Cogeração deixou de vir na série a 15 min (o resumo diário, modelId 1363,
+    ainda a traz). Como gerar_records_producao.py soma as duas colunas para
+    obter 'Gás Natural', deixá-las repetidas duplicaria o gás.
+
+    Mantém-se o total em COL_GAS_CC e zera-se COL_GAS_COG, preservando a
+    invariante  COL_GAS_CC + COL_GAS_COG == Gás Natural total.
+
+    A deteção é feita LINHA A LINHA (e não ao lote todo) para o caso de a REN
+    corrigir o export a meio de um intervalo pedido: nesse dia de transição
+    convivem linhas duplicadas e linhas já corretas, e só as primeiras devem
+    ser mexidas. Exige-se valor > 0 porque nas linhas em que as duas parcelas
+    são genuinamente 0 a igualdade não significa duplicação (acontece em 53 das
+    22 940 linhas recolhidas pelo endpoint antigo — todas com ambas a 0; com
+    valor > 0 a igualdade nunca ocorreu). Quando a REN corrigir o export, as
+    colunas voltam a vir diferentes e esta função deixa de tocar em nada.
+    """
+    if COL_GAS_CC not in df.columns or COL_GAS_COG not in df.columns:
+        print(f"  [!] ATENÇÃO: colunas de gás não encontradas no export da REN "
+              f"(esperadas '{COL_GAS_CC}' e '{COL_GAS_COG}'); "
+              f"recebidas: {list(df.columns)}", file=sys.stderr)
+        return df
+    cc = pd.to_numeric(df[COL_GAS_CC], errors='coerce')
+    cog = pd.to_numeric(df[COL_GAS_COG], errors='coerce')
+    duplicadas = cc.notna() & (cc == cog) & (cc > 0)
+    if duplicadas.any():
+        print(f"  [!] REN devolve o total de Gás Natural repetido em '{COL_GAS_CC}' e "
+              f"'{COL_GAS_COG}' em {int(duplicadas.sum())}/{len(df)} linhas; "
+              f"total mantido em '{COL_GAS_CC}', '{COL_GAS_COG}' zerada nessas linhas.")
+        df.loc[duplicadas, COL_GAS_COG] = 0.0
+    return df
+
 
 def buscar_dados_ren(data_inicio, data_fim, max_tentativas=3, timeout=60):
     """
@@ -61,14 +125,17 @@ def buscar_dados_ren(data_inicio, data_fim, max_tentativas=3, timeout=60):
         "startDateString": data_inicio,
         "endDateString": data_fim,
         "culture": "pt-PT",
+        "country": "PT",
+        "modelId": API_REN_SERVICE_ID,
     }
     for tentativa in range(1, max_tentativas + 1):
         try:
             response = requests.get(URL_REN_API, params=params, headers=HEADERS, timeout=timeout)
             response.raise_for_status()
-            response_text = response.content.decode('utf-8')
-            df = pd.read_csv(io.StringIO(response_text), sep=';', skiprows=2, engine='python')
+            response_text = response.content.decode('utf-8-sig')
+            df = ler_csv_ren(response_text)
             df['datetime'] = pd.to_datetime(df['Data e Hora'], format='%Y-%m-%d %H:%M:%S')
+            df = corrigir_colunas_gas(df)
             print(f"  [OK] {len(df)} linhas carregadas (sem cache).")
             return df
         except Exception as e:

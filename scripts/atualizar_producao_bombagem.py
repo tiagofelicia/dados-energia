@@ -26,6 +26,12 @@ Comportamento:
     para re-pedir todos.
   • Cada pedido tem retry com exponential backoff (3 tentativas: 2s, 4s, 8s).
   • Timeout aumentado para 60s (REN datahub tem latência variável).
+
+Endpoint:
+  A REN descontinuou /service/download/csv/{id} (passou a devolver 404) e
+  substituiu-o por /service/exports/csv?...&country=PT&modelId={id}. O novo
+  export usa vírgula como separador (o antigo usava ponto-e-vírgula) — as duas
+  variantes são aceites ao ler a linha da bombagem.
 """
 
 import argparse
@@ -37,7 +43,8 @@ from datetime import date, datetime, timedelta
 
 import requests
 
-URL_BASE = "https://datahub.ren.pt/service/download/csv/1363"
+REN_MODEL_ID = "1363"
+URL_BASE = "https://datahub.ren.pt/service/exports/csv"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'data', 'producao'))
 OUT_PATH = os.path.join(DATA_DIR, 'producao_bombagem_diaria.csv')
@@ -54,17 +61,20 @@ def buscar_bombagem(dia_iso, max_tentativas=3, timeout=60):
     Devolve a Produção por Bombagem (GWh) para um dia (YYYY-MM-DD), ou None se indisponível.
     Retry com exponential backoff em erros de rede/timeout.
     """
-    params = {'startDateString': dia_iso, 'endDateString': dia_iso, 'culture': 'pt-PT'}
+    params = {'startDateString': dia_iso, 'endDateString': dia_iso, 'culture': 'pt-PT',
+              'country': 'PT', 'modelId': REN_MODEL_ID}
     for tentativa in range(1, max_tentativas + 1):
         try:
             resp = requests.get(URL_BASE, params=params, headers=HEADERS, timeout=timeout)
             resp.raise_for_status()
             texto = resp.content.decode('utf-8-sig')
             for linha in texto.splitlines():
-                # Formato: "Produção por Bombagem;;8;11;8;-30.4"
+                # Formato: "Produção por Bombagem,,17,8,395,28.4" (export novo)
+                #       ou "Produção por Bombagem;;8;11;8;-30.4"  (export antigo)
                 # Colunas: [0]=nome [1]=Ponta MW [2]=Energia diária GWh [3]=dia eq. [4]=acumulada [5]=variação
                 if linha.startswith('Produção por Bombagem'):
-                    partes = linha.split(';')
+                    sep = ';' if ';' in linha else ','
+                    partes = linha.split(sep)
                     if len(partes) > 2:
                         val = partes[2].strip().replace(',', '.')
                         if val in ('', '-'):
