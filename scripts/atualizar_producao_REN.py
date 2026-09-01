@@ -21,19 +21,22 @@ Comportamento:
   • Cada pedido tem retry com exponential backoff (3 tentativas: 2s, 4s, 8s).
   • Timeout de 60s (REN datahub tem latência variável).
 
-Endpoint:
-  A REN descontinuou /service/download/csv/{id} (passou a devolver 404) e
-  substituiu-o por /service/exports/csv?...&country=PT&modelId={id}. O novo
-  export usa vírgula como separador (o antigo usava ponto-e-vírgula) — o
-  separador é detetado automaticamente a partir da linha de cabeçalho.
+Endpoint (a REN tem alternado — não assumir que só existe um):
+  • /service/download/csv/{id}                       — o histórico, separador ';'
+  • /service/exports/csv?...&country=PT&modelId={id} — separador ','
+  Em 28/08/2026 o primeiro passou a 404 e o segundo assumiu; em 01/09/2026 a
+  REN reverteu (o primeiro voltou, o segundo passou a 404). Por isso ENDPOINTS_REN
+  tenta ambos por ordem, em vez de fixar um. O separador é detetado a partir da
+  linha de cabeçalho, pelo que os dois formatos são lidos indistintamente.
 
 Gás Natural (ATENÇÃO):
-  O export novo repete o TOTAL de Gás Natural nas duas colunas de gás; a
-  separação Ciclo Combinado / Cogeração deixou de existir na série a 15 min.
-  Ver corrigir_colunas_gas(): o total fica em 'Gás Natural - Ciclo Combinado'
-  e 'Gás natural - Cogeração' fica a 0. Consequência: --ano-completo apaga a
-  separação real que já esteja gravada em dias anteriores à mudança — para
-  tapar buracos, preferir --from/--to sobre apenas os dias em falta.
+  O export /service/exports/csv repete o TOTAL de Gás Natural nas duas colunas
+  de gás, perdendo a separação Ciclo Combinado / Cogeração (o /download/csv
+  traz-na correta — daí ser o preferido em ENDPOINTS_REN). Ver
+  corrigir_colunas_gas(): nas linhas afetadas o total fica em
+  'Gás Natural - Ciclo Combinado' e 'Gás natural - Cogeração' fica a 0.
+  Consequência: --ano-completo apaga a separação real já gravada — para tapar
+  buracos, preferir --from/--to apenas sobre os dias em falta.
 """
 
 import argparse
@@ -49,7 +52,16 @@ import requests
 # --- 1. CONFIGURAÇÕES ---
 
 API_REN_SERVICE_ID = "1354"
-URL_REN_API = "https://datahub.ren.pt/service/exports/csv"
+
+# A REN tem alternado entre dois endpoints (ver "Endpoint" no docstring), pelo que
+# ambos são tentados por ordem, em vez de se fixar um. O primeiro é o preferido:
+# é o único que traz a separação Ciclo Combinado / Cogeração. Só se ele falhar é
+# que se recorre ao segundo (que devolve o total do gás repetido nas 2 colunas).
+ENDPOINTS_REN = (
+    (f"https://datahub.ren.pt/service/download/csv/{API_REN_SERVICE_ID}", {}),
+    ("https://datahub.ren.pt/service/exports/csv",
+     {"country": "PT", "modelId": API_REN_SERVICE_ID}),
+)
 # Caminho ancorado no diretório do script (e não no cwd), para funcionar
 # tanto quando é corrido a partir da raiz do repositório como de scripts/.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -118,33 +130,40 @@ def corrigir_colunas_gas(df):
 def buscar_dados_ren(data_inicio, data_fim, max_tentativas=3, timeout=60):
     """
     Busca dados de Repartição da Produção da REN para um intervalo.
+    Tenta os endpoints de ENDPOINTS_REN por ordem; o backoff só entra quando
+    NENHUM deles responde, para que um endpoint desligado (404) passe logo ao
+    seguinte em vez de gastar as esperas de 2s/4s/8s.
     Retorna DataFrame ou None em caso de falha (após retries).
     """
     print(f"Buscando dados da REN de {data_inicio} a {data_fim}...")
-    params = {
+    params_base = {
         "startDateString": data_inicio,
         "endDateString": data_fim,
         "culture": "pt-PT",
-        "country": "PT",
-        "modelId": API_REN_SERVICE_ID,
     }
+    ultimo_erro = None
     for tentativa in range(1, max_tentativas + 1):
-        try:
-            response = requests.get(URL_REN_API, params=params, headers=HEADERS, timeout=timeout)
-            response.raise_for_status()
-            response_text = response.content.decode('utf-8-sig')
-            df = ler_csv_ren(response_text)
-            df['datetime'] = pd.to_datetime(df['Data e Hora'], format='%Y-%m-%d %H:%M:%S')
-            df = corrigir_colunas_gas(df)
-            print(f"  [OK] {len(df)} linhas carregadas (sem cache).")
-            return df
-        except Exception as e:
-            if tentativa < max_tentativas:
-                espera = 2 ** tentativa  # 2s, 4s, 8s
-                print(f"  [!] tentativa {tentativa}/{max_tentativas} falhou ({type(e).__name__}); a tentar de novo em {espera}s...", file=sys.stderr)
-                time.sleep(espera)
-            else:
-                print(f"  [ERR] {max_tentativas} tentativas falharam: {e}", file=sys.stderr)
+        for url, params_extra in ENDPOINTS_REN:
+            try:
+                response = requests.get(url, params={**params_base, **params_extra},
+                                        headers=HEADERS, timeout=timeout)
+                response.raise_for_status()
+                response_text = response.content.decode('utf-8-sig')
+                df = ler_csv_ren(response_text)
+                df['datetime'] = pd.to_datetime(df['Data e Hora'], format='%Y-%m-%d %H:%M:%S')
+                df = corrigir_colunas_gas(df)
+                print(f"  [OK] {len(df)} linhas carregadas de {url} (sem cache).")
+                return df
+            except Exception as e:
+                ultimo_erro = e
+                print(f"  [!] {url} falhou ({type(e).__name__}: {e})", file=sys.stderr)
+        if tentativa < max_tentativas:
+            espera = 2 ** tentativa  # 2s, 4s, 8s
+            print(f"  [!] tentativa {tentativa}/{max_tentativas}: nenhum endpoint respondeu; "
+                  f"a tentar de novo em {espera}s...", file=sys.stderr)
+            time.sleep(espera)
+        else:
+            print(f"  [ERR] {max_tentativas} tentativas falharam em todos os endpoints: {ultimo_erro}", file=sys.stderr)
     return None
 
 

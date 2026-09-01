@@ -27,11 +27,12 @@ Comportamento:
   • Cada pedido tem retry com exponential backoff (3 tentativas: 2s, 4s, 8s).
   • Timeout aumentado para 60s (REN datahub tem latência variável).
 
-Endpoint:
-  A REN descontinuou /service/download/csv/{id} (passou a devolver 404) e
-  substituiu-o por /service/exports/csv?...&country=PT&modelId={id}. O novo
-  export usa vírgula como separador (o antigo usava ponto-e-vírgula) — as duas
-  variantes são aceites ao ler a linha da bombagem.
+Endpoint (a REN tem alternado — não assumir que só existe um):
+  • /service/download/csv/{id}                       — o histórico, separador ';'
+  • /service/exports/csv?...&country=PT&modelId={id} — separador ','
+  Em 28/08/2026 o primeiro passou a 404 e o segundo assumiu; em 01/09/2026 a
+  REN reverteu. Por isso ENDPOINTS_REN tenta ambos por ordem, e a linha da
+  bombagem é lida com qualquer dos separadores.
 """
 
 import argparse
@@ -44,7 +45,14 @@ from datetime import date, datetime, timedelta
 import requests
 
 REN_MODEL_ID = "1363"
-URL_BASE = "https://datahub.ren.pt/service/exports/csv"
+
+# A REN tem alternado entre dois endpoints (ver docstring); tentam-se ambos por
+# ordem, em vez de fixar um. Ver ENDPOINTS_REN em atualizar_producao_REN.py.
+ENDPOINTS_REN = (
+    (f"https://datahub.ren.pt/service/download/csv/{REN_MODEL_ID}", {}),
+    ("https://datahub.ren.pt/service/exports/csv",
+     {"country": "PT", "modelId": REN_MODEL_ID}),
+)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'data', 'producao'))
 OUT_PATH = os.path.join(DATA_DIR, 'producao_bombagem_diaria.csv')
@@ -59,28 +67,39 @@ HEADERS = {
 def buscar_bombagem(dia_iso, max_tentativas=3, timeout=60):
     """
     Devolve a Produção por Bombagem (GWh) para um dia (YYYY-MM-DD), ou None se indisponível.
-    Retry com exponential backoff em erros de rede/timeout.
+    Tenta os endpoints de ENDPOINTS_REN por ordem; o backoff só entra quando
+    NENHUM responde, para que um endpoint desligado (404) passe logo ao seguinte.
+    Uma resposta válida sem a linha da bombagem é um "dia sem dados" e devolve
+    None de imediato — não se gastam retries com um dia legitimamente vazio.
     """
-    params = {'startDateString': dia_iso, 'endDateString': dia_iso, 'culture': 'pt-PT',
-              'country': 'PT', 'modelId': REN_MODEL_ID}
+    params_base = {'startDateString': dia_iso, 'endDateString': dia_iso, 'culture': 'pt-PT'}
     for tentativa in range(1, max_tentativas + 1):
+        houve_resposta = False
         try:
-            resp = requests.get(URL_BASE, params=params, headers=HEADERS, timeout=timeout)
-            resp.raise_for_status()
-            texto = resp.content.decode('utf-8-sig')
-            for linha in texto.splitlines():
-                # Formato: "Produção por Bombagem,,17,8,395,28.4" (export novo)
-                #       ou "Produção por Bombagem;;8;11;8;-30.4"  (export antigo)
-                # Colunas: [0]=nome [1]=Ponta MW [2]=Energia diária GWh [3]=dia eq. [4]=acumulada [5]=variação
-                if linha.startswith('Produção por Bombagem'):
-                    sep = ';' if ';' in linha else ','
-                    partes = linha.split(sep)
-                    if len(partes) > 2:
-                        val = partes[2].strip().replace(',', '.')
-                        if val in ('', '-'):
-                            return 0.0
-                        return float(val)
-            return None  # dia sem entrada de bombagem (resposta válida mas vazia)
+            for url, params_extra in ENDPOINTS_REN:
+                try:
+                    resp = requests.get(url, params={**params_base, **params_extra},
+                                        headers=HEADERS, timeout=timeout)
+                    resp.raise_for_status()
+                except Exception:
+                    continue  # endpoint em baixo: passa ao seguinte
+                houve_resposta = True
+                texto = resp.content.decode('utf-8-sig')
+                for linha in texto.splitlines():
+                    # Formato: "Produção por Bombagem,,17,8,395,28.4" (export /exports/csv)
+                    #       ou "Produção por Bombagem;;8;11;8;-30.4"  (export /download/csv)
+                    # Colunas: [0]=nome [1]=Ponta MW [2]=Energia diária GWh [3]=dia eq. [4]=acumulada [5]=variação
+                    if linha.startswith('Produção por Bombagem'):
+                        sep = ';' if ';' in linha else ','
+                        partes = linha.split(sep)
+                        if len(partes) > 2:
+                            val = partes[2].strip().replace(',', '.')
+                            if val in ('', '-'):
+                                return 0.0
+                            return float(val)
+            if houve_resposta:
+                return None  # dia sem entrada de bombagem (resposta válida mas vazia)
+            raise RuntimeError('nenhum endpoint da REN respondeu')
         except Exception as e:
             if tentativa < max_tentativas:
                 espera = 2 ** tentativa  # 2s, 4s, 8s
