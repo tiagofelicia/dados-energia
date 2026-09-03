@@ -125,31 +125,60 @@ API_FORECAST_BASE = "https://api.energy-charts.info/public_power_forecast"
 FORECAST_TYPES = ["solar", "wind_onshore", "wind_offshore", "load"]
 
 
-def fetch_production(country, start_date, end_date):
+# Estados HTTP transitorios: 429 (rate limit) e 5xx (falha do lado da API).
+# Ao contrario do mapa de precos, aqui nao existe fonte alternativa — se o
+# Energy-Charts falhar, o pais fica sem dados nessa corrida. Daí insistir.
+RETRY_STATUS = {429, 500, 502, 503, 504}
+
+
+def _retry_wait(resp, attempt):
+    """Espera antes de nova tentativa, respeitando Retry-After quando existe."""
+    try:
+        wait = float(resp.headers.get("Retry-After", ""))
+    except ValueError:
+        wait = 0
+    # O 429 do Energy-Charts exige esperas longas; os 5xx recuperam mais depressa.
+    base = 30 * (attempt + 1) if resp.status_code == 429 else 10 * (attempt + 1)
+    return max(wait, base)
+
+
+def fetch_production(country, start_date, end_date, max_retries=5):
     """Buscar dados de producao da API Energy-Charts para um pais e intervalo.
-    
-    Inclui retry com backoff progressivo longo para lidar com erros 429 (rate limiting),
-    e ignora erros 404 retornando dados vazios.
+
+    Repete em erros transitorios (429 e 5xx) e em falhas de rede/timeout, com
+    backoff progressivo. Um 404 significa "pais sem dados" e devolve {}.
     """
-    url = f"{API_BASE}?country={country}&start={start_date}&end={end_date}"
-    
-    for attempt in range(5):
-        resp = requests.get(url, timeout=60)
-        
-        if resp.status_code == 429:
-            wait = 30 * (attempt + 1)
-            print(f" [Aviso API] Limite atingido. A aguardar {wait}s (Tentativa {attempt + 1}/5)...", end=" ", flush=True)
+    params = {"country": country, "start": start_date, "end": end_date}
+
+    for attempt in range(max_retries):
+        last_attempt = attempt == max_retries - 1
+        try:
+            resp = requests.get(API_BASE, params=params, timeout=60)
+        except requests.RequestException as e:
+            if last_attempt:
+                raise
+            wait = 10 * (attempt + 1)
+            print(f" [Aviso rede] {type(e).__name__}; nova tentativa em {wait}s...",
+                  end=" ", flush=True)
             time.sleep(wait)
             continue
-            
+
         # Se o país não tiver dados (404 Not Found), devolvemos um dicionário vazio
         if resp.status_code == 404:
             return {}
-            
+
+        if resp.status_code in RETRY_STATUS and not last_attempt:
+            wait = _retry_wait(resp, attempt)
+            print(f" [Aviso API {resp.status_code}] a aguardar {wait:.0f}s "
+                  f"(tentativa {attempt + 1}/{max_retries})...", end=" ", flush=True)
+            time.sleep(wait)
+            continue
+
         resp.raise_for_status()
         return resp.json()
-        
-    raise Exception(f"Falha ao obter dados após 5 tentativas devido a limites da API (Erro 429).")
+
+    raise Exception(f"Falha ao obter dados de {country.upper()} apos "
+                    f"{max_retries} tentativas (API indisponivel ou rate limit).")
 
 
 def fetch_forecast(country, production_type):
@@ -158,21 +187,28 @@ def fetch_forecast(country, production_type):
     Inclui retry com backoff para erros 429 (rate limiting).
     Retorna None se o recurso nao existe (404).
     """
-    url = (
-        f"{API_FORECAST_BASE}?country={country}"
-        f"&production_type={production_type}&forecast_type=day-ahead"
-    )
+    params = {
+        "country": country,
+        "production_type": production_type,
+        "forecast_type": "day-ahead",
+    }
     for attempt in range(3):
-        resp = requests.get(url, timeout=60)
+        last_attempt = attempt == 2
+        try:
+            resp = requests.get(API_FORECAST_BASE, params=params, timeout=60)
+        except requests.RequestException:
+            if last_attempt:
+                return None  # Previsao e opcional: nao vale a pena falhar o pais
+            time.sleep(5 * (attempt + 1))
+            continue
         if resp.status_code in (400, 404):
             return None  # Tipo nao disponivel para este pais
-        if resp.status_code == 429:
-            wait = 5 * (attempt + 1)
-            time.sleep(wait)
+        if resp.status_code in RETRY_STATUS and not last_attempt:
+            time.sleep(_retry_wait(resp, attempt))
             continue
         resp.raise_for_status()
         return resp.json()
-    # Ultima tentativa falhou com 429
+    # Tentativas esgotadas
     return None
 
 
@@ -315,6 +351,24 @@ def compute_daily_production(api_data, tz_name):
     return result
 
 
+def store_entry(monthly_cache, year_month, date_str, country, stats):
+    """Escrever a entrada de um pais/dia preservando a previsao ja guardada.
+
+    Quando os dados reais chegam substituem a entrada por completo. Se a
+    entrada anterior trazia uma previsao day-ahead ('forecast'), essa e a
+    UNICA copia que existe: a API de previsao so publica hoje/amanha, pelo
+    que um dia passado nunca mais consegue recuperar a sua previsao. Manter
+    o sub-objeto e o que permite comparar previsto vs. realizado.
+    """
+    dia = monthly_cache[year_month].setdefault(date_str, {})
+    anterior = dia.get(country)
+    if anterior:
+        previsao = anterior.get("forecast")
+        if previsao and "forecast" not in stats:
+            stats["forecast"] = previsao
+    dia[country] = stats
+
+
 def load_monthly_file(year_month):
     """Carregar ficheiro JSON mensal existente, ou retornar dict vazio."""
     filepath = os.path.join(DATA_DIR, f"{year_month}.json")
@@ -332,10 +386,27 @@ def save_monthly_file(year_month, data):
 
 
 def save_metadata(latest_date):
-    """Guardar metadata com a ultima data disponivel."""
+    """Guardar metadata com a ultima data disponivel.
+
+    Nunca a faz recuar: um --backfill so conhece dias ate ontem e, sem esta
+    guarda, apagaria a data de amanha que o modo diario ja tinha gravado a
+    partir das previsoes day-ahead. Devolve o valor que ficou no ficheiro.
+    """
     filepath = os.path.join(DATA_DIR, "metadata.json")
+    atual = None
+    if os.path.exists(filepath):
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                atual = json.load(f).get("ultima_data")
+        except (ValueError, OSError):
+            atual = None
+
+    if atual and atual >= latest_date:
+        return atual
+
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump({"ultima_data": latest_date}, f, ensure_ascii=False)
+    return latest_date
 
 
 def get_month_ranges(start_date, end_date):
@@ -364,12 +435,19 @@ def main():
 
     # Configuração dos argumentos de linha de comando
     parser = argparse.ArgumentParser()
-    parser.add_argument("--backfill", action="store_true", help="Modo de recolha histórica")
+    parser.add_argument("--backfill", action="store_true",
+                        help=f"Recolha histórica (default: {BACKFILL_START} -> ontem)")
+    parser.add_argument("--start", metavar="AAAA-MM-DD",
+                        help="Data inicial do backfill (implica --backfill)")
+    parser.add_argument("--end", metavar="AAAA-MM-DD",
+                        help="Data final do backfill (default: ontem)")
     parser.add_argument("--countries", nargs="+", help="Lista de países (ex: pt es)")
     args = parser.parse_args()
 
-    backfill = args.backfill
-    
+    # --start/--end implicam backfill: so nesse modo faz sentido um intervalo
+    # arbitrario (o modo diario tem a janela fixa -6 dias -> amanha).
+    backfill = bool(args.backfill or args.start or args.end)
+
     # Se fornecer países, usa esses. Se não, usa a lista completa (COUNTRIES)
     countries_to_run = [c.lower() for c in args.countries] if args.countries else COUNTRIES
    
@@ -377,8 +455,20 @@ def main():
     today = datetime.now(timezone.utc).date()
 
     if backfill:
-        start_date = datetime.strptime(BACKFILL_START, "%Y-%m-%d").date()
-        end_date = yesterday
+        def _parse_date(value, nome):
+            try:
+                return datetime.strptime(value, "%Y-%m-%d").date()
+            except ValueError:
+                print(f"ERRO: {nome} invalida: {value!r} (formato AAAA-MM-DD).",
+                      file=sys.stderr)
+                sys.exit(1)
+
+        start_date = _parse_date(args.start or BACKFILL_START, "--start")
+        end_date = _parse_date(args.end, "--end") if args.end else yesterday
+        if start_date > end_date:
+            print(f"ERRO: --start ({start_date}) e posterior a --end ({end_date}).",
+                  file=sys.stderr)
+            sys.exit(1)
         print(f"Modo BACKFILL: {start_date} a {end_date}")
     else:
         # Modo diario (corre as 14:30 UTC):
@@ -415,7 +505,7 @@ def main():
                         year_month = date_str[:7]
                         if year_month not in monthly_cache:
                             monthly_cache[year_month] = load_monthly_file(year_month)
-                        monthly_cache[year_month].setdefault(date_str, {})[country] = stats
+                        store_entry(monthly_cache, year_month, date_str, country, stats)
                         country_days += 1
 
                         if latest_date is None or date_str > latest_date:
@@ -446,7 +536,7 @@ def main():
                         stats["source"] = "provisional"
                     else:
                         stats["source"] = "real"
-                    monthly_cache[year_month].setdefault(date_str, {})[country] = stats
+                    store_entry(monthly_cache, year_month, date_str, country, stats)
 
                     if latest_date is None or date_str > latest_date:
                         latest_date = date_str
@@ -554,8 +644,12 @@ def main():
 
     # Guardar metadata
     if latest_date:
-        save_metadata(latest_date)
-        print(f"\nMetadata: ultima_data = {latest_date}")
+        gravada = save_metadata(latest_date)
+        if gravada == latest_date:
+            print(f"\nMetadata: ultima_data = {gravada}")
+        else:
+            print(f"\nMetadata: ultima_data mantida em {gravada} "
+                  f"(esta corrida so chegou a {latest_date})")
 
     print("Concluido!")
 

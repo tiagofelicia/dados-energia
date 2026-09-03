@@ -18,13 +18,19 @@ Formato:
       "min": 12.10, "min_hour": "04:15",
       "max": 89.50, "max_hour": "19:00",
       "resolution": "PT15M",
+      "source": "entsoe",                // ou "energy-charts" (fonte secundaria)
       "values": [25.1, 25.1, 24.8, ...]  // 96 ou 24 valores
     }
   }
 }
+
+Nota: dias recolhidos antes de "source" existir nao tem o campo; para esses,
+a ausencia significa "entsoe". Nunca se misturam as duas fontes no mesmo
+dia/zona — o fallback so entra em dias que o ENTSO-E nao trouxe de todo.
 """
 
 import os
+import re
 import sys
 import time
 import json
@@ -91,6 +97,9 @@ ZONE_EIC = {
     "NL": "10YNL----------L",
     "NO1": "10YNO-1--------2",
     "NO2": "10YNO-2--------T",
+    # Zona de preco criada para o leilao do cabo North Sea Link (NO2 <-> GB).
+    # E uma zona virtual, tal como IT-SACOAC/IT-SACODC.
+    "NO2NSL": "50Y0JVU59B4JWQCU",
     "NO3": "10YNO-3--------J",
     "NO4": "10YNO-4--------9",
     "NO5": "10Y1001A1001A48H",
@@ -146,9 +155,70 @@ RESOLUTION_SECONDS = {
 
 VERBOSE = False
 
+# Estados HTTP transitorios do ENTSO-E que justificam nova tentativa.
+# O 503 aparece com alguma frequencia quando a plataforma esta sob carga.
+ENTSOE_RETRY_STATUS = {429, 500, 502, 503, 504}
 
-def fetch_entsoe_xml(token, eic, start_utc, end_utc):
-    """Consulta day-ahead prices (A44) para um EIC e intervalo UTC."""
+# (connect, read). O ENTSO-E responde normalmente em segundos; quando esta
+# degradado deixa a ligacao pendurada ate ao read timeout, por isso baixamos
+# o limite assim que se mostra indisponivel (ver disjuntor abaixo).
+ENTSOE_TIMEOUT = (10, 60)
+ENTSOE_TIMEOUT_DEGRADED = (10, 20)
+
+# As mensagens de erro do requests incluem a URL completa — que leva o
+# securityToken. NUNCA imprimir uma excecao destas sem passar por aqui.
+_TOKEN_IN_URL_RE = re.compile(r"(securityToken=)[^&\s]+")
+
+
+def scrub_token(value, token=None):
+    """Remove o securityToken de qualquer texto antes de ser impresso."""
+    text = str(value)
+    if token:
+        text = text.replace(token, "***TOKEN***")
+    return _TOKEN_IN_URL_RE.sub(r"\1***TOKEN***", text)
+
+
+def short_error(exc, token=None):
+    """Mensagem de erro curta e sem token, para logs de uma linha por zona."""
+    msg = scrub_token(exc, token).split(" for url:")[0].strip()
+    return msg if len(msg) <= 120 else msg[:117] + "..."
+
+
+# ----- Disjuntor ENTSO-E -----------------------------------------------------
+# Durante uma indisponibilidade da plataforma, insistir 3x com backoff em cada
+# uma das 47 zonas transforma uma corrida de minutos em horas (sobretudo com
+# read timeouts de 60s). Ao fim de N zonas seguidas a falhar passamos a fazer
+# uma unica tentativa curta por zona — continua a sondar a API, por isso
+# recupera sozinho mal ela volte, mas o grosso dos dados vem do Energy-Charts.
+ENTSOE_CIRCUIT_THRESHOLD = 5
+_entsoe_consecutive_failures = 0
+_entsoe_circuit_open = False
+
+
+def _entsoe_note_failure():
+    global _entsoe_consecutive_failures, _entsoe_circuit_open
+    _entsoe_consecutive_failures += 1
+    if not _entsoe_circuit_open and _entsoe_consecutive_failures >= ENTSOE_CIRCUIT_THRESHOLD:
+        _entsoe_circuit_open = True
+        print(f"\n  [aviso] ENTSO-E falhou em {_entsoe_consecutive_failures} zonas seguidas; "
+              f"passa a 1 tentativa curta por zona (Energy-Charts assume o resto).")
+
+
+def _entsoe_note_success():
+    global _entsoe_consecutive_failures, _entsoe_circuit_open
+    if _entsoe_circuit_open:
+        print(f"\n  [aviso] ENTSO-E voltou a responder; retoma o modo normal.")
+    _entsoe_consecutive_failures = 0
+    _entsoe_circuit_open = False
+
+
+def fetch_entsoe_xml(token, eic, start_utc, end_utc, max_retries=3):
+    """Consulta day-ahead prices (A44) para um EIC e intervalo UTC.
+
+    Erros transitorios (429/5xx, timeouts, falhas de ligacao) sao repetidos
+    com backoff exponencial. Se as tentativas se esgotarem, a excecao sobe —
+    cabe a fetch_zone_range decidir recorrer ao Energy-Charts.
+    """
     params = {
         "securityToken": token,
         "documentType": "A44",
@@ -157,24 +227,49 @@ def fetch_entsoe_xml(token, eic, start_utc, end_utc):
         "periodStart": start_utc.strftime("%Y%m%d%H%M"),
         "periodEnd":   end_utc.strftime("%Y%m%d%H%M"),
     }
-    resp = requests.get(API_URL, params=params, timeout=60)
-    if VERBOSE:
-        # Esconder o token na URL impressa
-        printed_url = resp.url
-        if token:
-            printed_url = printed_url.replace(token, "***TOKEN***")
-        print(f"  [HTTP {resp.status_code}] {printed_url}")
-    if resp.status_code == 200:
+    if _entsoe_circuit_open:
+        max_retries = 1
+        timeout = ENTSOE_TIMEOUT_DEGRADED
+    else:
+        timeout = ENTSOE_TIMEOUT
+
+    for attempt in range(max_retries):
+        last_attempt = attempt == max_retries - 1
+        try:
+            resp = requests.get(API_URL, params=params, timeout=timeout)
+        except requests.RequestException as e:
+            if last_attempt:
+                raise
+            wait = 2 ** attempt * 3  # 3s, 6s, ...
+            if VERBOSE:
+                print(f"  [rede] {short_error(e, token)}; nova tentativa em {wait:.0f}s")
+            time.sleep(wait)
+            continue
+
         if VERBOSE:
-            print(f"  [body] {len(resp.text)} bytes; head: {resp.text[:160].strip()!r}")
-        return resp.text
-    if resp.status_code == 400 and "No matching data found" in resp.text:
+            print(f"  [HTTP {resp.status_code}] {scrub_token(resp.url, token)}")
+        if resp.status_code == 200:
+            if VERBOSE:
+                print(f"  [body] {len(resp.text)} bytes; head: {resp.text[:160].strip()!r}")
+            return resp.text
+        if resp.status_code == 400 and "No matching data found" in resp.text:
+            if VERBOSE:
+                print(f"  [400] No matching data found")
+            return None
+        if resp.status_code in ENTSOE_RETRY_STATUS and not last_attempt:
+            try:
+                wait = float(resp.headers.get("Retry-After", ""))
+            except ValueError:
+                wait = 0
+            wait = max(wait, 2 ** attempt * 3)  # 3s, 6s, ...
+            if VERBOSE:
+                print(f"  [{resp.status_code}] transitorio; nova tentativa em {wait:.0f}s")
+            time.sleep(wait)
+            continue
         if VERBOSE:
-            print(f"  [400] No matching data found")
+            print(f"  [body] {resp.text[:300]!r}")
+        resp.raise_for_status()
         return None
-    if VERBOSE:
-        print(f"  [body] {resp.text[:300]!r}")
-    resp.raise_for_status()
     return None
 
 
@@ -572,9 +667,27 @@ def save_monthly_file(year_month, data):
 
 
 def save_metadata(latest_date):
+    """Grava 'ultima_data', que o frontend usa como ultimo dia disponivel.
+
+    Nunca a faz recuar: um backfill de um intervalo antigo (ex: --start
+    2026-06-21 --end 2026-07-03) so conhece dias antigos e, sem esta guarda,
+    apagaria a data real mais recente. Devolve o valor que ficou no ficheiro.
+    """
     filepath = os.path.join(DATA_DIR, "metadata.json")
+    atual = None
+    if os.path.exists(filepath):
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                atual = json.load(f).get("ultima_data")
+        except (ValueError, OSError):
+            atual = None
+
+    if atual and atual >= latest_date:
+        return atual
+
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump({"ultima_data": latest_date}, f, ensure_ascii=False)
+    return latest_date
 
 
 # ----- Datas -----------------------------------------------------------------
@@ -615,11 +728,42 @@ def get_month_ranges(start_date, end_date):
 
 # ----- Main ------------------------------------------------------------------
 
+# Nome legivel de cada fonte, para os relatorios impressos.
+SOURCE_LABELS = {
+    "entsoe": "ENTSO-E",
+    "energy-charts": "Energy-Charts",
+    None: "?",
+}
+
+
+def _source_counts(daily):
+    """Conta dias por fonte num dict {dia: stats}. Devolve {source: n}."""
+    counts = {}
+    for stats in daily.values():
+        src = stats.get("source")
+        counts[src] = counts.get(src, 0) + 1
+    return counts
+
+
+def _format_sources(counts):
+    """'3 dias (ENTSO-E)' ou '3 dias: 1 ENTSO-E + 2 Energy-Charts'."""
+    total = sum(counts.values())
+    if total == 0:
+        return "0 dias"
+    label = "dia" if total == 1 else "dias"
+    if len(counts) == 1:
+        only = next(iter(counts))
+        return f"{total} {label} ({SOURCE_LABELS.get(only, only)})"
+    parts = [f"{n} {SOURCE_LABELS.get(s, s)}"
+             for s, n in sorted(counts.items(), key=lambda kv: -kv[1])]
+    return f"{total} {label}: " + " + ".join(parts)
+
 def _daily_from_points(points, tz, start_str, end_str, source=None):
     """Agrupa pontos por dia local, calcula stats e filtra ao intervalo.
 
-    Partilhado pelo ENTSO-E e pelo Energy-Charts. Se 'source' for indicado,
-    e anexado a cada stats (ex: 'energy-charts') para rastrear a origem.
+    Partilhado pelo ENTSO-E e pelo Energy-Charts. 'source' e anexado a cada
+    stats ("entsoe" ou "energy-charts") para que a origem de cada dia/zona
+    fique registada no proprio ficheiro de dados.
     """
     daily = group_by_local_day(points, tz)
     result = {}
@@ -673,12 +817,24 @@ def fetch_zone_range(token, zone, start_date, end_date, fallback_end_date=None):
     start_str = start_date.isoformat()
     end_str = end_date.isoformat()
 
+    # Uma falha do ENTSO-E (503, timeout, ...) NAO pode abortar a zona: se
+    # abortasse, o fallback Energy-Charts abaixo nunca corria e perdiamos dias
+    # que a fonte secundaria tem. Guardamos o erro e so o propagamos se o
+    # fallback tambem nao trouxer nada.
     result = {}
-    xml = fetch_entsoe_xml(token, eic, utc_start, utc_end)
-    if xml:
-        points = parse_entsoe_xml(xml)
-        if points:
-            result = _daily_from_points(points, tz, start_str, end_str)
+    entsoe_error = None
+    try:
+        xml = fetch_entsoe_xml(token, eic, utc_start, utc_end)
+        if xml:
+            points = parse_entsoe_xml(xml)
+            if points:
+                result = _daily_from_points(points, tz, start_str, end_str,
+                                            source="entsoe")
+        _entsoe_note_success()
+    except Exception as e:
+        entsoe_error = e
+        _entsoe_note_failure()
+        print(f"[ENTSO-E falhou: {short_error(e, token)}]", end=" ", flush=True)
 
     # Fallback Energy-Charts: preencher dias INTEIROS que o ENTSO-E nao trouxe.
     # Nunca mistura as duas fontes dentro do mesmo dia. Uma falha do fallback
@@ -698,12 +854,22 @@ def fetch_zone_range(token, zone, start_date, end_date, fallback_end_date=None):
                 result[day_str] = ec[day_str]
                 if VERBOSE:
                     print(f"  [fallback] {zone} {day_str} via Energy-Charts")
+
+    # ENTSO-E falhou e o fallback nao salvou nada: propagar o erro original
+    # para que o main o registe como ERRO (em vez de "OK (0 dias)").
+    if entsoe_error is not None and not result:
+        raise entsoe_error
     return result
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--backfill", action="store_true")
+    parser.add_argument("--backfill", action="store_true",
+                        help=f"Recolha historica (default: {BACKFILL_START} -> ontem)")
+    parser.add_argument("--start", metavar="AAAA-MM-DD",
+                        help="Data inicial do backfill (implica --backfill)")
+    parser.add_argument("--end", metavar="AAAA-MM-DD",
+                        help="Data final do backfill (default: ontem)")
     parser.add_argument("--zones", nargs="+", help="Subconjunto de zonas (debug)")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Imprime URLs, status HTTP e excertos das respostas")
@@ -724,12 +890,26 @@ def main():
     tomorrow = today + timedelta(days=1)
     overmorrow = today + timedelta(days=2)
 
-    if args.backfill:
-        start_date = datetime.strptime(BACKFILL_START, "%Y-%m-%d").date()
-        if BACKFILL_END:
-            end_date = datetime.strptime(BACKFILL_END, "%Y-%m-%d").date()
-        else:
-            end_date = yesterday
+    # --start/--end implicam backfill: so nesse modo faz sentido um intervalo
+    # arbitrario (o modo diario tem a janela fixa ontem->depois-de-amanha).
+    backfill = bool(args.backfill or args.start or args.end)
+
+    if backfill:
+        def _parse_date(value, nome):
+            try:
+                return datetime.strptime(value, "%Y-%m-%d").date()
+            except ValueError:
+                print(f"ERRO: {nome} invalida: {value!r} (formato AAAA-MM-DD).",
+                      file=sys.stderr)
+                sys.exit(1)
+
+        start_date = _parse_date(args.start or BACKFILL_START, "--start")
+        end_value = args.end or BACKFILL_END
+        end_date = _parse_date(end_value, "--end") if end_value else yesterday
+        if start_date > end_date:
+            print(f"ERRO: --start ({start_date}) e posterior a --end ({end_date}).",
+                  file=sys.stderr)
+            sys.exit(1)
         print(f"Modo BACKFILL: {start_date} -> {end_date}")
     else:
         # Recolhemos ate +2 dias (em vez de +1) para garantir que zonas EET
@@ -748,6 +928,10 @@ def main():
     latest_date = None
     total = len(zones)
 
+    # Contabilidade da origem dos dados desta corrida.
+    run_sources = {}          # {source: n_dia_zona}
+    fallback_days = []        # [(zone, dia)] servidos pela fonte secundaria
+
     for i, zone in enumerate(zones, 1):
         print(f"[{i}/{total}] {zone}...", end=" ", flush=True)
         try:
@@ -755,14 +939,22 @@ def main():
             # Em diario, 'depois-de-amanha' so e recolhido para preencher slots
             # iniciais de zonas EET na vista CET — nao representa um dia
             # completo, nao deve ser apresentado como "ultimo dia disponivel".
-            metadata_limit = tomorrow.isoformat() if not args.backfill else None
+            metadata_limit = tomorrow.isoformat() if not backfill else None
 
-            if args.backfill:
+            if backfill:
                 # Buscar mes a mes
                 month_ranges = get_month_ranges(start_date, end_date)
                 zone_days = 0
+                zone_counts = {}
                 for m_start, m_end in month_ranges:
                     daily = fetch_zone_range(token, zone, m_start, m_end)
+                    for src, n in _source_counts(daily).items():
+                        zone_counts[src] = zone_counts.get(src, 0) + n
+                        run_sources[src] = run_sources.get(src, 0) + n
+                    fallback_days.extend(
+                        (zone, d) for d, s in daily.items()
+                        if s.get("source") == "energy-charts"
+                    )
                     for day_str, stats in daily.items():
                         ym = day_str[:7]
                         if ym not in monthly_cache:
@@ -772,7 +964,7 @@ def main():
                         if (latest_date is None or day_str > latest_date) and (metadata_limit is None or day_str <= metadata_limit):
                             latest_date = day_str
                     time.sleep(0.5)
-                print(f"{zone_days} dias")
+                print(_format_sources(zone_counts))
             else:
                 # Fallback so ate 'amanha' (horizonte day-ahead); 'depois-de-
                 # amanha' so serve para slots EET e nunca existe noutra fonte.
@@ -785,10 +977,17 @@ def main():
                     monthly_cache[ym].setdefault(day_str, {})[zone] = stats
                     if (latest_date is None or day_str > latest_date) and (metadata_limit is None or day_str <= metadata_limit):
                         latest_date = day_str
-                print(f"OK ({len(daily)} dias)")
+                zone_counts = _source_counts(daily)
+                for src, n in zone_counts.items():
+                    run_sources[src] = run_sources.get(src, 0) + n
+                fallback_days.extend(
+                    (zone, d) for d, s in daily.items()
+                    if s.get("source") == "energy-charts"
+                )
+                print(f"OK: {_format_sources(zone_counts)}")
                 time.sleep(0.5)
         except Exception as e:
-            print(f"ERRO: {e}")
+            print(f"ERRO: {short_error(e, token)}")
             time.sleep(2)
 
     print(f"\nA guardar {len(monthly_cache)} ficheiro(s)...")
@@ -796,9 +995,30 @@ def main():
         save_monthly_file(ym, data)
         print(f"  {ym}.json ({len(data)} dias)")
 
+    # Balanco das fontes: deixa claro quanto e que veio de cada uma e quais os
+    # dias/zonas que so existem porque o fallback entrou.
+    total_pairs = sum(run_sources.values())
+    print(f"\nFontes ({total_pairs} pares dia/zona):")
+    for src, n in sorted(run_sources.items(), key=lambda kv: -kv[1]):
+        pct = 100.0 * n / total_pairs if total_pairs else 0.0
+        print(f"  {SOURCE_LABELS.get(src, src):<15} {n:>5}  ({pct:.1f}%)")
+    if fallback_days:
+        por_zona = {}
+        for zone, day in fallback_days:
+            por_zona.setdefault(zone, []).append(day)
+        print(f"  -> {len(fallback_days)} via Energy-Charts, em {len(por_zona)} zona(s):")
+        for zone in sorted(por_zona):
+            dias = sorted(por_zona[zone])
+            amostra = ", ".join(dias[:4]) + (f" (+{len(dias) - 4})" if len(dias) > 4 else "")
+            print(f"     {zone}: {amostra}")
+
     if latest_date:
-        save_metadata(latest_date)
-        print(f"\nMetadata: ultima_data = {latest_date}")
+        gravada = save_metadata(latest_date)
+        if gravada == latest_date:
+            print(f"\nMetadata: ultima_data = {gravada}")
+        else:
+            print(f"\nMetadata: ultima_data mantida em {gravada} "
+                  f"(esta corrida so chegou a {latest_date})")
 
     print("Concluido!")
 
