@@ -77,6 +77,17 @@ TYPE_MAP = {
     "Others": "other",
     "Other": "other",
     "other": "other",
+    # Armazenamento em bateria. Tratado como a bombagem hidroelectrica: a
+    # descarga conta como producao (mas NAO como renovavel — e energia
+    # armazenada de origem mista) e a carga vai para as categorias extra.
+    # Sem isto caiam ambas em "other", que conta para o total: a descarga
+    # inflacionava a producao nao-renovavel e a CARGA, sendo negativa,
+    # subtraia ao total. Na Grecia o "other" chegou a ficar negativo por
+    # ser inteiramente bateria. Cresce a medida que se instala armazenamento.
+    "Battery": "battery",
+    "Battery Consumption": "battery_consumption",
+    "Battery consumption": "battery_consumption",
+
     # Tipos adicionais (recolhidos para outros usos, nao contam para producao)
     "Cross border electricity trading": "cross_border",
     "Hydro pumped storage consumption": "pumped_storage_consumption",
@@ -103,14 +114,19 @@ PRODUCTION_CATS = [
     "solar", "wind_onshore", "wind_offshore",
     "hydro_run_of_river", "hydro_water_reservoir", "hydro_pumped_storage",
     "biomass", "geothermal", "waste", "other_renewables",
-    "nuclear", "gas", "gas_coal_derived", "coal_hard", "coal_lignite", "oil", "other"
+    "nuclear", "gas", "gas_coal_derived", "coal_hard", "coal_lignite", "oil", "other",
+    "battery"
 ]
 
 # Categorias extra (recolhidas para outros usos, nao contam para total)
-EXTRA_CATS = ["cross_border", "pumped_storage_consumption", "load", "residual_load"]
+EXTRA_CATS = ["cross_border", "pumped_storage_consumption", "battery_consumption",
+              "load", "residual_load"]
 
 # Todas as categorias (ordem fixa para consistencia)
 ALL_CATS = PRODUCTION_CATS + EXTRA_CATS
+
+# Tipos ja avisados como desconhecidos, para nao repetir o aviso por dia/pais.
+_TIPOS_DESCONHECIDOS = set()
 
 # Caminho ancorado no diretório do script (e não no cwd), para funcionar
 # tanto quando é corrido a partir da raiz do repositório como de scripts/.
@@ -298,9 +314,23 @@ def compute_daily_production(api_data, tz_name):
         if type_name in SKIP_TYPES:
             continue
 
-        category = TYPE_MAP.get(type_name, "other")
-        is_pumped_storage = type_name in (
-            "Hydro Pumped Storage", "Hydro pumped storage"
+        if type_name in TYPE_MAP:
+            category = TYPE_MAP[type_name]
+        else:
+            # Um tipo novo ou renomeado pela API cai em "other", que conta
+            # para o total e NAO conta como renovavel — distorce o ren_share
+            # em silencio. Foi o que aconteceu com as baterias durante meses.
+            # Avisar uma vez por tipo para nao voltar a passar despercebido.
+            category = "other"
+            if type_name not in _TIPOS_DESCONHECIDOS:
+                _TIPOS_DESCONHECIDOS.add(type_name)
+                print(f"\n  [AVISO] tipo desconhecido {type_name!r} -> contado em "
+                      f"'other'. Acrescenta-o ao TYPE_MAP.", flush=True)
+
+        # Descarga conta, carga (negativa) nao. Vale para a bombagem e para
+        # as baterias — a carga tem categoria propria nas EXTRA_CATS.
+        so_descarga = type_name in (
+            "Hydro Pumped Storage", "Hydro pumped storage", "Battery",
         )
 
         for i, ts in enumerate(unix_seconds):
@@ -309,8 +339,8 @@ def compute_daily_production(api_data, tz_name):
             value = data_values[i]
             if value is None:
                 continue
-            # Para Hydro Pumped Storage, ignorar valores negativos (consumo)
-            if is_pumped_storage and value < 0:
+            # Ignorar valores negativos (consumo) nas categorias de descarga
+            if so_descarga and value < 0:
                 continue
 
             local_dt = datetime.fromtimestamp(ts, tz=tz)
@@ -562,14 +592,22 @@ def main():
                 tz_name = COUNTRY_TIMEZONES.get(country, "Europe/Berlin")
                 daily_fc = compute_daily_forecasts(country, tz_name)
 
-                # Obter dados reais de ontem para proxy das categorias sem previsao
+                # Proxy para as categorias sem previsao: os dados REAIS de
+                # ontem. Se ontem for ele proprio uma previsao — acontece
+                # porque a API publica a producao real com ~2 dias de atraso —
+                # a estimativa passaria a assentar noutra estimativa, e o erro
+                # propaga-se de dia para dia. Nesse caso preferimos nao ter
+                # proxy de todo.
                 yesterday_ym = yesterday_str[:7]
                 yesterday_entry = (
                     monthly_cache.get(yesterday_ym, {})
                     .get(yesterday_str, {})
                     .get(country, {})
                 )
-                yesterday_prod = yesterday_entry.get("production", {})
+                if yesterday_entry.get("source") == "forecast":
+                    yesterday_prod = {}
+                else:
+                    yesterday_prod = yesterday_entry.get("production", {})
 
                 for date_str, fc_data in daily_fc.items():
                     year_month = date_str[:7]
@@ -585,6 +623,18 @@ def main():
                     if existing and existing.get("source") != "forecast":
                         # Dados reais existem - juntar sub-objeto de previsao
                         existing["forecast"] = fc_data
+                    elif not yesterday_prod:
+                        # Sem proxy, a entrada sintetica ficaria so com a
+                        # solar/eolica previstas: total muito abaixo do real e
+                        # ren_share de 100%. Aconteceu 10 vezes em Montenegro,
+                        # com totais de 0.3 a 2.1 GWh/dia num pais que produz
+                        # 6-7 e e dominado por lignito. Um dia sem dados e
+                        # preferivel a um dia errado — guardamos so a previsao.
+                        alvo = monthly_cache[year_month].setdefault(date_str, {})
+                        if existing:
+                            existing["forecast"] = fc_data
+                        else:
+                            alvo[country] = {"source": "forecast", "forecast": fc_data}
                     else:
                         # Sem dados reais - criar entrada de previsao
                         # Solar/eolica: da previsao; restantes: proxy de ontem

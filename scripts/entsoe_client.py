@@ -62,7 +62,65 @@ EIC_MAP = {
     "al": "10YAL-KESH-----5",   # Albânia (quase só hídrica; load A65 muito esparso)
     "mk": "10YMK-MEPSO----8",   # Macedónia do Norte (mais completo dos três)
     "xk": "10Y1001C--00100H",   # Kosovo (geração ~só lignite; load + preço OK)
+    # Publicam geração (A75) mas não preços day-ahead (A44).
+    "ba": "10YBA-JPCC-----D",   # Bósnia-Herzegovina (lignite + hídrica)
+    "cy": "10YCY-1001A0003J",   # Chipre (isolado; fuel + solar)
+    "ge": "10Y1001A1001B012",   # Geórgia (hídrica dominante)
+    "md": "10Y1001A1001A990",   # Moldávia (gás + solar)
 }
+
+# Zonas a somar para obter a GERACAO REAL (A75) de cada pais.
+#
+# O EIC_MAP acima escolhe UMA zona representativa por pais, o que e correto
+# para preco (A44), previsoes (A69/A71) e fluxos transfronteiricos — grandezas
+# que nao se somam ou que precisam de uma origem unica. Mas para a geracao a
+# escolha deixa de fora tudo o resto: com IT-North apanhava-se 10 MW da eolica
+# italiana num dia em que IT-South sozinha fazia 964 MW.
+#
+# So os paises multi-zona aparecem aqui. Para os restantes, a recolha usa o
+# EIC_MAP e nada muda. As zonas virtuais de interligacao (IT-SACOAC,
+# IT-SACODC, NO2NSL) NAO entram: nao publicam A75, sao pontos de troca.
+EIC_ZONAS_GERACAO = {
+    "it": [
+        "10Y1001A1001A73I",  # IT-North
+        "10Y1001A1001A70O",  # IT-Centre-North
+        "10Y1001A1001A71M",  # IT-Centre-South
+        "10Y1001A1001A788",  # IT-South
+        "10Y1001A1001A75E",  # IT-Sicily
+        "10Y1001A1001A74G",  # IT-Sardinia
+        "10Y1001C--00096J",  # IT-Calabria
+    ],
+    "no": [
+        "10YNO-1--------2",  # NO1
+        "10YNO-2--------T",  # NO2
+        "10YNO-3--------J",  # NO3
+        "10YNO-4--------9",  # NO4
+        "10Y1001A1001A48H",  # NO5
+    ],
+    "se": [
+        "10Y1001A1001A44P",  # SE1
+        "10Y1001A1001A45N",  # SE2
+        "10Y1001A1001A46L",  # SE3
+        "10Y1001A1001A47J",  # SE4
+    ],
+    "dk": [
+        "10YDK-1--------W",  # DK1
+        "10YDK-2--------M",  # DK2
+    ],
+}
+
+
+def zonas_geracao(country):
+    """Zonas cuja geracao (A75) soma para o total do pais.
+
+    Devolve sempre uma lista; para paises mono-zona e a zona do EIC_MAP.
+    """
+    zonas = EIC_ZONAS_GERACAO.get(country)
+    if zonas:
+        return list(zonas)
+    eic = EIC_MAP.get(country)
+    return [eic] if eic else []
+
 
 # Vizinhos (bidding zones) por pais — usado para iterar pares no scheduled exchanges.
 # Inclui vizinhos externos (GB, MA, UA, BY, MD, AL, MK, BA, TR) com seus EICs
@@ -118,7 +176,10 @@ NEIGHBORS = {
     "pl": ["de", "cz", "sk", "lt", "se", "ua_ips"],
     "dk": ["de", "no", "se", "nl", "dk2"],
     "se": ["fi", "no", "dk", "pl", "lt", "se1", "se2", "se4"],
-    "no": ["se", "dk", "nl", "no2", "no3", "no5"],
+    # NO2/NO3/NO5 estavam aqui como "vizinhos" da NO1. Desde que a geracao
+    # passou a somar as cinco zonas norueguesas, esses fluxos sao INTERNOS ao
+    # pais — mante-los faria o saldo transfronteirico contar duas vezes.
+    "no": ["se", "dk", "nl"],
     "fi": ["se", "no", "ee"],
     "ee": ["fi", "lv"],
     "lv": ["ee", "lt"],

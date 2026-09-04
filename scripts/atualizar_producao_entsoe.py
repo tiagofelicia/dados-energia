@@ -48,6 +48,8 @@ import json
 import os
 import sys
 import time
+import bisect
+import statistics
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -60,6 +62,9 @@ COUNTRIES = [
     "no", "pl", "pt", "ro", "rs", "se", "si", "sk",
     # Balcãs com mix parcial na ENTSO-E (ver probe_entsoe_paises.py)
     "al", "mk", "xk",
+    # Publicam geração (A75) mas não preços day-ahead (A44) — confirmado com
+    # o sondar_zonas_producao_entsoe.py. Por isso não estão no mapa de preços.
+    "ba", "cy", "ge", "md",
 ]
 
 COUNTRY_TIMEZONES = {
@@ -76,6 +81,8 @@ COUNTRY_TIMEZONES = {
     "lt": "Europe/Vilnius", "lv": "Europe/Riga",
     "ro": "Europe/Bucharest",
     "al": "Europe/Tirane", "mk": "Europe/Skopje", "xk": "Europe/Belgrade",
+    "ba": "Europe/Sarajevo", "cy": "Asia/Nicosia",
+    "ge": "Asia/Tbilisi", "md": "Europe/Chisinau",
 }
 
 # Caminho ancorado no diretório do script (e não no cwd), para funcionar
@@ -152,6 +159,85 @@ def _align_to_grid(series, grid_sorted):
     return out
 
 
+def _alinhar_por_patamar(series, grid_sorted):
+    """Alinha [(ts,val)] a uma grid propagando cada valor ate ao ponto seguinte.
+
+    Diferente do _align_to_grid, que faz vizinho-mais-proximo com tolerancia
+    simetrica de meio intervalo: para somar zonas e preciso semantica de
+    PATAMAR. Um valor horario vale para a hora toda, incluindo o quarto a
+    +45 min — que o vizinho-mais-proximo descartava por ficar a 45 min do
+    ponto, acima da tolerancia de 30. Era uma fuga de 1 em cada 4 quartos.
+
+    Nao propaga para alem do patamar do proprio valor, para nao inventar dados
+    depois do fim da serie de uma zona.
+    """
+    if not series:
+        return [None] * len(grid_sorted)
+    pontos = sorted({ts: val for ts, val in series}.items())
+    ts_list = [t for t, _ in pontos]
+    if len(ts_list) >= 2:
+        intervalo = min(b - a for a, b in zip(ts_list, ts_list[1:]))
+    else:
+        intervalo = 3600
+
+    saida = []
+    for g in grid_sorted:
+        i = bisect.bisect_right(ts_list, g) - 1
+        if i < 0:
+            saida.append(None)
+            continue
+        t, val = pontos[i]
+        saida.append(val if g < t + intervalo else None)
+    return saida
+
+
+def _somar_zonas(parciais):
+    """Soma as series A75 das varias zonas de um pais.
+
+    Cada zona pode publicar com resolucao diferente (IT-North a 15 min,
+    IT-Sicily a 60 min, por exemplo). Somar por timestamp exato deixaria a
+    zona horaria de fora em 3 de cada 4 quartos e baixaria o total. Por isso
+    alinhamos cada zona a grid uniao com o _align_to_grid, cuja tolerancia de
+    meio intervalo propaga o valor horario pelos quartos.
+
+    Um instante entra no total se pelo menos uma zona tiver valor la; zonas
+    sem valor nesse instante nao sao contadas como zero. Nao e exato quando
+    uma zona tem um buraco real no meio da serie — nesse caso o total fica
+    subestimado nesse instante — mas e preferivel a alternativa, que era
+    perder a zona inteira.
+    """
+    if len(parciais) == 1:
+        return parciais[0]
+
+    tipos = set()
+    for p in parciais:
+        tipos.update(p)
+
+    # UMA grid comum a todos os tipos, nao uma por tipo. O collect_actuals
+    # alinha depois por match exato, portanto um tipo que so exista numa zona
+    # horaria ficaria com nulos em 3 de cada 4 quartos da grid quarto-horaria
+    # — o artefacto de "pente" nos graficos. Com a grid partilhada, todas as
+    # series tem valor em todos os instantes onde ha dados.
+    grid = sorted({ts for p in parciais for s in p.values() for ts, _ in s})
+    if not grid:
+        return {}
+
+    somado = {}
+    for tipo in sorted(tipos):
+        series = [p[tipo] for p in parciais if p.get(tipo)]
+        if not series:
+            continue
+        alinhadas = [_alinhar_por_patamar(s, grid) for s in series]
+        pontos = []
+        for i, ts in enumerate(grid):
+            vals = [a[i] for a in alinhadas if a[i] is not None]
+            if vals:
+                pontos.append((ts, sum(vals)))
+        if pontos:
+            somado[tipo] = pontos
+    return somado
+
+
 # ---------- Collectors ENTSO-E ----------
 
 def collect_actuals(country, start_local, end_local, token):
@@ -164,13 +250,26 @@ def collect_actuals(country, start_local, end_local, token):
     if not eic:
         return None
 
-    # 1. A75 — generation per PSR type
-    try:
-        gen_typed = entsoe_client.fetch_actual_generation(eic, start_local, end_local, token)
-        time.sleep(0.6)
-    except Exception as e:
-        print(f"  [A75 {country}: {e}]")
+    # 1. A75 — generation per PSR type, somando todas as zonas do pais.
+    # Paises mono-zona fazem um so pedido, exatamente como antes.
+    zonas = entsoe_client.zonas_geracao(country)
+    parciais = []
+    for zona_eic in zonas:
+        try:
+            parcial = entsoe_client.fetch_actual_generation(
+                zona_eic, start_local, end_local, token)
+            time.sleep(0.6)
+        except Exception as e:
+            print(f"  [A75 {country}/{zona_eic}: {e}]")
+            continue
+        if parcial:
+            parciais.append(parcial)
+
+    if not parciais:
         return None
+    if len(zonas) > 1:
+        print(f"[{len(parciais)}/{len(zonas)} zonas]", end=" ", flush=True)
+    gen_typed = _somar_zonas(parciais)
     if not gen_typed:
         return None
 
@@ -186,9 +285,13 @@ def collect_actuals(country, start_local, end_local, token):
     if not grid_sorted:
         return None
 
-    # Intervalo
+    # Intervalo: MEDIANA dos espacamentos, nao o primeiro.
+    # Usar so o primeiro par dava valores absurdos quando a semana comeca com
+    # um buraco — o Chipre teve uma semana com interval_minutes=1320 (22h)
+    # porque faltavam os primeiros dias. A mediana e imune a esses extremos.
     if len(grid_sorted) >= 2:
-        interval_min = (grid_sorted[1] - grid_sorted[0]) // 60
+        gaps = [b - a for a, b in zip(grid_sorted, grid_sorted[1:])]
+        interval_min = max(1, int(statistics.median(gaps)) // 60)
     else:
         interval_min = 60
 
@@ -474,10 +577,28 @@ def load_metadata():
 
 
 def save_metadata(meta):
+    """Grava o metadata FUNDINDO com o que ja esta em disco.
+
+    O meta em memoria foi carregado no arranque e so tem os paises desta
+    corrida. Escreve-lo tal e qual apagaria as entradas de qualquer outra
+    corrida que tivesse terminado entretanto — o que impedia correr varios
+    paises em paralelo, unica forma pratica de acelerar (a latencia do
+    ENTSO-E domina, e o limite deles e 400 pedidos/minuto).
+    """
     fp = os.path.join(DATA_DIR, "metadata.json")
     os.makedirs(DATA_DIR, exist_ok=True)
+
+    em_disco = {}
+    if os.path.exists(fp):
+        try:
+            with open(fp, "r", encoding="utf-8") as f:
+                em_disco = json.load(f)
+        except (ValueError, OSError):
+            em_disco = {}
+
+    em_disco.update(meta)
     with open(fp, "w", encoding="utf-8") as f:
-        json.dump(meta, f, ensure_ascii=False, indent=2, sort_keys=True)
+        json.dump(em_disco, f, ensure_ascii=False, indent=2, sort_keys=True)
 
 
 # ---------- Pipeline ----------
