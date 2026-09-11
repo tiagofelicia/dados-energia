@@ -71,7 +71,12 @@ from gerar_records_omie import (  # noqa: E402
     ler_csv_omie,
     ultima_data_real_omie,
 )
-from gerar_records_producao import ler_csv_producao, ler_bombagem, agregar_diario  # noqa: E402
+from gerar_records_producao import (  # noqa: E402
+    ler_csv_producao,
+    ler_bombagem,
+    agregar_diario,
+    intervalos_reportados,
+)
 
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -243,6 +248,18 @@ def gerar_producao(alvo):
         (d for d in disponiveis if d <= alvo), default=disponiveis[0])
     g = bruto[bruto["_d"] == dia].copy()
 
+    # O dia em curso traz sempre 96 intervalos, mas a partir da hora da recolha
+    # as fontes despacháveis vêm a zero. Aqui NÃO se exclui o dia — o ponto do
+    # ficheiro é mostrá-lo — mas trunca-se no último intervalo reportado, para
+    # que o resumo e o bloco "agora" não descrevam um sistema que não existe
+    # (ex.: 100 % renovável com 815 MW contra 6 072 MW de consumo).
+    n_real = intervalos_reportados(g)
+    n_total = len(g)
+    if n_real < n_total:
+        print(f"  ✂️  {n_total - n_real} intervalos ainda não reportados pela REN "
+              f"— resumo e 'agora' calculados sobre os {n_real} reais")
+        g = g.iloc[:n_real].copy()
+
     # Resumo diário pela MESMA lógica dos recordes e dos agregados, para os três
     # nunca divergirem (QH=0,25; hídrica renovável desconta bombagem turbinada).
     daily = agregar_diario(g, ler_bombagem())
@@ -280,7 +297,8 @@ def gerar_producao(alvo):
         "dias_atraso": (hoje_lisboa() - dia).days,
         "data": dia.isoformat(),
         "intervalos": int(len(g)),
-        "completo": len(g) >= 92,
+        "intervalos_no_ficheiro": int(n_total),
+        "completo": n_real >= 92 and n_real >= n_total,
         "horas": horas,
         "agora": {
             "hora": horas[-1] if horas else None,

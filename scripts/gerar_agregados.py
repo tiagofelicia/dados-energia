@@ -81,6 +81,7 @@ from gerar_records_producao import (  # noqa: E402
     ler_csv_producao,
     ler_bombagem,
     agregar_diario,
+    cortar_dia_incompleto,
 )
 
 try:
@@ -150,7 +151,10 @@ def carregar_producao():
     if not partes:
         raise FileNotFoundError("nenhum CSV de produção encontrado")
 
-    return agregar_diario(pd.concat(partes, ignore_index=True), ler_bombagem())
+    # O dia em curso vem com as fontes despacháveis a zero a partir da hora da
+    # recolha; incluí-lo inflaciona a quota renovável e subestima as emissões.
+    bruto = cortar_dia_incompleto(pd.concat(partes, ignore_index=True))
+    return agregar_diario(bruto, ler_bombagem())
 
 
 # ============================================================

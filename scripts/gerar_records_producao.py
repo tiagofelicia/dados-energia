@@ -66,6 +66,79 @@ def ler_csv_producao(path):
     return pd.read_csv(path, encoding='utf-8-sig')
 
 
+# ============================================================
+# O dia em curso vem incompleto — e não o diz
+# ============================================================
+# O producao_dados_atuais.csv traz sempre os 96 intervalos do dia corrente, mas
+# a partir da hora da recolha as fontes DESPACHÁVEIS (hídrica, solar, gás,
+# carvão, outra térmica) vêm a zero, enquanto a eólica e o consumo continuam
+# preenchidos. Nada no ficheiro assinala onde acaba o que foi mesmo reportado.
+#
+# Tratar esses zeros como produção real distorce tudo o que se derive do dia:
+# em 11/09/2026 dava 88,3 % de renovável (contra 70-75 % nos dias anteriores),
+# 98 gCO2eq/kWh (contra 110-124) e um "agora" a dizer 100 % renovável com
+# 815 MW de geração contra 6 072 MW de consumo.
+#
+# A deteção fiável não é procurar zeros — de madrugada o solar é legitimamente
+# zero, e num dia muito renovável o gás também pode ser. É verificar se o
+# BALANÇO FECHA: num intervalo reportado, geração + saldo importador ≈ carga.
+# Medido em dados reais: num dia fechado o desvio máximo é ~31 MW; nos
+# intervalos por reportar chega a 7 000 MW. Um limiar de 100 MW separa sem
+# ambiguidade.
+
+TOLERANCIA_BALANCO_MW = 100
+
+_GERACAO = ['Hídrica', 'Eólica', 'Solar', 'Biomassa', 'Ondas',
+            'Gás Natural - Ciclo Combinado', 'Gás natural - Cogeração',
+            'Carvão', 'Outra Térmica', 'Injeção de Baterias']
+_CARGA = ['Consumo', 'Bombagem', 'Consumo Baterias']
+
+
+def _desvio_balanco(g):
+    """|geração + importação − exportação − carga| por intervalo, em MW."""
+    n = lambda c: pd.to_numeric(g[c], errors='coerce').fillna(0) if c in g.columns else 0
+    ger = sum(n(c) for c in _GERACAO)
+    return (ger + n('Importação') - n('Exportação') - sum(n(c) for c in _CARGA)).abs()
+
+
+def intervalos_reportados(g):
+    """Quantos intervalos do início do dia estão realmente reportados.
+
+    Devolve len(g) quando o dia está completo.
+    """
+    if g.empty:
+        return 0
+    mau = _desvio_balanco(g).reset_index(drop=True) > TOLERANCIA_BALANCO_MW
+    return int(mau.idxmax()) if mau.any() else len(g)
+
+
+def cortar_dia_incompleto(df, verboso=True):
+    """Remove o ÚLTIMO dia por inteiro se ainda não estiver todo reportado.
+
+    Para séries DIÁRIAS (agregados, emissões, recordes) o dia parcial tem de
+    sair inteiro, e não ser truncado: um dia com 53 dos 96 intervalos aparece
+    com metade do consumo, o que num gráfico se lê como uma queda abrupta e
+    num recorde de "maior produção" nunca ganha mas polui as médias mensais.
+
+    Quem quer mostrar o dia em curso — o gerar_hoje.py — usa antes
+    intervalos_reportados() e trunca, dizendo no ficheiro onde acaba o real.
+
+    Só o último dia é avaliado: os anteriores estão fechados.
+    """
+    if df.empty or 'dia' not in df.columns:
+        return df
+    ultimo = df['dia'].dropna().iloc[-1]
+    g = df[df['dia'] == ultimo]
+    n = intervalos_reportados(g)
+    if n >= len(g):
+        return df
+    if verboso:
+        hora = g['hora'].iloc[n] if n < len(g) and 'hora' in g.columns else '?'
+        print(f'  [dia em curso] {ultimo} só tem {n}/{len(g)} intervalos '
+              f'reportados (corte às {hora}) — dia excluído')
+    return df[df['dia'] != ultimo].reset_index(drop=True)
+
+
 def ler_bombagem():
     """Lê producao_bombagem_diaria.csv → dict {DD/MM/YYYY: GWh_float}."""
     bomb = {}
@@ -265,6 +338,7 @@ def full_compute():
             print(f'  [ERR] {os.path.basename(path)} - erro: {exc}', file=sys.stderr)
 
     df_full = pd.concat(dfs, ignore_index=True)
+    df_full = cortar_dia_incompleto(df_full)
     print(f'[full] Total: {len(df_full):,} quartos-horarios')
 
     daily = agregar_diario(df_full, bombagem)
@@ -289,6 +363,7 @@ def incremental_update():
 
     print('[incremental] A ler producao_dados_atuais.csv...')
     df_at = ler_csv_producao(ATUAIS_PATH)
+    df_at = cortar_dia_incompleto(df_at)
     bombagem = ler_bombagem()
     daily_at = agregar_diario(df_at, bombagem)
     print(f'[incremental] {len(daily_at)} dias no ficheiro atual')

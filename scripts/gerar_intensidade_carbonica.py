@@ -88,7 +88,10 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 sys.path.insert(0, SCRIPT_DIR)
 
-from gerar_records_producao import ler_csv_producao  # noqa: E402
+from gerar_records_producao import (  # noqa: E402
+    ler_csv_producao,
+    cortar_dia_incompleto,
+)
 
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -132,7 +135,7 @@ def carregar():
     if not partes:
         raise FileNotFoundError("nenhum CSV de produção encontrado em data/producao/")
 
-    df = pd.concat(partes, ignore_index=True)
+    df = cortar_dia_incompleto(pd.concat(partes, ignore_index=True))
     df["_dt"] = pd.to_datetime(df["dia"], format="%d/%m/%Y", errors="coerce")
     return df.dropna(subset=["_dt"]).reset_index(drop=True)
 
