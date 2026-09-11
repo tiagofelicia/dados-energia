@@ -1,0 +1,11 @@
+﻿fonte_csv,fonte,gco2eq_kwh,proveniencia
+Hídrica,hidrica,24,IPCC AR5 — Hydropower
+Eólica,eolica,11,IPCC AR5 — Wind onshore
+Solar,solar,48,IPCC AR5 — Solar PV utility
+Biomassa,biomassa,230,IPCC AR5 — Biomass dedicated
+Ondas,ondas,17,IPCC AR5 — Ocean
+Gás Natural - Ciclo Combinado,gas_ciclo_combinado,490,IPCC AR5 — Gas combined cycle
+Gás natural - Cogeração,gas_cogeracao,490,IPCC AR5 — Gas combined cycle (ver assunções)
+Carvão,carvao,820,IPCC AR5 — Coal PC
+Outra Térmica,outra_termica,700,Assunção: entre gás e carvão (ver assunções)
+Injeção de Baterias,baterias_injecao,0,Emissão contabilizada na carga
