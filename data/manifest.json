@@ -7,7 +7,7 @@
     "Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do ficheiro; pd.read_csv traz essas linhas como dados.",
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado."
    ],
-   "bytes": 1863381,
+   "bytes": 1828183,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -64,7 +64,7 @@
    "avisos": [
     "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 8, 11, 16, 19 e 20 campos."
    ],
-   "bytes": 1648906,
+   "bytes": 1633273,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/precos-horarios.csv",
    "colunas": [
@@ -89,7 +89,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
-   "bytes": 3392,
+   "bytes": 3327,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/futuros_omip.csv",
    "colunas": [
@@ -107,7 +107,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
-   "bytes": 486245,
+   "bytes": 488461,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -128,7 +128,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
-   "bytes": 7838,
+   "bytes": 7504,
    "cadencia": "diária",
    "caminho": "data/omie/records_omie.json",
    "descricao": "Recordes históricos (dia/hora mais caro e mais barato, etc.) e agregados mensais e anuais.",
@@ -156,7 +156,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
-   "bytes": 954495,
+   "bytes": 919357,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/MIBEL_ano_atual_ACUM.csv",
    "colunas": [
@@ -178,7 +178,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/MIBEL_ano_atual_ACUM.csv"
   },
   {
-   "bytes": 2633612,
+   "bytes": 2719101,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -206,10 +206,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-atuais",
-   "linhas": 23612,
+   "linhas": 24380,
    "titulo": "Produção elétrica do ano corrente",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-09-03",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_dados_atuais.csv"
   },
   {
@@ -248,7 +248,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/historico/"
   },
   {
-   "bytes": 104483,
+   "bytes": 104626,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_bombagem_diaria.csv",
    "colunas": [
@@ -260,14 +260,14 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-bombagem",
-   "linhas": 6090,
+   "linhas": 6098,
    "titulo": "Bombagem hidroelétrica diária",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-03",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 12249,
+   "bytes": 11764,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -281,7 +281,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 15234,
+   "bytes": 15179,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -291,22 +291,22 @@
    "id": "producao-hoje",
    "titulo": "Instantâneo de produção do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-09-03",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/producao/hoje.json"
   },
   {
-   "bytes": 127436476,
+   "bytes": 132247779,
    "cadencia": "cada 4h (PT/ES) · 2x/dia (todos)",
    "caminho": "data/producao/producao-entsoe/",
    "descricao": "Geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços, para 35 países. Um ficheiro por país e semana ISO.",
-   "ficheiros": 1221,
+   "ficheiros": 1254,
    "formato": "json",
    "grupo": "producao",
    "id": "producao-entsoe",
    "padrao": "data/producao/producao-entsoe/*/*.json",
    "titulo": "Produção europeia intra-diária (ENTSO-E)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-02",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao-entsoe/"
   },
   {
@@ -314,7 +314,7 @@
     "O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos.",
     "values pode conter null em dias parcialmente publicados."
    ],
-   "bytes": 99931702,
+   "bytes": 99896545,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/precos_qh/",
    "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e série de 96 valores.",
@@ -325,11 +325,11 @@
    "padrao": "data/mapas/precos_qh/*.json",
    "titulo": "Preços day-ahead europeus",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-09-12",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
-   "bytes": 3572804,
+   "bytes": 3718274,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/producao/",
    "descricao": "Produção diária por país e tecnologia (GWh) e quota renovável, para 28 países, desde 2026-01.",
@@ -340,7 +340,7 @@
    "padrao": "data/mapas/producao/*.json",
    "titulo": "Mix de produção europeu diário",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-09-05",
+   "ultima_data": "2026-09-13",
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
   },
   {
@@ -399,7 +399,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
-   "bytes": 753357,
+   "bytes": 753234,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -432,11 +432,11 @@
    "padrao": "data/agregados/omie_*.csv",
    "titulo": "Agregados OMIE (diário, mensal, anual)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-12",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
-   "bytes": 715439,
+   "bytes": 716368,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -467,7 +467,7 @@
    "padrao": "data/agregados/producao_*.csv",
    "titulo": "Agregados de produção (diário, mensal, anual)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-03",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
@@ -475,7 +475,7 @@
     "São emissões de CICLO DE VIDA, não diretas: não comparáveis com o Inventário Nacional da APA nem com o indicador da EEA.",
     "Cobre a produção nacional, não o consumo: as importações de Espanha (25% do consumo em 2024) não estão incluídas."
    ],
-   "bytes": 475659,
+   "bytes": 476266,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/",
    "colunas": [
@@ -499,7 +499,7 @@
    "padrao": "data/emissoes/intensidade_*.csv",
    "titulo": "Intensidade carbónica da produção elétrica",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-03",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/"
   },
   {
@@ -566,7 +566,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-11T17:13:16+00:00",
+ "gerado_em": "2026-09-11T17:48:36+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -581,8 +581,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 339970263,
+  "bytes": 344894232,
   "datasets": 25,
-  "ficheiros": 1397
+  "ficheiros": 1430
  }
 }
