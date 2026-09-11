@@ -4,9 +4,9 @@
   "ambito": "ciclo de vida (não comparável com inventários de emissões diretas)",
   "fatores": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (medianas)",
   "primeira_data": "2010-01-01",
-  "ultima_data": "2026-09-11",
-  "dias": 6098,
+  "ultima_data": "2026-09-10",
+  "dias": 6097,
   "intensidade_media_periodo": 258.5,
   "sensibilidade_outra_termica_pct": 1.13,
-  "gerado_em": "2026-09-11T13:21:26+00:00"
+  "gerado_em": "2026-09-11T19:05:02+00:00"
 }
