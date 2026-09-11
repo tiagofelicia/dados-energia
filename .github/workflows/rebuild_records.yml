@@ -19,8 +19,14 @@
 #
 # Nota: o gerar_agregados.py e o gerar_intensidade_carbonica.py não precisam
 # disto — recalculam sempre os 17 anos do zero, e por isso não acumulam desvio.
+#
+# Corre também a validação da referência de tecnologias: se o ENTSO-E ou o
+# Energy-Charts passarem a publicar um tipo de geração que o mapeamento não
+# conhece, este workflow falha e é aí que alguém decide onde ele encaixa. Fica
+# aqui, e não num workflow diário, para que um vocabulário novo não bloqueie a
+# publicação dos dados — é um aviso, não uma emergência.
 
-name: Rebuild dos Recordes
+name: Manutenção Mensal
 
 on:
   schedule:
@@ -38,7 +44,7 @@ concurrency:
 
 jobs:
   rebuild:
-    name: Recalcular recordes do zero
+    name: Recalcular recordes e validar referências
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -79,13 +85,18 @@ jobs:
           set -o pipefail
           python scripts/gerar_records_producao.py --full 2>&1 | tee -a logs/rebuild.log
 
-      # Se o incremental não tiver acumulado desvio nesse mês, os ficheiros
-      # ficam iguais e não há commit — é o resultado desejável.
-      - name: Fazer commit dos recordes (com retry)
+      - name: Validar a referência de tecnologias
+        run: |
+          set -o pipefail
+          python scripts/gerar_referencia_tecnologias.py 2>&1 | tee -a logs/rebuild.log
+
+      # Se nada tiver mudado neste mês, os ficheiros ficam iguais e não há
+      # commit — é o resultado desejável.
+      - name: Fazer commit (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
-          commit_message: "🔄 BOT: Rebuild mensal dos recordes (--full)"
-          file_pattern: "data/omie/records_omie.json data/producao/records_producao.json"
+          commit_message: "🔄 BOT: Manutenção mensal (recordes --full + referências)"
+          file_pattern: "data/omie/records_omie.json data/producao/records_producao.json data/referencia/tecnologias.json"
 
       - name: Fazer upload do log como artefacto
         if: always()
