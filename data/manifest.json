@@ -7,7 +7,7 @@
     "Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do ficheiro; pd.read_csv traz essas linhas como dados.",
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado."
    ],
-   "bytes": 1828183,
+   "bytes": 1828856,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -27,7 +27,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-atuais",
-   "linhas": 35203,
+   "linhas": 35215,
    "titulo": "Preços OMIE do ano corrente",
    "tolerancia_dias": 1,
    "ultima_data": "2026-09-12",
@@ -89,7 +89,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
-   "bytes": 3327,
+   "bytes": 4000,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/futuros_omip.csv",
    "colunas": [
@@ -100,7 +100,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-futuros",
-   "linhas": 69,
+   "linhas": 81,
    "titulo": "Futuros OMIP — sessão em curso",
    "tolerancia_dias": 3,
    "ultima_data": "2026-09-12",
@@ -566,7 +566,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-11T19:11:06+00:00",
+ "gerado_em": "2026-09-11T21:21:45+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -581,7 +581,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 344943353,
+  "bytes": 344944699,
   "datasets": 25,
   "ficheiros": 1430
  }
