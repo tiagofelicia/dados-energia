@@ -226,6 +226,16 @@ REGISTO = [
                  "Cobre a produção nacional, não o consumo: as importações de "
                  "Espanha (25% do consumo em 2024) não estão incluídas."]),
 
+    # ---------- Referência ----------
+    dict(id="referencia-tecnologias", grupo="referencia",
+         caminho="data/referencia/tecnologias.json",
+         titulo="Tabela de tecnologias de geração",
+         descricao="Traduz entre os três vocabulários de tecnologias usados "
+                   "neste repositório (REN, Energy-Charts, ENTSO-E), com "
+                   "categoria, fator de emissão e notas de agregação.",
+         cadencia="quando as fontes mudam", tolerancia_dias=400,
+         deteccao="estatico"),
+
     # ---------- Regulado ----------
     dict(id="regulado-perfis", grupo="regulado", caminho="data/regulado/perfis_erse_9.json",
          titulo="Perfis de consumo ERSE",
@@ -252,6 +262,7 @@ GRUPOS = {
     "gas": "Mercado de gás natural",
     "agregados": "Séries pré-calculadas",
     "emissoes": "Emissões",
+    "referencia": "Tabelas de referência",
     "regulado": "Dados regulados (ERSE / E-Redes)",
 }
 
