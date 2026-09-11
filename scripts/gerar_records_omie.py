@@ -26,6 +26,7 @@ Output: data/omie/records_omie.json com chaves 'recordes' (para a UI) e 'aggrega
 """
 
 import argparse
+import csv
 import io
 import json
 import os
@@ -40,10 +41,69 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'data', 'omie'))
 RECORDS_PATH = os.path.join(DATA_DIR, 'records_omie.json')
 ATUAIS_PATH = os.path.join(DATA_DIR, 'omie_dados_atuais.csv')
+FUTUROS_PATH = os.path.join(DATA_DIR, 'futuros_omip.csv')
 HISTORICO_GLOB = os.path.join(DATA_DIR, 'historico', 'omie_historico_*.csv')
 
 # === Tradução dos dias da semana (para display) ===
 DIAS_SEMANA_PT = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
+
+
+# ============================================================
+# Dias reais vs futuros OMIP
+# ============================================================
+# O omie_dados_atuais.csv contém datas futuras estimadas a partir dos futuros
+# OMIP — tipicamente uma centena de dias, até ao início do ano seguinte. Como
+# "recordes históricos" e agregados anuais, essas estimativas não podem entrar:
+# a média anual de 2026 calculada com elas dava +20 EUR/MWh face à real.
+#
+# Estas duas funções são a fonte de verdade do repositório para essa distinção;
+# o gerar_agregados.py, o gerar_hoje.py e o gerar_manifest.py importam-nas.
+
+def ultima_data_real_omie():
+    """Data_Valores_OMIE: o último dia com preço de mercado fechado.
+
+    Procura em futuros_omip.csv e, em alternativa, na cauda TABELA_ATUALIZACOES
+    do próprio omie_dados_atuais.csv. Devolve um Timestamp, ou None se nenhum
+    dos ficheiros a declarar.
+    """
+    for path in (FUTUROS_PATH, ATUAIS_PATH):
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, 'r', encoding='utf-8-sig', newline='') as f:
+                for linha in csv.reader(f):
+                    if len(linha) >= 2 and linha[0].strip() == 'Data_Valores_OMIE':
+                        d = pd.to_datetime(linha[1].strip(), format='%d/%m/%Y',
+                                           errors='coerce')
+                        if pd.notna(d):
+                            return d
+        except OSError:
+            continue
+    return None
+
+
+def cortar_futuros(df, obrigatorio=True):
+    """Remove de um DataFrame já passado por adicionar_colunas os dias estimados.
+
+    Com obrigatorio=True (o que os recordes usam) lança se não conseguir
+    determinar a data de corte: é preferível falhar a publicar estimativas de
+    mercado como se fossem histórico.
+    """
+    corte = ultima_data_real_omie()
+    if corte is None:
+        if obrigatorio:
+            raise RuntimeError(
+                'Data_Valores_OMIE não encontrada em futuros_omip.csv nem na '
+                'cauda de omie_dados_atuais.csv — sem ela não é possível separar '
+                'os dias reais dos futuros OMIP.')
+        return df
+    antes = df['data'].dt.date.nunique()
+    df = df[df['data'] <= corte]
+    cortados = antes - df['data'].dt.date.nunique()
+    if cortados:
+        print(f'  [futuros] {cortados} dias estimados de OMIP excluídos '
+              f'(reais até {corte.date()})')
+    return df
 
 # ============================================================
 # Leitura de CSVs
@@ -296,6 +356,7 @@ def full_compute():
 
     df_full = pd.concat(dfs, ignore_index=True)
     df_full = adicionar_colunas(df_full)
+    df_full = cortar_futuros(df_full)
     print(f'[full] Total: {len(df_full):,} quartos-horarios')
 
     return computar_recordes(df_full)
@@ -316,6 +377,7 @@ def incremental_update():
     print(f'[incremental] A ler omie_dados_atuais.csv...')
     df = ler_csv_omie(ATUAIS_PATH)
     df = adicionar_colunas(df)
+    df = cortar_futuros(df)
     print(f'[incremental] {len(df):,} quartos-horarios no ficheiro atual')
 
     new_records, new_aggs = computar_recordes(df)
