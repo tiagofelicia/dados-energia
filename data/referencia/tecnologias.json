@@ -1,1 +1,368 @@
-
+{
+ "descricao": "Tabela de tradução entre os vocabulários de tecnologias de geração usados pelas três fontes deste repositório: REN (data/producao/), Energy-Charts (data/mapas/producao/) e ENTSO-E (data/producao/producao-entsoe/).",
+ "gerado_em": "2026-09-11T17:12:02+00:00",
+ "nota_fatores": "Medianas de ciclo de vida do IPCC AR5. Onde o AR5 não publica valor, o campo é null — não há estimativa inventada. Não são emissões directas de combustão.",
+ "nota_ren_agregada": "ren_agregada=true significa que a coluna da REN cobre várias destas tecnologias ao mesmo tempo e não é possível desagregá-las a partir dos dados dela. É o caso da 'Hídrica', que soma fio de água, albufeira e turbinagem de bombagem.",
+ "tecnologias": {
+  "baterias": {
+   "categoria": "armazenamento",
+   "energy_charts": [
+    "battery"
+   ],
+   "entsoe": [
+    "Energy storage"
+   ],
+   "fator_fonte": "Emissão contabilizada no momento da carga",
+   "gco2eq_kwh": 0,
+   "nome": "Baterias",
+   "nota": "Contar emissões na descarga seria dupla contagem: já foram atribuídas à eletricidade usada para carregar.",
+   "ren": [
+    "Injeção de Baterias"
+   ]
+  },
+  "baterias_consumo": {
+   "categoria": "consumo",
+   "energy_charts": [
+    "battery_consumption"
+   ],
+   "entsoe": [
+    "Energy storage consumption"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Carga de baterias",
+   "nota": "Energia consumida a carregar baterias. É onde as emissões da descarga ficam contabilizadas.",
+   "ren": [
+    "Consumo Baterias"
+   ]
+  },
+  "biomassa": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "biomass"
+   ],
+   "entsoe": [
+    "Biomass"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Biomass, dedicated",
+   "gco2eq_kwh": 230,
+   "nome": "Biomassa",
+   "ren": [
+    "Biomassa"
+   ]
+  },
+  "bombagem_consumo": {
+   "categoria": "consumo",
+   "energy_charts": [
+    "pumped_storage_consumption"
+   ],
+   "entsoe": [
+    "Hydro pumped storage consumption"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Consumo de bombagem",
+   "nota": "Energia consumida a bombear água para a albufeira superior. É carga, não geração — entra no consumo do sistema e sai depois como 'hidrica_bombagem'.",
+   "ren": [
+    "Bombagem"
+   ]
+  },
+  "carvao": {
+   "categoria": "fossil",
+   "energy_charts": [
+    "coal_hard"
+   ],
+   "entsoe": [
+    "Fossil hard coal"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Coal, PC",
+   "gco2eq_kwh": 820,
+   "nome": "Carvão",
+   "nota": "Em Portugal a zero desde 2022: Sines fechou em janeiro de 2021 e Pego em novembro do mesmo ano.",
+   "ren": [
+    "Carvão"
+   ]
+  },
+  "consumo": {
+   "categoria": "agregado",
+   "energy_charts": [
+    "load"
+   ],
+   "entsoe": [
+    "Load"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Consumo total",
+   "ren": [
+    "Consumo"
+   ]
+  },
+  "eolica_offshore": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "wind_offshore"
+   ],
+   "entsoe": [
+    "Wind offshore"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Wind offshore",
+   "gco2eq_kwh": 12,
+   "nome": "Eólica offshore",
+   "nota": "A REN não a separa; em Portugal a produção offshore é residual.",
+   "ren": []
+  },
+  "eolica_onshore": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "wind_onshore"
+   ],
+   "entsoe": [
+    "Wind onshore"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Wind onshore",
+   "gco2eq_kwh": 11,
+   "nome": "Eólica terrestre",
+   "ren": [
+    "Eólica"
+   ]
+  },
+  "gas_de_carvao": {
+   "categoria": "fossil",
+   "energy_charts": [
+    "gas_coal_derived"
+   ],
+   "entsoe": [
+    "Fossil coal-derived gas"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Gás de carvão",
+   "ren": []
+  },
+  "gas_natural": {
+   "categoria": "fossil",
+   "energy_charts": [
+    "gas"
+   ],
+   "entsoe": [
+    "Fossil gas"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Gas, combined cycle",
+   "gco2eq_kwh": 490,
+   "nome": "Gás natural",
+   "nota": "A REN separa ciclo combinado de cogeração; as outras fontes não. A cogeração aloca parte das emissões ao calor útil, pelo que 490 sobrestima a sua parcela eléctrica.",
+   "ren": [
+    "Gás Natural - Ciclo Combinado",
+    "Gás natural - Cogeração"
+   ]
+  },
+  "geotermica": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "geothermal"
+   ],
+   "entsoe": [
+    "Geothermal"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Geothermal",
+   "gco2eq_kwh": 38,
+   "nome": "Geotérmica",
+   "nota": "A REN não a reporta em separado; nos Açores existe produção geotérmica fora do sistema continental.",
+   "ren": []
+  },
+  "hidrica_albufeira": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "hydro_water_reservoir"
+   ],
+   "entsoe": [
+    "Hydro water reservoir"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Hydropower",
+   "gco2eq_kwh": 24,
+   "nome": "Hídrica de albufeira",
+   "ren": [
+    "Hídrica"
+   ],
+   "ren_agregada": true
+  },
+  "hidrica_bombagem": {
+   "categoria": "armazenamento",
+   "energy_charts": [
+    "hydro_pumped_storage"
+   ],
+   "entsoe": [
+    "Hydro pumped storage"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Hydropower",
+   "gco2eq_kwh": 24,
+   "nome": "Hidroelétrica reversível (turbinagem)",
+   "nota": "Não é geração primária: devolve à rede energia que antes consumiu. A REN publica a parcela turbinada em producao_bombagem_diaria.csv, à escala diária, e o consumo de bombagem na coluna 'Bombagem'.",
+   "ren": [
+    "Hídrica"
+   ],
+   "ren_agregada": true
+  },
+  "hidrica_fio_agua": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "hydro_run_of_river"
+   ],
+   "entsoe": [
+    "Hydro Run-of-River"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Hydropower",
+   "gco2eq_kwh": 24,
+   "nome": "Hídrica de fio de água",
+   "ren": [
+    "Hídrica"
+   ],
+   "ren_agregada": true
+  },
+  "importacao_exportacao": {
+   "categoria": "fluxo",
+   "energy_charts": [
+    "cross_border"
+   ],
+   "entsoe": [
+    "Cross border electricity trading"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Saldo de trocas transfronteiriças",
+   "nota": "A REN publica importação e exportação em colunas separadas; as outras fontes publicam o saldo líquido.",
+   "ren": [
+    "Importação",
+    "Exportação"
+   ]
+  },
+  "linhite": {
+   "categoria": "fossil",
+   "energy_charts": [
+    "coal_lignite"
+   ],
+   "entsoe": [
+    "Fossil brown coal / lignite"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Linhite",
+   "nota": "Não existe em Portugal. O AR5 não publica mediana separada da do carvão; para estimativas, é mais intensivo que os 820 do carvão.",
+   "ren": []
+  },
+  "nuclear": {
+   "categoria": "nuclear",
+   "energy_charts": [
+    "nuclear"
+   ],
+   "entsoe": [
+    "Nuclear"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Nuclear",
+   "gco2eq_kwh": 12,
+   "nome": "Nuclear",
+   "nota": "Não existe em Portugal. Relevante para o mix importado de Espanha.",
+   "ren": []
+  },
+  "ondas": {
+   "categoria": "renovavel",
+   "energy_charts": [],
+   "entsoe": [
+    "Marine"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Ocean (tidal and wave)",
+   "gco2eq_kwh": 17,
+   "nome": "Ondas e marés",
+   "ren": [
+    "Ondas"
+   ]
+  },
+  "outras_renovaveis": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "other_renewables"
+   ],
+   "entsoe": [
+    "Other renewables"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Outras renováveis",
+   "ren": []
+  },
+  "outros": {
+   "categoria": "agregado",
+   "energy_charts": [
+    "other"
+   ],
+   "entsoe": [
+    "Others"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Outros / não especificado",
+   "nota": "A 'Outra Térmica' da REN agrega fuelóleo, gasóleo, resíduos e biogás — não corresponde ao 'other' das outras fontes, que é residual. Pesa menos de 1 % da produção nacional.",
+   "ren": [
+    "Outra Térmica"
+   ]
+  },
+  "petroleo": {
+   "categoria": "fossil",
+   "energy_charts": [
+    "oil"
+   ],
+   "entsoe": [
+    "Fossil oil",
+    "Fossil oil shale"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Produtos petrolíferos",
+   "nota": "Em Portugal está dentro de 'Outra Térmica', sem forma de separar.",
+   "ren": []
+  },
+  "residuos": {
+   "categoria": "fossil",
+   "energy_charts": [
+    "waste"
+   ],
+   "entsoe": [
+    "Waste"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Resíduos",
+   "nota": "Parcialmente biogénico; a classificação como fóssil é a convenção do ENTSO-E. Em Portugal está dentro de 'Outra Térmica'.",
+   "ren": []
+  },
+  "solar": {
+   "categoria": "renovavel",
+   "energy_charts": [
+    "solar"
+   ],
+   "entsoe": [
+    "Solar"
+   ],
+   "fator_fonte": "IPCC AR5 WG3 Annex III, Tabela A.III.2 (mediana, ciclo de vida) — Solar PV, utility scale",
+   "gco2eq_kwh": 48,
+   "nome": "Solar fotovoltaica",
+   "nota": "O AR5 dá 41 para telhado e 48 para central; usa-se 48 por ser o que domina a injeção em rede.",
+   "ren": [
+    "Solar"
+   ]
+  },
+  "turfa": {
+   "categoria": "fossil",
+   "energy_charts": [],
+   "entsoe": [
+    "Fossil peat"
+   ],
+   "fator_fonte": null,
+   "gco2eq_kwh": null,
+   "nome": "Turfa",
+   "ren": []
+  }
+ },
+ "unidade_fatores": "gCO2eq/kWh"
+}
