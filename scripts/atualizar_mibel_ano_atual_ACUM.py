@@ -359,6 +359,36 @@ def run_update_historico():
     else:
         log("ℹ️ Backup ignorado (GitHub Actions)")
 
+    # ============================================================
+    # GUARDA DE REGRESSÃO
+    # ============================================================
+    # Este ficheiro é o intermédio partilhado de que dependem o
+    # atualizar_omie_dados_atuais.py, o atualizar_tarifarios_eletricidade.py,
+    # o atualizar_autoconsumo.py e o atualizar_precos-horarios_csv.py. Um dia
+    # mau na fonte (formato alterado, resposta parcial) produzia um df_final
+    # vazio ou truncado que era escrito por cima sem qualquer aviso — e no
+    # GitHub Actions o backup acima está desligado, por isso não havia volta.
+    #
+    # Encolher é sempre suspeito: a série é acumulada e só deve crescer ou
+    # manter-se. Uma quebra de mais de 5% aborta sem escrever.
+    LIMIAR_ENCOLHIMENTO = 0.95
+    if os.path.exists(FICHEIRO_MIBEL_CSV):
+        try:
+            linhas_antigas = sum(1 for _ in open(FICHEIRO_MIBEL_CSV,
+                                                 encoding='utf-8-sig')) - 1
+        except OSError:
+            linhas_antigas = 0
+        if linhas_antigas > 0 and len(df_final) < linhas_antigas * LIMIAR_ENCOLHIMENTO:
+            raise RuntimeError(
+                f"ABORTADO: o ficheiro passaria de {linhas_antigas:,} para "
+                f"{len(df_final):,} registos ({100 * len(df_final) / linhas_antigas:.1f}%). "
+                f"Uma quebra desta dimensão indica falha na recolha, não dados "
+                f"novos — o ficheiro antigo fica intacto.")
+
+    if df_final.empty:
+        raise RuntimeError("ABORTADO: nenhum registo recolhido — o ficheiro "
+                           "antigo fica intacto.")
+
     df_final.to_csv(FICHEIRO_MIBEL_CSV, index=False, encoding='utf-8-sig', float_format="%.2f")
 
     log(f"✅ Atualização concluída: {len(df_final)} registos")

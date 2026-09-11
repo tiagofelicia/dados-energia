@@ -8,6 +8,7 @@ from calendar import monthrange
 from io import BytesIO, StringIO
 import time
 import re
+import sys
 import warnings
 import os
 
@@ -212,8 +213,15 @@ if __name__ == "__main__":
                 print(f"\n✅ Ficheiro '{os.path.basename(EXCEL_FILE_PATH)}' criado com sucesso com as abas 'MIBGAS' e 'Info'.")
             except Exception as e:
                 print(f"\n❌ ERRO ao criar o novo ficheiro Excel: {e}")
+                raise
         except Exception as e:
             print(f"\n❌ ERRO ao escrever no ficheiro Excel: {e}")
+            raise
     else:
-        print("\n⚠️ Aviso: Nenhum dado foi gerado, o ficheiro Excel não foi modificado.")
+        # Sair com código != 0. Antes, "nenhum dado" imprimia um aviso e o
+        # script terminava com 0 — o step ficava verde e o deploy seguinte
+        # enviava para o Hugging Face o xlsx da véspera, como se fosse fresco.
+        print("\n❌ ERRO: Nenhum dado foi gerado (MIBGAS e OMIP falharam ambos). "
+              "O ficheiro Excel não foi modificado.")
+        sys.exit(1)
 

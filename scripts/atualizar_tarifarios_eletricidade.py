@@ -116,13 +116,16 @@ def run_update_process():
             
             print(f"✅ {len(dados_combinados_qh)} registos históricos lidos com sucesso.")
             
+        # 'raise' e não 'return': um erro crítico tem de chegar ao handler de
+        # topo e fazer o script sair com código != 0. Com 'return' o script
+        # terminava normalmente e o step do GitHub Actions ficava verde.
         except FileNotFoundError:
             print(f"❌ ERRO CRÍTICO: O ficheiro '{FICHEIRO_MIBEL_CSV}' não foi encontrado.")
-            print("   - Por favor, execute primeiro o script 'update_mibel_historico.py'.")
-            return
+            print("   - Por favor, execute primeiro o script 'atualizar_mibel_ano_atual_ACUM.py'.")
+            raise
         except Exception as e:
             print(f"❌ ERRO CRÍTICO ao ler o ficheiro histórico: {e}")
-            return
+            raise
 
 
         # =================================================================
@@ -367,6 +370,10 @@ def run_update_process():
         import traceback
         print(f"❌ Ocorreu um erro inesperado: {e}")
         traceback.print_exc()
+        # Relançar para o script sair com código != 0. Este é o primeiro passo
+        # do pipeline diário: se falhar em silêncio, as fases seguintes correm
+        # sobre um xlsx desactualizado e publicam-no como se fosse fresco.
+        raise
 
 if __name__ == "__main__":
     run_update_process()

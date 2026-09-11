@@ -199,13 +199,16 @@ def run_analysis_process():
                 
             print(f"✅ {len(dados_combinados_qh)} registos históricos lidos com sucesso.")
             
+        # 'raise' e não 'return': um erro crítico tem de chegar ao handler de
+        # topo e fazer o script sair com código != 0. Com 'return' o script
+        # terminava normalmente e o step do GitHub Actions ficava verde.
         except FileNotFoundError:
             print(f"❌ ERRO CRÍTICO: O ficheiro '{FICHEIRO_MIBEL_CSV}' não foi encontrado.")
             print("   - Por favor, execute primeiro o script 'atualizar_mibel_ano_atual_ACUM.py'.")
-            return
+            raise
         except Exception as e:
             print(f"❌ ERRO CRÍTICO ao ler o ficheiro histórico: {e}")
-            return
+            raise
 
         # =================================================================
         # PASSO 3: Criar calendário e aplicar futuros
@@ -628,6 +631,11 @@ def run_analysis_process():
         import traceback
         print(f"❌ Ocorreu um erro inesperado no processo: {e}")
         traceback.print_exc()
+        # Relançar é o que faz o script sair com código != 0 e o step do GitHub
+        # Actions ficar vermelho. Sem isto, uma falha total (mudança de formato
+        # na fonte, timeout, ficheiro em falta) dava um step verde, nenhum
+        # commit, e os dados congelavam durante dias sem sinal nenhum.
+        raise
 
 # PONTO DE ENTRADA DO SCRIPT
 if __name__ == "__main__":
