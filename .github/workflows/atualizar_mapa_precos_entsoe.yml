@@ -17,18 +17,24 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-# Serializa os workflows que fazem commit/push a este repo — impede que duas
-# execuções simultâneas (do mesmo workflow ou de workflows diferentes) gerem
-# pushes non-fast-forward. A execução em curso nunca é cancelada; em fila
-# fica apenas a execução mais recente.
+# Grupo PRÓPRIO deste workflow: impede apenas que ele se sobreponha a si
+# mesmo. As corridas de push contra os outros bots são resolvidas pelo
+# retry+rebase da commit-with-retry — os bots escrevem em pastas disjuntas,
+# por isso o rebase é trivial.
+#
+# Até aqui os seis workflows partilhavam um grupo único, o que os serializava:
+# medimos filas de mais de 100 minutos (24 min de trabalho, 104 à espera). Pior,
+# com um grupo cheio o GitHub mantém só UMA corrida pendente — uma terceira a
+# chegar cancelava a que estava em fila, sem erro e sem email.
 concurrency:
-  group: commits-dados-energia
+  group: commits-mapa-precos
   cancel-in-progress: false
 
 jobs:
   update-map-data:
     name: Executar Atualização ENTSO-E
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     permissions:
       contents: write
 

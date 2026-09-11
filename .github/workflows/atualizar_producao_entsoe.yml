@@ -15,6 +15,10 @@ name: Atualizar Producao (ENTSO-E)
 
 on:
   schedule:
+    # ATENÇÃO: estes literais aparecem em mais dois sítios — no 'case' que
+    # escolhe os argumentos e na expressão do timeout-minutes. Ao mudar um
+    # cron, mudar nos três; um literal que deixe de bater não dá erro, apenas
+    # cai silenciosamente no ramo por omissão.
     - cron: '0 */4 * * *'    # PT+ES, ontem+hoje — de 4 em 4 horas
     - cron: '0 14,22 * * *'  # todos, 1 semana — 2x/dia (14:00 e 22:00 UTC)
     - cron: '0 6 * * 1'      # todos, 3 semanas — segunda-feira 06:00 UTC
@@ -39,16 +43,41 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-# Serializa com os outros bots que fazem commit/push a este repo (evita
-# pushes non-fast-forward). Nunca cancela a execução em curso.
+# Grupo PRÓPRIO deste workflow: impede apenas que ele se sobreponha a si
+# mesmo. As corridas de push contra os outros bots são resolvidas pelo
+# retry+rebase da commit-with-retry — os bots escrevem em pastas disjuntas,
+# por isso o rebase é trivial.
+#
+# Até aqui os seis workflows partilhavam um grupo único, o que os serializava:
+# medimos filas de mais de 100 minutos (24 min de trabalho, 104 à espera). Pior,
+# com um grupo cheio o GitHub mantém só UMA corrida pendente — uma terceira a
+# chegar cancelava a que estava em fila, sem erro e sem email.
 concurrency:
-  group: commits-dados-energia
+  group: commits-producao-entsoe
   cancel-in-progress: false
 
 jobs:
   update-producao-entsoe:
     name: Executar Atualização ENTSO-E (produção)
     runs-on: ubuntu-latest
+
+    # Timeout por MODO, e não um valor único. Este workflow faz três trabalhos
+    # de dimensão muito diferente com o mesmo job, e um timeout único ou mata o
+    # trabalho semanal ou não protege as corridas de 4 em 4 horas:
+    #
+    #   0 */4      PT+ES, 2 dias       2 países     p50 ~5 min      60% das corridas
+    #   0 14,22    todos, 1 semana     35 países    ~2-3 h          20%
+    #   0 6 * * 1  todos, 3 semanas    35 países    327 min medido   1 vez/semana
+    #
+    # Os valores vêm do histórico real da API (execução do job, não tempo de
+    # run — este workflow tem fila ~0, ao contrário do mapa de produção).
+    # O p50 de 5 min e o máximo de 327 estão medidos; a faixa intermédia está
+    # inferida pela proporção de trabalho, daí a margem mais folgada nela.
+    #
+    # A expressão: 'cond && valor || próximo' encadeado funciona como ternário
+    # porque nenhum dos valores é 0 (que seria falsy). Sem schedule
+    # (workflow_dispatch, incluindo backfill) cai no ramo mais generoso.
+    timeout-minutes: ${{ github.event.schedule == '0 */4 * * *' && 40 || github.event.schedule == '0 14,22 * * *' && 240 || 350 }}
     permissions:
       contents: write
 
