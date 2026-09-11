@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dados Abertos de Energia — Portugal | Tiago Felícia</title>
-<meta name="description" content="Dados abertos do mercado de energia em Portugal: preços OMIE/OMIP, produção REN, mapas europeus ENTSO-E. CSV e JSON atualizados automaticamente várias vezes por dia. Licença CC BY 4.0.">
+<meta name="description" content="Dados abertos do mercado de energia em Portugal: preços OMIE/OMIP, gás MIBGAS, produção REN e europeia (ENTSO-E), agregados e intensidade carbónica. CSV e JSON atualizados automaticamente várias vezes por dia. Licença CC BY 4.0.">
 <link rel="canonical" href="https://dados.tiagofelicia.pt/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Dados Abertos de Energia — Portugal">
-<meta property="og:description" content="Preços OMIE/OMIP, produção REN e mapas europeus em CSV/JSON, atualizados automaticamente. Licença CC BY 4.0.">
+<meta property="og:description" content="Preços OMIE/OMIP, gás MIBGAS, produção REN e europeia, agregados e intensidade carbónica em CSV/JSON, atualizados automaticamente. Licença CC BY 4.0.">
 <meta property="og:url" content="https://dados.tiagofelicia.pt/">
 <meta property="og:locale" content="pt_PT">
 <link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
@@ -19,7 +19,7 @@
   "@type": "DataCatalog",
   "name": "Dados Abertos de Energia — Portugal (Tiago Felícia)",
   "url": "https://dados.tiagofelicia.pt/",
-  "description": "Preços do mercado diário OMIE e futuros OMIP, produção elétrica em Portugal (REN), preços e mix de produção europeus (ENTSO-E, Energy-Charts), e dados regulados ERSE/E-Redes. Atualização automática várias vezes por dia.",
+  "description": "Preços do mercado diário OMIE e futuros OMIP, índices de gás natural MIBGAS, produção elétrica em Portugal (REN) e na Europa (ENTSO-E), mapas de preços e mix europeus, séries agregadas pré-calculadas, intensidade carbónica da produção e dados regulados ERSE/E-Redes. Atualização automática várias vezes por dia.",
   "inLanguage": "pt-PT",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "creator": {
@@ -71,11 +71,14 @@ footer a { color: var(--acento); }
 
 <header>
   <h1>⚡ Dados Abertos de Energia — Portugal</h1>
-  <p>Preços OMIE/OMIP, produção elétrica REN, mapas europeus e dados regulados, em CSV/JSON,
+  <p>Preços OMIE/OMIP, gás MIBGAS, produção elétrica REN e europeia, mapas, agregados,
+     intensidade carbónica e dados regulados — em CSV/JSON,
      <strong>atualizados automaticamente</strong> várias vezes por dia a partir de fontes oficiais.</p>
   <div class="badges">
     <a href="https://www.tiagofelicia.pt" rel="noopener">🏠 tiagofelicia.pt</a>
     <a href="https://github.com/tiagofelicia/dados-energia" rel="noopener">📦 Repositório GitHub</a>
+    <a href="status.html">📊 Estado dos dados</a>
+    <a href="data/manifest.json">🗂️ Catálogo (JSON)</a>
     <a href="https://creativecommons.org/licenses/by/4.0/deed.pt" rel="noopener">📄 Licença CC BY 4.0</a>
   </div>
 </header>
@@ -98,6 +101,18 @@ df = pd.read_csv("https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv"
 const r = await fetch("https://dados.tiagofelicia.pt/data/omie/records_omie.json");
 const recordes = await r.json();</code></pre>
   <p class="nota">Espelho alternativo (mesmos caminhos): <code>https://raw.githubusercontent.com/tiagofelicia/dados-energia/main/data/…</code></p>
+
+  <h3>Catálogo e estado</h3>
+  <p><a href="data/manifest.json"><code>data/manifest.json</code></a> é o catálogo legível por máquina:
+     para cada dataset, o caminho, o schema, a cadência de atualização, a última data disponível e os
+     avisos relevantes. A página <a href="status.html"><strong>Estado dos dados</strong></a> lê esse
+     manifesto e mostra se algum dataset está atrasado — o cálculo é feito no seu navegador, pelo que
+     continua a reportar atrasos mesmo que os processos de recolha parem.</p>
+
+  <h3>Por onde começar</h3>
+  <p>Se quer médias e totais, use <a href="#agregados"><code>data/agregados/</code></a> em vez das séries
+     quarto-horárias: 2&nbsp;KB em vez de 32&nbsp;MB. Se quer mostrar o dia corrente numa página, use os
+     <code>hoje.json</code>.</p>
 </section>
 
 <section>
@@ -113,14 +128,31 @@ const recordes = await r.json();</code></pre>
     <tr><td><a href="data/omie/precos-horarios.csv">precos-horarios.csv</a></td>
         <td>Preço final quarto-horário por tarifário indexado e opção horária (<a href="https://www.tiagofelicia.pt/formulas-tarifarios-indexados" rel="noopener">fórmulas</a>).</td>
         <td>~1×/dia útil</td></tr>
+    <tr><td><a href="data/omie/hoje.json">hoje.json</a></td>
+        <td>Instantâneo do dia para dashboards e widgets: preços de hoje e de amanhã, médias por período do ciclo horário (~8 KB).</td>
+        <td>A cada atualização</td></tr>
+    <tr><td><a href="data/omie/futuros_omip.csv">futuros_omip.csv</a></td>
+        <td>Versão leve só com as tabelas de metadados e futuros OMIP da sessão em curso (~3 KB).</td>
+        <td>~5×/dia útil</td></tr>
+    <tr><td><code>historico/omip_historico_<em>AAAA</em>.csv</code></td>
+        <td>Histórico de sessões OMIP: uma linha por sessão × zona × contrato. Ex.: <a href="data/omie/historico/omip_historico_2026.csv">2026</a></td>
+        <td>Diária</td></tr>
     <tr><td><a href="data/omie/records_omie.json">records_omie.json</a></td>
         <td>Recordes históricos OMIE (dia/hora mais caro e mais barato, etc.) + agregados.</td>
         <td>Diária</td></tr>
   </table>
+  <p class="nota"><strong>⚠️ Dois avisos de formato.</strong>
+     O <code>omie_dados_atuais.csv</code> tem blocos extra no fim (<code>TABELA_ATUALIZACOES</code>,
+     <code>TABELA_FUTUROS_*</code>): corte no primeiro <code>TABELA_</code> ou use os agregados.
+     O <code>precos-horarios.csv</code> <strong>não abre com <code>pd.read_csv</code> sem argumentos</strong> —
+     tem tabelas concatenadas horizontalmente, o que produz linhas de larguras diferentes.
+     Além disso, as datas do <code>omie_dados_atuais.csv</code> posteriores à
+     <code>Data_Valores_OMIE</code> (declarada em <code>futuros_omip.csv</code>) são
+     <strong>estimativas dos futuros OMIP</strong>, não preços de mercado.</p>
 </section>
 
 <section>
-  <h2>🏭 Produção elétrica (Portugal) — <code>data/producao/</code></h2>
+  <h2>🏭 Produção elétrica (Portugal e Europa) — <code>data/producao/</code></h2>
   <table>
     <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
     <tr><td><a href="data/producao/producao_dados_atuais.csv">producao_dados_atuais.csv</a></td>
@@ -132,10 +164,42 @@ const recordes = await r.json();</code></pre>
     <tr><td><a href="data/producao/producao_bombagem_diaria.csv">producao_bombagem_diaria.csv</a></td>
         <td>Consumo diário em bombagem hidroelétrica (GWh), desde 2010.</td>
         <td>A cada 4 h</td></tr>
+    <tr><td><a href="data/producao/hoje.json">hoje.json</a></td>
+        <td>Instantâneo do dia: mix quarto-horário, resumo diário e estado no último intervalo (~15 KB).</td>
+        <td>A cada atualização</td></tr>
     <tr><td><a href="data/producao/records_producao.json">records_producao.json</a></td>
         <td>Recordes (dia mais renovável, maior consumo, pico) + agregados mensais.</td>
         <td>A cada 4 h</td></tr>
+    <tr><td><code>producao-entsoe/<em>{cc}</em>/<em>AAAA-W SS</em>.json</code></td>
+        <td><strong>Produção europeia intra-diária</strong> para 35 países: geração por tecnologia, consumo,
+            previsões day-ahead e intradiárias, preços e fluxos transfronteiriços. Um ficheiro por país e
+            semana ISO. Ex.: <a href="data/producao/producao-entsoe/pt/2026-W35.json">pt 2026-W35</a> ·
+            <a href="data/producao/producao-entsoe/metadata.json">metadata</a></td>
+        <td>A cada 4 h (PT/ES) · 2×/dia (todos)</td></tr>
   </table>
+  <p class="nota">Valores em MW (potência média no intervalo). Para energia: MW × 0,25 = MWh.
+     Os ficheiros de <code>producao-entsoe/</code> têm schema próprio, com <code>timezone</code>,
+     <code>interval_minutes</code> e <code>unix_seconds</code> explícitos.</p>
+</section>
+
+<section>
+  <h2>🔥 Mercado de gás — <code>data/gas/</code></h2>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
+    <tr><td><a href="data/gas/mibgas_spot.csv">mibgas_spot.csv</a></td>
+        <td>Índices diários do mercado ibérico de gás (PT, ES, VTP, PVB, GNL, armazenamento) desde 17/12/2015.
+            Só preços reais: sem futuros, sem preenchimento de lacunas.</td>
+        <td>2×/dia</td></tr>
+    <tr><td><a href="data/gas/mibgas_ttf_spread.csv">mibgas_ttf_spread.csv</a></td>
+        <td>Prémio do gás ibérico face ao benchmark europeu TTF, 15 produtos de D+1 a Y+2, desde 02/01/2024.</td>
+        <td>2×/dia</td></tr>
+    <tr><td><a href="data/gas/metadata.json">metadata.json</a></td>
+        <td>Última data, primeira data e cobertura.</td>
+        <td>2×/dia</td></tr>
+  </table>
+  <p class="nota">Preços em €/MWh (PCS). <strong>Campo vazio = não publicado nesse dia, nunca zero.</strong>
+     PVB é o hub espanhol e VTP o português — confirme qual a fórmula do seu comercializador refere.
+     A coluna <code>ttf_derivado</code> é uma estimativa (±1 €/MWh), não o índice oficial da ICE.</p>
 </section>
 
 <section>
@@ -149,6 +213,48 @@ const recordes = await r.json();</code></pre>
         <td>Mix de produção diário por país europeu (GWh/dia por tecnologia + consumo), desde 2026-01. Fonte: Energy-Charts. Ex.: <a href="data/mapas/producao/2026-06.json">2026-06</a> · <a href="data/mapas/producao/metadata.json">metadata</a></td>
         <td>1×/dia</td></tr>
   </table>
+</section>
+
+<section id="agregados">
+  <h2>📊 Séries pré-calculadas — <code>data/agregados/</code></h2>
+  <p>Derivados de <code>data/omie/</code> e <code>data/producao/</code>, para quem quer médias e totais
+     sem descarregar as séries quarto-horárias completas (~94 MB).</p>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Tamanho</th></tr>
+    <tr><td><a href="data/agregados/omie_anual.csv">omie_anual.csv</a></td>
+        <td>Preços OMIE por ano, 2010–presente, com média por período do ciclo horário BTN.</td><td>2 KB</td></tr>
+    <tr><td><a href="data/agregados/omie_mensal.csv">omie_mensal.csv</a></td><td>Idem, por mês.</td><td>22 KB</td></tr>
+    <tr><td><a href="data/agregados/omie_diario.csv">omie_diario.csv</a></td><td>Idem, por dia.</td><td>712 KB</td></tr>
+    <tr><td><a href="data/agregados/producao_anual.csv">producao_anual.csv</a></td>
+        <td>Produção, consumo, quota renovável e saldo importador por ano.</td><td>2 KB</td></tr>
+    <tr><td><a href="data/agregados/producao_mensal.csv">producao_mensal.csv</a></td><td>Idem, por mês.</td><td>24 KB</td></tr>
+    <tr><td><a href="data/agregados/producao_diario.csv">producao_diario.csv</a></td><td>Idem, por dia.</td><td>672 KB</td></tr>
+  </table>
+  <p class="nota">Cada linha traz <code>dias</code> (e <code>quartos</code>, no OMIE) com quantos entraram
+     no cálculo — é assim que se vê que o mês ou ano corrente ainda está incompleto.
+     <strong>Os dias futuros estimados a partir dos futuros OMIP estão excluídos.</strong></p>
+</section>
+
+<section>
+  <h2>🌱 Intensidade carbónica — <code>data/emissoes/</code></h2>
+  <p>Emissões da produção elétrica nacional, calculadas a 15 minutos desde 2010 a partir de
+     <code>data/producao/</code>. Unidade: <strong>gCO₂eq/kWh</strong>.</p>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Tamanho</th></tr>
+    <tr><td><a href="data/emissoes/intensidade_anual.csv">intensidade_anual.csv</a></td>
+        <td>Por ano, 2010–presente.</td><td>1 KB</td></tr>
+    <tr><td><a href="data/emissoes/intensidade_mensal.csv">intensidade_mensal.csv</a></td><td>Por mês.</td><td>13 KB</td></tr>
+    <tr><td><a href="data/emissoes/intensidade_diaria.csv">intensidade_diaria.csv</a></td><td>Por dia.</td><td>424 KB</td></tr>
+    <tr><td><a href="data/emissoes/intensidade_perfil_horario.csv">intensidade_perfil_horario.csv</a></td>
+        <td>Média por hora do dia e por ano — quando é que a eletricidade é mais limpa.</td><td>6 KB</td></tr>
+    <tr><td><a href="data/emissoes/fatores_emissao.csv">fatores_emissao.csv</a></td>
+        <td>Os fatores usados (IPCC AR5, WG3 Annex III) e a sua proveniência.</td><td>1 KB</td></tr>
+  </table>
+  <p class="nota"><strong>⚠️ Âmbito.</strong> São emissões de <strong>ciclo de vida</strong> (construção,
+     fabrico, operação, desmantelamento), não emissões diretas de combustão: <strong>não são comparáveis</strong>
+     com o Inventário Nacional da APA nem com o indicador da EEA. Cobrem a <strong>produção nacional</strong>,
+     não o consumo — Portugal importou 25,5 % do consumo em 2024. E no perfil horário as horas de maior sol
+     não são as mais limpas: em ciclo de vida o solar é cerca do dobro da hídrica.</p>
 </section>
 
 <section>
@@ -165,6 +271,9 @@ const recordes = await r.json();</code></pre>
         <td>Taxa de Ocupação do Subsolo por município + ORD/CUR de gás natural respetivo.</td>
         <td>Quando há alterações</td></tr>
   </table>
+  <p class="nota">⚠️ O <code>Perdas_calculadas_2026_TF.csv</code> está fora da convenção do resto do site:
+     separador <code>;</code>, vírgula decimal, data no formato <code>1/jan/2026</code> e três linhas
+     decorativas antes do cabeçalho real.</p>
 </section>
 
 <section>
@@ -172,17 +281,27 @@ const recordes = await r.json();</code></pre>
   <p>Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
      <a href="https://www.omie.es" rel="noopener">OMIE</a>,
      <a href="https://www.omip.pt" rel="noopener">OMIP</a>,
+     <a href="https://www.mibgas.es" rel="noopener">MIBGAS</a>,
      <a href="https://datahub.ren.pt" rel="noopener">REN</a>,
      <a href="https://transparency.entsoe.eu" rel="noopener">ENTSO-E</a>,
      <a href="https://www.energy-charts.info" rel="noopener">Energy-Charts</a> (Fraunhofer ISE),
      <a href="https://www.erse.pt" rel="noopener">ERSE</a> e
-     <a href="https://www.e-redes.pt" rel="noopener">E-Redes</a>.
+     <a href="https://www.e-redes.pt" rel="noopener">E-Redes</a> e
+     <a href="https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_annex-iii.pdf" rel="noopener">IPCC AR5</a>
+     (fatores de emissão).
      Os dados originais pertencem às respetivas entidades; este serviço disponibiliza compilações e séries derivadas, organizadas para consumo direto.</p>
   <p>As compilações estão licenciadas sob <a href="https://creativecommons.org/licenses/by/4.0/deed.pt" rel="noopener">CC BY 4.0</a> —
      pode copiar, redistribuir e adaptar, inclusive comercialmente, desde que dê crédito. Citação sugerida:</p>
-  <pre><code>Dados: Tiago Felícia — www.tiagofelicia.pt (fontes originais: OMIE, REN, ENTSO-E),
+  <pre><code>Dados: Tiago Felícia — www.tiagofelicia.pt (fontes originais: OMIE, REN, ENTSO-E, MIBGAS),
 via dados.tiagofelicia.pt</code></pre>
-  <p class="nota">Os dados são disponibilizados "tal como estão", sem garantias — podem existir falhas, atrasos ou correções retroativas nas fontes originais. Os nomes e caminhos dos ficheiros são estáveis; alterações serão anunciadas no <a href="https://github.com/tiagofelicia/dados-energia" rel="noopener">repositório</a>.</p>
+  <p class="nota"><strong>Exceção — <code>data/simuladores/</code>:</strong> os comparativos de tarifários
+     de eletricidade e gás <strong>não estão abrangidos pela CC BY 4.0</strong> e são reservados
+     (© Tiago Felícia, todos os direitos reservados). Ao contrário do resto do site, não são recolha
+     automática de uma fonte pública: resultam de pesquisa, verificação e agregação manual, oferta a
+     oferta. Estão acessíveis porque alimentam os simuladores de tiagofelicia.pt, não como dado aberto.
+     Para os reutilizar, <a href="https://www.tiagofelicia.pt/contacto" rel="noopener">contacte o autor</a>.</p>
+  <p class="nota">Os dados são disponibilizados "tal como estão", sem garantias — podem existir falhas, atrasos ou correções retroativas nas fontes originais. Os nomes e caminhos dos ficheiros são estáveis; alterações serão anunciadas no <a href="https://github.com/tiagofelicia/dados-energia" rel="noopener">repositório</a>.
+     O estado de atualização de cada dataset está em <a href="status.html">Estado dos dados</a>.</p>
 </section>
 
 <section>
