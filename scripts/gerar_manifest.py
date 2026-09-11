@@ -85,6 +85,12 @@ BASE_URL = "https://dados.tiagofelicia.pt"
 #   glob_max               nome do ficheiro mais recente do padrão
 #   estatico               não tem data (actualização manual/anual)
 
+# NOTA: os ficheiros de data/simuladores/ (tarifários fixos, indexados e duais)
+# NÃO constam deste catálogo de propósito. São fruto de pesquisa e agregação
+# manual do autor, não de recolha automática de fonte pública, e não estão sob
+# a CC BY 4.0 que cobre o resto do repositório — ver a nota de licença no
+# README. Não os acrescentar aqui.
+
 REGISTO = [
     # ---------- OMIE ----------
     dict(id="omie-atuais", grupo="omie", caminho="data/omie/omie_dados_atuais.csv",
@@ -237,24 +243,6 @@ REGISTO = [
          descricao="TOS por município e respetivo ORD/CUR de gás natural.",
          cadencia="quando há alterações", tolerancia_dias=400, deteccao="estatico"),
 
-    # ---------- Simuladores ----------
-    dict(id="tarifarios-fixos", grupo="simuladores",
-         caminho="data/simuladores/simulador-tarifarios-eletricidade/csv/Tarifarios_fixos.csv",
-         titulo="Tarifários de eletricidade fixos",
-         descricao="Comparativo de tarifários fixos do mercado português por "
-                   "comercializador, potência e opção horária.",
-         cadencia="~5x/dia útil", tolerancia_dias=3, deteccao="estatico"),
-    dict(id="tarifarios-indexados", grupo="simuladores",
-         caminho="data/simuladores/simulador-tarifarios-eletricidade/csv/Indexados.csv",
-         titulo="Tarifários de eletricidade indexados",
-         descricao="Fórmulas e condições dos tarifários indexados por comercializador.",
-         cadencia="~5x/dia útil", tolerancia_dias=3, deteccao="estatico"),
-    dict(id="tarifarios-dual", grupo="simuladores",
-         caminho="data/simuladores/simulador-tarifarios-dual/Tarifarios_Dual.csv",
-         titulo="Tarifários duais (luz e gás)",
-         descricao="Comparativo de ofertas duais de eletricidade e gás.",
-         cadencia="manual", tolerancia_dias=400, deteccao="estatico",
-         avisos=["Separador ';' e vírgula decimal, fora da convenção do repositório."]),
 ]
 
 GRUPOS = {
@@ -265,7 +253,6 @@ GRUPOS = {
     "agregados": "Séries pré-calculadas",
     "emissoes": "Emissões",
     "regulado": "Dados regulados (ERSE / E-Redes)",
-    "simuladores": "Tarifários",
 }
 
 
