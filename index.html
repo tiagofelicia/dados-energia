@@ -258,6 +258,23 @@ const recordes = await r.json();</code></pre>
 </section>
 
 <section>
+  <h2>🔤 Referência — <code>data/referencia/</code></h2>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
+    <tr><td><a href="data/referencia/tecnologias.json">tecnologias.json</a></td>
+        <td>Traduz entre os três vocabulários de tecnologias de geração usados neste site
+            (REN, Energy-Charts, ENTSO-E), com categoria, fator de emissão de ciclo de vida
+            e notas de agregação.</td>
+        <td>Quando as fontes mudam</td></tr>
+  </table>
+  <p class="nota">As três fontes não partilham um único nome: a REN diz <code>Hídrica</code>,
+     o Energy-Charts <code>hydro_run_of_river</code> e o ENTSO-E <code>Hydro Run-of-River</code>.
+     O ficheiro sinaliza também que a <code>Hídrica</code> da REN <strong>agrega</strong> o que as
+     outras separam em três — fio de água, albufeira e turbinagem de bombagem — e que a
+     <code>Outra Térmica</code> junta fuelóleo, gasóleo, resíduos e biogás.</p>
+</section>
+
+<section>
   <h2>📋 Dados regulados (ERSE / E-Redes) — <code>data/regulado/</code></h2>
   <table>
     <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>

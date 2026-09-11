@@ -53,6 +53,7 @@ data/
 ├── mapas/        Preços e mix de produção por país/zona europeia
 ├── agregados/    Médias e totais pré-calculados (diário, mensal, anual)
 ├── emissoes/     Intensidade carbónica da produção elétrica
+├── referencia/   Tabelas de referência (tecnologias, vocabulários)
 ├── regulado/     Dados regulados ERSE/E-Redes (atualização anual)
 └── manifest.json Catálogo de tudo o que está acima
 ```
@@ -213,6 +214,38 @@ Unidade: **gCO₂eq/kWh**. Fatores: **IPCC AR5**, WG3 Annex III, Tabela A.III.2 
 - São emissões de **ciclo de vida** (construção, fabrico, operação, desmantelamento), não emissões diretas de combustão. **Não são comparáveis** com o Inventário Nacional da APA nem com o indicador da EEA, que contabilizam só emissões diretas. Os valores aqui são, por construção, mais altos.
 - É a intensidade da **produção nacional**, não do consumo. Portugal importa de Espanha — em 2024, 25,5 % do consumo. As colunas `saldo_importador_gwh` e `importacao_perc_consumo` dizem quando a diferença é material.
 - No perfil horário, as horas de maior sol **não** são as mais limpas: em ciclo de vida o solar (48) é cerca do dobro da hídrica (24), pelo que ao meio-dia a intensidade sobe face às horas de predomínio hídrico. Em emissões diretas o resultado inverteria-se.
+
+### `data/referencia/` — Tabelas de referência
+
+| Ficheiro | Conteúdo | Atualização |
+|---|---|---|
+| `tecnologias.json` | Traduz entre os três vocabulários de tecnologias de geração usados neste repositório | Quando as fontes mudam |
+
+As três fontes nomeiam as mesmas centrais de formas que não coincidem:
+
+| REN (`data/producao/`) | Energy-Charts (`data/mapas/`) | ENTSO-E (`producao-entsoe/`) |
+|---|---|---|
+| `Hídrica` | `hydro_run_of_river` | `Hydro Run-of-River` |
+| `Eólica` | `wind_onshore` | `Wind onshore` |
+| `Gás Natural - Ciclo Combinado` | `gas` | `Fossil gas` |
+| `Carvão` | `coal_hard` | `Fossil hard coal` |
+
+O `tecnologias.json` tem uma entrada por tecnologia canónica, com os nomes exatos de cada fonte, a categoria (renovável, fóssil, nuclear, armazenamento, consumo, fluxo, agregado), o fator de emissão de ciclo de vida quando o IPCC AR5 o publica, e notas:
+
+```json
+"eolica_onshore": {
+  "nome": "Eólica terrestre", "categoria": "renovavel",
+  "gco2eq_kwh": 11, "fator_fonte": "IPCC AR5 … — Wind onshore",
+  "ren": ["Eólica"], "energy_charts": ["wind_onshore"], "entsoe": ["Wind onshore"]
+}
+```
+
+Duas armadilhas que o ficheiro sinaliza explicitamente:
+
+- **`ren_agregada: true`** — a coluna `Hídrica` da REN soma fio de água, albufeira e turbinagem de bombagem, que as outras fontes separam em três. Não é possível desagregá-la a partir dos dados da REN, e um mapeamento um-para-um daria um resultado errado.
+- **`Outra Térmica`** agrega fuelóleo, gasóleo, resíduos e biogás; não corresponde ao `other` das outras fontes, que é residual.
+
+Onde o AR5 não publica valor (linhite, petróleo, resíduos, turfa), `gco2eq_kwh` é `null` — uma lacuna honesta em vez de um número que ninguém consegue citar.
 
 ### `data/regulado/` — Dados regulados (ERSE / E-Redes)
 
