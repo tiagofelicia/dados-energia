@@ -23,6 +23,15 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+# Sem o prefixo 'commits-' dos outros workflows de propósito: este não faz
+# commit a ESTE repositório. O que protege é outra coisa — duas instâncias
+# suas em paralelo escreveriam no mesmo xlsx e fariam dois 'git push'
+# concorrentes ao espaço Hugging Face, onde não há retry+rebase que os
+# reconcilie. Só se pode sobrepor a si mesmo, e é isso que aqui se impede.
+concurrency:
+  group: tarifarios-gas
+  cancel-in-progress: false
+
 jobs:
   update-excel-and-push-to-hf:
     name: Executar Atualização MIBGAS
