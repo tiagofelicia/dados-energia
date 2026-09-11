@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estado dos dados | dados.tiagofelicia.pt</title>
+<meta name="description" content="Estado de atualização de todos os datasets de dados.tiagofelicia.pt: última data disponível, atraso face à cadência prometida e alertas.">
+<link rel="canonical" href="https://dados.tiagofelicia.pt/status.html">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<link rel="icon" type="image/png" href="https://www.tiagofelicia.pt/images/favicon-96x96.png" sizes="96x96">
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --acento-2: #3498db; --borda: #dde4ea; --code-bg: #eef2f6;
+  --ok: #15803d; --ok-bg: #dcfce7; --aviso: #a16207; --aviso-bg: #fef3c7;
+  --mau: #b91c1c; --mau-bg: #fee2e2; --neutro: #64748b; --neutro-bg: #f1f5f9;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --acento-2: #3b82f6; --borda: #334155; --code-bg: #0f172a;
+    --ok: #4ade80; --ok-bg: #14321f; --aviso: #fbbf24; --aviso-bg: #3a2c08;
+    --mau: #f87171; --mau-bg: #3b1416; --neutro: #94a3b8; --neutro-bg: #1e293b;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+header { background: #2c3e50; color: #fff; padding: 32px 20px 26px; text-align: center; }
+header h1 { margin: 0 0 6px; font-size: 1.55rem; }
+header p { margin: 0 auto; max-width: 640px; color: #cbd5e1; font-size: .95rem; }
+header .voltar { display: inline-block; margin-top: 12px; padding: 5px 14px; border: 1px solid #4a627a; border-radius: 20px; color: #e2e8f0; text-decoration: none; font-size: .85rem; }
+header .voltar:hover { background: #4a627a; }
+main { max-width: 960px; margin: 0 auto; padding: 22px 16px 60px; }
+
+.resumo { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.resumo div { background: var(--card); border: 1px solid var(--borda); border-left: 4px solid var(--cor); border-radius: 8px; padding: 14px 16px; }
+.resumo .n { font-size: 1.8rem; font-weight: 700; line-height: 1.1; color: var(--cor); font-variant-numeric: tabular-nums; }
+.resumo .l { font-size: .85rem; color: var(--texto-2); }
+.r-ok { --cor: var(--ok); } .r-aviso { --cor: var(--aviso); }
+.r-mau { --cor: var(--mau); } .r-neutro { --cor: var(--neutro); }
+
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 16px 18px 14px; margin: 14px 0; }
+h2 { font-size: 1.05rem; margin: 0 0 10px; color: var(--texto); border-bottom: 2px solid var(--acento-2); padding-bottom: 7px; }
+table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+th, td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+th { color: var(--texto-2); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.nome { font-weight: 600; }
+.nome a { text-decoration: none; }
+.nome a:hover { text-decoration: underline; }
+.desc { color: var(--texto-2); font-size: .82rem; display: block; margin-top: 1px; }
+.pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: .76rem; font-weight: 600; white-space: nowrap; }
+.p-ok { background: var(--ok-bg); color: var(--ok); }
+.p-aviso { background: var(--aviso-bg); color: var(--aviso); }
+.p-mau { background: var(--mau-bg); color: var(--mau); }
+.p-neutro { background: var(--neutro-bg); color: var(--neutro); }
+.avisos { margin: 6px 0 0; padding: 0 0 0 16px; font-size: .8rem; color: var(--texto-2); }
+.avisos li { margin: 2px 0; }
+code { background: var(--code-bg); border: 1px solid var(--borda); border-radius: 4px; padding: 1px 5px; font-size: .85em; }
+.nota { font-size: .85rem; color: var(--texto-2); }
+footer { text-align: center; padding: 20px 16px 40px; color: var(--texto-2); font-size: .85rem; }
+#erro { background: var(--mau-bg); color: var(--mau); border-radius: 8px; padding: 14px 16px; }
+@media (max-width: 600px) { .esconde-mobile { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ Estado dos dados</h1>
+  <p>Última data disponível em cada dataset e atraso face à cadência prometida.
+     O atraso é calculado no seu navegador, a partir de
+     <code style="background:none;border:none;color:#cbd5e1">data/manifest.json</code>.</p>
+  <a class="voltar" href="/">← Voltar ao catálogo</a>
+</header>
+
+<main>
+  <div id="resumo" class="resumo"></div>
+  <div id="conteudo"><p class="nota">A carregar o manifesto…</p></div>
+
+  <section>
+    <h2>Como ler esta página</h2>
+    <p class="nota" style="margin:0 0 8px">
+      Cada dataset declara no manifesto a sua <strong>cadência</strong> e uma
+      <strong>tolerância</strong> em dias. O estado compara a última data
+      disponível com a data de hoje:
+    </p>
+    <p class="nota" style="margin:0 0 8px">
+      <span class="pill p-ok">Atualizado</span> dentro da tolerância ·
+      <span class="pill p-aviso">Atrasado</span> até 3 dias além ·
+      <span class="pill p-mau">Parado</span> mais do que isso ·
+      <span class="pill p-neutro">Periódico</span> fecho de ano ou atualização esporádica ·
+      <span class="pill p-neutro">Estático</span> sem data de referência
+    </p>
+    <p class="nota" style="margin:0">
+      O cálculo é feito no navegador e não num servidor, de propósito: uma página
+      de estado gerada por um robô não conseguiria dizer que o robô parou. Enquanto
+      esta página servir, o atraso continua a contar — mesmo que todos os
+      processos de recolha estejam em baixo.
+      Nos preços OMIE, a última data é a <code>Data_Valores_OMIE</code> e não a
+      última linha do ficheiro: as datas seguintes são estimativas dos futuros OMIP.
+    </p>
+  </section>
+</main>
+
+<footer>
+  Dados sob <a href="https://creativecommons.org/licenses/by/4.0/deed.pt">CC BY 4.0</a> ·
+  <a href="https://github.com/tiagofelicia/dados-energia">repositório</a> ·
+  <a href="/data/manifest.json">manifest.json</a>
+</footer>
+
+<script>
+const DIA = 86400000;
+
+function estado(d) {
+  if (!d.ultima_data) return { chave: 'neutro', texto: 'Estático', atraso: null };
+  const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+  const ultima = new Date(d.ultima_data + 'T00:00:00');
+  const atraso = Math.round((hoje - ultima) / DIA);
+  const tol = d.tolerancia_dias ?? 1;
+  // Datasets de fecho de ano ou atualização esporádica: um atraso de 254 dias é
+  // o esperado, e marcá-los "Atualizado" ao lado desse número confundia. Ficam
+  // numa categoria própria, sem semáforo.
+  if (tol >= 90) return { chave: 'neutro', texto: 'Periódico', atraso };
+  // Um dataset pode estar "à frente" (o OMIE publica o dia seguinte): isso é
+  // normal e conta como atualizado.
+  if (atraso <= tol) return { chave: 'ok', texto: 'Atualizado', atraso };
+  if (atraso <= tol + 3) return { chave: 'aviso', texto: 'Atrasado', atraso };
+  return { chave: 'mau', texto: 'Parado', atraso };
+}
+
+const fmtBytes = b =>
+  b >= 1e6 ? (b / 1e6).toFixed(b >= 1e7 ? 0 : 1) + ' MB'
+           : Math.max(1, Math.round(b / 1e3)) + ' KB';
+
+const fmtAtraso = a =>
+  a === null ? '—' : a < 0 ? `+${-a} d` : a === 0 ? 'hoje' : `${a} d`;
+
+const esc = s => String(s).replace(/[&<>"]/g,
+  c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// Datasets de vários ficheiros apontam à listagem do GitHub: o Pages não
+// serve índices de pasta, e um link para /data/x/ daria 404. Ficheiros únicos
+// apontam ao próprio ficheiro no site.
+const REPO = 'https://github.com/tiagofelicia/dados-energia/tree/main/';
+const ligacao = d => d.padrao ? REPO + d.caminho : '/' + d.caminho;
+
+function render(m) {
+  const contas = { ok: 0, aviso: 0, mau: 0, neutro: 0 };
+  m.datasets.forEach(d => contas[estado(d).chave]++);
+
+  document.getElementById('resumo').innerHTML = [
+    ['ok', 'Atualizados'], ['aviso', 'Atrasados'],
+    ['mau', 'Parados'], ['neutro', 'Periódicos']
+  ].map(([k, rotulo]) =>
+    `<div class="r-${k}"><div class="n">${contas[k]}</div><div class="l">${rotulo}</div></div>`
+  ).join('');
+
+  // Grupos por ordem do manifesto, mas com os problemas primeiro.
+  const grupos = Object.keys(m.grupos);
+  const pior = g => Math.min(...m.datasets.filter(d => d.grupo === g)
+    .map(d => ({ mau: 0, aviso: 1, ok: 2, neutro: 3 })[estado(d).chave]));
+  grupos.sort((a, b) => pior(a) - pior(b) || grupos.indexOf(a) - grupos.indexOf(b));
+
+  document.getElementById('conteudo').innerHTML = grupos.map(g => {
+    const linhas = m.datasets.filter(d => d.grupo === g).map(d => {
+      const e = estado(d);
+      const avisos = (d.avisos || []).map(a => `<li>${esc(a)}</li>`).join('');
+      return `<tr>
+        <td class="nome">
+          <a href="${esc(ligacao(d))}">${esc(d.titulo)}</a>
+          <span class="desc">${esc(d.descricao)}</span>
+          ${avisos ? `<ul class="avisos">${avisos}</ul>` : ''}
+        </td>
+        <td class="num">${d.ultima_data || '—'}</td>
+        <td class="num">${fmtAtraso(e.atraso)}</td>
+        <td class="esconde-mobile">${esc(d.cadencia)}</td>
+        <td class="num esconde-mobile">${fmtBytes(d.bytes)}</td>
+        <td><span class="pill p-${e.chave}">${e.texto}</span></td>
+      </tr>`;
+    }).join('');
+    return `<section>
+      <h2>${esc(m.grupos[g])}</h2>
+      <table>
+        <thead><tr>
+          <th>Dataset</th><th>Última data</th><th>Atraso</th>
+          <th class="esconde-mobile">Cadência</th>
+          <th class="esconde-mobile">Tamanho</th><th>Estado</th>
+        </tr></thead>
+        <tbody>${linhas}</tbody>
+      </table>
+    </section>`;
+  }).join('');
+
+  const t = m.totais, ger = new Date(m.gerado_em);
+  document.querySelector('footer').insertAdjacentHTML('afterbegin',
+    `<p class="nota">${t.datasets} datasets · ${t.ficheiros.toLocaleString('pt-PT')} ficheiros ·
+     ${fmtBytes(t.bytes)} · manifesto gerado em
+     ${ger.toLocaleString('pt-PT', { dateStyle: 'short', timeStyle: 'short' })}</p>`);
+}
+
+fetch('/data/manifest.json', { cache: 'no-store' })
+  .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(render)
+  .catch(err => {
+    document.getElementById('conteudo').innerHTML =
+      `<div id="erro"><strong>Não foi possível carregar o manifesto.</strong><br>
+       ${esc(err.message)} — se isto persistir, o próprio catálogo pode estar em baixo.
+       Os ficheiros continuam acessíveis nos seus URLs habituais — ver o
+       <a href="https://github.com/tiagofelicia/dados-energia/tree/main/data">repositório</a>.</div>`;
+  });
+</script>
+
+</body>
+</html>
