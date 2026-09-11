@@ -1,0 +1,120 @@
+# Derivados rápidos: instantâneos do dia e catálogo do repositório.
+#
+# gerar_hoje.py
+#   → data/omie/hoje.json       preços de hoje e de amanhã   (~8 KB)
+#   → data/producao/hoje.json   mix de produção de hoje      (~15 KB)
+#
+# gerar_manifest.py
+#   → data/manifest.json        catálogo legível por máquina, que o status.html lê
+#
+# Nenhum dos dois recolhe nada de fora: derivam do que já está no repositório.
+#
+# DISPARO POR workflow_run, NÃO POR CRON
+# --------------------------------------
+# Um ficheiro chamado "hoje" perde o sentido se ficar horas atrás da fonte. Em
+# vez de adivinhar um cron que caia logo depois dos outros bots, este workflow
+# dispara quando eles TERMINAM — latência de segundos em vez de horas, e sem
+# tocar nos workflows existentes.
+#
+# O cron de 6 em 6 horas é só rede de segurança: cobre o caso de os workflows
+# de origem não correrem (fim de semana, no caso do OMIE à tarde) e garante que
+# o "e_hoje"/"dias_atraso" se mantêm verdadeiros à passagem da meia-noite.
+
+name: Gerar hoje.json e manifesto
+
+on:
+  workflow_run:
+    # Todos os workflows que escrevem em data/: o manifesto tem de refletir o
+    # estado de qualquer um deles, não só dos dois que alimentam o hoje.json.
+    workflows:
+      - "Atualização Diária OMIE + Tarifários Eletricidade"
+      - "Atualizar Dados de Produção (REN)"
+      - "Atualizar Mapa de Precos (ENTSO-E)"
+      - "Atualizar Mapa de Producao"
+      - "Atualizar Producao (ENTSO-E)"
+      - "Atualizar Índices MIBGAS"
+      - "Gerar Agregados e Emissões"
+    types: [completed]
+
+  schedule:
+    - cron: '50 */6 * * *'
+
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+concurrency:
+  group: commits-hoje
+  cancel-in-progress: false
+
+jobs:
+  gerar-hoje:
+    name: Gerar instantâneos e manifesto
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    # Num workflow_run, só faz sentido se o workflow de origem correu bem —
+    # senão os CSV de que dependemos não foram actualizados. Nos disparos por
+    # cron e manuais não há workflow de origem, e a condição deixa passar.
+    if: >
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+        with:
+          # Num workflow_run o checkout default é o SHA que disparou o evento,
+          # que pode já estar atrás dos commits que o próprio bot acabou de
+          # fazer. Buscar o ramo por nome garante os CSV mais recentes.
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Gerar hoje.json
+        run: |
+          # set -o pipefail: sem isto o exit code passa a ser o do tee e uma
+          # falha do script daria um step verde.
+          set -o pipefail
+          mkdir -p logs
+          python scripts/gerar_hoje.py 2>&1 | tee logs/hoje.log
+
+      # O manifesto corre DEPOIS do hoje.json, para o apanhar já actualizado.
+      - name: Gerar manifesto
+        run: |
+          set -o pipefail
+          python scripts/gerar_manifest.py 2>&1 | tee -a logs/hoje.log
+
+      # Ambos ignoram o carimbo gerado_em ao comparar, por isso só reescrevem
+      # quando os dados mudam — nenhum commit vazio.
+      - name: Fazer commit dos derivados (com retry)
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "🕒 BOT: Atualizar hoje.json + manifesto"
+          file_pattern: "data/omie/hoje.json data/producao/hoje.json data/manifest.json"
+
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-hoje
+          path: logs/hoje.log
+          retention-days: 30

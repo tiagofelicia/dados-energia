@@ -87,13 +87,25 @@ jobs:
           fi
           python scripts/atualizar_mibgas_historico.py $ARGS 2>&1 | tee logs/mibgas.log
 
-      # O script não reescreve os ficheiros quando nada mudou, por isso a
+      # Tem de correr DEPOIS do anterior: a coluna ttf_derivado é calculada a
+      # partir do pvb_last do mibgas_spot.csv, que o step acima acabou de
+      # atualizar. Lê a mesma fonte (outra aba do mesmo xlsx anual).
+      - name: Atualizar spread PVB-TTF
+        run: |
+          set -o pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            ARGS="--backfill"
+          fi
+          python scripts/atualizar_mibgas_ttf_spread.py $ARGS 2>&1 | tee -a logs/mibgas.log
+
+      # Os scripts não reescrevem os ficheiros quando nada mudou, por isso a
       # action não deteta alterações e não commita — nenhum commit vazio.
-      - name: Fazer commit do dataset (com retry)
+      - name: Fazer commit dos datasets (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
-          commit_message: "🔥 BOT: Atualizar índices MIBGAS"
-          file_pattern: "data/gas/mibgas_spot.csv data/gas/metadata.json"
+          commit_message: "🔥 BOT: Atualizar MIBGAS (índices + spread TTF)"
+          file_pattern: "data/gas/mibgas_spot.csv data/gas/mibgas_ttf_spread.csv data/gas/metadata.json"
 
       - name: Fazer upload do log como artefacto
         if: always()

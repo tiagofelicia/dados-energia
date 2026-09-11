@@ -1,0 +1,94 @@
+# Pré-calcula as séries derivadas dos dados que já estão no repositório.
+#
+# gerar_agregados.py
+#   → data/agregados/omie_{diario,mensal,anual}.csv
+#   → data/agregados/producao_{diario,mensal,anual}.csv
+#   → data/agregados/metadata.json
+#
+# gerar_intensidade_carbonica.py
+#   → data/emissoes/intensidade_{diaria,mensal,anual}.csv
+#   → data/emissoes/intensidade_perfil_horario.csv
+#   → data/emissoes/fatores_emissao.csv
+#   Os dois derivam de data/producao/ e correm 1x/dia — partilham o workflow.
+#
+# Não recolhe nada de fora: deriva dos CSV que já estão no repositório. Por isso
+# corre DEPOIS dos workflows que os escrevem — o OMIE fecha às 18:00 UTC e a
+# produção REN às 20:15, daí as 21:30.
+#
+# Uma vez por dia chega: são séries históricas para consulta, não dados
+# intra-diários. O script recalcula sempre os 17 anos do zero (~30 s), o que o
+# torna imune ao desvio que os modos incrementais acumulam.
+
+name: Gerar Agregados e Emissões
+
+on:
+  schedule:
+    - cron: '30 21 * * *'
+
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+concurrency:
+  group: commits-agregados
+  cancel-in-progress: false
+
+jobs:
+  gerar-agregados:
+    name: Pré-calcular agregados e intensidade carbónica
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Gerar agregados
+        run: |
+          # set -o pipefail: sem isto o exit code passa a ser o do tee e uma
+          # falha do script daria um step verde.
+          set -o pipefail
+          mkdir -p logs
+          python scripts/gerar_agregados.py 2>&1 | tee logs/agregados.log
+
+      - name: Gerar intensidade carbónica
+        run: |
+          set -o pipefail
+          python scripts/gerar_intensidade_carbonica.py 2>&1 | tee -a logs/agregados.log
+
+      # Os scripts não reescrevem os ficheiros que não mudaram, por isso a action
+      # não deteta alterações e não commita — nenhum commit vazio.
+      - name: Fazer commit dos derivados (com retry)
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "📊 BOT: Atualizar agregados + intensidade carbónica"
+          file_pattern: "data/agregados/* data/emissoes/*"
+
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-agregados
+          path: logs/agregados.log
+          retention-days: 30
