@@ -344,7 +344,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
   },
   {
-   "bytes": 194745,
+   "bytes": 194915,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_spot.csv",
    "colunas": [
@@ -364,10 +364,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-mibgas",
-   "linhas": 3922,
+   "linhas": 3925,
    "titulo": "Índices MIBGAS",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-11",
+   "ultima_data": "2026-09-14",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
@@ -375,7 +375,7 @@
     "Só há linhas em dias de sessão (~255/ano): fins de semana e feriados não têm cotação.",
     "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial."
    ],
-   "bytes": 568769,
+   "bytes": 569604,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_ttf_spread.csv",
    "colunas": [
@@ -392,10 +392,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-ttf-spread",
-   "linhas": 10218,
+   "linhas": 10233,
    "titulo": "Spread PVB-TTF",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-09-10",
+   "ultima_data": "2026-09-11",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
@@ -566,7 +566,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-11T21:21:45+00:00",
+ "gerado_em": "2026-09-11T21:53:51+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -581,7 +581,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 344944699,
+  "bytes": 344945704,
   "datasets": 25,
   "ficheiros": 1430
  }
