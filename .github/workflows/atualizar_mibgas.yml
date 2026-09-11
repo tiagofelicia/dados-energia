@@ -1,0 +1,104 @@
+# Publica os índices diários do MIBGAS como dataset aberto.
+#
+# atualizar_mibgas_historico.py
+#   → data/gas/mibgas_spot.csv   (índices diários, 17/12/2015 → hoje)
+#   → data/gas/metadata.json
+#
+# Só preços REAIS de mercado: sem futuros, sem forward-fill. Um dia sem
+# publicação fica vazio. A série contínua até 2028 que o simulador precisa
+# continua a ser feita pelo atualizar_tarifarios_gas.py, dentro do xlsx.
+#
+# Porquê um workflow separado do atualizar_tarifarios_gas.yml, se a fonte é a
+# mesma: esse workflow precisa de Chrome + Selenium para o scraping dos futuros
+# OMIP, e qualquer falha aí (setup-chrome, timeout do browser, mudança no HTML
+# do OMIP) impediria este dataset de atualizar. A recolha do MIBGAS é um
+# download HTTP de um xlsx e corre em ~30 s — não deve depender de um browser.
+#
+# Não precisa de secrets: a fonte é pública.
+
+name: Atualizar Índices MIBGAS
+
+on:
+  schedule:
+    # 11:40 e 19:40 UTC — dois horários livres, sem colisão com os outros bots.
+    # Duas corridas porque o MIBGAS republica índices com correções
+    # retroativas; a segunda apanha as do próprio dia.
+    - cron: '40 11 * * *'
+    - cron: '40 19 * * *'
+
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'Reconstruir a série completa desde 2015'
+        type: boolean
+        required: false
+        default: false
+
+# Antecipar o default Node24 (silencia o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Grupo próprio: as corridas de push contra os outros bots são resolvidas pelo
+# retry+rebase da commit-with-retry, que basta. Um grupo partilhado só serve
+# para este workflow não se sobrepor a si mesmo.
+concurrency:
+  group: commits-mibgas
+  cancel-in-progress: false
+
+jobs:
+  atualizar-mibgas:
+    name: Recolher índices MIBGAS
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Atualizar índices MIBGAS
+        run: |
+          # set -o pipefail: sem isto o exit code passa a ser o do tee e uma
+          # falha do script daria um step verde.
+          set -o pipefail
+          mkdir -p logs
+          ARGS=""
+          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            ARGS="--backfill"
+          fi
+          python scripts/atualizar_mibgas_historico.py $ARGS 2>&1 | tee logs/mibgas.log
+
+      # O script não reescreve os ficheiros quando nada mudou, por isso a
+      # action não deteta alterações e não commita — nenhum commit vazio.
+      - name: Fazer commit do dataset (com retry)
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "🔥 BOT: Atualizar índices MIBGAS"
+          file_pattern: "data/gas/mibgas_spot.csv data/gas/metadata.json"
+
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-mibgas
+          path: logs/mibgas.log
+          retention-days: 30
