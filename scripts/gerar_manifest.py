@@ -196,6 +196,19 @@ REGISTO = [
                    "VTP, PVB, GNL, armazenamento), desde 17/12/2015. Só preços "
                    "reais: sem futuros, sem preenchimento de lacunas.",
          cadencia="2x/dia", tolerancia_dias=2, deteccao="meta:ultima_data"),
+    dict(id="gas-futuros", grupo="gas", caminho="data/gas/mibgas_futuros.csv",
+         titulo="Curva forward do gás ibérico",
+         descricao="Produtos a prazo negociados no MIBGAS em preço absoluto, "
+                   "do intradiário ao ano Y+2, desde 16/12/2015. A coluna "
+                   "'rotulo' traduz o código relativo (GMES_M+2) no período de "
+                   "entrega a que a cotação se refere (Maio 2025).",
+         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
+         avisos=["Os produtos de médio e longo prazo existem só para ES — a "
+                 "liquidez forward está no hub espanhol.",
+                 "Só há linhas em dias de sessão; nem todos os produtos "
+                 "negoceiam todos os dias.",
+                 "horizonte 'intradiario' entrega no próprio dia da sessão e "
+                 "'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."]),
     dict(id="gas-ttf-spread", grupo="gas", caminho="data/gas/mibgas_ttf_spread.csv",
          titulo="Spread PVB-TTF",
          descricao="Prémio do gás ibérico face ao benchmark europeu TTF, para 15 "
