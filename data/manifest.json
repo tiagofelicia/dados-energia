@@ -372,10 +372,45 @@
   },
   {
    "avisos": [
-    "Só há linhas em dias de sessão (~255/ano): fins de semana e feriados não têm cotação.",
-    "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial."
+    "Os produtos de médio e longo prazo existem só para ES — a liquidez forward está no hub espanhol.",
+    "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
+    "horizonte 'intradiario' entrega no próprio dia da sessão e 'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."
    ],
-   "bytes": 569604,
+   "bytes": 3288057,
+   "cadencia": "2x/dia",
+   "caminho": "data/gas/mibgas_futuros.csv",
+   "colunas": [
+    "dia",
+    "data_iso",
+    "produto",
+    "area",
+    "horizonte",
+    "rotulo",
+    "entrega_inicio",
+    "entrega_fim",
+    "dias_entrega",
+    "preco_ultimo",
+    "preco_referencia",
+    "volume_mwh"
+   ],
+   "descricao": "Produtos a prazo negociados no MIBGAS em preço absoluto, do intradiário ao ano Y+2, desde 16/12/2015. A coluna 'rotulo' traduz o código relativo (GMES_M+2) no período de entrega a que a cotação se refere (Maio 2025).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "gas",
+   "id": "gas-futuros",
+   "linhas": 34923,
+   "titulo": "Curva forward do gás ibérico",
+   "tolerancia_dias": 4,
+   "ultima_data": "2026-09-11",
+   "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_futuros.csv"
+  },
+  {
+   "avisos": [
+    "Só há linhas em dias de sessão (~255/ano): fins de semana e feriados não têm cotação.",
+    "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial.",
+    "A chave é (data_iso, produto, entrega_inicio): os produtos de estação W e S cotam duas estações em simultâneo e aparecem duas vezes na mesma sessão."
+   ],
+   "bytes": 606161,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_ttf_spread.csv",
    "colunas": [
@@ -392,7 +427,7 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-ttf-spread",
-   "linhas": 10233,
+   "linhas": 10917,
    "titulo": "Spread PVB-TTF",
    "tolerancia_dias": 4,
    "ultima_data": "2026-09-11",
@@ -566,7 +601,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-12T04:39:41+00:00",
+ "gerado_em": "2026-09-12T08:24:11+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -581,8 +616,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 345025693,
-  "datasets": 25,
-  "ficheiros": 1430
+  "bytes": 348350307,
+  "datasets": 26,
+  "ficheiros": 1431
  }
 }
