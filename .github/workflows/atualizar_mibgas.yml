@@ -1,12 +1,21 @@
-# Publica os índices diários do MIBGAS como dataset aberto.
+# Publica os dados do MIBGAS como datasets abertos: índices spot, curva
+# forward e spread face ao TTF.
 #
 # atualizar_mibgas_historico.py
 #   → data/gas/mibgas_spot.csv   (índices diários, 17/12/2015 → hoje)
 #   → data/gas/metadata.json
 #
-# Só preços REAIS de mercado: sem futuros, sem forward-fill. Um dia sem
-# publicação fica vazio. A série contínua até 2028 que o simulador precisa
-# continua a ser feita pelo atualizar_tarifarios_gas.py, dentro do xlsx.
+# atualizar_mibgas_futuros.py
+#   → data/gas/mibgas_futuros.csv  (curva forward em preço absoluto)
+#
+# Os três scripts leem ABAS DIFERENTES do mesmo xlsx anual, que é descarregado
+# uma vez por cada um. Acrescentar produtos não acrescenta pedidos de rede.
+#
+# Todos são preços REAIS de mercado — incluindo a curva forward, que são
+# cotações efectivas de produtos a prazo e não extrapolações. Não há
+# forward-fill: um dia sem publicação fica vazio. A série contínua até 2028 que
+# o simulador precisa continua a ser feita pelo atualizar_tarifarios_gas.py,
+# dentro do xlsx.
 #
 # Porquê um workflow separado do atualizar_tarifarios_gas.yml, se a fonte é a
 # mesma: esse workflow precisa de Chrome + Selenium para o scraping dos futuros
@@ -16,7 +25,7 @@
 #
 # Não precisa de secrets: a fonte é pública.
 
-name: Atualizar Índices MIBGAS
+name: Atualizar MIBGAS
 
 on:
   schedule:
@@ -47,9 +56,9 @@ concurrency:
 
 jobs:
   atualizar-mibgas:
-    name: Recolher índices MIBGAS
+    name: Recolher índices, futuros e spread
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     permissions:
       contents: write
 
@@ -87,9 +96,17 @@ jobs:
           fi
           python scripts/atualizar_mibgas_historico.py $ARGS 2>&1 | tee logs/mibgas.log
 
-      # Tem de correr DEPOIS do anterior: a coluna ttf_derivado é calculada a
-      # partir do pvb_last do mibgas_spot.csv, que o step acima acabou de
-      # atualizar. Lê a mesma fonte (outra aba do mesmo xlsx anual).
+      - name: Atualizar futuros MIBGAS
+        run: |
+          set -o pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            ARGS="--backfill"
+          fi
+          python scripts/atualizar_mibgas_futuros.py $ARGS 2>&1 | tee -a logs/mibgas.log
+
+      # Tem de correr DEPOIS dos índices: a coluna ttf_derivado é calculada a
+      # partir do pvb_last do mibgas_spot.csv.
       - name: Atualizar spread PVB-TTF
         run: |
           set -o pipefail
@@ -104,8 +121,8 @@ jobs:
       - name: Fazer commit dos datasets (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
-          commit_message: "🔥 BOT: Atualizar MIBGAS (índices + spread TTF)"
-          file_pattern: "data/gas/mibgas_spot.csv data/gas/mibgas_ttf_spread.csv data/gas/metadata.json"
+          commit_message: "🔥 BOT: Atualizar MIBGAS (índices + futuros + spread TTF)"
+          file_pattern: "data/gas/mibgas_spot.csv data/gas/mibgas_futuros.csv data/gas/mibgas_ttf_spread.csv data/gas/metadata.json"
 
       - name: Fazer upload do log como artefacto
         if: always()

@@ -32,7 +32,7 @@ on:
       - "Atualizar Mapa de Precos (ENTSO-E)"
       - "Atualizar Mapa de Producao"
       - "Atualizar Producao (ENTSO-E)"
-      - "Atualizar Índices MIBGAS"
+      - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
     types: [completed]
 
