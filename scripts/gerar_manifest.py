@@ -216,7 +216,10 @@ REGISTO = [
          cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
          avisos=["Só há linhas em dias de sessão (~255/ano): fins de semana e "
                  "feriados não têm cotação.",
-                 "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial."]),
+                 "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial.",
+                 "A chave é (data_iso, produto, entrega_inicio): os produtos de "
+                 "estação W e S cotam duas estações em simultâneo e aparecem "
+                 "duas vezes na mesma sessão."]),
 
     # ---------- Derivados ----------
     dict(id="agregados-omie", grupo="agregados", caminho="data/agregados/omie_*.csv",

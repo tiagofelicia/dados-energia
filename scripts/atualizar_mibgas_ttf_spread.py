@@ -182,14 +182,19 @@ def ordenar(df):
     """
     ordem = {p: i for i, p in enumerate(ORDEM_PRODUTOS)}
     return (df.assign(_ord=df["produto"].map(ordem).fillna(99))
-              .sort_values(["data_iso", "_ord", "produto"])
+              .sort_values(["data_iso", "_ord", "produto", "entrega_inicio"],
+                           kind="stable")
               .drop(columns="_ord")
               .reset_index(drop=True))
 
 
 def formatar(df):
     df = df[df["_dt"].dt.year >= ANO_INICIAL].copy()
-    df = df.drop_duplicates(subset=["_dt", "produto"], keep="last")
+    # A chave tem de incluir a entrega. Sem ela, "W" e "S" — que cotam duas
+    # estações em simultâneo, o inverno que vem e o seguinte — colapsavam numa
+    # linha só e perdiam-se 684 cotações (6 % do ficheiro), sempre a mais
+    # próxima, que é justamente a que o MIBGAS mostra na página.
+    df = df.drop_duplicates(subset=["_dt", "produto", "_ini"], keep="last")
 
     out = pd.DataFrame({
         "dia": df["_dt"].dt.strftime("%d/%m/%Y"),
@@ -263,7 +268,8 @@ def main():
                                     "entrega_inicio": str, "entrega_fim": str})
         antes = len(antigo)
         j = pd.concat([antigo[COLUNAS], novo], ignore_index=True)
-        j = j.drop_duplicates(subset=["data_iso", "produto"], keep="last")
+        j = j.drop_duplicates(subset=["data_iso", "produto", "entrega_inicio"],
+                              keep="last")
         final = ordenar(j)
         print(f"   {antes} linhas + {len(novo)} recolhidas "
               f"→ {len(final)} ({len(final) - antes:+d})")
