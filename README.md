@@ -130,6 +130,7 @@ Os ficheiros de `producao-entsoe/` têm um schema próprio e mais rico, com `tim
 | Ficheiro | Conteúdo | Atualização |
 |---|---|---|
 | `mibgas_spot.csv` | Índices diários do mercado ibérico de gás, desde 17/12/2015 | 2×/dia |
+| `mibgas_futuros.csv` | Curva forward do gás ibérico em preço absoluto, do intradiário ao ano Y+2, desde 16/12/2015 | 2×/dia |
 | `mibgas_ttf_spread.csv` | Prémio do gás ibérico face ao benchmark europeu TTF, 15 produtos de D+1 a Y+2, desde 02/01/2024 | 2×/dia |
 | `metadata.json` | Última data, primeira data e cobertura | 2×/dia |
 
@@ -137,7 +138,8 @@ Schema de `mibgas_spot.csv`:
 
 ```
 dia,data_iso,mibgas_pt,mibgas_es,vtp_last,vtp_avg,pvb_last,pvb_avg,lng_es,avb_es
-11/09/2026,2026-09-11,,,72.58,72.30,72.75,72.45,,
+11/09/2026,2026-09-11,81.59,81.92,83.01,81.65,83.46,82.50,81.34,81.00
+12/09/2026,2026-09-12,,,80.60,81.30,81.31,81.55,,
 ```
 
 | Coluna | Índice | Disponível desde |
@@ -150,10 +152,64 @@ dia,data_iso,mibgas_pt,mibgas_es,vtp_last,vtp_avg,pvb_last,pvb_avg,lng_es,avb_es
 | `avb_es` | Armazenamento Espanha | 2021 |
 
 - Preços em **€/MWh** (PCS). **Um campo vazio significa "não publicado nesse dia", nunca zero.**
-- Só preços reais de mercado: sem futuros, sem preenchimento de lacunas. Os índices de referência PT/ES saem com cerca de três dias de atraso e preenchem-se depois.
-- **PVB é o hub espanhol e VTP o português.** Se estiver a replicar a fórmula de um comercializador, confirme qual dos índices ela refere: em 2026 o `mibgas_pt` afastou-se do `pvb_last` em mais de 1 €/MWh em 117 de 247 dias.
+- Só preços reais de mercado: sem futuros, sem preenchimento de lacunas. Os índices de referência PT/ES saem com cerca de três dias de atraso e preenchem-se depois — é o que mostra a segunda linha do exemplo, com os hubs já publicados e `mibgas_pt`/`mibgas_es` ainda vazios.
+**Que coluna usar.** Há duas famílias de índices e é fácil confundi-las:
 
-Schema de `mibgas_ttf_spread.csv`:
+- **Hubs** — `vtp_last` / `vtp_avg` (VTP, Portugal) e `pvb_last` / `pvb_avg` (PVB, Espanha). São o preço negociado em cada ponto virtual. A correspondência natural é `vtp_last` para Portugal e `pvb_last` para Espanha.
+- **Índices de referência** — `mibgas_pt` e `mibgas_es`. Calculados por outra metodologia, e o `mibgas_es` é o único com série desde 2015.
+
+Os dois hubs andam praticamente colados: entre 2023 e 2026, o `vtp_last` afastou-se do `pvb_last` mais de 1 €/MWh em apenas **5 % dos dias** (média de +0,05 €/MWh). Já a diferença entre o índice de referência e o hub do mesmo país é maior — 30 % dos dias acima de 1 €/MWh. Ou seja: **misturar famílias engana mais do que comparar países.**
+
+Se estiver a replicar a fórmula de um comercializador, confirme qual das quatro colunas ela refere.
+
+#### `mibgas_futuros.csv`
+
+```
+dia,data_iso,produto,area,horizonte,rotulo,entrega_inicio,entrega_fim,dias_entrega,preco_ultimo,preco_referencia,volume_mwh
+04/09/2026,2026-09-04,GYES_Y+1,ES,ano,2027,2027-01-01,2027-12-31,365,52.43,52.43,0.0
+```
+
+Os produtos a prazo negociados no MIBGAS, em **€/MWh**. Filtre por `horizonte`, que
+vai do mais curto ao mais longo: `intradiario`, `dia`, `fim-de-semana`,
+`resto-do-mes`, `mes`, `trimestre`, `estacao`, `ano`. O horizonte é lido do código do
+produto, não deduzido das datas.
+
+Atenção a `intradiario` *vs* `dia`: o intradiário (`GWD*`) entrega **no próprio dia da
+sessão** e o day-ahead (`GDA*`) entrega de D+1 a D+3. Os dois têm `dias_entrega = 1`,
+pelo que filtrar só por duração os confunde.
+
+| Coluna | |
+|---|---|
+| `dia` | Dia de **negociação** (a cotação), não de entrega |
+| `rotulo` | O período de entrega por extenso: `Maio 2025`, `3.º Trimestre 2025`, `Inverno 2025/26`, `2027` |
+| `preco_ultimo` | *Last Price* — sinal de fecho da sessão; estima o valor quando não houve liquidez |
+| `preco_referencia` | *Reference Price* — média ponderada das transações da sessão |
+
+**O `rotulo` é a razão de ser deste ficheiro.** O MIBGAS identifica os produtos por
+posição relativa — `GMES_M+2` é "o segundo mês a contar de agora", e o que isso
+significa muda todos os meses. Sem o rótulo, uma série histórica de `GMES_M+2` mistura
+entregas de meses diferentes. A coluna é derivada das datas de entrega, não de uma
+tabela, por isso não precisa de manutenção anual.
+
+Os produtos de médio e longo prazo (`GMES`, `GQES`, `GYES`, `GSES`, `GBoMES`) existem
+só para **ES** — a liquidez forward está no hub espanhol. Portugal só tem o curto prazo:
+`GWDPT` (intradiário), `GDAPT_D+1` a `D+3` (day-ahead) e `GWEPT` (fim de semana).
+O horizonte mais distante cotado é o ano **Y+2** (em 2026, o ano de 2028).
+
+A curva de 04/09/2026 em `preco_ultimo`, para dar uma ideia do que se lê aqui. Nos
+produtos de entrega mais próxima, onde houve transações, o `preco_referencia` difere;
+nos mais distantes não houve liquidez e as duas colunas coincidem — daí ser o
+`preco_ultimo` o que dá uma curva completa:
+
+```
+Outubro 2026    71,13     4.º Trimestre 2026   71,18     Inverno 2026/27   69,08
+Dezembro 2026   71,41     2.º Trimestre 2027   50,07     Inverno 2027/28   45,08
+                          2027                 52,43     2028              34,58
+```
+
+#### `mibgas_ttf_spread.csv`
+
+Schema:
 
 ```
 dia,data_iso,produto,entrega_inicio,entrega_fim,spread,ttf_derivado
@@ -162,6 +218,11 @@ dia,data_iso,produto,entrega_inicio,entrega_fim,spread,ttf_derivado
 
 - `spread` em €/MWh: positivo = gás ibérico mais caro que o TTF europeu.
 - `dia` é o dia de **negociação**; só há linhas em dias de sessão (~255/ano).
+- **A chave é `(data_iso, produto, entrega_inicio)`, não `(data_iso, produto)`.** Os produtos
+  de estação `W` e `S` são cotados para duas estações ao mesmo tempo — o inverno que vem e o
+  seguinte — e aparecem **duas vezes na mesma sessão**, distinguidos só pela entrega. Em
+  11/09/2026, `W` vale -0,625 para o inverno 2026/27 e -0,586 para o de 2027/28. Filtrar por
+  `produto == "W"` devolve duas linhas: use também `entrega_inicio`.
 - `ttf_derivado` (só para `D+1`) é uma **estimativa** com incerteza de cerca de 1 €/MWh, não o índice oficial da ICE. Validada contra as médias trimestrais da DG ENER.
 
 ### `data/mapas/` — Europa

@@ -188,7 +188,12 @@ const recordes = await r.json();</code></pre>
     <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
     <tr><td><a href="data/gas/mibgas_spot.csv">mibgas_spot.csv</a></td>
         <td>Índices diários do mercado ibérico de gás (PT, ES, VTP, PVB, GNL, armazenamento) desde 17/12/2015.
-            Só preços reais: sem futuros, sem preenchimento de lacunas.</td>
+            Só índices à vista: preços reais, sem preenchimento de lacunas.</td>
+        <td>2×/dia</td></tr>
+    <tr><td><a href="data/gas/mibgas_futuros.csv">mibgas_futuros.csv</a></td>
+        <td>Curva forward do gás ibérico em preço absoluto — do intradiário ao ano Y+2, com a
+            coluna <code>rotulo</code> já legível («Janeiro 2027», «1.º Trimestre 2027»).
+            Desde 16/12/2015.</td>
         <td>2×/dia</td></tr>
     <tr><td><a href="data/gas/mibgas_ttf_spread.csv">mibgas_ttf_spread.csv</a></td>
         <td>Prémio do gás ibérico face ao benchmark europeu TTF, 15 produtos de D+1 a Y+2, desde 02/01/2024.</td>
@@ -198,7 +203,11 @@ const recordes = await r.json();</code></pre>
         <td>2×/dia</td></tr>
   </table>
   <p class="nota">Preços em €/MWh (PCS). <strong>Campo vazio = não publicado nesse dia, nunca zero.</strong>
-     PVB é o hub espanhol e VTP o português — confirme qual a fórmula do seu comercializador refere.
+     PVB é o hub espanhol e VTP o português: andam praticamente colados (diferem em 5 % dos dias),
+     ao contrário dos índices de referência <code>mibgas_pt</code>/<code>mibgas_es</code>, que são outra
+     família — confirme qual a fórmula do seu comercializador refere.
+     Na curva forward, o médio e longo prazo (mês, trimestre, estação, ano) é cotado só em
+     Espanha; Portugal tem apenas produtos de curto prazo.
      A coluna <code>ttf_derivado</code> é uma estimativa (±1 €/MWh), não o índice oficial da ICE.</p>
 </section>
 
