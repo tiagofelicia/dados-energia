@@ -538,6 +538,45 @@
    "url": "https://dados.tiagofelicia.pt/data/emissoes/"
   },
   {
+   "avisos": [
+    "É o preço do mercado PRIMÁRIO (fecho do leilão), não o spot do mercado secundário; diferem tipicamente algumas dezenas de cêntimos.",
+    "A chave é (data_iso, leilao, contrato): há dias com dois leilões, com preços diferentes.",
+    "Filtre por tipo='EUA' para as licenças gerais; 'EUAA' são de aviação e são outro instrumento.",
+    "Só há leilões em dias úteis, e nem todos: cerca de 220 por ano."
+   ],
+   "bytes": 180356,
+   "cadencia": "1x/dia",
+   "caminho": "data/emissoes/eua_co2.csv",
+   "colunas": [
+    "dia",
+    "data_iso",
+    "leilao",
+    "zona",
+    "contrato",
+    "tipo",
+    "estado",
+    "preco_eur_t",
+    "minimo_eur_t",
+    "maximo_eur_t",
+    "mediana_eur_t",
+    "volume_tco2",
+    "racio_cobertura",
+    "licitantes",
+    "receita_eur",
+    "receita_pt_eur"
+   ],
+   "descricao": "Resultados dos leilões primários de licenças de emissão da União Europeia, desde 07/01/2020: preço de fecho em EUR/tCO2, volume, rácio de cobertura, receita total e a parte que cabe a Portugal. Fonte: EEX, plataforma comum de leilões da UE.",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "emissoes",
+   "id": "emissoes-eua",
+   "linhas": 1481,
+   "titulo": "Leilões de licenças de CO2 (EU ETS)",
+   "tolerancia_dias": 5,
+   "ultima_data": "2026-09-11",
+   "url": "https://dados.tiagofelicia.pt/data/emissoes/eua_co2.csv"
+  },
+  {
    "bytes": 9773,
    "cadencia": "quando as fontes mudam",
    "caminho": "data/referencia/tecnologias.json",
@@ -601,7 +640,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-13T18:49:14+00:00",
+ "gerado_em": "2026-09-13T20:41:15+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -616,8 +655,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 349146384,
-  "datasets": 26,
-  "ficheiros": 1431
+  "bytes": 349326740,
+  "datasets": 27,
+  "ficheiros": 1432
  }
 }
