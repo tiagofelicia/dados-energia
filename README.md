@@ -52,7 +52,7 @@ data/
 ├── gas/          Mercado ibérico de gás natural (MIBGAS)
 ├── mapas/        Preços e mix de produção por país/zona europeia
 ├── agregados/    Médias e totais pré-calculados (diário, mensal, anual)
-├── emissoes/     Intensidade carbónica da produção elétrica
+├── emissoes/     Intensidade carbónica e preço do CO2 (leilões EU ETS)
 ├── referencia/   Tabelas de referência (tecnologias, vocabulários)
 ├── regulado/     Dados regulados ERSE/E-Redes (atualização anual)
 └── manifest.json Catálogo de tudo o que está acima
@@ -144,21 +144,35 @@ dia,data_iso,mibgas_pt,mibgas_es,vtp_last,vtp_avg,pvb_last,pvb_avg,lng_es,avb_es
 
 | Coluna | Índice | Disponível desde |
 |---|---|---|
-| `mibgas_pt` | Índice de referência MIBGAS-PT | 17/03/2021 |
-| `mibgas_es` | Índice de referência MIBGAS-ES | 17/12/2015 |
-| `vtp_last` / `vtp_avg` | VTP — hub português, última transação / média ponderada | 01/01/2023 |
-| `pvb_last` / `pvb_avg` | PVB — hub espanhol, última transação / média ponderada | 01/01/2023 |
+| `mibgas_pt` | Índice MIBGAS-PT — o dia de gás inteiro, no VTP | 17/03/2021 |
+| `mibgas_es` | Índice MIBGAS-ES — o dia de gás inteiro, no PVB | 17/12/2015 |
+| `vtp_last` / `vtp_avg` | Índice **day-ahead** do VTP — preço de fecho / média ponderada da sessão | 01/01/2023 |
+| `pvb_last` / `pvb_avg` | Índice **day-ahead** do PVB — preço de fecho / média ponderada da sessão | 01/01/2023 |
 | `lng_es` | GNL Espanha | 2018 (esparso) |
 | `avb_es` | Armazenamento Espanha | 2021 |
 
 - Preços em **€/MWh** (PCS). **Um campo vazio significa "não publicado nesse dia", nunca zero.**
-- Só preços reais de mercado: sem futuros, sem preenchimento de lacunas. Os índices de referência PT/ES saem com cerca de três dias de atraso e preenchem-se depois — é o que mostra a segunda linha do exemplo, com os hubs já publicados e `mibgas_pt`/`mibgas_es` ainda vazios.
-**Que coluna usar.** Há duas famílias de índices e é fácil confundi-las:
+- Só preços reais de mercado: sem futuros, sem preenchimento de lacunas. Os índices do dia de gás PT/ES saem **um a dois dias** depois da entrega e preenchem-se então — é o que mostra a segunda linha do exemplo, com os índices day-ahead já publicados e `mibgas_pt`/`mibgas_es` ainda vazios.
 
-- **Hubs** — `vtp_last` / `vtp_avg` (VTP, Portugal) e `pvb_last` / `pvb_avg` (PVB, Espanha). São o preço negociado em cada ponto virtual. A correspondência natural é `vtp_last` para Portugal e `pvb_last` para Espanha.
-- **Índices de referência** — `mibgas_pt` e `mibgas_es`. Calculados por outra metodologia, e o `mibgas_es` é o único com série desde 2015.
+**Que coluna usar.** São todos índices do MIBGAS, e a diferença entre eles não é de metodologia mas de **âmbito** — quantas transações entram na conta. As definições abaixo são as da própria fonte, na aba `Definitions` do xlsx:
 
-Os dois hubs andam praticamente colados: entre 2023 e 2026, o `vtp_last` afastou-se do `pvb_last` mais de 1 €/MWh em apenas **5 % dos dias** (média de +0,05 €/MWh). Já a diferença entre o índice de referência e o hub do mesmo país é maior — 30 % dos dias acima de 1 €/MWh. Ou seja: **misturar famílias engana mais do que comparar países.**
+- **Índices day-ahead** — `vtp_last` / `vtp_avg` (Portugal) e `pvb_last` / `pvb_avg` (Espanha). Cobrem **um só produto** (D+1, D+3 ou fim de semana) numa **só sessão**. O `_last` é o *Last Price*, «um sinal do preço de fecho do mercado, filtrando os dados significativos e estimando o valor quando não há liquidez»; o `_avg` é o *Reference Price*, a média ponderada de todas as transações da sessão — «mais robusto e menos manipulável, mas pode divergir do preço de fecho».
+- **Índices do dia de gás** — `mibgas_pt` e `mibgas_es`. Cobrem **todos os produtos** com entrega nesse dia, em **todas as sessões já concluídas**. É o valor definitivo do dia, e por isso só fecha um a dois dias depois da entrega. O `mibgas_es` é o único com série desde 2015.
+
+**O que o site do MIBGAS mostra** nos cartões «Day Ahead PT» e «Day Ahead ES» é o `vtp_last` e o `pvb_last`. Se estiver a comparar números com mibgas.es, é com estas colunas que tem de comparar — não com `mibgas_pt`/`mibgas_es`.
+
+Uma consequência prática: nos dias de entrega ainda futuros, o valor day-ahead publicado é **provisório**. O índice de um dia só fica fixado depois da sessão imediatamente anterior a esse dia; até lá vale a última cotação conhecida para essa entrega, que pode ser de vários dias antes.
+
+Os dois índices day-ahead andam praticamente colados: entre 2023 e 2026, o `vtp_last` afastou-se do `pvb_last` mais de 1 €/MWh em apenas **5 % dos dias** (média de +0,05 €/MWh).
+
+Já a distância entre o índice do dia de gás e o índice day-ahead da mesma zona é maior — e depende de qual das duas colunas day-ahead se usa. Como ambos são médias ponderadas, o índice do dia aproxima-se mais do `_avg` do que do `_last`, que é um sinal de fecho:
+
+| Dias com diferença > 1 €/MWh | contra `_last` | contra `_avg` |
+|---|---|---|
+| `mibgas_pt` vs day-ahead VTP | 30 % | 19 % |
+| `mibgas_es` vs day-ahead PVB | 16 % | 11 % |
+
+Duas leituras: **misturar famílias engana mais do que comparar países**, e engana quase o dobro em Portugal do que em Espanha. Compare sempre `_avg` com o índice de referência, nunca `_last`, se o objetivo for medir a distância entre as duas famílias.
 
 Se estiver a replicar a fórmula de um comercializador, confirme qual das quatro colunas ela refere.
 
@@ -256,7 +270,7 @@ Os agregados OMIE incluem o **preço médio por período do ciclo horário BTN**
 
 **Os dias futuros estimados a partir dos futuros OMIP estão excluídos** — estes ficheiros contêm apenas dias com preço real de mercado.
 
-### `data/emissoes/` — Intensidade carbónica
+### `data/emissoes/` — Intensidade carbónica e preço do CO₂
 
 Emissões da produção elétrica nacional, calculadas a 15 minutos desde 2010 a partir de `data/producao/`.
 
@@ -275,6 +289,36 @@ Unidade: **gCO₂eq/kWh**. Fatores: **IPCC AR5**, WG3 Annex III, Tabela A.III.2 
 - São emissões de **ciclo de vida** (construção, fabrico, operação, desmantelamento), não emissões diretas de combustão. **Não são comparáveis** com o Inventário Nacional da APA nem com o indicador da EEA, que contabilizam só emissões diretas. Os valores aqui são, por construção, mais altos.
 - É a intensidade da **produção nacional**, não do consumo. Portugal importa de Espanha — em 2024, 25,5 % do consumo. As colunas `saldo_importador_gwh` e `importacao_perc_consumo` dizem quando a diferença é material.
 - No perfil horário, as horas de maior sol **não** são as mais limpas: em ciclo de vida o solar (48) é cerca do dobro da hídrica (24), pelo que ao meio-dia a intensidade sobe face às horas de predomínio hídrico. Em emissões diretas o resultado inverteria-se.
+
+#### `eua_co2.csv` — Leilões de licenças de CO2 (EU ETS)
+
+```
+dia,data_iso,leilao,zona,contrato,tipo,estado,preco_eur_t,minimo_eur_t,maximo_eur_t,mediana_eur_t,volume_tco2,racio_cobertura,licitantes,receita_eur,receita_pt_eur
+10/09/2026,2026-09-10,Auction 4. Period CAP3 EU,EU,T3PA,EUA,successful,85.16,42.0,120.0,85.16,2791500,1.28,25,237724140,4428320
+```
+
+Resultados dos leilões primários de licenças de emissão da União Europeia, desde 07/01/2020. Fonte: **[EEX](https://www.eex.com)**, a plataforma comum de leilões da UE. Cerca de 220 leilões por ano.
+
+| Coluna | |
+|---|---|
+| `preco_eur_t` | Preço de fecho do leilão, **€/tCO₂**. Vazio se o leilão foi cancelado |
+| `tipo` | `EUA` (licenças gerais) ou `EUAA` (aviação) — **filtre por esta coluna** |
+| `racio_cobertura` | Procura a dividir pela oferta; abaixo de 1 o leilão fica deserto |
+| `receita_pt_eur` | A parte da receita que cabe a **Portugal**. Só nos leilões da UE: os nacionais (DE, PL) não repartem |
+
+- **A chave é `(data_iso, leilao, contrato)`**, não a data. Há dias com dois leilões e preços diferentes — por exemplo um da UE e um da Polónia.
+- É o mercado **primário** (fecho do leilão), não o spot do secundário. Diferem tipicamente algumas dezenas de cêntimos.
+- Os leilões cancelados ficam na série, com `estado` diferente de `successful` e preço vazio: são eventos reais do mercado.
+
+**Para que serve: o custo de transformar gás em eletricidade.** Com este ficheiro, o `mibgas_spot.csv` e o `omie_diario.csv` fecha-se a conta do custo variável de um ciclo combinado:
+
+```
+custo (€/MWh elétrico) = gás / rendimento  +  preço_CO₂ × 0,2016 / rendimento
+```
+
+onde 0,2016 tCO₂/MWh térmico é o valor por omissão do regulamento de monitorização da UE para gás natural, e um CCGT moderno ronda os 55 % de rendimento. A diferença para o preço do OMIE é o *clean spark spread*. Em 12/09/2026, com gás a 81,53 e CO₂ a 85,01, um CCGT a 55 % precisava de **179,40 €/MWh** — e o OMIE fez média de 118,07.
+
+⚠️ **Não reutilize os fatores de `fatores_emissao.csv` nesta conta.** Esses são de ciclo de vida (IPCC AR5); aqui é preciso o fator de **combustão apenas**, que é o único que o ETS cobra.
 
 ### `data/referencia/` — Tabelas de referência
 

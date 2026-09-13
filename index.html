@@ -203,9 +203,11 @@ const recordes = await r.json();</code></pre>
         <td>2×/dia</td></tr>
   </table>
   <p class="nota">Preços em €/MWh (PCS). <strong>Campo vazio = não publicado nesse dia, nunca zero.</strong>
-     PVB é o hub espanhol e VTP o português: andam praticamente colados (diferem em 5 % dos dias),
-     ao contrário dos índices de referência <code>mibgas_pt</code>/<code>mibgas_es</code>, que são outra
-     família — confirme qual a fórmula do seu comercializador refere.
+     PVB é o ponto virtual espanhol e VTP o português. Há dois índices por zona e diferem no âmbito:
+     <code>vtp_last</code>/<code>pvb_last</code> são o índice <strong>day-ahead</strong> (um produto, uma
+     sessão — é o que o site do MIBGAS mostra), enquanto <code>mibgas_pt</code>/<code>mibgas_es</code>
+     cobrem <strong>todos os produtos com entrega nesse dia</strong> e só fecham um a dois dias depois.
+     Confirme qual a fórmula do seu comercializador refere.
      Na curva forward, o médio e longo prazo (mês, trimestre, estação, ano) é cotado só em
      Espanha; Portugal tem apenas produtos de curto prazo.
      A coluna <code>ttf_derivado</code> é uma estimativa (±1 €/MWh), não o índice oficial da ICE.</p>
@@ -245,9 +247,10 @@ const recordes = await r.json();</code></pre>
 </section>
 
 <section>
-  <h2>🌱 Intensidade carbónica — <code>data/emissoes/</code></h2>
+  <h2>🌱 Intensidade carbónica e preço do CO₂ — <code>data/emissoes/</code></h2>
   <p>Emissões da produção elétrica nacional, calculadas a 15 minutos desde 2010 a partir de
-     <code>data/producao/</code>. Unidade: <strong>gCO₂eq/kWh</strong>.</p>
+     <code>data/producao/</code> (unidade: <strong>gCO₂eq/kWh</strong>), e o preço a que a UE
+     leiloa as licenças de emissão.</p>
   <table>
     <tr><th>Ficheiro</th><th>Conteúdo</th><th>Tamanho</th></tr>
     <tr><td><a href="data/emissoes/intensidade_anual.csv">intensidade_anual.csv</a></td>
@@ -258,7 +261,17 @@ const recordes = await r.json();</code></pre>
         <td>Média por hora do dia e por ano — quando é que a eletricidade é mais limpa.</td><td>6 KB</td></tr>
     <tr><td><a href="data/emissoes/fatores_emissao.csv">fatores_emissao.csv</a></td>
         <td>Os fatores usados (IPCC AR5, WG3 Annex III) e a sua proveniência.</td><td>1 KB</td></tr>
+    <tr><td><a href="data/emissoes/eua_co2.csv">eua_co2.csv</a></td>
+        <td>Leilões primários de licenças de CO₂ da UE (EU ETS), desde 2020: preço de fecho em
+            €/tCO₂, volume, rácio de cobertura e a receita que cabe a Portugal. Fonte: EEX.</td><td>176 KB</td></tr>
   </table>
+  <p class="nota"><strong>Custo de transformar gás em eletricidade.</strong> Juntando o
+     <code>eua_co2.csv</code> ao <code>mibgas_spot.csv</code> e ao <code>omie_diario.csv</code>
+     fecha-se a conta: <em>custo = gás ÷ rendimento + CO₂ × 0,2016 ÷ rendimento</em>, onde 0,2016
+     tCO₂/MWh térmico é o valor por omissão do regulamento de monitorização da UE para gás natural.
+     Em 12/09/2026, um ciclo combinado a 55 % precisava de 179,40 €/MWh — e o OMIE fez média de 118,07.
+     Atenção: aqui é o fator de <strong>combustão</strong>, não os de ciclo de vida do
+     <code>fatores_emissao.csv</code>.</p>
   <p class="nota"><strong>⚠️ Âmbito.</strong> São emissões de <strong>ciclo de vida</strong> (construção,
      fabrico, operação, desmantelamento), não emissões diretas de combustão: <strong>não são comparáveis</strong>
      com o Inventário Nacional da APA nem com o indicador da EEA. Cobrem a <strong>produção nacional</strong>,
