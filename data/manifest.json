@@ -142,7 +142,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 7878,
+   "bytes": 6762,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -152,7 +152,7 @@
    "id": "omie-hoje",
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-09-13",
+   "ultima_data": "2026-09-14",
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
@@ -281,7 +281,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 15165,
+   "bytes": 15166,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -434,7 +434,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
-   "bytes": 753471,
+   "bytes": 753605,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -467,11 +467,11 @@
    "padrao": "data/agregados/omie_*.csv",
    "titulo": "Agregados OMIE (diário, mensal, anual)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-13",
+   "ultima_data": "2026-09-14",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
-   "bytes": 716371,
+   "bytes": 716478,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -502,7 +502,7 @@
    "padrao": "data/agregados/producao_*.csv",
    "titulo": "Agregados de produção (diário, mensal, anual)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-11",
+   "ultima_data": "2026-09-12",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
@@ -510,7 +510,7 @@
     "São emissões de CICLO DE VIDA, não diretas: não comparáveis com o Inventário Nacional da APA nem com o indicador da EEA.",
     "Cobre a produção nacional, não o consumo: as importações de Espanha (25% do consumo em 2024) não estão incluídas."
    ],
-   "bytes": 476275,
+   "bytes": 476349,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/",
    "colunas": [
@@ -534,7 +534,7 @@
    "padrao": "data/emissoes/intensidade_*.csv",
    "titulo": "Intensidade carbónica da produção elétrica",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-11",
+   "ultima_data": "2026-09-12",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/"
   },
   {
@@ -640,7 +640,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-13T22:27:21+00:00",
+ "gerado_em": "2026-09-13T23:17:45+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -655,7 +655,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 349331560,
+  "bytes": 349330760,
   "datasets": 27,
   "ficheiros": 1432
  }
