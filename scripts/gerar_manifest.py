@@ -241,6 +241,20 @@ REGISTO = [
                  "o Inventário Nacional da APA nem com o indicador da EEA.",
                  "Cobre a produção nacional, não o consumo: as importações de "
                  "Espanha (25% do consumo em 2024) não estão incluídas."]),
+    dict(id="emissoes-eua", grupo="emissoes", caminho="data/emissoes/eua_co2.csv",
+         titulo="Leilões de licenças de CO2 (EU ETS)",
+         descricao="Resultados dos leilões primários de licenças de emissão da "
+                   "União Europeia, desde 07/01/2020: preço de fecho em EUR/tCO2, "
+                   "volume, rácio de cobertura, receita total e a parte que cabe "
+                   "a Portugal. Fonte: EEX, plataforma comum de leilões da UE.",
+         cadencia="1x/dia", tolerancia_dias=5, deteccao="csv_col_iso:data_iso",
+         avisos=["É o preço do mercado PRIMÁRIO (fecho do leilão), não o spot do "
+                 "mercado secundário; diferem tipicamente algumas dezenas de cêntimos.",
+                 "A chave é (data_iso, leilao, contrato): há dias com dois leilões, "
+                 "com preços diferentes.",
+                 "Filtre por tipo='EUA' para as licenças gerais; 'EUAA' são de "
+                 "aviação e são outro instrumento.",
+                 "Só há leilões em dias úteis, e nem todos: cerca de 220 por ano."]),
 
     # ---------- Referência ----------
     dict(id="referencia-tecnologias", grupo="referencia",
