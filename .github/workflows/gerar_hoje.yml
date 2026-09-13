@@ -34,6 +34,7 @@ on:
       - "Atualizar Producao (ENTSO-E)"
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
+      - "Atualizar CO2 (EU ETS)"
     types: [completed]
 
   schedule:
