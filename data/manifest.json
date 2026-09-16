@@ -344,7 +344,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
   },
   {
-   "bytes": 195095,
+   "bytes": 195165,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_spot.csv",
    "colunas": [
@@ -364,10 +364,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-mibgas",
-   "linhas": 3927,
+   "linhas": 3928,
    "titulo": "Índices MIBGAS",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-16",
+   "ultima_data": "2026-09-17",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
@@ -376,7 +376,7 @@
     "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
     "horizonte 'intradiario' entrega no próprio dia da sessão e 'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."
    ],
-   "bytes": 3293633,
+   "bytes": 3295876,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_futuros.csv",
    "colunas": [
@@ -398,10 +398,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-futuros",
-   "linhas": 34981,
+   "linhas": 35004,
    "titulo": "Curva forward do gás ibérico",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-09-15",
+   "ultima_data": "2026-09-16",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_futuros.csv"
   },
   {
@@ -410,7 +410,7 @@
     "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial.",
     "A chave é (data_iso, produto, entrega_inicio): os produtos de estação W e S cotam duas estações em simultâneo e aparecem duas vezes na mesma sessão."
    ],
-   "bytes": 607940,
+   "bytes": 608825,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_ttf_spread.csv",
    "colunas": [
@@ -427,10 +427,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-ttf-spread",
-   "linhas": 10949,
+   "linhas": 10965,
    "titulo": "Spread PVB-TTF",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-09-15",
+   "ultima_data": "2026-09-16",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
@@ -640,7 +640,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-16T21:44:58+00:00",
+ "gerado_em": "2026-09-16T22:19:25+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -655,7 +655,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 351412815,
+  "bytes": 351416013,
   "datasets": 27,
   "ficheiros": 1466
  }
