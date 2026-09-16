@@ -22,10 +22,10 @@
  },
  "completo": false,
  "data": "2026-09-16",
- "dias_atraso": 0,
- "e_hoje": true,
+ "dias_atraso": 1,
+ "e_hoje": false,
  "fonte": "REN Data Hub",
- "gerado_em": "2026-09-16T22:59:05+00:00",
+ "gerado_em": "2026-09-16T23:43:23+00:00",
  "horas": [
   "00:00",
   "00:15",
