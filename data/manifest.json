@@ -371,6 +371,20 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
+   "bytes": 1837,
+   "cadencia": "a cada actualização",
+   "caminho": "data/gas/hoje.json",
+   "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
+   "ficheiros": 1,
+   "formato": "json",
+   "grupo": "gas",
+   "id": "gas-hoje",
+   "titulo": "Instantâneo MIBGAS do dia",
+   "tolerancia_dias": 2,
+   "ultima_data": "2026-09-16",
+   "url": "https://dados.tiagofelicia.pt/data/gas/hoje.json"
+  },
+  {
    "avisos": [
     "Os produtos de médio e longo prazo existem só para ES — a liquidez forward está no hub espanhol.",
     "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
@@ -640,7 +654,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-17T15:29:08+00:00",
+ "gerado_em": "2026-09-17T15:54:52+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -655,8 +669,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 351532937,
-  "datasets": 27,
-  "ficheiros": 1466
+  "bytes": 351534774,
+  "datasets": 28,
+  "ficheiros": 1467
  }
 }
