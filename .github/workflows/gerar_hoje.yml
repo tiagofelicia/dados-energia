@@ -3,6 +3,7 @@
 # gerar_hoje.py
 #   → data/omie/hoje.json       preços de hoje e de amanhã   (~8 KB)
 #   → data/producao/hoje.json   mix de produção de hoje      (~15 KB)
+#   → data/gas/hoje.json        índice MIBGAS do dia         (~2 KB)
 #
 # gerar_manifest.py
 #   → data/manifest.json        catálogo legível por máquina, que o status.html lê
@@ -112,7 +113,7 @@ jobs:
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "🕒 BOT: Atualizar hoje.json + manifesto"
-          file_pattern: "data/omie/hoje.json data/producao/hoje.json data/manifest.json"
+          file_pattern: "data/omie/hoje.json data/producao/hoje.json data/gas/hoje.json data/manifest.json"
 
       - name: Fazer upload do log como artefacto
         if: always()
