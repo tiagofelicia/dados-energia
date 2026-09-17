@@ -13,7 +13,10 @@
 # O xlsx atualizado NÃO é committed (binário sem delta inflaria o histórico).
 # No git, o xlsx é a base de tarifários mantida manualmente.
 
-name: Atualização Diária OMIE + Tarifários Eletricidade
+# Sem "+" no nome: o gerar_hoje.yml refere este workflow por nome num filtro
+# workflow_run, e o "+" é um carácter especial dos filtros do GitHub Actions —
+# com ele o disparo nunca acontecia (verificado 2026-09-17).
+name: Atualização Diária OMIE e Tarifários Eletricidade
 
 on:
   schedule:

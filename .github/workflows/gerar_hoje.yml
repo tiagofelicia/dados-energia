@@ -26,8 +26,10 @@ on:
   workflow_run:
     # Todos os workflows que escrevem em data/: o manifesto tem de refletir o
     # estado de qualquer um deles, não só dos dois que alimentam o hoje.json.
+    # Os nomes não podem ter caracteres especiais de filtro (* ? + [ ] !): com o
+    # antigo "OMIE + Tarifários" este disparo nunca aconteceu (2026-09-17).
     workflows:
-      - "Atualização Diária OMIE + Tarifários Eletricidade"
+      - "Atualização Diária OMIE e Tarifários Eletricidade"
       - "Atualizar Dados de Produção (REN)"
       - "Atualizar Mapa de Precos (ENTSO-E)"
       - "Atualizar Mapa de Producao"
