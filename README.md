@@ -132,7 +132,10 @@ Os ficheiros de `producao-entsoe/` têm um schema próprio e mais rico, com `tim
 | `mibgas_spot.csv` | Índices diários do mercado ibérico de gás, desde 17/12/2015 | 2×/dia |
 | `mibgas_futuros.csv` | Curva forward do gás ibérico em preço absoluto, do intradiário ao ano Y+2, desde 16/12/2015 | 2×/dia |
 | `mibgas_ttf_spread.csv` | Prémio do gás ibérico face ao benchmark europeu TTF, 15 produtos de D+1 a Y+2, desde 02/01/2024 | 2×/dia |
+| `hoje.json` | Instantâneo do dia: último índice PT e ES, variação diária, médias e extremos de 30 dias (~2 KB) | A cada atualização |
 | `metadata.json` | Última data, primeira data e cobertura | 2×/dia |
+
+O `hoje.json` refere-se ao **último dia com índice português**, que é tipicamente ontem: o MIBGAS só publica o índice de um dia de gás depois de esse dia fechar. Os campos `data`, `e_hoje` e `dias_atraso` dizem sempre a que dia os valores pertencem.
 
 Schema de `mibgas_spot.csv`:
 
