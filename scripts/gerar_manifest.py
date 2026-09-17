@@ -196,6 +196,14 @@ REGISTO = [
                    "VTP, PVB, GNL, armazenamento), desde 17/12/2015. Só preços "
                    "reais: sem futuros, sem preenchimento de lacunas.",
          cadencia="2x/dia", tolerancia_dias=2, deteccao="meta:ultima_data"),
+    # tolerancia_dias=2 e não 1: o índice de um dia de gás só é publicado depois
+    # de esse dia fechar, por isso este ficheiro está normalmente em D-1.
+    dict(id="gas-hoje", grupo="gas", caminho="data/gas/hoje.json",
+         titulo="Instantâneo MIBGAS do dia",
+         descricao="Último índice diário PT e ES, variação face ao dia anterior, "
+                   "médias e extremos de 30 dias e a série desses 30 dias, para "
+                   "dashboards e widgets (~2 KB).",
+         cadencia="a cada actualização", tolerancia_dias=2, deteccao="meta:data"),
     dict(id="gas-futuros", grupo="gas", caminho="data/gas/mibgas_futuros.csv",
          titulo="Curva forward do gás ibérico",
          descricao="Produtos a prazo negociados no MIBGAS em preço absoluto, "

@@ -6,6 +6,7 @@ Produz instantâneos leves do dia corrente, para dashboards e widgets.
 
   data/omie/hoje.json       preços de hoje e de amanhã       ~7 KB
   data/producao/hoje.json   mix de produção de hoje          ~12 KB
+  data/gas/hoje.json        índice MIBGAS do dia             ~2 KB
 
 PORQUÊ
 ------
@@ -45,11 +46,19 @@ O campo "real" distingue os dois casos, comparando com a Data_Valores_OMIE:
 Nunca omitimos o bloco: um widget que mostre "ainda não há preço para amanhã"
 é menos útil do que um que mostre a estimativa devidamente rotulada.
 
+O ÍNDICE DE GÁS CHEGA SEMPRE COM UM DIA DE ATRASO
+-------------------------------------------------
+O MIBGAS publica o índice de um dia de gás depois de esse dia fechar, por isso a
+última linha do mibgas_spot.csv costuma trazer o dia corrente ainda sem
+mibgas_pt/mibgas_es. O alvo do gas/hoje.json é o último dia COM índice português
+— tipicamente ontem — e o "dias_atraso" di-lo, como nos outros dois.
+
 USO
 ---
-  python gerar_hoje.py              # ambos
+  python gerar_hoje.py              # os três
   python gerar_hoje.py --so-omie
   python gerar_hoje.py --so-producao
+  python gerar_hoje.py --so-gas
   python gerar_hoje.py --data 2026-09-01   # um dia específico (testes)
 """
 
@@ -87,6 +96,11 @@ except (AttributeError, OSError):
 TZ = ZoneInfo("Europe/Lisbon")
 PASTA_OMIE = os.path.join(ROOT_DIR, "data", "omie")
 PASTA_PROD = os.path.join(ROOT_DIR, "data", "producao")
+PASTA_GAS = os.path.join(ROOT_DIR, "data", "gas")
+
+# Dias da janela usada nas médias, extremos e série do gás (o MIBGAS publica
+# todos os dias do calendário, incluindo fins de semana).
+JANELA_GAS = 30
 
 CICLOS = {
     "BD": {"V": "bd_v", "F": "bd_f"},
@@ -324,6 +338,98 @@ def gerar_producao(alvo):
 
 
 # ============================================================
+# Gás (MIBGAS)
+# ============================================================
+
+def bloco_gas(valores, dias, i):
+    """Estatísticas de uma série diária de preços na posição i.
+
+    valores/dias são listas alinhadas (já ordenadas por data). Devolve None se
+    não houver preço nesse dia — o índice português só existe desde 03/2021 e
+    há dias sem publicação.
+    """
+    v = valores[i]
+    if v is None:
+        return None
+
+    out = {"preco": v}
+
+    # Dia anterior COM preço (não necessariamente i-1: há lacunas na série)
+    ant = next((valores[k] for k in range(i - 1, -1, -1) if valores[k] is not None), None)
+    if ant is not None:
+        out["var_dia"] = _num(v - ant)
+        out["var_dia_pct"] = _num(100 * (v - ant) / ant) if ant else None
+
+    ini = max(0, i - (JANELA_GAS - 1))
+    janela = [(dias[k], valores[k]) for k in range(ini, i + 1) if valores[k] is not None]
+    if janela:
+        precos = [p for _, p in janela]
+        out["media_7d"] = _num(sum(precos[-7:]) / len(precos[-7:]))
+        out["media_30d"] = _num(sum(precos) / len(precos))
+        d_min, p_min = min(janela, key=lambda x: x[1])
+        d_max, p_max = max(janela, key=lambda x: x[1])
+        out["min_30d"] = p_min
+        out["min_30d_dia"] = d_min
+        out["max_30d"] = p_max
+        out["max_30d_dia"] = d_max
+    return out
+
+
+def gerar_gas(alvo):
+    caminho = os.path.join(PASTA_GAS, "mibgas_spot.csv")
+    if not os.path.exists(caminho):
+        print("  ⚠️  mibgas_spot.csv não existe — a saltar gás.")
+        return None
+
+    df = pd.read_csv(caminho, encoding="utf-8-sig")
+    for col in ("data_iso", "mibgas_pt", "mibgas_es"):
+        if col not in df.columns:
+            raise RuntimeError(f"mibgas_spot.csv sem a coluna '{col}'")
+
+    df["_d"] = pd.to_datetime(df["data_iso"], format="%Y-%m-%d", errors="coerce").dt.date
+    df = df.dropna(subset=["_d"]).sort_values("_d").reset_index(drop=True)
+    df = df[df["_d"] <= alvo]
+    if df.empty:
+        raise RuntimeError("mibgas_spot.csv sem dias até à data pedida")
+
+    dias = [d.isoformat() for d in df["_d"]]
+    pt = [_num(v) for v in pd.to_numeric(df["mibgas_pt"], errors="coerce")]
+    es = [_num(v) for v in pd.to_numeric(df["mibgas_es"], errors="coerce")]
+
+    # O alvo é o último dia com índice PORTUGUÊS: é esse o preço que a maioria
+    # dos leitores procura, e sem ele o instantâneo não teria valor principal.
+    i = next((k for k in range(len(pt) - 1, -1, -1) if pt[k] is not None), None)
+    if i is None:
+        raise RuntimeError("mibgas_spot.csv sem nenhum índice PT")
+
+    dia = df["_d"].iloc[i]
+    b_pt = bloco_gas(pt, dias, i)
+    b_es = bloco_gas(es, dias, i)
+
+    ini = max(0, i - (JANELA_GAS - 1))
+    serie = {
+        "dias": dias[ini:i + 1],
+        "pt": pt[ini:i + 1],
+        "es": es[ini:i + 1],
+    }
+
+    return {
+        "gerado_em": agora_iso(),
+        "timezone": "Europe/Lisbon",
+        "unidade": "EUR/MWh",
+        "fonte": "MIBGAS (mercado ibérico de gás natural)",
+        "e_hoje": dia == hoje_lisboa(),
+        "dias_atraso": (hoje_lisboa() - dia).days,
+        "data": dia.isoformat(),
+        "pt": b_pt,
+        "es": b_es,
+        "spread_pt_es": (_num(b_pt["preco"] - b_es["preco"])
+                         if b_pt and b_es else None),
+        "serie_30d": serie,
+    }
+
+
+# ============================================================
 # Escrita
 # ============================================================
 
@@ -358,17 +464,27 @@ def main():
     p = argparse.ArgumentParser(description="Instantâneos leves do dia corrente.")
     p.add_argument("--so-omie", action="store_true")
     p.add_argument("--so-producao", action="store_true")
+    p.add_argument("--so-gas", action="store_true")
     p.add_argument("--data", help="dia específico, AAAA-MM-DD (testes)")
     args = p.parse_args()
+
+    # Sem nenhum "--so-*" correm todos; com um ou mais, só esses.
+    seletivo = args.so_omie or args.so_producao or args.so_gas
+
+    def quer(nome):
+        return getattr(args, "so_" + nome) if seletivo else True
 
     alvo = date.fromisoformat(args.data) if args.data else hoje_lisboa()
     print(f"📅 Hoje em Lisboa: {hoje_lisboa()}"
           f"{'' if not args.data else f' · alvo pedido: {alvo}'}")
 
     def nota_atraso(d):
-        return "" if d["e_hoje"] else f"  (atraso de {d['dias_atraso']} dias)"
+        n = d["dias_atraso"]
+        if d["e_hoje"]:
+            return ""
+        return f"  (atraso de {n} dia{'' if n == 1 else 's'})"
 
-    if not args.so_producao:
+    if quer("omie"):
         print("\n🔌 OMIE")
         d = gerar_omie(alvo)
         if d:
@@ -380,7 +496,7 @@ def main():
                 print(f"   {am['data']} · média PT {am['pt']['medio']} EUR/MWh · {origem}")
             gravar(d, os.path.join(PASTA_OMIE, "hoje.json"))
 
-    if not args.so_omie:
+    if quer("producao"):
         print("\n⚡ Produção")
         d = gerar_producao(alvo)
         if d:
@@ -389,6 +505,16 @@ def main():
                   f"consumo {r.get('consumo_gwh')} GWh · "
                   f"renovável {r.get('perc_renovavel')}%{nota_atraso(d)}")
             gravar(d, os.path.join(PASTA_PROD, "hoje.json"))
+
+    if quer("gas"):
+        print("\n🔥 Gás (MIBGAS)")
+        d = gerar_gas(alvo)
+        if d:
+            pt, es = d.get("pt") or {}, d.get("es") or {}
+            print(f"   {d['data']} · PT {pt.get('preco')} EUR/MWh"
+                  f" · ES {es.get('preco')} EUR/MWh"
+                  f" · média 30d {pt.get('media_30d')}{nota_atraso(d)}")
+            gravar(d, os.path.join(PASTA_GAS, "hoje.json"))
 
     print()
 
