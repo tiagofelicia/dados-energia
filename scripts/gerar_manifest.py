@@ -41,6 +41,13 @@ mostraria "OK" para sempre, mesmo com o pipeline parado há um mês.
 Por isso cada entrada declara COMO se determina a sua última data real, e o
 OMIE usa a Data_Valores_OMIE, nunca o máximo do ficheiro.
 
+A RESOLUÇÃO NATIVA
+------------------
+O segundo campo mais fácil de errar, pela razão oposta: não se erra, ignora-se.
+Todos os ficheiros OMIE têm 96 linhas por dia desde 2010, mas o MIBEL só casa
+por quartos de hora desde 01/10/2025 — antes disso são 24 preços repetidos
+quatro vezes. Nada no ficheiro o diz. Ver a secção 'Resolução nativa' abaixo.
+
 USO
 ---
   python gerar_manifest.py
@@ -91,6 +98,68 @@ BASE_URL = "https://dados.tiagofelicia.pt"
 # a CC BY 4.0 que cobre o resto do repositório — ver a nota de licença no
 # README. Não os acrescentar aqui.
 
+# ============================================================
+# Resolução nativa
+# ============================================================
+# A resolução a que a FONTE publicou, que não é a mesma coisa que o número de
+# linhas por dia do ficheiro.
+#
+# O omie_historico_2015.csv tem 96 linhas por dia, como o de 2026. Só que até
+# 30/09/2025 o MIBEL casava por hora, e essas 96 linhas são 24 preços repetidos
+# quatro vezes cada. Quem calcule uma média não nota diferença — replicar
+# preserva o peso. Quem calcule dispersão dentro da hora, volatilidade, ou conte
+# preços distintos, obtém zero artificial para quinze dos dezasseis anos da série
+# e conclui que o mercado se tornou subitamente volátil em Outubro de 2025.
+#
+# Os períodos descrevem a FONTE ao longo do tempo, não a cobertura de cada
+# ficheiro: um consumidor cruza-os com o período do dataset que tem à frente.
+# 'de': None significa desde o início da série; 'ate': None, até hoje.
+#
+# Só é declarada para séries com intervalos intra-diários. A sua ausência quer
+# dizer que o dataset não é uma dessas — um índice diário, um agregado mensal,
+# uma tabela de referência — e não que a informação falte.
+
+# MIBEL: casamento horário até 30/09/2025, quarto-horário a partir de 01/10/2025.
+# Verificado nos ficheiros: em 15/06/2025 os 4 quartos de cada uma das 24 horas
+# são idênticos; em 01/10/2025 diferem em 24 horas de 24.
+RESOLUCAO_MIBEL = [
+    dict(de=None, ate="2025-09-30", intervalo_minutos=60),
+    dict(de="2025-10-01", ate=None, intervalo_minutos=15),
+]
+
+# REN: quarto-horário a sério desde o início, e nunca mudou — ao contrário do
+# MIBEL, não depende de nenhuma regra de mercado. A fonte é a Repartição da
+# Produção (serviço 1354), telemetria da rede, potência média em MW por
+# intervalo de 15 minutos.
+#
+# Verificado coluna a coluna em 2010, 2016 e 2024: todas as colunas que variam,
+# variam ao quarto de hora. As que não variam estão estruturalmente a zero —
+# Ondas (a Aguçadoura está desactivada), Carvão depois de 2021, Consumo de
+# Baterias antes de haver baterias — e zero não é replicação, é uma medição.
+# As únicas horas planas com valor não-nulo são solar nocturno entre 0,1 e
+# 0,6 MW, onde os quatro quartos arredondam à mesma décima.
+#
+# NOTA para quem mexer no validar_dados.py: a resolucao_coluna tem de ser uma
+# coluna que varie sempre (Consumo, Eólica). Apontá-la a Ondas ou a Carvão daria
+# alarme permanente por a coluna ser zero, não por a resolução estar errada.
+RESOLUCAO_REN = [
+    dict(de=None, ate=None, intervalo_minutos=15),
+]
+
+# As 9 zonas que continuavam a casar por hora em 2026-09-17, quando as outras 39
+# já estavam a 15 minutos. São quase todas de fora do acoplamento SDAC, que é o
+# que explica não terem acompanhado a mudança de 01/10/2025.
+ZONAS_HORARIAS = ["AL", "CH", "IE(SEM)", "IT-SACODC", "ME", "MK", "NO2NSL", "RS", "XK"]
+
+# Europa: a mudança de 01/10/2025 apanhou 39 das 48 zonas de uma só vez —
+# verificado dia a dia, 2025-09-30 ainda com 48 zonas horárias e 2025-10-01 já
+# com 39 a 15 minutos. As restantes 9 continuam horárias.
+RESOLUCAO_MAPA_PRECOS = [
+    dict(de=None, ate="2025-09-30", intervalo_minutos=60),
+    dict(de="2025-10-01", ate=None, intervalo_minutos=15,
+         excepcoes=[dict(zonas=ZONAS_HORARIAS, intervalo_minutos=60)]),
+]
+
 REGISTO = [
     # ---------- OMIE ----------
     dict(id="omie-atuais", grupo="omie", caminho="data/omie/omie_dados_atuais.csv",
@@ -99,6 +168,7 @@ REGISTO = [
                    "com classificação de período horário BTN. Inclui datas futuras "
                    "estimadas a partir dos futuros OMIP.",
          cadencia="~5x/dia útil", tolerancia_dias=1, deteccao="omie_real",
+         resolucao_nativa=RESOLUCAO_MIBEL,
          avisos=["Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do "
                  "ficheiro; pd.read_csv traz essas linhas como dados.",
                  "As datas posteriores a ultima_data_real são estimativas OMIP, "
@@ -106,11 +176,13 @@ REGISTO = [
     dict(id="omie-historico", grupo="omie", caminho="data/omie/historico/omie_historico_*.csv",
          titulo="Preços OMIE — séries anuais",
          descricao="Séries históricas anuais desde 2010, mesmo schema do ano corrente.",
-         cadencia="fecho de ano", tolerancia_dias=400, deteccao="glob_max"),
+         cadencia="fecho de ano", tolerancia_dias=400, deteccao="glob_max",
+         resolucao_nativa=RESOLUCAO_MIBEL),
     dict(id="omie-precos-horarios", grupo="omie", caminho="data/omie/precos-horarios.csv",
          titulo="Preços finais por tarifário indexado",
          descricao="Preço quarto-horário final por tarifário indexado e opção horária.",
          cadencia="~5x/dia útil", tolerancia_dias=1, deteccao="csv_col:dia",
+         resolucao_nativa=RESOLUCAO_MIBEL,
          avisos=["Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas "
                  "horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), "
                  "o que dá linhas de 8, 11, 16, 19 e 20 campos."]),
@@ -131,25 +203,28 @@ REGISTO = [
     dict(id="omie-hoje", grupo="omie", caminho="data/omie/hoje.json",
          titulo="Instantâneo OMIE do dia",
          descricao="Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
-         cadencia="a cada actualização", tolerancia_dias=1, deteccao="meta:_hoje_data"),
+         cadencia="a cada actualização", tolerancia_dias=1, deteccao="meta:_hoje_data",
+         resolucao_nativa=RESOLUCAO_MIBEL),
     dict(id="mibel-acum", grupo="omie", caminho="data/omie/MIBEL_ano_atual_ACUM.csv",
          titulo="MIBEL acumulado (intermédio de pipeline)",
          descricao="Preços horários PT/ES dos últimos 12 meses. Intermédio do "
                    "pipeline; formato pode mudar sem aviso.",
          cadencia="~5x/dia útil", tolerancia_dias=2, deteccao="csv_col_iso:Data",
-         intermedio=True),
+         resolucao_nativa=RESOLUCAO_MIBEL, intermedio=True),
 
     # ---------- Produção ----------
     dict(id="producao-atuais", grupo="producao", caminho="data/producao/producao_dados_atuais.csv",
          titulo="Produção elétrica do ano corrente",
          descricao="Produção por fonte em Portugal, potência média (MW) por "
                    "intervalo de 15 minutos.",
-         cadencia="cada 4h", tolerancia_dias=1, deteccao="csv_col:dia"),
+         cadencia="cada 4h", tolerancia_dias=1, deteccao="csv_col:dia",
+         resolucao_nativa=RESOLUCAO_REN),
     dict(id="producao-historico", grupo="producao",
          caminho="data/producao/historico/producao_historico_*.csv",
          titulo="Produção elétrica — séries anuais",
          descricao="Séries históricas anuais desde 2010, mesmo schema.",
-         cadencia="fecho de ano", tolerancia_dias=400, deteccao="glob_max"),
+         cadencia="fecho de ano", tolerancia_dias=400, deteccao="glob_max",
+         resolucao_nativa=RESOLUCAO_REN),
     dict(id="producao-bombagem", grupo="producao",
          caminho="data/producao/producao_bombagem_diaria.csv",
          titulo="Bombagem hidroelétrica diária",
@@ -164,14 +239,22 @@ REGISTO = [
          titulo="Instantâneo de produção do dia",
          descricao="Mix quarto-horário, resumo diário e estado no último "
                    "intervalo, para dashboards (~15 KB).",
-         cadencia="a cada actualização", tolerancia_dias=1, deteccao="meta:data"),
+         cadencia="a cada actualização", tolerancia_dias=1, deteccao="meta:data",
+         resolucao_nativa=RESOLUCAO_REN),
     dict(id="producao-entsoe", grupo="producao", caminho="data/producao/producao-entsoe/*/*.json",
          titulo="Produção europeia intra-diária (ENTSO-E)",
          descricao="Geração por tecnologia, consumo, previsões day-ahead e "
                    "intradiárias, preços e fluxos transfronteiriços, para 35 países. "
                    "Um ficheiro por país e semana ISO.",
          cadencia="cada 4h (PT/ES) · 2x/dia (todos)", tolerancia_dias=2,
-         deteccao="meta_paises"),
+         deteccao="meta_paises",
+         # Sem resolucao_nativa de propósito: aqui varia por país e cada ficheiro
+         # já declara a sua. Repetir no catálogo criava um segundo sítio a dizer
+         # o mesmo, que é como as duas versões começam a divergir.
+         avisos=["A resolução varia por país e cada ficheiro declara a sua em "
+                 "interval_minutes: 15 minutos em 20 países, 60 em 13 (entre eles "
+                 "Portugal, que na ENTSO-E é horário apesar de a REN publicar a 15 "
+                 "minutos) e 30 em Chipre e Irlanda."]),
 
     # ---------- Mapas ----------
     dict(id="mapas-precos", grupo="mapas", caminho="data/mapas/precos_qh/*.json",
@@ -180,8 +263,10 @@ REGISTO = [
                    "por mês desde 2018-01. Por dia e zona: média, mínimo, máximo "
                    "e série de 96 valores.",
          cadencia="1x/dia", tolerancia_dias=1, deteccao="meta:ultima_data",
+         resolucao_nativa=RESOLUCAO_MAPA_PRECOS,
          avisos=["O campo resolution diz sempre PT15M, mesmo no histórico horário: "
-                 "os valores horários são replicados pelos 4 quartos.",
+                 "os valores horários são replicados pelos 4 quartos. A resolução "
+                 "a que a fonte publicou está em resolucao_nativa, e varia por zona.",
                  "values pode conter null em dias parcialmente publicados."]),
     dict(id="mapas-producao", grupo="mapas", caminho="data/mapas/producao/*.json",
          titulo="Mix de produção europeu diário",
@@ -451,6 +536,8 @@ def inspecionar(entrada):
         out["linhas"] = linhas
     if colunas:
         out["colunas"] = colunas
+    if entrada.get("resolucao_nativa"):
+        out["resolucao_nativa"] = entrada["resolucao_nativa"]
     if entrada.get("avisos"):
         out["avisos"] = entrada["avisos"]
     if entrada.get("intermedio"):

@@ -35,10 +35,11 @@ O QUE VERIFICA
   colunas      as colunas de que o site depende continuam lá
   chave        a chave natural não tem duplicados
   calendário   96 quartos por dia, 92 e 100 nos dois dias de mudança de hora
+  resolucao    a resolucao_nativa declarada corresponde aos dados
   cobertura    nenhuma coluna deixou de vir preenchida
 
 As duas primeiras aplicam-se a TODOS os datasets, porque saem do manifesto. As
-outras quatro só aos que estão declarados em REGRAS: exigem conhecer o ficheiro,
+outras cinco só aos que estão declarados em REGRAS: exigem conhecer o ficheiro,
 e mais vale não verificar do que verificar mal.
 
 FALSOS ALARMES
@@ -54,6 +55,9 @@ depois não se lê no dia em que tem razão. Por isso:
     sempre a meio.
   * A cobertura compara o passado com as últimas 30 sessões, não com 100%.
     Vários índices chegam com um ou dois dias de atraso, e isso é normal.
+  * A resolução exige apenas UMA hora distinta em 30 sessões para dar por
+    quarto-horário: uma hora inteira de preços iguais acontece, trinta dias
+    sem nenhuma não.
 
 USO
 ---
@@ -104,6 +108,8 @@ RE_DIA = re.compile(r"^\d{2}/\d{2}/\d{4}$")
 #             dataset é um padrão com ficheiros de grão diferente.
 # calendario  coluna de dia em DD/MM/AAAA a que se aplica a regra dos 96 quartos.
 # cobertura   coluna de data ISO que define a janela recente.
+# resolucao_coluna  coluna de valores com que se confere a resolucao_nativa
+#             declarada no manifesto (uma qualquer que varie ao longo do dia).
 # tolerante   o ficheiro tem blocos concatenados no fim e precisa do parser lento.
 
 REGRAS = {
@@ -111,10 +117,10 @@ REGRAS = {
     # campos; sem tolerante=True o pandas rebenta a meio.
     "omie-atuais": dict(
         colunas=["dia", "hora", "intervalo", "preco_pt", "preco_es"],
-        calendario="dia", tolerante=True),
+        calendario="dia", resolucao_coluna="preco_pt", tolerante=True),
     "producao-atuais": dict(
         colunas=["dia", "hora", "intervalo", "Consumo"],
-        calendario="dia", tolerante=True),
+        calendario="dia", resolucao_coluna="Consumo", tolerante=True),
     "producao-bombagem": dict(
         colunas=["dia", "producao_bombagem_gwh"], chave=["dia"]),
 
@@ -124,10 +130,10 @@ REGRAS = {
     # mudança de hora a cair em dias diferentes todos os anos. Daí o --lentos.
     "omie-historico": dict(
         colunas=["dia", "hora", "intervalo", "preco_pt", "preco_es"],
-        calendario="dia"),
+        calendario="dia", resolucao_coluna="preco_pt"),
     "producao-historico": dict(
         colunas=["dia", "hora", "intervalo", "Hídrica", "Eólica", "Solar"],
-        calendario="dia"),
+        calendario="dia", resolucao_coluna="Eólica"),
     "omip-historico": dict(
         colunas=["Data", "Zona", "Contrato", "Valor"],
         chave=["Data", "Zona", "Contrato"]),
@@ -376,6 +382,74 @@ def ver_calendario(regra, ficheiros, ultima, rel):
                       f"{amostra(sorted(curtos))}")
 
 
+def ver_resolucao(entrada, regra, ficheiros, ultima, rel, janela=30):
+    """
+    Confirma que a resolucao_nativa declarada no manifesto corresponde ao que
+    está no ficheiro. Uma declaração que ninguém confere apodrece: se uma das
+    zonas ou mercados ainda horários passar a 15 minutos, ou o contrário, o
+    catálogo passa a mentir sem que nada falhe.
+
+    O teste é grosseiro de propósito. Declarado 15 minutos, basta UMA hora nas
+    últimas 30 sessões com quartos diferentes: preços planos durante uma hora
+    inteira acontecem (mínimos, máximos, horas a zero), mas trinta dias sem um
+    único quarto distinto não acontecem se a fonte publicar mesmo a 15 minutos.
+    Declarado 60, o simétrico: nenhuma hora pode variar.
+    """
+    col = regra.get("resolucao_coluna")
+    periodos = entrada.get("resolucao_nativa")
+    if not col or not periodos or not ultima:
+        return
+
+    def periodo_de(dia_iso):
+        """O período que se aplica a uma data. None se nenhum, ou se tiver
+        excepções por zona — essas esta verificação simples não sabe resolver."""
+        for p in periodos:
+            if ((p["de"] is None or p["de"] <= dia_iso)
+                    and (p["ate"] is None or dia_iso <= p["ate"])):
+                return None if p.get("excepcoes") else p
+        return None
+
+    for f in csvs(ficheiros):
+        nome = os.path.basename(f)
+        try:
+            d = ler_csv(f, colunas=["dia", "intervalo", col],
+                        tolerante=regra.get("tolerante", False))
+        except Exception:
+            continue
+        d = d[d["dia"].fillna("").str.match(RE_DIA)]
+        dias = [x for x in d["dia"].unique()
+                if datetime.strptime(x, "%d/%m/%Y").date() < date.fromisoformat(ultima)]
+        if not dias:
+            continue
+        dias = sorted(dias, key=lambda s: datetime.strptime(s, "%d/%m/%Y").date())[-janela:]
+
+        # O período tem de sair das datas DESTE ficheiro, não da última data do
+        # dataset: num padrão como omie_historico_*.csv o ficheiro de 2010 e o de
+        # 2025 estão em lados opostos da mudança de 01/10/2025.
+        ref = max(datetime.strptime(x, "%d/%m/%Y").date() for x in dias).isoformat()
+        aplicavel = periodo_de(ref)
+        if not aplicavel:
+            continue
+        esperado = aplicavel["intervalo_minutos"]
+        if esperado not in (15, 60):
+            continue
+
+        recente = d[d["dia"].isin(dias)]
+
+        grupos = recente.groupby(["dia", recente["intervalo"].str[1:3]])[col]
+        horas_que_variam = int((grupos.nunique(dropna=False) > 1).sum())
+        total_horas = int(grupos.ngroups)
+
+        if esperado == 15 and horas_que_variam == 0:
+            rel.aviso(f"{nome}: resolucao_nativa declara 15 min, mas nenhuma das "
+                      f"{total_horas} horas das últimas {len(dias)} sessões tem "
+                      f"quartos distintos — parece horário replicado")
+        elif esperado == 60 and horas_que_variam:
+            rel.aviso(f"{nome}: resolucao_nativa declara 60 min, mas "
+                      f"{horas_que_variam} de {total_horas} horas têm quartos "
+                      f"distintos — a fonte parece já publicar a 15 min")
+
+
 def ver_cobertura(regra, ficheiros, rel, janela=30):
     """
     Uma coluna que estava preenchida e deixou de vir. É o sintoma de a fonte ter
@@ -453,6 +527,7 @@ def main():
             ver_colunas(regra, ficheiros, rel)
             ver_chave(regra, ficheiros, rel)
             ver_calendario(regra, ficheiros, ultima, rel)
+            ver_resolucao(entrada, regra, ficheiros, ultima, rel)
             ver_cobertura(regra, ficheiros, rel)
 
         if len(rel.erros) + len(rel.avisos) == antes:
