@@ -515,7 +515,7 @@
    "id": "agregados-producao",
    "padrao": "data/agregados/producao_*.csv",
    "titulo": "Agregados de produção (diário, mensal, anual)",
-   "tolerancia_dias": 2,
+   "tolerancia_dias": 3,
    "ultima_data": "2026-09-16",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
@@ -547,7 +547,7 @@
    "id": "emissoes",
    "padrao": "data/emissoes/intensidade_*.csv",
    "titulo": "Intensidade carbónica da produção elétrica",
-   "tolerancia_dias": 2,
+   "tolerancia_dias": 3,
    "ultima_data": "2026-09-16",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/"
   },
@@ -654,7 +654,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-18T14:01:30+00:00",
+ "gerado_em": "2026-09-18T14:55:56+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
