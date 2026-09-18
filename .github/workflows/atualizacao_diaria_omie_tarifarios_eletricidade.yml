@@ -135,13 +135,23 @@ jobs:
         run: |
           echo "=== FASE 2B (records) INICIADA: $(date) ===" >> logs/diaria_omie.log
           python scripts/gerar_records_omie.py >> logs/diaria_omie.log 2>&1
+
+      # Tem de vir DEPOIS do omie_dados_atuais: lê o futuros_omip.csv que esse
+      # step acabou de escrever e acumula a sessão no histórico anual. Faz upsert
+      # por sessão — correr duas vezes no mesmo dia não duplica nada, a segunda
+      # diz "já registada". Sem este step o omip_historico_<ANO>.csv não é
+      # atualizado por ninguém, e foi o que aconteceu entre 10 e 17/09/2026.
+      - name: Executar Fase 2B - histórico OMIP
+        run: |
+          echo "=== FASE 2B (omip historico) INICIADA: $(date) ===" >> logs/diaria_omie.log
+          python scripts/atualizar_omip_historico.py >> logs/diaria_omie.log 2>&1
           echo "=== FASE 2B TERMINADA: $(date) ===" >> logs/diaria_omie.log
 
       - name: Fazer commit dos ficheiros da Fase 2B (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualização (Fase 2) Ficheiros OMIE processados"
-          file_pattern: "data/omie/omie_dados_atuais.csv data/omie/futuros_omip.csv data/omie/precos-horarios.csv data/omie/records_omie.json"
+          file_pattern: "data/omie/omie_dados_atuais.csv data/omie/futuros_omip.csv data/omie/precos-horarios.csv data/omie/records_omie.json data/omie/historico/omip_historico_*.csv"
 
       # O log NÃO é committed — vai só como artefacto.
       - name: Fazer upload do log como artefacto
