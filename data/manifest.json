@@ -295,7 +295,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/hoje.json"
   },
   {
-   "bytes": 135530846,
+   "bytes": 135957050,
    "cadencia": "cada 4h (PT/ES) · 2x/dia (todos)",
    "caminho": "data/producao/producao-entsoe/",
    "descricao": "Geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços, para 35 países. Um ficheiro por país e semana ISO.",
@@ -306,7 +306,7 @@
    "padrao": "data/producao/producao-entsoe/*/*.json",
    "titulo": "Produção europeia intra-diária (ENTSO-E)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-09-17",
+   "ultima_data": "2026-09-18",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao-entsoe/"
   },
   {
@@ -654,7 +654,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-18T17:39:31+00:00",
+ "gerado_em": "2026-09-18T17:46:17+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -669,7 +669,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 352160084,
+  "bytes": 352586288,
   "datasets": 28,
   "ficheiros": 1468
  }
