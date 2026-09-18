@@ -107,7 +107,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
-   "bytes": 488461,
+   "bytes": 499305,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -124,7 +124,7 @@
    "padrao": "data/omie/historico/omip_historico_*.csv",
    "titulo": "Futuros OMIP — histórico de sessões",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-09-10",
+   "ultima_data": "2026-09-17",
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
@@ -654,7 +654,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-18T04:48:21+00:00",
+ "gerado_em": "2026-09-18T11:53:53+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -669,7 +669,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 352129352,
+  "bytes": 352140196,
   "datasets": 28,
   "ficheiros": 1468
  }
