@@ -28,6 +28,18 @@
    "grupo": "omie",
    "id": "omie-atuais",
    "linhas": 35203,
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Preços OMIE do ano corrente",
    "tolerancia_dias": 1,
    "ultima_data": "2026-09-19",
@@ -55,6 +67,18 @@
    "grupo": "omie",
    "id": "omie-historico",
    "padrao": "data/omie/historico/omie_historico_*.csv",
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Preços OMIE — séries anuais",
    "tolerancia_dias": 400,
    "ultima_data": "2025-12-31",
@@ -83,6 +107,18 @@
    "grupo": "omie",
    "id": "omie-precos-horarios",
    "linhas": 15638,
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Preços finais por tarifário indexado",
    "tolerancia_dias": 1,
    "ultima_data": "2026-09-19",
@@ -150,6 +186,18 @@
    "formato": "json",
    "grupo": "omie",
    "id": "omie-hoje",
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
    "ultima_data": "2026-09-18",
@@ -172,6 +220,18 @@
    "id": "mibel-acum",
    "intermedio": true,
    "linhas": 35137,
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "MIBEL acumulado (intermédio de pipeline)",
    "tolerancia_dias": 2,
    "ultima_data": "2026-09-19",
@@ -207,6 +267,13 @@
    "grupo": "producao",
    "id": "producao-atuais",
    "linhas": 25052,
+   "resolucao_nativa": [
+    {
+     "ate": null,
+     "de": null,
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Produção elétrica do ano corrente",
    "tolerancia_dias": 1,
    "ultima_data": "2026-09-18",
@@ -242,6 +309,13 @@
    "grupo": "producao",
    "id": "producao-historico",
    "padrao": "data/producao/historico/producao_historico_*.csv",
+   "resolucao_nativa": [
+    {
+     "ate": null,
+     "de": null,
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Produção elétrica — séries anuais",
    "tolerancia_dias": 400,
    "ultima_data": "2025-12-31",
@@ -289,12 +363,22 @@
    "formato": "json",
    "grupo": "producao",
    "id": "producao-hoje",
+   "resolucao_nativa": [
+    {
+     "ate": null,
+     "de": null,
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Instantâneo de produção do dia",
    "tolerancia_dias": 1,
    "ultima_data": "2026-09-18",
    "url": "https://dados.tiagofelicia.pt/data/producao/hoje.json"
   },
   {
+   "avisos": [
+    "A resolução varia por país e cada ficheiro declara a sua em interval_minutes: 15 minutos em 20 países, 60 em 13 (entre eles Portugal, que na ENTSO-E é horário apesar de a REN publicar a 15 minutos) e 30 em Chipre e Irlanda."
+   ],
    "bytes": 135957050,
    "cadencia": "cada 4h (PT/ES) · 2x/dia (todos)",
    "caminho": "data/producao/producao-entsoe/",
@@ -311,7 +395,7 @@
   },
   {
    "avisos": [
-    "O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos.",
+    "O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos. A resolução a que a fonte publicou está em resolucao_nativa, e varia por zona.",
     "values pode conter null em dias parcialmente publicados."
    ],
    "bytes": 100144808,
@@ -323,13 +407,41 @@
    "grupo": "mapas",
    "id": "mapas-precos",
    "padrao": "data/mapas/precos_qh/*.json",
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "excepcoes": [
+      {
+       "intervalo_minutos": 60,
+       "zonas": [
+        "AL",
+        "CH",
+        "IE(SEM)",
+        "IT-SACODC",
+        "ME",
+        "MK",
+        "NO2NSL",
+        "RS",
+        "XK"
+       ]
+      }
+     ],
+     "intervalo_minutos": 15
+    }
+   ],
    "titulo": "Preços day-ahead europeus",
    "tolerancia_dias": 1,
    "ultima_data": "2026-09-18",
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
-   "bytes": 3845130,
+   "bytes": 3860183,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/producao/",
    "descricao": "Produção diária por país e tecnologia (GWh) e quota renovável, para 28 países, desde 2026-01.",
@@ -654,7 +766,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-18T17:46:17+00:00",
+ "gerado_em": "2026-09-18T18:08:10+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -669,7 +781,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 352586288,
+  "bytes": 352601341,
   "datasets": 28,
   "ficheiros": 1468
  }
