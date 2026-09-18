@@ -239,12 +239,18 @@ REGISTO = [
          titulo="Agregados de produção (diário, mensal, anual)",
          descricao="Energia por fonte, quota renovável, pico de consumo e saldo "
                    "importador. Derivado de data/producao/.",
-         cadencia="1x/dia", tolerancia_dias=2, deteccao="meta:producao.ultima_data"),
+         # tolerancia_dias=3 e não 2: é um derivado de data/producao/, que já
+         # chega com atraso próprio. Com 2 este dataset ficava permanentemente
+         # no limite — o validador dava alarme em dias em que nada estava mal,
+         # que é a maneira mais rápida de ensinar alguém a ignorar alarmes.
+         cadencia="1x/dia", tolerancia_dias=3, deteccao="meta:producao.ultima_data"),
     dict(id="emissoes", grupo="emissoes", caminho="data/emissoes/intensidade_*.csv",
          titulo="Intensidade carbónica da produção elétrica",
          descricao="gCO2eq/kWh da produção nacional, a 15 minutos desde 2010, "
                    "agregada por dia, mês, ano e hora do dia. Fatores IPCC AR5.",
-         cadencia="1x/dia", tolerancia_dias=2, deteccao="meta:ultima_data",
+         # tolerancia_dias=3 pela mesma razão do agregados-producao: deriva de
+         # data/producao/ e herda-lhe o atraso.
+         cadencia="1x/dia", tolerancia_dias=3, deteccao="meta:ultima_data",
          avisos=["São emissões de CICLO DE VIDA, não diretas: não comparáveis com "
                  "o Inventário Nacional da APA nem com o indicador da EEA.",
                  "Cobre a produção nacional, não o consumo: as importações de "
