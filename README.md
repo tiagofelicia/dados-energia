@@ -37,6 +37,7 @@ Espelho alternativo (mesmos caminhos): `https://raw.githubusercontent.com/tiagof
 ### Catálogo e estado
 
 - **[`data/manifest.json`](https://dados.tiagofelicia.pt/data/manifest.json)** — catálogo legível por máquina: para cada dataset, o caminho, o schema, a cadência de atualização, a última data disponível e os avisos relevantes.
+- **`resolucao_nativa`** — nas séries com intervalos intra-diários, o manifesto declara a resolução a que a **fonte** publicou ao longo do tempo, que não é a mesma coisa que o número de linhas por dia do ficheiro. É uma lista de períodos (`de`, `ate`, `intervalo_minutos`); `de: null` significa desde o início da série e `ate: null`, até hoje. Nos preços europeus há ainda `excepcoes`, porque 9 das 48 zonas continuam horárias. A ausência do campo quer dizer que o dataset não é uma série intra-diária — um índice diário, um agregado mensal, uma tabela de referência.
 - **[Estado dos dados](https://dados.tiagofelicia.pt/status.html)** — mostra se algum dataset está atrasado face à cadência prometida. O cálculo é feito no navegador, pelo que a página continua a reportar atrasos mesmo que os processos de recolha parem.
 - **Validação diária** — uma vez por dia o workflow `Validar dados` corre o `scripts/validar_dados.py`, que confronta cada dataset com o que o manifesto promete: frescura face à `tolerancia_dias`, presença das colunas, chaves naturais sem duplicados, número de intervalos por dia (96, ou 92 e 100 nos dias de mudança de hora) e colunas que tenham deixado de vir preenchidas. Ao contrário da página de estado, não exige que alguém esteja a olhar: a corrida chumba.
 
@@ -83,7 +84,7 @@ dia,hora,intervalo,Simples,BD,BS,TD,TS,preco_pt,preco_es
 
 - `dia` em `DD/MM/AAAA`; `intervalo` de 15 minutos; preços em **€/MWh**.
 - `Simples`, `BD` (bi-horário diário), `BS` (bi-horário semanal), `TD` (tri-horário diário), `TS` (tri-horário semanal): classificação do período horário BTN no intervalo (V = Vazio, C = Cheias, P = Ponta, F = Fora de Vazio, S = Simples). Ciclos oficiais em [tiagofelicia.pt/periodos-horarios](https://www.tiagofelicia.pt/periodos-horarios).
-- Antes da entrada em vigor da negociação quarto-horária, os valores horários são replicados pelos 4 intervalos.
+- ⚠️ **O ficheiro tem 96 linhas por dia desde 2010, mas o MIBEL só casa por quartos de hora desde 1 de outubro de 2025.** Antes dessa data são 24 preços horários replicados pelos 4 intervalos. Uma média não nota diferença — replicar preserva o peso —, mas qualquer cálculo de *dispersão dentro da hora* (desvio-padrão, volatilidade, contagem de preços distintos) dá zero artificial para quinze dos dezasseis anos da série, e sugere que o mercado se tornou subitamente volátil em outubro de 2025. O que mudou foi a granularidade da publicação. A resolução a que a fonte publicou está declarada por dataset no `manifest.json`, no campo `resolucao_nativa`.
 - As fórmulas dos tarifários indexados de `precos-horarios.csv` estão documentadas em [tiagofelicia.pt/formulas-tarifarios-indexados](https://www.tiagofelicia.pt/formulas-tarifarios-indexados).
 
 ⚠️ **Dois avisos de formato**, importantes antes de escrever código sobre estes ficheiros:
