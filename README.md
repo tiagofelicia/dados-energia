@@ -38,6 +38,7 @@ Espelho alternativo (mesmos caminhos): `https://raw.githubusercontent.com/tiagof
 
 - **[`data/manifest.json`](https://dados.tiagofelicia.pt/data/manifest.json)** — catálogo legível por máquina: para cada dataset, o caminho, o schema, a cadência de atualização, a última data disponível e os avisos relevantes.
 - **[Estado dos dados](https://dados.tiagofelicia.pt/status.html)** — mostra se algum dataset está atrasado face à cadência prometida. O cálculo é feito no navegador, pelo que a página continua a reportar atrasos mesmo que os processos de recolha parem.
+- **Validação diária** — uma vez por dia o workflow `Validar dados` corre o `scripts/validar_dados.py`, que confronta cada dataset com o que o manifesto promete: frescura face à `tolerancia_dias`, presença das colunas, chaves naturais sem duplicados, número de intervalos por dia (96, ou 92 e 100 nos dias de mudança de hora) e colunas que tenham deixado de vir preenchidas. Ao contrário da página de estado, não exige que alguém esteja a olhar: a corrida chumba.
 
 ### Por onde começar
 
