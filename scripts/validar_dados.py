@@ -256,6 +256,21 @@ def ver_frescura(entrada, ficheiros, hoje, rel):
 
     atraso = (hoje - date.fromisoformat(ud)).days
     tol = entrada["tolerancia_dias"]
+
+    # Um catálogo que se adianta cega a verificação de frescura: enquanto a data
+    # declarada estiver no futuro, o atraso é negativo e nada dispara, mesmo que
+    # a recolha tenha parado. Tolera-se um dia — vários datasets publicam
+    # legitimamente o day-ahead de amanhã — e avisa-se a partir daí.
+    #
+    # Foi assim que se apanhou o mapas-producao a declarar-se actualizado até
+    # depois de amanhã: os países em EET publicam alguns slots iniciais desse
+    # dia e o máximo do ficheiro subia com eles. Três dias de cegueira para um
+    # dataset com tolerância declarada de um.
+    if atraso < -1:
+        rel.aviso(f"última data {ud} está {-atraso} dias no futuro — "
+                  f"a frescura deste dataset não está a ser verificada")
+        return ud
+
     if atraso > tol:
         rel.erro(f"parado há {atraso} dias — última data {ud}, "
                  f"tolerância {tol} ({entrada['cadencia']})")

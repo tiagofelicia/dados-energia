@@ -513,6 +513,22 @@ def main():
     # Cache de ficheiros mensais carregados
     monthly_cache = {}
     latest_date = None
+
+    # Limite ate ao qual um dia conta para o 'ultima_data' do metadata.
+    #
+    # Os paises em fuso EET (Finlandia, Balticos) publicam, na vista CET, os
+    # primeiros slots do dia seguinte ao de amanha. Isso cria um dia com dois
+    # paises em vinte e oito — nao e um dia disponivel, e nao deve ser
+    # apresentado como "ultimo dia disponivel". Sem este corte o catalogo
+    # declarava-se actualizado ate depois de amanha: o seletor de datas do site
+    # deixava escolher um mapa praticamente vazio, e a validacao de frescura
+    # ficava cega tres dias em vez de um, porque a data so comecava a envelhecer
+    # dois dias depois de a recolha parar.
+    #
+    # O atualizar_mapa_precos_entsoe.py ja fazia isto (ver metadata_limit la);
+    # este script e que nunca recebeu a guarda.
+    metadata_limit = None if backfill else (today + timedelta(days=1)).isoformat()
+
     total_countries = len(countries_to_run)
 
     for i, country in enumerate(countries_to_run, 1):
@@ -538,7 +554,8 @@ def main():
                         store_entry(monthly_cache, year_month, date_str, country, stats)
                         country_days += 1
 
-                        if latest_date is None or date_str > latest_date:
+                        if (latest_date is None or date_str > latest_date) and (
+                                metadata_limit is None or date_str <= metadata_limit):
                             latest_date = date_str
 
                     time.sleep(5)  # Respeitar rate limits
@@ -568,7 +585,8 @@ def main():
                         stats["source"] = "real"
                     store_entry(monthly_cache, year_month, date_str, country, stats)
 
-                    if latest_date is None or date_str > latest_date:
+                    if (latest_date is None or date_str > latest_date) and (
+                            metadata_limit is None or date_str <= metadata_limit):
                         latest_date = date_str
 
                 days_found = len(daily_prod)
@@ -675,7 +693,8 @@ def main():
                             date_str, {}
                         )[country] = entry
 
-                        if latest_date is None or date_str > latest_date:
+                        if (latest_date is None or date_str > latest_date) and (
+                                metadata_limit is None or date_str <= metadata_limit):
                             latest_date = date_str
 
                 fc_days = len(daily_fc)
