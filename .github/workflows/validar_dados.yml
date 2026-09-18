@@ -1,0 +1,127 @@
+# Verifica que os datasets publicados estão frescos e coerentes.
+#
+# validar_dados.py
+#   → não escreve nada. Só lê, reporta e chumba se houver erro.
+#
+# É o único workflow deste repositório que não produz ficheiros. A sua saída é
+# o próprio estado: verde quer dizer que o catálogo corresponde ao que está lá.
+#
+# PORQUÊ
+# ------
+# Os bots ficam verdes desde que o script não rebente, e isso não chega. Em
+# Setembro de 2026 o omip_historico_<ANO>.csv esteve sete dias sem ser escrito,
+# porque o step que o produzia ficou órfão numa reorganização do workflow. Todos
+# os workflows verdes durante esses sete dias. Ninguém deu por nada até se ir
+# olhar para o ficheiro à mão.
+#
+# Este workflow é quem dá por isso. A falha de uma corrida agendada manda email
+# do GitHub — é esse o alarme.
+#
+# QUANDO CORRE
+# ------------
+# Uma vez por dia, depois de tudo o resto ter corrido. É de propósito que não
+# corre a seguir a cada bot: a pergunta que responde é "está tudo em dia hoje?",
+# e essa faz-se uma vez, não doze. Correr por workflow_run daria falsos alarmes
+# constantes, porque a meio da cadeia há sempre datasets legitimamente por
+# actualizar.
+#
+# Não precisa de secrets nem de permissões de escrita: só lê o checkout.
+
+name: Validar dados
+
+on:
+  schedule:
+    # 16:30 UTC — depois do último bot do dia (o CO2 da EEX, às 14:10) e com
+    # margem para os agregados que dele dependem. Antes disto haveria erros de
+    # frescura que só significam "ainda não correu".
+    - cron: '30 16 * * *'
+
+  workflow_dispatch:
+    inputs:
+      lentos:
+        description: 'Verificar também os históricos e o ENTSO-E (mais lento)'
+        type: boolean
+        required: false
+        default: false
+      so_avisar:
+        description: 'Reportar sem chumbar a corrida'
+        type: boolean
+        required: false
+        default: false
+
+# Antecipar o default Node24 (silencia o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Não commita nada, portanto não entra na guerra de commits dos outros
+# workflows. O grupo serve só para não haver duas validações em paralelo.
+concurrency:
+  group: validar-dados
+  cancel-in-progress: false
+
+jobs:
+  validar:
+    name: Validar datasets publicados
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validar
+        run: |
+          # set -o pipefail: sem isto o exit code passa a ser o do tee e uma
+          # validação falhada daria um step verde — que é exactamente o tipo de
+          # silêncio que este workflow existe para acabar.
+          set -o pipefail
+          mkdir -p logs
+          ARGS=""
+          if [ "${{ github.event.inputs.lentos }}" = "true" ]; then
+            ARGS="$ARGS --lentos"
+          fi
+          if [ "${{ github.event.inputs.so_avisar }}" = "true" ]; then
+            ARGS="$ARGS --so-avisar"
+          fi
+          python scripts/validar_dados.py $ARGS 2>&1 | tee logs/validacao.log
+
+      - name: Resumo na página da corrida
+        # Mesmo quando chumba: é justamente aí que interessa ver o resumo sem
+        # ter de abrir o log.
+        if: always()
+        run: |
+          {
+            echo '## Validação dos datasets'
+            echo
+            echo '```'
+            tail -n 40 logs/validacao.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-validacao
+          path: logs/validacao.log
+          retention-days: 30
