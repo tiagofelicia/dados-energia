@@ -33,7 +33,12 @@ concurrency:
 jobs:
   update-map-data:
     name: Executar Atualização ENTSO-E
-    runs-on: ubuntu-latest
+    # Label explícita: entre 19/10 e 19/11/2026 o ubuntu-latest migra de 24.04
+    # para 26.04, e durante essas semanas cada corrida podia calhar num runner
+    # ou no outro sem aviso (actions/runner-images#14748). A imagem nova foi
+    # testada primeiro no atualizar_tarifarios_gas.yml, que é o único com Chrome
+    # e Selenium; ver lá a explicação completa. Marcha-atrás: 'ubuntu-24.04'.
+    runs-on: ubuntu-26.04
     timeout-minutes: 60
     permissions:
       contents: write

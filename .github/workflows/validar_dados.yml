@@ -31,10 +31,20 @@ name: Validar dados
 
 on:
   schedule:
-    # 16:30 UTC — depois do último bot do dia (o CO2 da EEX, às 14:10) e com
-    # margem para os agregados que dele dependem. Antes disto haveria erros de
-    # frescura que só significam "ainda não correu".
-    - cron: '30 16 * * *'
+    # 20:00 UTC — depois de TUDO. O último bot do dia não é o CO2 da EEX (14:10):
+    # é o atualizacao_diaria_omie_tarifarios_eletricidade, que corre às 18:00 UTC
+    # no verão e às 19:00 no inverno, e é justamente esse que traz a sessão OMIP.
+    # A versão anterior deste ficheiro dizia 16:30 "depois do último bot", o que
+    # era falso — corria ao mesmo tempo que um deles e antes do último.
+    #
+    # Não é crítico, porque as tolerâncias são de um dia ou mais e absorvem-no.
+    # Mas correr no fim significa apanhar no próprio dia uma sessão OMIP que não
+    # tenha sido gravada, em vez de só no dia seguinte.
+    #
+    # Uma hora de margem sobre o cron de inverno, que é o mais tardio. O GitHub
+    # atrasa corridas agendadas — já se viram duas horas e meia —, por isso a
+    # precisão aqui é relativa de qualquer maneira.
+    - cron: '0 20 * * *'
 
   workflow_dispatch:
     inputs:
@@ -62,7 +72,12 @@ concurrency:
 jobs:
   validar:
     name: Validar datasets publicados
-    runs-on: ubuntu-latest
+    # Label explícita: entre 19/10 e 19/11/2026 o ubuntu-latest migra de 24.04
+    # para 26.04, e durante essas semanas cada corrida podia calhar num runner
+    # ou no outro sem aviso (actions/runner-images#14748). A imagem nova foi
+    # testada primeiro no atualizar_tarifarios_gas.yml, que é o único com Chrome
+    # e Selenium; ver lá a explicação completa. Marcha-atrás: 'ubuntu-24.04'.
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     permissions:
       contents: read
