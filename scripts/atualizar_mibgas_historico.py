@@ -321,8 +321,29 @@ def gravar(df):
         with open(FICHEIRO_CSV, "w", encoding="utf-8-sig", newline="") as f:
             f.write(csv_novo)
 
+    # 'ultima_data' e o ultimo dia com INDICE DE DIA-GAS, nao o maximo do
+    # ficheiro. A distincao importa aos fins de semana: a sessao de sexta cota
+    # D+1, D+3 e fim de semana, e escreve linhas para sabado, domingo e segunda
+    # so com as colunas day-ahead (vtp_*, pvb_*). O indice do dia de gas
+    # (mibgas_pt/mibgas_es) so sai 1 a 2 dias depois de o dia fechar.
+    #
+    # Com o maximo do ficheiro, o catalogo declarava-se actualizado ate segunda
+    # numa sexta a noite. Se a recolha parasse nesse momento, o status.html e a
+    # validacao de frescura ficavam verdes mais tres dias do que deviam — cinco
+    # ao todo, com a tolerancia de 2. O mesmo erro que o mapa de producao tinha
+    # com os paises em fuso EET.
+    #
+    # A tolerancia_dias=2 declarada no manifesto ja pressupoe esta leitura: esta
+    # escrita la que "o indice de um dia de gas so e publicado depois de esse dia
+    # fechar, por isso este ficheiro esta normalmente em D-1".
+    cols_indice = [c for c in ("mibgas_pt", "mibgas_es") if c in df.columns]
+    com_indice = df[df[cols_indice].notna().any(axis=1)] if cols_indice else df
+    ultima_data = (com_indice["data_iso"].max() if len(com_indice)
+                   else df["data_iso"].max())
+
     meta = {
-        "ultima_data": df["data_iso"].max(),
+        "ultima_data": ultima_data,
+        "ultima_data_ficheiro": df["data_iso"].max(),
         "primeira_data": df["data_iso"].min(),
         "dias": int(len(df)),
         "ultima_atualizacao": datetime.now(timezone.utc).isoformat(timespec="seconds"),
