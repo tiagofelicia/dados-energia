@@ -35,7 +35,19 @@ concurrency:
 jobs:
   update-excel-and-push-to-hf:
     name: Executar Atualização MIBGAS
-    runs-on: ubuntu-latest
+    # ubuntu-26.04 explícito, e não ubuntu-latest, pela mesma razão que a action
+    # do Chrome está fixa numa versão: ubuntu-latest é um alvo que se desloca.
+    #
+    # A 19/10/2026 começa a migração do ubuntu-latest de 24.04 para 26.04, e só
+    # termina a 19/11 — cinco semanas em que cada corrida podia calhar num
+    # runner ou no outro sem aviso (actions/runner-images#14748). Este é o único
+    # workflow com Chrome e Selenium, portanto o único onde a mudança de
+    # bibliotecas de sistema pode mesmo partir alguma coisa: mais vale descobri-lo
+    # num dia à escolha do que a meio da janela.
+    #
+    # Se partir: voltar a 'ubuntu-24.04' (a imagem antiga continua disponível) e
+    # investigar com calma, em vez de ficar sem recolha.
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     permissions:
       contents: write
