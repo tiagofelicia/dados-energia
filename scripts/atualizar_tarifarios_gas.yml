@@ -1,0 +1,150 @@
+# Atualiza a base de dados do Simulador de Tarifários de Gás Natural.
+#
+# atualizar_tarifarios_gas.py:
+#   → MIBGAS spot (mibgas.es) + futuros de gás OMIP (via Selenium/Chrome)
+#   → substitui as abas 'MIBGAS' e 'Info' do xlsx do simulador
+# Deploy: copia o xlsx para o espaço Hugging Face (transição — o simulador
+#   publicado lê o xlsx de lá; o nome no HF mantém o emoji por
+#   compatibilidade com os URLs já publicados).
+#
+# O xlsx atualizado NÃO é committed: no git, o xlsx é a base de tarifários
+# mantida manualmente; o bot usa-o em runtime e envia o fresco para o HF.
+
+name: Atualizar Tarifários Gás Natural (MIBGAS)
+
+on:
+  schedule:
+    # 18:55 UTC -> 19:55 Lisboa (verão) / 18:55 (inverno)
+    - cron: '55 18 * * *'
+
+  workflow_dispatch: # Permite execução manual
+
+# Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Sem o prefixo 'commits-' dos outros workflows de propósito: este não faz
+# commit a ESTE repositório. O que protege é outra coisa — duas instâncias
+# suas em paralelo escreveriam no mesmo xlsx e fariam dois 'git push'
+# concorrentes ao espaço Hugging Face, onde não há retry+rebase que os
+# reconcilie. Só se pode sobrepor a si mesmo, e é isso que aqui se impede.
+concurrency:
+  group: tarifarios-gas
+  cancel-in-progress: false
+
+jobs:
+  update-excel-and-push-to-hf:
+    name: Executar Atualização MIBGAS
+    # ubuntu-26.04 explícito, e não ubuntu-latest, pela mesma razão que a action
+    # do Chrome está fixa numa versão: ubuntu-latest é um alvo que se desloca.
+    #
+    # A 19/10/2026 começa a migração do ubuntu-latest de 24.04 para 26.04, e só
+    # termina a 19/11 — cinco semanas em que cada corrida podia calhar num
+    # runner ou no outro sem aviso (actions/runner-images#14748). Este é o único
+    # workflow com Chrome e Selenium, portanto o único onde a mudança de
+    # bibliotecas de sistema pode mesmo partir alguma coisa: mais vale descobri-lo
+    # num dia à escolha do que a meio da janela.
+    #
+    # Se partir: voltar a 'ubuntu-24.04' (a imagem antiga continua disponível) e
+    # investigar com calma, em vez de ficar sem recolha.
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      # O scraping dos futuros OMIP precisa de browser (página com JavaScript)
+      #
+      # Fixo numa versão exacta, e não em @latest, porque o "latest" desta action
+      # é um BRANCH, não uma tag: move-se quando os autores publicam, sem aviso e
+      # a meio de um pipeline que corre sozinho. É a única action de terceiros
+      # deste repositório e a única que instala um browser — as outras são da
+      # Microsoft e ficam na tag maior (@v6, @v5), que é a convenção da casa.
+      #
+      # Fixar hoje não muda comportamento nenhum: a 19/09/2026 o branch 'latest'
+      # e a tag v2.2.0 apontavam ao mesmo commit (48ad923757ca).
+      #
+      # A 19/10/2026 o ubuntu-latest migra para o Ubuntu 26. Com a action fixa,
+      # se o scraping partir a seguir sabe-se que foi o runner. Com @latest
+      # mudavam duas variáveis ao mesmo tempo.
+      #
+      # O Chrome em si continua no canal 'stable' e muda a cada ~4 semanas: essa
+      # é a variável que fica. Se algo partir depois da migração, o input
+      # chrome-version desta action é a alavanca para testar uma versão anterior.
+      - name: Instalar Chrome
+        uses: browser-actions/setup-chrome@v2.2.0
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Executar atualização MIBGAS
+        run: |
+          mkdir -p logs
+          echo "=== MIBGAS INICIADO: $(date) ===" >> logs/tarifarios_gas.log
+          python scripts/atualizar_tarifarios_gas.py >> logs/tarifarios_gas.log 2>&1
+          echo "=== MIBGAS TERMINADO: $(date) ===" >> logs/tarifarios_gas.log
+
+      # O log NÃO é committed — vai só como artefacto.
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-tarifarios-gas
+          path: logs/tarifarios_gas.log
+          retention-days: 30
+
+      # =========================================================
+      # DEPLOY — Hugging Face (transição)
+      # =========================================================
+      - name: Enviar ficheiro para o Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          # Guard: sem o secret HF_TOKEN o clone fica anónimo e o push falha.
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::Secret HF_TOKEN não configurado em Settings → Secrets and variables → Actions deste repositório."
+            exit 1
+          fi
+
+          FICHEIRO_LOCAL="data/simuladores/simulador-tarifarios-gas/tarifarios_gas_natural_Tiago_Felicia.xlsx"
+          # No HF mantém o nome antigo (com emoji) — é o URL que o simulador publicado usa
+          FICHEIRO_HF="Tarifarios_🔥_Gas_Natural_Tiago_Felicia.xlsx"
+          REPO_HF="tiagofelicia/simulador-tarifarios-gas-natural"
+
+          echo "Clonando o repositório $REPO_HF..."
+          git lfs install
+
+          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS existentes
+          # (vamos substituir o xlsx de qualquer forma).
+          GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
+
+          cp -f "$FICHEIRO_LOCAL" "hf_repo/$FICHEIRO_HF"
+
+          cd hf_repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git lfs track "*.xlsx"
+          git add .gitattributes
+          git add "$FICHEIRO_HF"
+
+          git commit -m "🔥 HF: Atualização automática MIBGAS via GitHub Actions" || echo "Sem alterações para enviar"
+          git push
