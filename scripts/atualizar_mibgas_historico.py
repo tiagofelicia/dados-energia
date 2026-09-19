@@ -350,7 +350,30 @@ def gravar(df):
         "fonte": "MIBGAS (https://www.mibgas.es)",
         "unidade": "EUR/MWh",
     }
-    if mudou or not os.path.exists(FICHEIRO_META):
+    # Escrever quando o CSV mudou, OU quando o metadata calculado difere do que
+    # esta em disco em algo que nao seja o carimbo temporal.
+    #
+    # So com 'mudou' uma alteracao a forma de CALCULAR o metadata nunca chegava
+    # ao ficheiro: ficava a espera de que os dados mudassem, o que num fim de
+    # semana sao tres dias. Foi o que aconteceu a 19/09/2026, quando ultima_data
+    # passou a ser o ultimo dia com indice — as duas corridas de sabado deram
+    # verde sem escreverem nada.
+    #
+    # Nao se escreve sempre porque ultima_atualizacao e um now(): o ficheiro
+    # mudaria a cada corrida e daria um commit de cada vez. Comparar sem esse
+    # campo mantem essa propriedade e deixa passar o que interessa.
+    def _substantivo(d):
+        return {k: v for k, v in (d or {}).items() if k != "ultima_atualizacao"}
+
+    anterior = None
+    if os.path.exists(FICHEIRO_META):
+        try:
+            with open(FICHEIRO_META, "r", encoding="utf-8") as f:
+                anterior = json.load(f)
+        except (ValueError, OSError):
+            anterior = None
+
+    if mudou or _substantivo(anterior) != _substantivo(meta):
         with open(FICHEIRO_META, "w", encoding="utf-8") as f:
             json.dump(meta, f, ensure_ascii=False, indent=2)
             f.write("\n")
