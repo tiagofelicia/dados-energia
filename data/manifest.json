@@ -441,7 +441,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
-   "bytes": 3988485,
+   "bytes": 4001773,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/producao/",
    "descricao": "Produção diária por país e tecnologia (GWh) e quota renovável, para 28 países, desde 2026-01.",
@@ -766,7 +766,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-09-26T18:18:41+00:00",
+ "gerado_em": "2026-09-26T18:24:45+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -781,7 +781,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 357460311,
+  "bytes": 357473599,
   "datasets": 28,
   "ficheiros": 1504
  }
