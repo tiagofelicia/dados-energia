@@ -4031,6 +4031,1350 @@
 29/09/2026,Coopérnico GO,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:15-23:30[,0.23868,0.13277,0.05240,0.20475
 29/09/2026,Coopérnico GO,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:30-23:45[,0.23817,0.13277,0.05240,0.20432
 29/09/2026,Coopérnico GO,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:45-00:00[,0.23768,0.13277,0.05240,0.20392
+30/09/2026,Coopérnico Único,Simples,[00:00-00:15[,0.24072,0.13277,0.06070,0.21175
+30/09/2026,Coopérnico Único,Simples,[00:15-00:30[,0.23975,0.13235,0.06070,0.21079
+30/09/2026,Coopérnico Único,Simples,[00:30-00:45[,0.23987,0.13277,0.06070,0.21091
+30/09/2026,Coopérnico Único,Simples,[00:45-01:00[,0.23916,0.13235,0.06070,0.21020
+30/09/2026,Coopérnico Único,Simples,[01:00-01:15[,0.23947,0.13277,0.06070,0.21050
+30/09/2026,Coopérnico Único,Simples,[01:15-01:30[,0.23933,0.13277,0.06070,0.21036
+30/09/2026,Coopérnico Único,Simples,[01:30-01:45[,0.23922,0.13277,0.06070,0.21026
+30/09/2026,Coopérnico Único,Simples,[01:45-02:00[,0.24176,0.13510,0.06070,0.21279
+30/09/2026,Coopérnico Único,Simples,[02:00-02:15[,0.24270,0.13620,0.06070,0.21373
+30/09/2026,Coopérnico Único,Simples,[02:15-02:30[,0.24265,0.13620,0.06070,0.21368
+30/09/2026,Coopérnico Único,Simples,[02:30-02:45[,0.24688,0.14001,0.06070,0.21791
+30/09/2026,Coopérnico Único,Simples,[02:45-03:00[,0.24683,0.14001,0.06070,0.21787
+30/09/2026,Coopérnico Único,Simples,[03:00-03:15[,0.23867,0.13277,0.06070,0.20970
+30/09/2026,Coopérnico Único,Simples,[03:15-03:30[,0.23975,0.13375,0.06070,0.21078
+30/09/2026,Coopérnico Único,Simples,[03:30-03:45[,0.24248,0.13620,0.06070,0.21351
+30/09/2026,Coopérnico Único,Simples,[03:45-04:00[,0.25121,0.14400,0.06070,0.22224
+30/09/2026,Coopérnico Único,Simples,[04:00-04:15[,0.25001,0.14294,0.06070,0.22104
+30/09/2026,Coopérnico Único,Simples,[04:15-04:30[,0.25875,0.15074,0.06070,0.22978
+30/09/2026,Coopérnico Único,Simples,[04:30-04:45[,0.26617,0.15736,0.06070,0.23721
+30/09/2026,Coopérnico Único,Simples,[04:45-05:00[,0.27444,0.16473,0.06070,0.24548
+30/09/2026,Coopérnico Único,Simples,[05:00-05:15[,0.25794,0.15000,0.06070,0.22898
+30/09/2026,Coopérnico Único,Simples,[05:15-05:30[,0.27369,0.16400,0.06070,0.24472
+30/09/2026,Coopérnico Único,Simples,[05:30-05:45[,0.28893,0.17753,0.06070,0.25996
+30/09/2026,Coopérnico Único,Simples,[05:45-06:00[,0.29739,0.18499,0.06070,0.26842
+30/09/2026,Coopérnico Único,Simples,[06:00-06:15[,0.30671,0.19288,0.06070,0.27774
+30/09/2026,Coopérnico Único,Simples,[06:15-06:30[,0.32281,0.20700,0.06070,0.29384
+30/09/2026,Coopérnico Único,Simples,[06:30-06:45[,0.32854,0.21181,0.06070,0.29957
+30/09/2026,Coopérnico Único,Simples,[06:45-07:00[,0.32359,0.20707,0.06070,0.29463
+30/09/2026,Coopérnico Único,Simples,[07:00-07:15[,0.34300,0.22394,0.06070,0.31404
+30/09/2026,Coopérnico Único,Simples,[07:15-07:30[,0.32644,0.20848,0.06070,0.29748
+30/09/2026,Coopérnico Único,Simples,[07:30-07:45[,0.31986,0.20194,0.06070,0.29089
+30/09/2026,Coopérnico Único,Simples,[07:45-08:00[,0.30331,0.18690,0.06070,0.27435
+30/09/2026,Coopérnico Único,Simples,[08:00-08:15[,0.32111,0.20194,0.06070,0.29214
+30/09/2026,Coopérnico Único,Simples,[08:15-08:30[,0.30214,0.18499,0.06070,0.27317
+30/09/2026,Coopérnico Único,Simples,[08:30-08:45[,0.28933,0.17354,0.06070,0.26037
+30/09/2026,Coopérnico Único,Simples,[08:45-09:00[,0.27674,0.16241,0.06070,0.24777
+30/09/2026,Coopérnico Único,Simples,[09:00-09:15[,0.30399,0.18587,0.06070,0.27502
+30/09/2026,Coopérnico Único,Simples,[09:15-09:30[,0.29242,0.17550,0.06070,0.26346
+30/09/2026,Coopérnico Único,Simples,[09:30-09:45[,0.25743,0.14510,0.06070,0.22847
+30/09/2026,Coopérnico Único,Simples,[09:45-10:00[,0.24243,0.13208,0.06070,0.21347
+30/09/2026,Coopérnico Único,Simples,[10:00-10:15[,0.24276,0.13235,0.06070,0.21379
+30/09/2026,Coopérnico Único,Simples,[10:15-10:30[,0.24003,0.13000,0.06070,0.21106
+30/09/2026,Coopérnico Único,Simples,[10:30-10:45[,0.23397,0.12479,0.06070,0.20500
+30/09/2026,Coopérnico Único,Simples,[10:45-11:00[,0.22278,0.11515,0.06070,0.19382
+30/09/2026,Coopérnico Único,Simples,[11:00-11:15[,0.20920,0.10341,0.06070,0.18023
+30/09/2026,Coopérnico Único,Simples,[11:15-11:30[,0.21533,0.10870,0.06070,0.18636
+30/09/2026,Coopérnico Único,Simples,[11:30-11:45[,0.21538,0.10870,0.06070,0.18641
+30/09/2026,Coopérnico Único,Simples,[11:45-12:00[,0.20538,0.10000,0.06070,0.17641
+30/09/2026,Coopérnico Único,Simples,[12:00-12:15[,0.19383,0.08999,0.06070,0.16487
+30/09/2026,Coopérnico Único,Simples,[12:15-12:30[,0.19456,0.09070,0.06070,0.16559
+30/09/2026,Coopérnico Único,Simples,[12:30-12:45[,0.19367,0.09000,0.06070,0.16471
+30/09/2026,Coopérnico Único,Simples,[12:45-13:00[,0.18846,0.08560,0.06070,0.15950
+30/09/2026,Coopérnico Único,Simples,[13:00-13:15[,0.19267,0.08940,0.06070,0.16371
+30/09/2026,Coopérnico Único,Simples,[13:15-13:30[,0.19895,0.09499,0.06070,0.16998
+30/09/2026,Coopérnico Único,Simples,[13:30-13:45[,0.20458,0.10000,0.06070,0.17561
+30/09/2026,Coopérnico Único,Simples,[13:45-14:00[,0.20680,0.10200,0.06070,0.17783
+30/09/2026,Coopérnico Único,Simples,[14:00-14:15[,0.21598,0.11000,0.06070,0.18701
+30/09/2026,Coopérnico Único,Simples,[14:15-14:30[,0.21599,0.11000,0.06070,0.18702
+30/09/2026,Coopérnico Único,Simples,[14:30-14:45[,0.22371,0.11670,0.06070,0.19474
+30/09/2026,Coopérnico Único,Simples,[14:45-15:00[,0.22750,0.12000,0.06070,0.19854
+30/09/2026,Coopérnico Único,Simples,[15:00-15:15[,0.22750,0.12000,0.06070,0.19853
+30/09/2026,Coopérnico Único,Simples,[15:15-15:30[,0.23897,0.13000,0.06070,0.21000
+30/09/2026,Coopérnico Único,Simples,[15:30-15:45[,0.23913,0.13014,0.06070,0.21017
+30/09/2026,Coopérnico Único,Simples,[15:45-16:00[,0.24170,0.13235,0.06070,0.21273
+30/09/2026,Coopérnico Único,Simples,[16:00-16:15[,0.25055,0.14001,0.06070,0.22158
+30/09/2026,Coopérnico Único,Simples,[16:15-16:30[,0.27765,0.16351,0.06070,0.24868
+30/09/2026,Coopérnico Único,Simples,[16:30-16:45[,0.29153,0.17547,0.06070,0.26256
+30/09/2026,Coopérnico Único,Simples,[16:45-17:00[,0.31366,0.19454,0.06070,0.28469
+30/09/2026,Coopérnico Único,Simples,[17:00-17:15[,0.29913,0.18175,0.06070,0.27016
+30/09/2026,Coopérnico Único,Simples,[17:15-17:30[,0.32228,0.20161,0.06070,0.29332
+30/09/2026,Coopérnico Único,Simples,[17:30-17:45[,0.35606,0.23060,0.06070,0.32709
+30/09/2026,Coopérnico Único,Simples,[17:45-18:00[,0.37094,0.24315,0.06070,0.34197
+30/09/2026,Coopérnico Único,Simples,[18:00-18:15[,0.32718,0.20503,0.06070,0.29821
+30/09/2026,Coopérnico Único,Simples,[18:15-18:30[,0.37072,0.24221,0.06070,0.34175
+30/09/2026,Coopérnico Único,Simples,[18:30-18:45[,0.39197,0.26000,0.06070,0.36301
+30/09/2026,Coopérnico Único,Simples,[18:45-19:00[,0.39394,0.26103,0.06070,0.36498
+30/09/2026,Coopérnico Único,Simples,[19:00-19:15[,0.38779,0.25500,0.06070,0.35882
+30/09/2026,Coopérnico Único,Simples,[19:15-19:30[,0.39899,0.26385,0.06070,0.37003
+30/09/2026,Coopérnico Único,Simples,[19:30-19:45[,0.40771,0.27065,0.06070,0.37875
+30/09/2026,Coopérnico Único,Simples,[19:45-20:00[,0.41961,0.28001,0.06070,0.39065
+30/09/2026,Coopérnico Único,Simples,[20:00-20:15[,0.50283,0.35000,0.06070,0.47387
+30/09/2026,Coopérnico Único,Simples,[20:15-20:30[,0.50289,0.35000,0.06070,0.47393
+30/09/2026,Coopérnico Único,Simples,[20:30-20:45[,0.49763,0.34603,0.06070,0.46866
+30/09/2026,Coopérnico Único,Simples,[20:45-21:00[,0.44254,0.30000,0.06070,0.41357
+30/09/2026,Coopérnico Único,Simples,[21:00-21:15[,0.37498,0.24315,0.06070,0.34601
+30/09/2026,Coopérnico Único,Simples,[21:15-21:30[,0.37131,0.24057,0.06070,0.34234
+30/09/2026,Coopérnico Único,Simples,[21:30-21:45[,0.35441,0.22664,0.06070,0.32544
+30/09/2026,Coopérnico Único,Simples,[21:45-22:00[,0.33573,0.21113,0.06070,0.30676
+30/09/2026,Coopérnico Único,Simples,[22:00-22:15[,0.36926,0.24047,0.06070,0.34029
+30/09/2026,Coopérnico Único,Simples,[22:15-22:30[,0.34579,0.22081,0.06070,0.31682
+30/09/2026,Coopérnico Único,Simples,[22:30-22:45[,0.33010,0.20781,0.06070,0.30114
+30/09/2026,Coopérnico Único,Simples,[22:45-23:00[,0.32046,0.20000,0.06070,0.29149
+30/09/2026,Coopérnico Único,Simples,[23:00-23:15[,,,,
+30/09/2026,Coopérnico Único,Simples,[23:15-23:30[,,,,
+30/09/2026,Coopérnico Único,Simples,[23:30-23:45[,,,,
+30/09/2026,Coopérnico Único,Simples,[23:45-00:00[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:00-00:15[,0.19582,0.13277,0.01580,0.16685
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:15-00:30[,0.19485,0.13235,0.01580,0.16589
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:30-00:45[,0.19497,0.13277,0.01580,0.16601
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:45-01:00[,0.19426,0.13235,0.01580,0.16530
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:00-01:15[,0.19457,0.13277,0.01580,0.16560
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:15-01:30[,0.19443,0.13277,0.01580,0.16546
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:30-01:45[,0.19432,0.13277,0.01580,0.16536
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:45-02:00[,0.19686,0.13510,0.01580,0.16789
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:00-02:15[,0.19780,0.13620,0.01580,0.16883
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:15-02:30[,0.19775,0.13620,0.01580,0.16878
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:30-02:45[,0.20198,0.14001,0.01580,0.17301
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:45-03:00[,0.20193,0.14001,0.01580,0.17297
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:00-03:15[,0.19377,0.13277,0.01580,0.16480
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:15-03:30[,0.19485,0.13375,0.01580,0.16588
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:30-03:45[,0.19758,0.13620,0.01580,0.16861
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:45-04:00[,0.20631,0.14400,0.01580,0.17734
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:00-04:15[,0.20511,0.14294,0.01580,0.17614
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:15-04:30[,0.21385,0.15074,0.01580,0.18488
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:30-04:45[,0.22127,0.15736,0.01580,0.19231
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:45-05:00[,0.22954,0.16473,0.01580,0.20058
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:00-05:15[,0.21304,0.15000,0.01580,0.18408
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:15-05:30[,0.22879,0.16400,0.01580,0.19982
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:30-05:45[,0.24403,0.17753,0.01580,0.21506
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:45-06:00[,0.25249,0.18499,0.01580,0.22352
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:00-06:15[,0.26181,0.19288,0.01580,0.23284
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:15-06:30[,0.27791,0.20700,0.01580,0.24894
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:30-06:45[,0.28364,0.21181,0.01580,0.25467
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:45-07:00[,0.27869,0.20707,0.01580,0.24973
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:00-07:15[,0.29810,0.22394,0.01580,0.26914
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:15-07:30[,0.28154,0.20848,0.01580,0.25258
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:30-07:45[,0.27496,0.20194,0.01580,0.24599
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:45-08:00[,0.25841,0.18690,0.01580,0.22945
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:00-08:15[,0.34391,0.20194,0.08350,0.31494
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:15-08:30[,0.32494,0.18499,0.08350,0.29597
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:30-08:45[,0.31213,0.17354,0.08350,0.28317
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:45-09:00[,0.29954,0.16241,0.08350,0.27057
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:00-09:15[,0.32679,0.18587,0.08350,0.29782
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:15-09:30[,0.31522,0.17550,0.08350,0.28626
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:30-09:45[,0.28023,0.14510,0.08350,0.25127
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:45-10:00[,0.26523,0.13208,0.08350,0.23627
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:00-10:15[,0.26556,0.13235,0.08350,0.23659
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:15-10:30[,0.26283,0.13000,0.08350,0.23386
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:30-10:45[,0.25677,0.12479,0.08350,0.22780
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:45-11:00[,0.24558,0.11515,0.08350,0.21662
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:00-11:15[,0.23200,0.10341,0.08350,0.20303
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:15-11:30[,0.23813,0.10870,0.08350,0.20916
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:30-11:45[,0.23818,0.10870,0.08350,0.20921
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:45-12:00[,0.22818,0.10000,0.08350,0.19921
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:00-12:15[,0.21663,0.08999,0.08350,0.18767
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:15-12:30[,0.21736,0.09070,0.08350,0.18839
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:30-12:45[,0.21647,0.09000,0.08350,0.18751
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:45-13:00[,0.21126,0.08560,0.08350,0.18230
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:00-13:15[,0.21547,0.08940,0.08350,0.18651
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:15-13:30[,0.22175,0.09499,0.08350,0.19278
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:30-13:45[,0.22738,0.10000,0.08350,0.19841
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:45-14:00[,0.22960,0.10200,0.08350,0.20063
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:00-14:15[,0.23878,0.11000,0.08350,0.20981
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:15-14:30[,0.23879,0.11000,0.08350,0.20982
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:30-14:45[,0.24651,0.11670,0.08350,0.21754
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:45-15:00[,0.25030,0.12000,0.08350,0.22134
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:00-15:15[,0.25030,0.12000,0.08350,0.22133
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:15-15:30[,0.26177,0.13000,0.08350,0.23280
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:30-15:45[,0.26193,0.13014,0.08350,0.23297
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:45-16:00[,0.26450,0.13235,0.08350,0.23553
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:00-16:15[,0.27335,0.14001,0.08350,0.24438
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:15-16:30[,0.30045,0.16351,0.08350,0.27148
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:30-16:45[,0.31433,0.17547,0.08350,0.28536
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:45-17:00[,0.33646,0.19454,0.08350,0.30749
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:00-17:15[,0.32193,0.18175,0.08350,0.29296
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:15-17:30[,0.34508,0.20161,0.08350,0.31612
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:30-17:45[,0.37886,0.23060,0.08350,0.34989
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:45-18:00[,0.39374,0.24315,0.08350,0.36477
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:00-18:15[,0.34998,0.20503,0.08350,0.32101
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:15-18:30[,0.39352,0.24221,0.08350,0.36455
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:30-18:45[,0.41477,0.26000,0.08350,0.38581
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:45-19:00[,0.41674,0.26103,0.08350,0.38778
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:00-19:15[,0.41059,0.25500,0.08350,0.38162
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:15-19:30[,0.42179,0.26385,0.08350,0.39283
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:30-19:45[,0.43051,0.27065,0.08350,0.40155
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:45-20:00[,0.44241,0.28001,0.08350,0.41345
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:00-20:15[,0.52563,0.35000,0.08350,0.49667
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:15-20:30[,0.52569,0.35000,0.08350,0.49673
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:30-20:45[,0.52043,0.34603,0.08350,0.49146
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:45-21:00[,0.46534,0.30000,0.08350,0.43637
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:00-21:15[,0.39778,0.24315,0.08350,0.36881
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:15-21:30[,0.39411,0.24057,0.08350,0.36514
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:30-21:45[,0.37721,0.22664,0.08350,0.34824
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:45-22:00[,0.35853,0.21113,0.08350,0.32956
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:00-22:15[,0.32436,0.24047,0.01580,0.29539
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:15-22:30[,0.30089,0.22081,0.01580,0.27192
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:30-22:45[,0.28520,0.20781,0.01580,0.25624
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:45-23:00[,0.27556,0.20000,0.01580,0.24659
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:00-23:15[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:15-23:30[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:30-23:45[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:45-00:00[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:00-00:15[,0.19582,0.13277,0.01580,0.16685
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:15-00:30[,0.19485,0.13235,0.01580,0.16589
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:30-00:45[,0.19497,0.13277,0.01580,0.16601
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:45-01:00[,0.19426,0.13235,0.01580,0.16530
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:00-01:15[,0.19457,0.13277,0.01580,0.16560
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:15-01:30[,0.19443,0.13277,0.01580,0.16546
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:30-01:45[,0.19432,0.13277,0.01580,0.16536
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:45-02:00[,0.19686,0.13510,0.01580,0.16789
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:00-02:15[,0.19780,0.13620,0.01580,0.16883
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:15-02:30[,0.19775,0.13620,0.01580,0.16878
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:30-02:45[,0.20198,0.14001,0.01580,0.17301
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:45-03:00[,0.20193,0.14001,0.01580,0.17297
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:00-03:15[,0.19377,0.13277,0.01580,0.16480
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:15-03:30[,0.19485,0.13375,0.01580,0.16588
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:30-03:45[,0.19758,0.13620,0.01580,0.16861
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:45-04:00[,0.20631,0.14400,0.01580,0.17734
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:00-04:15[,0.20511,0.14294,0.01580,0.17614
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:15-04:30[,0.21385,0.15074,0.01580,0.18488
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:30-04:45[,0.22127,0.15736,0.01580,0.19231
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:45-05:00[,0.22954,0.16473,0.01580,0.20058
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:00-05:15[,0.21304,0.15000,0.01580,0.18408
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:15-05:30[,0.22879,0.16400,0.01580,0.19982
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:30-05:45[,0.24403,0.17753,0.01580,0.21506
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:45-06:00[,0.25249,0.18499,0.01580,0.22352
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:00-06:15[,0.26181,0.19288,0.01580,0.23284
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:15-06:30[,0.27791,0.20700,0.01580,0.24894
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:30-06:45[,0.28364,0.21181,0.01580,0.25467
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:45-07:00[,0.27869,0.20707,0.01580,0.24973
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:00-07:15[,0.36580,0.22394,0.08350,0.33684
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:15-07:30[,0.34924,0.20848,0.08350,0.32028
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:30-07:45[,0.34266,0.20194,0.08350,0.31369
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:45-08:00[,0.32611,0.18690,0.08350,0.29715
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:00-08:15[,0.34391,0.20194,0.08350,0.31494
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:15-08:30[,0.32494,0.18499,0.08350,0.29597
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:30-08:45[,0.31213,0.17354,0.08350,0.28317
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:45-09:00[,0.29954,0.16241,0.08350,0.27057
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:00-09:15[,0.32679,0.18587,0.08350,0.29782
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:15-09:30[,0.31522,0.17550,0.08350,0.28626
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:30-09:45[,0.28023,0.14510,0.08350,0.25127
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:45-10:00[,0.26523,0.13208,0.08350,0.23627
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:00-10:15[,0.26556,0.13235,0.08350,0.23659
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:15-10:30[,0.26283,0.13000,0.08350,0.23386
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:30-10:45[,0.25677,0.12479,0.08350,0.22780
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:45-11:00[,0.24558,0.11515,0.08350,0.21662
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:00-11:15[,0.23200,0.10341,0.08350,0.20303
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:15-11:30[,0.23813,0.10870,0.08350,0.20916
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:30-11:45[,0.23818,0.10870,0.08350,0.20921
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:45-12:00[,0.22818,0.10000,0.08350,0.19921
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:00-12:15[,0.21663,0.08999,0.08350,0.18767
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:15-12:30[,0.21736,0.09070,0.08350,0.18839
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:30-12:45[,0.21647,0.09000,0.08350,0.18751
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:45-13:00[,0.21126,0.08560,0.08350,0.18230
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:00-13:15[,0.21547,0.08940,0.08350,0.18651
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:15-13:30[,0.22175,0.09499,0.08350,0.19278
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:30-13:45[,0.22738,0.10000,0.08350,0.19841
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:45-14:00[,0.22960,0.10200,0.08350,0.20063
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:00-14:15[,0.23878,0.11000,0.08350,0.20981
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:15-14:30[,0.23879,0.11000,0.08350,0.20982
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:30-14:45[,0.24651,0.11670,0.08350,0.21754
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:45-15:00[,0.25030,0.12000,0.08350,0.22134
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:00-15:15[,0.25030,0.12000,0.08350,0.22133
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:15-15:30[,0.26177,0.13000,0.08350,0.23280
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:30-15:45[,0.26193,0.13014,0.08350,0.23297
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:45-16:00[,0.26450,0.13235,0.08350,0.23553
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:00-16:15[,0.27335,0.14001,0.08350,0.24438
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:15-16:30[,0.30045,0.16351,0.08350,0.27148
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:30-16:45[,0.31433,0.17547,0.08350,0.28536
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:45-17:00[,0.33646,0.19454,0.08350,0.30749
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:00-17:15[,0.32193,0.18175,0.08350,0.29296
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:15-17:30[,0.34508,0.20161,0.08350,0.31612
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:30-17:45[,0.37886,0.23060,0.08350,0.34989
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:45-18:00[,0.39374,0.24315,0.08350,0.36477
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:00-18:15[,0.34998,0.20503,0.08350,0.32101
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:15-18:30[,0.39352,0.24221,0.08350,0.36455
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:30-18:45[,0.41477,0.26000,0.08350,0.38581
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:45-19:00[,0.41674,0.26103,0.08350,0.38778
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:00-19:15[,0.41059,0.25500,0.08350,0.38162
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:15-19:30[,0.42179,0.26385,0.08350,0.39283
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:30-19:45[,0.43051,0.27065,0.08350,0.40155
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:45-20:00[,0.44241,0.28001,0.08350,0.41345
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:00-20:15[,0.52563,0.35000,0.08350,0.49667
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:15-20:30[,0.52569,0.35000,0.08350,0.49673
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:30-20:45[,0.52043,0.34603,0.08350,0.49146
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:45-21:00[,0.46534,0.30000,0.08350,0.43637
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:00-21:15[,0.39778,0.24315,0.08350,0.36881
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:15-21:30[,0.39411,0.24057,0.08350,0.36514
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:30-21:45[,0.37721,0.22664,0.08350,0.34824
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:45-22:00[,0.35853,0.21113,0.08350,0.32956
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:00-22:15[,0.39206,0.24047,0.08350,0.36309
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:15-22:30[,0.36859,0.22081,0.08350,0.33962
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:30-22:45[,0.35290,0.20781,0.08350,0.32394
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:45-23:00[,0.34326,0.20000,0.08350,0.31429
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:00-23:15[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:15-23:30[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:30-23:45[,,,,
+30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:45-00:00[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:00-00:15[,0.19582,0.13277,0.01580,0.16685
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:15-00:30[,0.19485,0.13235,0.01580,0.16589
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:30-00:45[,0.19497,0.13277,0.01580,0.16601
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:45-01:00[,0.19426,0.13235,0.01580,0.16530
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:00-01:15[,0.19457,0.13277,0.01580,0.16560
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:15-01:30[,0.19443,0.13277,0.01580,0.16546
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:30-01:45[,0.19432,0.13277,0.01580,0.16536
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:45-02:00[,0.19686,0.13510,0.01580,0.16789
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:00-02:15[,0.19780,0.13620,0.01580,0.16883
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:15-02:30[,0.19775,0.13620,0.01580,0.16878
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:30-02:45[,0.20198,0.14001,0.01580,0.17301
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:45-03:00[,0.20193,0.14001,0.01580,0.17297
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:00-03:15[,0.19377,0.13277,0.01580,0.16480
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:15-03:30[,0.19485,0.13375,0.01580,0.16588
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:30-03:45[,0.19758,0.13620,0.01580,0.16861
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:45-04:00[,0.20631,0.14400,0.01580,0.17734
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:00-04:15[,0.20511,0.14294,0.01580,0.17614
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:15-04:30[,0.21385,0.15074,0.01580,0.18488
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:30-04:45[,0.22127,0.15736,0.01580,0.19231
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:45-05:00[,0.22954,0.16473,0.01580,0.20058
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:00-05:15[,0.21304,0.15000,0.01580,0.18408
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:15-05:30[,0.22879,0.16400,0.01580,0.19982
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:30-05:45[,0.24403,0.17753,0.01580,0.21506
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:45-06:00[,0.25249,0.18499,0.01580,0.22352
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:00-06:15[,0.26181,0.19288,0.01580,0.23284
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:15-06:30[,0.27791,0.20700,0.01580,0.24894
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:30-06:45[,0.28364,0.21181,0.01580,0.25467
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:45-07:00[,0.27869,0.20707,0.01580,0.24973
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:00-07:15[,0.29810,0.22394,0.01580,0.26914
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:15-07:30[,0.28154,0.20848,0.01580,0.25258
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:30-07:45[,0.27496,0.20194,0.01580,0.24599
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:45-08:00[,0.25841,0.18690,0.01580,0.22945
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:00-08:15[,0.30161,0.20194,0.04120,0.27264
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:15-08:30[,0.28264,0.18499,0.04120,0.25367
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:30-08:45[,0.26983,0.17354,0.04120,0.24087
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:45-09:00[,0.25724,0.16241,0.04120,0.22827
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:00-09:15[,0.28449,0.18587,0.04120,0.25552
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:15-09:30[,0.27292,0.17550,0.04120,0.24396
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:30-09:45[,0.23793,0.14510,0.04120,0.20897
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:45-10:00[,0.22293,0.13208,0.04120,0.19397
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:00-10:15[,0.22326,0.13235,0.04120,0.19429
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:15-10:30[,0.22053,0.13000,0.04120,0.19156
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:30-10:45[,0.41847,0.12479,0.24520,0.38950
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:45-11:00[,0.40728,0.11515,0.24520,0.37832
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:00-11:15[,0.39370,0.10341,0.24520,0.36473
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:15-11:30[,0.39983,0.10870,0.24520,0.37086
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:30-11:45[,0.39988,0.10870,0.24520,0.37091
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:45-12:00[,0.38988,0.10000,0.24520,0.36091
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:00-12:15[,0.37833,0.08999,0.24520,0.34937
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:15-12:30[,0.37906,0.09070,0.24520,0.35009
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:30-12:45[,0.37817,0.09000,0.24520,0.34921
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:45-13:00[,0.37296,0.08560,0.24520,0.34400
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:00-13:15[,0.17317,0.08940,0.04120,0.14421
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:15-13:30[,0.17945,0.09499,0.04120,0.15048
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:30-13:45[,0.18508,0.10000,0.04120,0.15611
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:45-14:00[,0.18730,0.10200,0.04120,0.15833
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:00-14:15[,0.19648,0.11000,0.04120,0.16751
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:15-14:30[,0.19649,0.11000,0.04120,0.16752
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:30-14:45[,0.20421,0.11670,0.04120,0.17524
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:45-15:00[,0.20800,0.12000,0.04120,0.17904
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:00-15:15[,0.20800,0.12000,0.04120,0.17903
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:15-15:30[,0.21947,0.13000,0.04120,0.19050
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:30-15:45[,0.21963,0.13014,0.04120,0.19067
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:45-16:00[,0.22220,0.13235,0.04120,0.19323
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:00-16:15[,0.23105,0.14001,0.04120,0.20208
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:15-16:30[,0.25815,0.16351,0.04120,0.22918
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:30-16:45[,0.27203,0.17547,0.04120,0.24306
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:45-17:00[,0.29416,0.19454,0.04120,0.26519
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:00-17:15[,0.27963,0.18175,0.04120,0.25066
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:15-17:30[,0.30278,0.20161,0.04120,0.27382
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:30-17:45[,0.33656,0.23060,0.04120,0.30759
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:45-18:00[,0.35144,0.24315,0.04120,0.32247
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:00-18:15[,0.30768,0.20503,0.04120,0.27871
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:15-18:30[,0.35122,0.24221,0.04120,0.32225
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:30-18:45[,0.37247,0.26000,0.04120,0.34351
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:45-19:00[,0.37444,0.26103,0.04120,0.34548
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:00-19:15[,0.36829,0.25500,0.04120,0.33932
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:15-19:30[,0.37949,0.26385,0.04120,0.35053
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:30-19:45[,0.59221,0.27065,0.24520,0.56325
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:45-20:00[,0.60411,0.28001,0.24520,0.57515
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:00-20:15[,0.68733,0.35000,0.24520,0.65837
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:15-20:30[,0.68739,0.35000,0.24520,0.65843
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:30-20:45[,0.68213,0.34603,0.24520,0.65316
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:45-21:00[,0.62704,0.30000,0.24520,0.59807
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:00-21:15[,0.35548,0.24315,0.04120,0.32651
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:15-21:30[,0.35181,0.24057,0.04120,0.32284
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:30-21:45[,0.33491,0.22664,0.04120,0.30594
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:45-22:00[,0.31623,0.21113,0.04120,0.28726
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:00-22:15[,0.32436,0.24047,0.01580,0.29539
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:15-22:30[,0.30089,0.22081,0.01580,0.27192
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:30-22:45[,0.28520,0.20781,0.01580,0.25624
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:45-23:00[,0.27556,0.20000,0.01580,0.24659
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:00-23:15[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:15-23:30[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:30-23:45[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:45-00:00[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:00-00:15[,0.19582,0.13277,0.01580,0.16685
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:15-00:30[,0.19485,0.13235,0.01580,0.16589
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:30-00:45[,0.19497,0.13277,0.01580,0.16601
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:45-01:00[,0.19426,0.13235,0.01580,0.16530
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:00-01:15[,0.19457,0.13277,0.01580,0.16560
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:15-01:30[,0.19443,0.13277,0.01580,0.16546
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:30-01:45[,0.19432,0.13277,0.01580,0.16536
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:45-02:00[,0.19686,0.13510,0.01580,0.16789
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:00-02:15[,0.19780,0.13620,0.01580,0.16883
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:15-02:30[,0.19775,0.13620,0.01580,0.16878
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:30-02:45[,0.20198,0.14001,0.01580,0.17301
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:45-03:00[,0.20193,0.14001,0.01580,0.17297
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:00-03:15[,0.19377,0.13277,0.01580,0.16480
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:15-03:30[,0.19485,0.13375,0.01580,0.16588
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:30-03:45[,0.19758,0.13620,0.01580,0.16861
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:45-04:00[,0.20631,0.14400,0.01580,0.17734
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:00-04:15[,0.20511,0.14294,0.01580,0.17614
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:15-04:30[,0.21385,0.15074,0.01580,0.18488
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:30-04:45[,0.22127,0.15736,0.01580,0.19231
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:45-05:00[,0.22954,0.16473,0.01580,0.20058
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:00-05:15[,0.21304,0.15000,0.01580,0.18408
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:15-05:30[,0.22879,0.16400,0.01580,0.19982
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:30-05:45[,0.24403,0.17753,0.01580,0.21506
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:45-06:00[,0.25249,0.18499,0.01580,0.22352
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:00-06:15[,0.26181,0.19288,0.01580,0.23284
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:15-06:30[,0.27791,0.20700,0.01580,0.24894
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:30-06:45[,0.28364,0.21181,0.01580,0.25467
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:45-07:00[,0.27869,0.20707,0.01580,0.24973
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:00-07:15[,0.32350,0.22394,0.04120,0.29454
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:15-07:30[,0.30694,0.20848,0.04120,0.27798
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:30-07:45[,0.30036,0.20194,0.04120,0.27139
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:45-08:00[,0.28381,0.18690,0.04120,0.25485
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:00-08:15[,0.30161,0.20194,0.04120,0.27264
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:15-08:30[,0.28264,0.18499,0.04120,0.25367
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:30-08:45[,0.26983,0.17354,0.04120,0.24087
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:45-09:00[,0.25724,0.16241,0.04120,0.22827
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:00-09:15[,0.28449,0.18587,0.04120,0.25552
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:15-09:30[,0.47692,0.17550,0.24520,0.44796
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:30-09:45[,0.44193,0.14510,0.24520,0.41297
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:45-10:00[,0.42693,0.13208,0.24520,0.39797
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:00-10:15[,0.42726,0.13235,0.24520,0.39829
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:15-10:30[,0.42453,0.13000,0.24520,0.39556
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:30-10:45[,0.41847,0.12479,0.24520,0.38950
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:45-11:00[,0.40728,0.11515,0.24520,0.37832
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:00-11:15[,0.39370,0.10341,0.24520,0.36473
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:15-11:30[,0.39983,0.10870,0.24520,0.37086
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:30-11:45[,0.39988,0.10870,0.24520,0.37091
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:45-12:00[,0.38988,0.10000,0.24520,0.36091
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:00-12:15[,0.37833,0.08999,0.24520,0.34937
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:15-12:30[,0.17506,0.09070,0.04120,0.14609
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:30-12:45[,0.17417,0.09000,0.04120,0.14521
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:45-13:00[,0.16896,0.08560,0.04120,0.14000
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:00-13:15[,0.17317,0.08940,0.04120,0.14421
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:15-13:30[,0.17945,0.09499,0.04120,0.15048
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:30-13:45[,0.18508,0.10000,0.04120,0.15611
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:45-14:00[,0.18730,0.10200,0.04120,0.15833
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:00-14:15[,0.19648,0.11000,0.04120,0.16751
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:15-14:30[,0.19649,0.11000,0.04120,0.16752
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:30-14:45[,0.20421,0.11670,0.04120,0.17524
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:45-15:00[,0.20800,0.12000,0.04120,0.17904
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:00-15:15[,0.20800,0.12000,0.04120,0.17903
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:15-15:30[,0.21947,0.13000,0.04120,0.19050
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:30-15:45[,0.21963,0.13014,0.04120,0.19067
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:45-16:00[,0.22220,0.13235,0.04120,0.19323
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:00-16:15[,0.23105,0.14001,0.04120,0.20208
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:15-16:30[,0.25815,0.16351,0.04120,0.22918
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:30-16:45[,0.27203,0.17547,0.04120,0.24306
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:45-17:00[,0.29416,0.19454,0.04120,0.26519
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:00-17:15[,0.27963,0.18175,0.04120,0.25066
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:15-17:30[,0.30278,0.20161,0.04120,0.27382
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:30-17:45[,0.33656,0.23060,0.04120,0.30759
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:45-18:00[,0.35144,0.24315,0.04120,0.32247
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:00-18:15[,0.30768,0.20503,0.04120,0.27871
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:15-18:30[,0.35122,0.24221,0.04120,0.32225
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:30-18:45[,0.37247,0.26000,0.04120,0.34351
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:45-19:00[,0.37444,0.26103,0.04120,0.34548
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:00-19:15[,0.36829,0.25500,0.04120,0.33932
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:15-19:30[,0.37949,0.26385,0.04120,0.35053
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:30-19:45[,0.38821,0.27065,0.04120,0.35925
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:45-20:00[,0.40011,0.28001,0.04120,0.37115
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:00-20:15[,0.48333,0.35000,0.04120,0.45437
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:15-20:30[,0.48339,0.35000,0.04120,0.45443
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:30-20:45[,0.47813,0.34603,0.04120,0.44916
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:45-21:00[,0.42304,0.30000,0.04120,0.39407
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:00-21:15[,0.35548,0.24315,0.04120,0.32651
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:15-21:30[,0.35181,0.24057,0.04120,0.32284
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:30-21:45[,0.33491,0.22664,0.04120,0.30594
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:45-22:00[,0.31623,0.21113,0.04120,0.28726
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:00-22:15[,0.34976,0.24047,0.04120,0.32079
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:15-22:30[,0.32629,0.22081,0.04120,0.29732
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:30-22:45[,0.31060,0.20781,0.04120,0.28164
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:45-23:00[,0.30096,0.20000,0.04120,0.27199
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:00-23:15[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:15-23:30[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:30-23:45[,,,,
+30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:45-00:00[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:00-00:15[,0.19502,0.13277,0.01500,0.16605
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:15-00:30[,0.19405,0.13235,0.01500,0.16509
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:30-00:45[,0.19417,0.13277,0.01500,0.16521
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:45-01:00[,0.19346,0.13235,0.01500,0.16450
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:00-01:15[,0.19377,0.13277,0.01500,0.16480
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:15-01:30[,0.19363,0.13277,0.01500,0.16466
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:30-01:45[,0.19352,0.13277,0.01500,0.16456
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:45-02:00[,0.19606,0.13510,0.01500,0.16709
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:00-02:15[,0.19700,0.13620,0.01500,0.16803
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:15-02:30[,0.19695,0.13620,0.01500,0.16798
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:30-02:45[,0.20118,0.14001,0.01500,0.17221
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:45-03:00[,0.20113,0.14001,0.01500,0.17217
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:00-03:15[,0.19297,0.13277,0.01500,0.16400
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:15-03:30[,0.19405,0.13375,0.01500,0.16508
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:30-03:45[,0.19678,0.13620,0.01500,0.16781
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:45-04:00[,0.20551,0.14400,0.01500,0.17654
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:00-04:15[,0.20431,0.14294,0.01500,0.17534
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:15-04:30[,0.21305,0.15074,0.01500,0.18408
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:30-04:45[,0.22047,0.15736,0.01500,0.19151
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:45-05:00[,0.22874,0.16473,0.01500,0.19978
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:00-05:15[,0.21224,0.15000,0.01500,0.18328
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:15-05:30[,0.22799,0.16400,0.01500,0.19902
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:30-05:45[,0.24323,0.17753,0.01500,0.21426
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:45-06:00[,0.25169,0.18499,0.01500,0.22272
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:00-06:15[,0.26101,0.19288,0.01500,0.23204
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:15-06:30[,0.27711,0.20700,0.01500,0.24814
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:30-06:45[,0.28284,0.21181,0.01500,0.25387
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:45-07:00[,0.27789,0.20707,0.01500,0.24893
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:00-07:15[,0.29730,0.22394,0.01500,0.26834
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:15-07:30[,0.28074,0.20848,0.01500,0.25178
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:30-07:45[,0.27416,0.20194,0.01500,0.24519
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:45-08:00[,0.25761,0.18690,0.01500,0.22865
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:00-08:15[,0.31281,0.20194,0.05240,0.28384
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:15-08:30[,0.29384,0.18499,0.05240,0.26487
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:30-08:45[,0.28103,0.17354,0.05240,0.25207
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:45-09:00[,0.26844,0.16241,0.05240,0.23947
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:00-09:15[,0.29569,0.18587,0.05240,0.26672
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:15-09:30[,0.28412,0.17550,0.05240,0.25516
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:30-09:45[,0.24913,0.14510,0.05240,0.22017
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:45-10:00[,0.23413,0.13208,0.05240,0.20517
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:00-10:15[,0.23446,0.13235,0.05240,0.20549
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:15-10:30[,0.23173,0.13000,0.05240,0.20276
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:30-10:45[,0.41897,0.12479,0.24570,0.39000
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:45-11:00[,0.40778,0.11515,0.24570,0.37882
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:00-11:15[,0.39420,0.10341,0.24570,0.36523
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:15-11:30[,0.40033,0.10870,0.24570,0.37136
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:30-11:45[,0.40038,0.10870,0.24570,0.37141
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:45-12:00[,0.39038,0.10000,0.24570,0.36141
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:00-12:15[,0.37883,0.08999,0.24570,0.34987
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:15-12:30[,0.37956,0.09070,0.24570,0.35059
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:30-12:45[,0.37867,0.09000,0.24570,0.34971
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:45-13:00[,0.37346,0.08560,0.24570,0.34450
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:00-13:15[,0.18437,0.08940,0.05240,0.15541
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:15-13:30[,0.19065,0.09499,0.05240,0.16168
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:30-13:45[,0.19628,0.10000,0.05240,0.16731
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:45-14:00[,0.19850,0.10200,0.05240,0.16953
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:00-14:15[,0.20768,0.11000,0.05240,0.17871
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:15-14:30[,0.20769,0.11000,0.05240,0.17872
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:30-14:45[,0.21541,0.11670,0.05240,0.18644
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:45-15:00[,0.21920,0.12000,0.05240,0.19024
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:00-15:15[,0.21920,0.12000,0.05240,0.19023
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:15-15:30[,0.23067,0.13000,0.05240,0.20170
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:30-15:45[,0.23083,0.13014,0.05240,0.20187
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:45-16:00[,0.23340,0.13235,0.05240,0.20443
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:00-16:15[,0.24225,0.14001,0.05240,0.21328
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:15-16:30[,0.26935,0.16351,0.05240,0.24038
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:30-16:45[,0.28323,0.17547,0.05240,0.25426
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:45-17:00[,0.30536,0.19454,0.05240,0.27639
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:00-17:15[,0.29083,0.18175,0.05240,0.26186
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:15-17:30[,0.31398,0.20161,0.05240,0.28502
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:30-17:45[,0.34776,0.23060,0.05240,0.31879
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:45-18:00[,0.36264,0.24315,0.05240,0.33367
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:00-18:15[,0.31888,0.20503,0.05240,0.28991
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:15-18:30[,0.36242,0.24221,0.05240,0.33345
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:30-18:45[,0.38367,0.26000,0.05240,0.35471
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:45-19:00[,0.38564,0.26103,0.05240,0.35668
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:00-19:15[,0.37949,0.25500,0.05240,0.35052
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:15-19:30[,0.39069,0.26385,0.05240,0.36173
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:30-19:45[,0.59271,0.27065,0.24570,0.56375
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:45-20:00[,0.60461,0.28001,0.24570,0.57565
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:00-20:15[,0.68783,0.35000,0.24570,0.65887
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:15-20:30[,0.68789,0.35000,0.24570,0.65893
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:30-20:45[,0.68263,0.34603,0.24570,0.65366
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:45-21:00[,0.62754,0.30000,0.24570,0.59857
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:00-21:15[,0.36668,0.24315,0.05240,0.33771
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:15-21:30[,0.36301,0.24057,0.05240,0.33404
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:30-21:45[,0.34611,0.22664,0.05240,0.31714
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:45-22:00[,0.32743,0.21113,0.05240,0.29846
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:00-22:15[,0.32356,0.24047,0.01500,0.29459
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:15-22:30[,0.30009,0.22081,0.01500,0.27112
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:30-22:45[,0.28440,0.20781,0.01500,0.25544
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:45-23:00[,0.27476,0.20000,0.01500,0.24579
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:00-23:15[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:15-23:30[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:30-23:45[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:45-00:00[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:00-00:15[,0.19502,0.13277,0.01500,0.16605
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:15-00:30[,0.19405,0.13235,0.01500,0.16509
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:30-00:45[,0.19417,0.13277,0.01500,0.16521
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:45-01:00[,0.19346,0.13235,0.01500,0.16450
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:00-01:15[,0.19377,0.13277,0.01500,0.16480
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:15-01:30[,0.19363,0.13277,0.01500,0.16466
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:30-01:45[,0.19352,0.13277,0.01500,0.16456
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:45-02:00[,0.19606,0.13510,0.01500,0.16709
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:00-02:15[,0.19700,0.13620,0.01500,0.16803
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:15-02:30[,0.19695,0.13620,0.01500,0.16798
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:30-02:45[,0.20118,0.14001,0.01500,0.17221
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:45-03:00[,0.20113,0.14001,0.01500,0.17217
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:00-03:15[,0.19297,0.13277,0.01500,0.16400
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:15-03:30[,0.19405,0.13375,0.01500,0.16508
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:30-03:45[,0.19678,0.13620,0.01500,0.16781
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:45-04:00[,0.20551,0.14400,0.01500,0.17654
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:00-04:15[,0.20431,0.14294,0.01500,0.17534
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:15-04:30[,0.21305,0.15074,0.01500,0.18408
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:30-04:45[,0.22047,0.15736,0.01500,0.19151
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:45-05:00[,0.22874,0.16473,0.01500,0.19978
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:00-05:15[,0.21224,0.15000,0.01500,0.18328
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:15-05:30[,0.22799,0.16400,0.01500,0.19902
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:30-05:45[,0.24323,0.17753,0.01500,0.21426
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:45-06:00[,0.25169,0.18499,0.01500,0.22272
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:00-06:15[,0.26101,0.19288,0.01500,0.23204
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:15-06:30[,0.27711,0.20700,0.01500,0.24814
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:30-06:45[,0.28284,0.21181,0.01500,0.25387
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:45-07:00[,0.27789,0.20707,0.01500,0.24893
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:00-07:15[,0.33470,0.22394,0.05240,0.30574
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:15-07:30[,0.31814,0.20848,0.05240,0.28918
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:30-07:45[,0.31156,0.20194,0.05240,0.28259
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:45-08:00[,0.29501,0.18690,0.05240,0.26605
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:00-08:15[,0.31281,0.20194,0.05240,0.28384
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:15-08:30[,0.29384,0.18499,0.05240,0.26487
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:30-08:45[,0.28103,0.17354,0.05240,0.25207
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:45-09:00[,0.26844,0.16241,0.05240,0.23947
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:00-09:15[,0.29569,0.18587,0.05240,0.26672
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:15-09:30[,0.47742,0.17550,0.24570,0.44846
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:30-09:45[,0.44243,0.14510,0.24570,0.41347
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:45-10:00[,0.42743,0.13208,0.24570,0.39847
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:00-10:15[,0.42776,0.13235,0.24570,0.39879
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:15-10:30[,0.42503,0.13000,0.24570,0.39606
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:30-10:45[,0.41897,0.12479,0.24570,0.39000
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:45-11:00[,0.40778,0.11515,0.24570,0.37882
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:00-11:15[,0.39420,0.10341,0.24570,0.36523
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:15-11:30[,0.40033,0.10870,0.24570,0.37136
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:30-11:45[,0.40038,0.10870,0.24570,0.37141
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:45-12:00[,0.39038,0.10000,0.24570,0.36141
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:00-12:15[,0.37883,0.08999,0.24570,0.34987
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:15-12:30[,0.18626,0.09070,0.05240,0.15729
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:30-12:45[,0.18537,0.09000,0.05240,0.15641
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:45-13:00[,0.18016,0.08560,0.05240,0.15120
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:00-13:15[,0.18437,0.08940,0.05240,0.15541
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:15-13:30[,0.19065,0.09499,0.05240,0.16168
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:30-13:45[,0.19628,0.10000,0.05240,0.16731
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:45-14:00[,0.19850,0.10200,0.05240,0.16953
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:00-14:15[,0.20768,0.11000,0.05240,0.17871
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:15-14:30[,0.20769,0.11000,0.05240,0.17872
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:30-14:45[,0.21541,0.11670,0.05240,0.18644
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:45-15:00[,0.21920,0.12000,0.05240,0.19024
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:00-15:15[,0.21920,0.12000,0.05240,0.19023
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:15-15:30[,0.23067,0.13000,0.05240,0.20170
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:30-15:45[,0.23083,0.13014,0.05240,0.20187
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:45-16:00[,0.23340,0.13235,0.05240,0.20443
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:00-16:15[,0.24225,0.14001,0.05240,0.21328
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:15-16:30[,0.26935,0.16351,0.05240,0.24038
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:30-16:45[,0.28323,0.17547,0.05240,0.25426
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:45-17:00[,0.30536,0.19454,0.05240,0.27639
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:00-17:15[,0.29083,0.18175,0.05240,0.26186
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:15-17:30[,0.31398,0.20161,0.05240,0.28502
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:30-17:45[,0.34776,0.23060,0.05240,0.31879
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:45-18:00[,0.36264,0.24315,0.05240,0.33367
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:00-18:15[,0.31888,0.20503,0.05240,0.28991
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:15-18:30[,0.36242,0.24221,0.05240,0.33345
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:30-18:45[,0.38367,0.26000,0.05240,0.35471
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:45-19:00[,0.38564,0.26103,0.05240,0.35668
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:00-19:15[,0.37949,0.25500,0.05240,0.35052
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:15-19:30[,0.39069,0.26385,0.05240,0.36173
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:30-19:45[,0.39941,0.27065,0.05240,0.37045
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:45-20:00[,0.41131,0.28001,0.05240,0.38235
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:00-20:15[,0.49453,0.35000,0.05240,0.46557
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:15-20:30[,0.49459,0.35000,0.05240,0.46563
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:30-20:45[,0.48933,0.34603,0.05240,0.46036
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:45-21:00[,0.43424,0.30000,0.05240,0.40527
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:00-21:15[,0.36668,0.24315,0.05240,0.33771
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:15-21:30[,0.36301,0.24057,0.05240,0.33404
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:30-21:45[,0.34611,0.22664,0.05240,0.31714
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:45-22:00[,0.32743,0.21113,0.05240,0.29846
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:00-22:15[,0.36096,0.24047,0.05240,0.33199
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:15-22:30[,0.33749,0.22081,0.05240,0.30852
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:30-22:45[,0.32180,0.20781,0.05240,0.29284
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:45-23:00[,0.31216,0.20000,0.05240,0.28319
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:00-23:15[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:15-23:30[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:30-23:45[,,,,
+30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:45-00:00[,,,,
+29/09/2026,Coopérnico Único,Simples,[00:00-00:15[,0.33542,0.21599,0.06070,0.30645
+29/09/2026,Coopérnico Único,Simples,[00:15-00:30[,0.32220,0.20503,0.06070,0.29323
+29/09/2026,Coopérnico Único,Simples,[00:30-00:45[,0.31259,0.19702,0.06070,0.28362
+29/09/2026,Coopérnico Único,Simples,[00:45-01:00[,0.30657,0.19200,0.06070,0.27760
+29/09/2026,Coopérnico Único,Simples,[01:00-01:15[,0.30406,0.19000,0.06070,0.27510
+29/09/2026,Coopérnico Único,Simples,[01:15-01:30[,0.30079,0.18727,0.06070,0.27182
+29/09/2026,Coopérnico Único,Simples,[01:30-01:45[,0.29875,0.18559,0.06070,0.26978
+29/09/2026,Coopérnico Único,Simples,[01:45-02:00[,0.29390,0.18140,0.06070,0.26494
+29/09/2026,Coopérnico Único,Simples,[02:00-02:15[,0.29644,0.18401,0.06070,0.26748
+29/09/2026,Coopérnico Único,Simples,[02:15-02:30[,0.28915,0.17758,0.06070,0.26018
+29/09/2026,Coopérnico Único,Simples,[02:30-02:45[,0.28242,0.17165,0.06070,0.25346
+29/09/2026,Coopérnico Único,Simples,[02:45-03:00[,0.27703,0.16690,0.06070,0.24807
+29/09/2026,Coopérnico Único,Simples,[03:00-03:15[,0.27621,0.16620,0.06070,0.24724
+29/09/2026,Coopérnico Único,Simples,[03:15-03:30[,0.27318,0.16353,0.06070,0.24421
+29/09/2026,Coopérnico Único,Simples,[03:30-03:45[,0.27139,0.16195,0.06070,0.24242
+29/09/2026,Coopérnico Único,Simples,[03:45-04:00[,0.26739,0.15841,0.06070,0.23843
+29/09/2026,Coopérnico Único,Simples,[04:00-04:15[,0.26591,0.15710,0.06070,0.23694
+29/09/2026,Coopérnico Único,Simples,[04:15-04:30[,0.26994,0.16070,0.06070,0.24097
+29/09/2026,Coopérnico Único,Simples,[04:30-04:45[,0.28366,0.17294,0.06070,0.25470
+29/09/2026,Coopérnico Único,Simples,[04:45-05:00[,0.29158,0.18000,0.06070,0.26262
+29/09/2026,Coopérnico Único,Simples,[05:00-05:15[,0.28353,0.17280,0.06070,0.25457
+29/09/2026,Coopérnico Único,Simples,[05:15-05:30[,0.29727,0.18500,0.06070,0.26830
+29/09/2026,Coopérnico Único,Simples,[05:30-05:45[,0.30813,0.19462,0.06070,0.27916
+29/09/2026,Coopérnico Único,Simples,[05:45-06:00[,0.32590,0.21037,0.06070,0.29693
+29/09/2026,Coopérnico Único,Simples,[06:00-06:15[,0.32795,0.21175,0.06070,0.29899
+29/09/2026,Coopérnico Único,Simples,[06:15-06:30[,0.34659,0.22810,0.06070,0.31762
+29/09/2026,Coopérnico Único,Simples,[06:30-06:45[,0.34753,0.22864,0.06070,0.31857
+29/09/2026,Coopérnico Único,Simples,[06:45-07:00[,0.34737,0.22810,0.06070,0.31840
+29/09/2026,Coopérnico Único,Simples,[07:00-07:15[,0.36026,0.23917,0.06070,0.33130
+29/09/2026,Coopérnico Único,Simples,[07:15-07:30[,0.35222,0.23115,0.06070,0.32325
+29/09/2026,Coopérnico Único,Simples,[07:30-07:45[,0.33603,0.21612,0.06070,0.30706
+29/09/2026,Coopérnico Único,Simples,[07:45-08:00[,0.31137,0.19396,0.06070,0.28241
+29/09/2026,Coopérnico Único,Simples,[08:00-08:15[,0.33701,0.21583,0.06070,0.30804
+29/09/2026,Coopérnico Único,Simples,[08:15-08:30[,0.30721,0.18943,0.06070,0.27825
+29/09/2026,Coopérnico Único,Simples,[08:30-08:45[,0.27686,0.16272,0.06070,0.24789
+29/09/2026,Coopérnico Único,Simples,[08:45-09:00[,0.23155,0.12320,0.06070,0.20259
+29/09/2026,Coopérnico Único,Simples,[09:00-09:15[,0.22914,0.12098,0.06070,0.20018
+29/09/2026,Coopérnico Único,Simples,[09:15-09:30[,0.21458,0.10814,0.06070,0.18562
+29/09/2026,Coopérnico Único,Simples,[09:30-09:45[,0.18395,0.08156,0.06070,0.15499
+29/09/2026,Coopérnico Único,Simples,[09:45-10:00[,0.13437,0.03866,0.06070,0.10541
+29/09/2026,Coopérnico Único,Simples,[10:00-10:15[,0.13425,0.03855,0.06070,0.10529
+29/09/2026,Coopérnico Único,Simples,[10:15-10:30[,0.10291,0.01145,0.06070,0.07394
+29/09/2026,Coopérnico Único,Simples,[10:30-10:45[,0.09646,0.00588,0.06070,0.06750
+29/09/2026,Coopérnico Único,Simples,[10:45-11:00[,0.09546,0.00501,0.06070,0.06649
+29/09/2026,Coopérnico Único,Simples,[11:00-11:15[,0.09646,0.00588,0.06070,0.06750
+29/09/2026,Coopérnico Único,Simples,[11:15-11:30[,0.09363,0.00343,0.06070,0.06466
+29/09/2026,Coopérnico Único,Simples,[11:30-11:45[,0.09363,0.00343,0.06070,0.06467
+29/09/2026,Coopérnico Único,Simples,[11:45-12:00[,0.09292,0.00281,0.06070,0.06395
+29/09/2026,Coopérnico Único,Simples,[12:00-12:15[,0.09194,0.00196,0.06070,0.06297
+29/09/2026,Coopérnico Único,Simples,[12:15-12:30[,0.09140,0.00150,0.06070,0.06243
+29/09/2026,Coopérnico Único,Simples,[12:30-12:45[,0.09139,0.00149,0.06070,0.06242
+29/09/2026,Coopérnico Único,Simples,[12:45-13:00[,0.09099,0.00115,0.06070,0.06203
+29/09/2026,Coopérnico Único,Simples,[13:00-13:15[,0.09091,0.00108,0.06070,0.06194
+29/09/2026,Coopérnico Único,Simples,[13:15-13:30[,0.09091,0.00108,0.06070,0.06194
+29/09/2026,Coopérnico Único,Simples,[13:30-13:45[,0.09091,0.00108,0.06070,0.06194
+29/09/2026,Coopérnico Único,Simples,[13:45-14:00[,0.09091,0.00108,0.06070,0.06194
+29/09/2026,Coopérnico Único,Simples,[14:00-14:15[,0.09091,0.00108,0.06070,0.06194
+29/09/2026,Coopérnico Único,Simples,[14:15-14:30[,0.09091,0.00108,0.06070,0.06194
+29/09/2026,Coopérnico Único,Simples,[14:30-14:45[,0.09092,0.00109,0.06070,0.06195
+29/09/2026,Coopérnico Único,Simples,[14:45-15:00[,0.09104,0.00120,0.06070,0.06208
+29/09/2026,Coopérnico Único,Simples,[15:00-15:15[,0.09196,0.00200,0.06070,0.06300
+29/09/2026,Coopérnico Único,Simples,[15:15-15:30[,0.09361,0.00343,0.06070,0.06464
+29/09/2026,Coopérnico Único,Simples,[15:30-15:45[,0.09542,0.00501,0.06070,0.06645
+29/09/2026,Coopérnico Único,Simples,[15:45-16:00[,0.09642,0.00588,0.06070,0.06745
+29/09/2026,Coopérnico Único,Simples,[16:00-16:15[,0.10349,0.01203,0.06070,0.07452
+29/09/2026,Coopérnico Único,Simples,[16:15-16:30[,0.13398,0.03855,0.06070,0.10502
+29/09/2026,Coopérnico Único,Simples,[16:30-16:45[,0.17985,0.07840,0.06070,0.15089
+29/09/2026,Coopérnico Único,Simples,[16:45-17:00[,0.19559,0.09200,0.06070,0.16662
+29/09/2026,Coopérnico Único,Simples,[17:00-17:15[,0.17903,0.07755,0.06070,0.15007
+29/09/2026,Coopérnico Único,Simples,[17:15-17:30[,0.21635,0.10981,0.06070,0.18739
+29/09/2026,Coopérnico Único,Simples,[17:30-17:45[,0.23405,0.12500,0.06070,0.20508
+29/09/2026,Coopérnico Único,Simples,[17:45-18:00[,0.29274,0.17557,0.06070,0.26377
+29/09/2026,Coopérnico Único,Simples,[18:00-18:15[,0.27034,0.15599,0.06070,0.24137
+29/09/2026,Coopérnico Único,Simples,[18:15-18:30[,0.32169,0.20000,0.06070,0.29273
+29/09/2026,Coopérnico Único,Simples,[18:30-18:45[,0.35749,0.23040,0.06070,0.32853
+29/09/2026,Coopérnico Único,Simples,[18:45-19:00[,0.36074,0.23261,0.06070,0.33177
+29/09/2026,Coopérnico Único,Simples,[19:00-19:15[,0.33840,0.21282,0.06070,0.30943
+29/09/2026,Coopérnico Único,Simples,[19:15-19:30[,0.35637,0.22755,0.06070,0.32740
+29/09/2026,Coopérnico Único,Simples,[19:30-19:45[,0.34057,0.21358,0.06070,0.31160
+29/09/2026,Coopérnico Único,Simples,[19:45-20:00[,0.32306,0.19814,0.06070,0.29410
+29/09/2026,Coopérnico Único,Simples,[20:00-20:15[,0.31289,0.18914,0.06070,0.28392
+29/09/2026,Coopérnico Único,Simples,[20:15-20:30[,0.31118,0.18765,0.06070,0.28222
+29/09/2026,Coopérnico Único,Simples,[20:30-20:45[,0.30213,0.18022,0.06070,0.27316
+29/09/2026,Coopérnico Único,Simples,[20:45-21:00[,0.28802,0.16864,0.06070,0.25905
+29/09/2026,Coopérnico Único,Simples,[21:00-21:15[,0.30744,0.18559,0.06070,0.27847
+29/09/2026,Coopérnico Único,Simples,[21:15-21:30[,0.29571,0.17600,0.06070,0.26675
+29/09/2026,Coopérnico Único,Simples,[21:30-21:45[,0.29175,0.17300,0.06070,0.26278
+29/09/2026,Coopérnico Único,Simples,[21:45-22:00[,0.27266,0.15702,0.06070,0.24370
+29/09/2026,Coopérnico Único,Simples,[22:00-22:15[,0.27569,0.15999,0.06070,0.24672
+29/09/2026,Coopérnico Único,Simples,[22:15-22:30[,0.26240,0.14891,0.06070,0.23343
+29/09/2026,Coopérnico Único,Simples,[22:30-22:45[,0.25317,0.14131,0.06070,0.22420
+29/09/2026,Coopérnico Único,Simples,[22:45-23:00[,0.25053,0.13940,0.06070,0.22157
+29/09/2026,Coopérnico Único,Simples,[23:00-23:15[,0.24514,0.13510,0.06070,0.21617
+29/09/2026,Coopérnico Único,Simples,[23:15-23:30[,0.24201,0.13277,0.06070,0.21305
+29/09/2026,Coopérnico Único,Simples,[23:30-23:45[,0.24159,0.13277,0.06070,0.21262
+29/09/2026,Coopérnico Único,Simples,[23:45-00:00[,0.24118,0.13277,0.06070,0.21222
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:00-00:15[,0.29052,0.21599,0.01580,0.26155
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:15-00:30[,0.27730,0.20503,0.01580,0.24833
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:30-00:45[,0.26769,0.19702,0.01580,0.23872
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:45-01:00[,0.26167,0.19200,0.01580,0.23270
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:00-01:15[,0.25916,0.19000,0.01580,0.23020
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:15-01:30[,0.25589,0.18727,0.01580,0.22692
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:30-01:45[,0.25385,0.18559,0.01580,0.22488
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:45-02:00[,0.24900,0.18140,0.01580,0.22004
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:00-02:15[,0.25154,0.18401,0.01580,0.22258
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:15-02:30[,0.24425,0.17758,0.01580,0.21528
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:30-02:45[,0.23752,0.17165,0.01580,0.20856
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:45-03:00[,0.23213,0.16690,0.01580,0.20317
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:00-03:15[,0.23131,0.16620,0.01580,0.20234
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:15-03:30[,0.22828,0.16353,0.01580,0.19931
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:30-03:45[,0.22649,0.16195,0.01580,0.19752
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:45-04:00[,0.22249,0.15841,0.01580,0.19353
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:00-04:15[,0.22101,0.15710,0.01580,0.19204
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:15-04:30[,0.22504,0.16070,0.01580,0.19607
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:30-04:45[,0.23876,0.17294,0.01580,0.20980
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:45-05:00[,0.24668,0.18000,0.01580,0.21772
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:00-05:15[,0.23863,0.17280,0.01580,0.20967
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:15-05:30[,0.25237,0.18500,0.01580,0.22340
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:30-05:45[,0.26323,0.19462,0.01580,0.23426
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:45-06:00[,0.28100,0.21037,0.01580,0.25203
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:00-06:15[,0.28305,0.21175,0.01580,0.25409
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:15-06:30[,0.30169,0.22810,0.01580,0.27272
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:30-06:45[,0.30263,0.22864,0.01580,0.27367
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:45-07:00[,0.30247,0.22810,0.01580,0.27350
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:00-07:15[,0.31536,0.23917,0.01580,0.28640
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:15-07:30[,0.30732,0.23115,0.01580,0.27835
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:30-07:45[,0.29113,0.21612,0.01580,0.26216
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:45-08:00[,0.26647,0.19396,0.01580,0.23751
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:00-08:15[,0.35981,0.21583,0.08350,0.33084
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:15-08:30[,0.33001,0.18943,0.08350,0.30105
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:30-08:45[,0.29966,0.16272,0.08350,0.27069
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:45-09:00[,0.25435,0.12320,0.08350,0.22539
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:00-09:15[,0.25194,0.12098,0.08350,0.22298
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:15-09:30[,0.23738,0.10814,0.08350,0.20842
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:30-09:45[,0.20675,0.08156,0.08350,0.17779
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:45-10:00[,0.15717,0.03866,0.08350,0.12821
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:00-10:15[,0.15705,0.03855,0.08350,0.12809
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:15-10:30[,0.12571,0.01145,0.08350,0.09674
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:30-10:45[,0.11926,0.00588,0.08350,0.09030
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:45-11:00[,0.11826,0.00501,0.08350,0.08929
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:00-11:15[,0.11926,0.00588,0.08350,0.09030
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:15-11:30[,0.11643,0.00343,0.08350,0.08746
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:30-11:45[,0.11643,0.00343,0.08350,0.08747
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:45-12:00[,0.11572,0.00281,0.08350,0.08675
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:00-12:15[,0.11474,0.00196,0.08350,0.08577
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:15-12:30[,0.11420,0.00150,0.08350,0.08523
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:30-12:45[,0.11419,0.00149,0.08350,0.08522
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:45-13:00[,0.11379,0.00115,0.08350,0.08483
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:00-13:15[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:15-13:30[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:30-13:45[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:45-14:00[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:00-14:15[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:15-14:30[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:30-14:45[,0.11372,0.00109,0.08350,0.08475
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:45-15:00[,0.11384,0.00120,0.08350,0.08488
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:00-15:15[,0.11476,0.00200,0.08350,0.08580
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:15-15:30[,0.11641,0.00343,0.08350,0.08744
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:30-15:45[,0.11822,0.00501,0.08350,0.08925
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:45-16:00[,0.11922,0.00588,0.08350,0.09025
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:00-16:15[,0.12629,0.01203,0.08350,0.09732
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:15-16:30[,0.15678,0.03855,0.08350,0.12782
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:30-16:45[,0.20265,0.07840,0.08350,0.17369
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:45-17:00[,0.21839,0.09200,0.08350,0.18942
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:00-17:15[,0.20183,0.07755,0.08350,0.17287
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:15-17:30[,0.23915,0.10981,0.08350,0.21019
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:30-17:45[,0.25685,0.12500,0.08350,0.22788
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:45-18:00[,0.31554,0.17557,0.08350,0.28657
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:00-18:15[,0.29314,0.15599,0.08350,0.26417
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:15-18:30[,0.34449,0.20000,0.08350,0.31553
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:30-18:45[,0.38029,0.23040,0.08350,0.35133
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:45-19:00[,0.38354,0.23261,0.08350,0.35457
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:00-19:15[,0.36120,0.21282,0.08350,0.33223
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:15-19:30[,0.37917,0.22755,0.08350,0.35020
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:30-19:45[,0.36337,0.21358,0.08350,0.33440
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:45-20:00[,0.34586,0.19814,0.08350,0.31690
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:00-20:15[,0.33569,0.18914,0.08350,0.30672
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:15-20:30[,0.33398,0.18765,0.08350,0.30502
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:30-20:45[,0.32493,0.18022,0.08350,0.29596
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:45-21:00[,0.31082,0.16864,0.08350,0.28185
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:00-21:15[,0.33024,0.18559,0.08350,0.30127
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:15-21:30[,0.31851,0.17600,0.08350,0.28955
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:30-21:45[,0.31455,0.17300,0.08350,0.28558
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:45-22:00[,0.29546,0.15702,0.08350,0.26650
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:00-22:15[,0.23079,0.15999,0.01580,0.20182
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:15-22:30[,0.21750,0.14891,0.01580,0.18853
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:30-22:45[,0.20827,0.14131,0.01580,0.17930
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:45-23:00[,0.20563,0.13940,0.01580,0.17667
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:00-23:15[,0.20024,0.13510,0.01580,0.17127
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:15-23:30[,0.19711,0.13277,0.01580,0.16815
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:30-23:45[,0.19669,0.13277,0.01580,0.16772
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:45-00:00[,0.19628,0.13277,0.01580,0.16732
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:00-00:15[,0.29052,0.21599,0.01580,0.26155
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:15-00:30[,0.27730,0.20503,0.01580,0.24833
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:30-00:45[,0.26769,0.19702,0.01580,0.23872
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:45-01:00[,0.26167,0.19200,0.01580,0.23270
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:00-01:15[,0.25916,0.19000,0.01580,0.23020
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:15-01:30[,0.25589,0.18727,0.01580,0.22692
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:30-01:45[,0.25385,0.18559,0.01580,0.22488
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:45-02:00[,0.24900,0.18140,0.01580,0.22004
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:00-02:15[,0.25154,0.18401,0.01580,0.22258
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:15-02:30[,0.24425,0.17758,0.01580,0.21528
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:30-02:45[,0.23752,0.17165,0.01580,0.20856
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:45-03:00[,0.23213,0.16690,0.01580,0.20317
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:00-03:15[,0.23131,0.16620,0.01580,0.20234
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:15-03:30[,0.22828,0.16353,0.01580,0.19931
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:30-03:45[,0.22649,0.16195,0.01580,0.19752
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:45-04:00[,0.22249,0.15841,0.01580,0.19353
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:00-04:15[,0.22101,0.15710,0.01580,0.19204
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:15-04:30[,0.22504,0.16070,0.01580,0.19607
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:30-04:45[,0.23876,0.17294,0.01580,0.20980
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:45-05:00[,0.24668,0.18000,0.01580,0.21772
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:00-05:15[,0.23863,0.17280,0.01580,0.20967
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:15-05:30[,0.25237,0.18500,0.01580,0.22340
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:30-05:45[,0.26323,0.19462,0.01580,0.23426
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:45-06:00[,0.28100,0.21037,0.01580,0.25203
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:00-06:15[,0.28305,0.21175,0.01580,0.25409
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:15-06:30[,0.30169,0.22810,0.01580,0.27272
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:30-06:45[,0.30263,0.22864,0.01580,0.27367
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:45-07:00[,0.30247,0.22810,0.01580,0.27350
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:00-07:15[,0.38306,0.23917,0.08350,0.35410
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:15-07:30[,0.37502,0.23115,0.08350,0.34605
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:30-07:45[,0.35883,0.21612,0.08350,0.32986
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:45-08:00[,0.33417,0.19396,0.08350,0.30521
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:00-08:15[,0.35981,0.21583,0.08350,0.33084
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:15-08:30[,0.33001,0.18943,0.08350,0.30105
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:30-08:45[,0.29966,0.16272,0.08350,0.27069
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:45-09:00[,0.25435,0.12320,0.08350,0.22539
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:00-09:15[,0.25194,0.12098,0.08350,0.22298
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:15-09:30[,0.23738,0.10814,0.08350,0.20842
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:30-09:45[,0.20675,0.08156,0.08350,0.17779
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:45-10:00[,0.15717,0.03866,0.08350,0.12821
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:00-10:15[,0.15705,0.03855,0.08350,0.12809
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:15-10:30[,0.12571,0.01145,0.08350,0.09674
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:30-10:45[,0.11926,0.00588,0.08350,0.09030
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:45-11:00[,0.11826,0.00501,0.08350,0.08929
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:00-11:15[,0.11926,0.00588,0.08350,0.09030
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:15-11:30[,0.11643,0.00343,0.08350,0.08746
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:30-11:45[,0.11643,0.00343,0.08350,0.08747
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:45-12:00[,0.11572,0.00281,0.08350,0.08675
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:00-12:15[,0.11474,0.00196,0.08350,0.08577
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:15-12:30[,0.11420,0.00150,0.08350,0.08523
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:30-12:45[,0.11419,0.00149,0.08350,0.08522
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:45-13:00[,0.11379,0.00115,0.08350,0.08483
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:00-13:15[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:15-13:30[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:30-13:45[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:45-14:00[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:00-14:15[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:15-14:30[,0.11371,0.00108,0.08350,0.08474
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:30-14:45[,0.11372,0.00109,0.08350,0.08475
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:45-15:00[,0.11384,0.00120,0.08350,0.08488
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:00-15:15[,0.11476,0.00200,0.08350,0.08580
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:15-15:30[,0.11641,0.00343,0.08350,0.08744
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:30-15:45[,0.11822,0.00501,0.08350,0.08925
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:45-16:00[,0.11922,0.00588,0.08350,0.09025
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:00-16:15[,0.12629,0.01203,0.08350,0.09732
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:15-16:30[,0.15678,0.03855,0.08350,0.12782
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:30-16:45[,0.20265,0.07840,0.08350,0.17369
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:45-17:00[,0.21839,0.09200,0.08350,0.18942
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:00-17:15[,0.20183,0.07755,0.08350,0.17287
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:15-17:30[,0.23915,0.10981,0.08350,0.21019
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:30-17:45[,0.25685,0.12500,0.08350,0.22788
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:45-18:00[,0.31554,0.17557,0.08350,0.28657
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:00-18:15[,0.29314,0.15599,0.08350,0.26417
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:15-18:30[,0.34449,0.20000,0.08350,0.31553
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:30-18:45[,0.38029,0.23040,0.08350,0.35133
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:45-19:00[,0.38354,0.23261,0.08350,0.35457
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:00-19:15[,0.36120,0.21282,0.08350,0.33223
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:15-19:30[,0.37917,0.22755,0.08350,0.35020
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:30-19:45[,0.36337,0.21358,0.08350,0.33440
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:45-20:00[,0.34586,0.19814,0.08350,0.31690
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:00-20:15[,0.33569,0.18914,0.08350,0.30672
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:15-20:30[,0.33398,0.18765,0.08350,0.30502
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:30-20:45[,0.32493,0.18022,0.08350,0.29596
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:45-21:00[,0.31082,0.16864,0.08350,0.28185
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:00-21:15[,0.33024,0.18559,0.08350,0.30127
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:15-21:30[,0.31851,0.17600,0.08350,0.28955
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:30-21:45[,0.31455,0.17300,0.08350,0.28558
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:45-22:00[,0.29546,0.15702,0.08350,0.26650
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:00-22:15[,0.29849,0.15999,0.08350,0.26952
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:15-22:30[,0.28520,0.14891,0.08350,0.25623
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:30-22:45[,0.27597,0.14131,0.08350,0.24700
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:45-23:00[,0.27333,0.13940,0.08350,0.24437
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:00-23:15[,0.26794,0.13510,0.08350,0.23897
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:15-23:30[,0.26481,0.13277,0.08350,0.23585
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:30-23:45[,0.26439,0.13277,0.08350,0.23542
+29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:45-00:00[,0.26398,0.13277,0.08350,0.23502
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:00-00:15[,0.29052,0.21599,0.01580,0.26155
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:15-00:30[,0.27730,0.20503,0.01580,0.24833
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:30-00:45[,0.26769,0.19702,0.01580,0.23872
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:45-01:00[,0.26167,0.19200,0.01580,0.23270
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:00-01:15[,0.25916,0.19000,0.01580,0.23020
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:15-01:30[,0.25589,0.18727,0.01580,0.22692
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:30-01:45[,0.25385,0.18559,0.01580,0.22488
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:45-02:00[,0.24900,0.18140,0.01580,0.22004
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:00-02:15[,0.25154,0.18401,0.01580,0.22258
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:15-02:30[,0.24425,0.17758,0.01580,0.21528
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:30-02:45[,0.23752,0.17165,0.01580,0.20856
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:45-03:00[,0.23213,0.16690,0.01580,0.20317
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:00-03:15[,0.23131,0.16620,0.01580,0.20234
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:15-03:30[,0.22828,0.16353,0.01580,0.19931
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:30-03:45[,0.22649,0.16195,0.01580,0.19752
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:45-04:00[,0.22249,0.15841,0.01580,0.19353
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:00-04:15[,0.22101,0.15710,0.01580,0.19204
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:15-04:30[,0.22504,0.16070,0.01580,0.19607
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:30-04:45[,0.23876,0.17294,0.01580,0.20980
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:45-05:00[,0.24668,0.18000,0.01580,0.21772
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:00-05:15[,0.23863,0.17280,0.01580,0.20967
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:15-05:30[,0.25237,0.18500,0.01580,0.22340
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:30-05:45[,0.26323,0.19462,0.01580,0.23426
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:45-06:00[,0.28100,0.21037,0.01580,0.25203
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:00-06:15[,0.28305,0.21175,0.01580,0.25409
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:15-06:30[,0.30169,0.22810,0.01580,0.27272
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:30-06:45[,0.30263,0.22864,0.01580,0.27367
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:45-07:00[,0.30247,0.22810,0.01580,0.27350
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:00-07:15[,0.31536,0.23917,0.01580,0.28640
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:15-07:30[,0.30732,0.23115,0.01580,0.27835
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:30-07:45[,0.29113,0.21612,0.01580,0.26216
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:45-08:00[,0.26647,0.19396,0.01580,0.23751
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:00-08:15[,0.31751,0.21583,0.04120,0.28854
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:15-08:30[,0.28771,0.18943,0.04120,0.25875
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:30-08:45[,0.25736,0.16272,0.04120,0.22839
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:45-09:00[,0.21205,0.12320,0.04120,0.18309
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:00-09:15[,0.20964,0.12098,0.04120,0.18068
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:15-09:30[,0.19508,0.10814,0.04120,0.16612
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:30-09:45[,0.16445,0.08156,0.04120,0.13549
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:45-10:00[,0.11487,0.03866,0.04120,0.08591
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:00-10:15[,0.11475,0.03855,0.04120,0.08579
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:15-10:30[,0.08341,0.01145,0.04120,0.05444
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:30-10:45[,0.28096,0.00588,0.24520,0.25200
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:45-11:00[,0.27996,0.00501,0.24520,0.25099
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:00-11:15[,0.28096,0.00588,0.24520,0.25200
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:15-11:30[,0.27813,0.00343,0.24520,0.24916
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:30-11:45[,0.27813,0.00343,0.24520,0.24917
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:45-12:00[,0.27742,0.00281,0.24520,0.24845
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:00-12:15[,0.27644,0.00196,0.24520,0.24747
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:15-12:30[,0.27590,0.00150,0.24520,0.24693
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:30-12:45[,0.27589,0.00149,0.24520,0.24692
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:45-13:00[,0.27549,0.00115,0.24520,0.24653
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:00-13:15[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:15-13:30[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:30-13:45[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:45-14:00[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:00-14:15[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:15-14:30[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:30-14:45[,0.07142,0.00109,0.04120,0.04245
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:45-15:00[,0.07154,0.00120,0.04120,0.04258
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:00-15:15[,0.07246,0.00200,0.04120,0.04350
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:15-15:30[,0.07411,0.00343,0.04120,0.04514
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:30-15:45[,0.07592,0.00501,0.04120,0.04695
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:45-16:00[,0.07692,0.00588,0.04120,0.04795
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:00-16:15[,0.08399,0.01203,0.04120,0.05502
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:15-16:30[,0.11448,0.03855,0.04120,0.08552
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:30-16:45[,0.16035,0.07840,0.04120,0.13139
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:45-17:00[,0.17609,0.09200,0.04120,0.14712
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:00-17:15[,0.15953,0.07755,0.04120,0.13057
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:15-17:30[,0.19685,0.10981,0.04120,0.16789
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:30-17:45[,0.21455,0.12500,0.04120,0.18558
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:45-18:00[,0.27324,0.17557,0.04120,0.24427
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:00-18:15[,0.25084,0.15599,0.04120,0.22187
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:15-18:30[,0.30219,0.20000,0.04120,0.27323
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:30-18:45[,0.33799,0.23040,0.04120,0.30903
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:45-19:00[,0.34124,0.23261,0.04120,0.31227
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:00-19:15[,0.31890,0.21282,0.04120,0.28993
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:15-19:30[,0.33687,0.22755,0.04120,0.30790
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:30-19:45[,0.52507,0.21358,0.24520,0.49610
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:45-20:00[,0.50756,0.19814,0.24520,0.47860
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:00-20:15[,0.49739,0.18914,0.24520,0.46842
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:15-20:30[,0.49568,0.18765,0.24520,0.46672
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:30-20:45[,0.48663,0.18022,0.24520,0.45766
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:45-21:00[,0.47252,0.16864,0.24520,0.44355
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:00-21:15[,0.28794,0.18559,0.04120,0.25897
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:15-21:30[,0.27621,0.17600,0.04120,0.24725
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:30-21:45[,0.27225,0.17300,0.04120,0.24328
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:45-22:00[,0.25316,0.15702,0.04120,0.22420
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:00-22:15[,0.23079,0.15999,0.01580,0.20182
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:15-22:30[,0.21750,0.14891,0.01580,0.18853
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:30-22:45[,0.20827,0.14131,0.01580,0.17930
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:45-23:00[,0.20563,0.13940,0.01580,0.17667
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:00-23:15[,0.20024,0.13510,0.01580,0.17127
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:15-23:30[,0.19711,0.13277,0.01580,0.16815
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:30-23:45[,0.19669,0.13277,0.01580,0.16772
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:45-00:00[,0.19628,0.13277,0.01580,0.16732
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:00-00:15[,0.29052,0.21599,0.01580,0.26155
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:15-00:30[,0.27730,0.20503,0.01580,0.24833
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:30-00:45[,0.26769,0.19702,0.01580,0.23872
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:45-01:00[,0.26167,0.19200,0.01580,0.23270
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:00-01:15[,0.25916,0.19000,0.01580,0.23020
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:15-01:30[,0.25589,0.18727,0.01580,0.22692
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:30-01:45[,0.25385,0.18559,0.01580,0.22488
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:45-02:00[,0.24900,0.18140,0.01580,0.22004
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:00-02:15[,0.25154,0.18401,0.01580,0.22258
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:15-02:30[,0.24425,0.17758,0.01580,0.21528
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:30-02:45[,0.23752,0.17165,0.01580,0.20856
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:45-03:00[,0.23213,0.16690,0.01580,0.20317
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:00-03:15[,0.23131,0.16620,0.01580,0.20234
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:15-03:30[,0.22828,0.16353,0.01580,0.19931
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:30-03:45[,0.22649,0.16195,0.01580,0.19752
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:45-04:00[,0.22249,0.15841,0.01580,0.19353
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:00-04:15[,0.22101,0.15710,0.01580,0.19204
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:15-04:30[,0.22504,0.16070,0.01580,0.19607
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:30-04:45[,0.23876,0.17294,0.01580,0.20980
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:45-05:00[,0.24668,0.18000,0.01580,0.21772
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:00-05:15[,0.23863,0.17280,0.01580,0.20967
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:15-05:30[,0.25237,0.18500,0.01580,0.22340
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:30-05:45[,0.26323,0.19462,0.01580,0.23426
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:45-06:00[,0.28100,0.21037,0.01580,0.25203
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:00-06:15[,0.28305,0.21175,0.01580,0.25409
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:15-06:30[,0.30169,0.22810,0.01580,0.27272
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:30-06:45[,0.30263,0.22864,0.01580,0.27367
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:45-07:00[,0.30247,0.22810,0.01580,0.27350
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:00-07:15[,0.34076,0.23917,0.04120,0.31180
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:15-07:30[,0.33272,0.23115,0.04120,0.30375
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:30-07:45[,0.31653,0.21612,0.04120,0.28756
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:45-08:00[,0.29187,0.19396,0.04120,0.26291
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:00-08:15[,0.31751,0.21583,0.04120,0.28854
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:15-08:30[,0.28771,0.18943,0.04120,0.25875
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:30-08:45[,0.25736,0.16272,0.04120,0.22839
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:45-09:00[,0.21205,0.12320,0.04120,0.18309
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:00-09:15[,0.20964,0.12098,0.04120,0.18068
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:15-09:30[,0.39908,0.10814,0.24520,0.37012
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:30-09:45[,0.36845,0.08156,0.24520,0.33949
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:45-10:00[,0.31887,0.03866,0.24520,0.28991
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:00-10:15[,0.31875,0.03855,0.24520,0.28979
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:15-10:30[,0.28741,0.01145,0.24520,0.25844
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:30-10:45[,0.28096,0.00588,0.24520,0.25200
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:45-11:00[,0.27996,0.00501,0.24520,0.25099
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:00-11:15[,0.28096,0.00588,0.24520,0.25200
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:15-11:30[,0.27813,0.00343,0.24520,0.24916
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:30-11:45[,0.27813,0.00343,0.24520,0.24917
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:45-12:00[,0.27742,0.00281,0.24520,0.24845
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:00-12:15[,0.27644,0.00196,0.24520,0.24747
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:15-12:30[,0.07190,0.00150,0.04120,0.04293
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:30-12:45[,0.07189,0.00149,0.04120,0.04292
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:45-13:00[,0.07149,0.00115,0.04120,0.04253
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:00-13:15[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:15-13:30[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:30-13:45[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:45-14:00[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:00-14:15[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:15-14:30[,0.07141,0.00108,0.04120,0.04244
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:30-14:45[,0.07142,0.00109,0.04120,0.04245
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:45-15:00[,0.07154,0.00120,0.04120,0.04258
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:00-15:15[,0.07246,0.00200,0.04120,0.04350
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:15-15:30[,0.07411,0.00343,0.04120,0.04514
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:30-15:45[,0.07592,0.00501,0.04120,0.04695
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:45-16:00[,0.07692,0.00588,0.04120,0.04795
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:00-16:15[,0.08399,0.01203,0.04120,0.05502
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:15-16:30[,0.11448,0.03855,0.04120,0.08552
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:30-16:45[,0.16035,0.07840,0.04120,0.13139
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:45-17:00[,0.17609,0.09200,0.04120,0.14712
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:00-17:15[,0.15953,0.07755,0.04120,0.13057
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:15-17:30[,0.19685,0.10981,0.04120,0.16789
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:30-17:45[,0.21455,0.12500,0.04120,0.18558
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:45-18:00[,0.27324,0.17557,0.04120,0.24427
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:00-18:15[,0.25084,0.15599,0.04120,0.22187
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:15-18:30[,0.30219,0.20000,0.04120,0.27323
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:30-18:45[,0.33799,0.23040,0.04120,0.30903
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:45-19:00[,0.34124,0.23261,0.04120,0.31227
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:00-19:15[,0.31890,0.21282,0.04120,0.28993
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:15-19:30[,0.33687,0.22755,0.04120,0.30790
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:30-19:45[,0.32107,0.21358,0.04120,0.29210
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:45-20:00[,0.30356,0.19814,0.04120,0.27460
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:00-20:15[,0.29339,0.18914,0.04120,0.26442
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:15-20:30[,0.29168,0.18765,0.04120,0.26272
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:30-20:45[,0.28263,0.18022,0.04120,0.25366
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:45-21:00[,0.26852,0.16864,0.04120,0.23955
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:00-21:15[,0.28794,0.18559,0.04120,0.25897
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:15-21:30[,0.27621,0.17600,0.04120,0.24725
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:30-21:45[,0.27225,0.17300,0.04120,0.24328
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:45-22:00[,0.25316,0.15702,0.04120,0.22420
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:00-22:15[,0.25619,0.15999,0.04120,0.22722
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:15-22:30[,0.24290,0.14891,0.04120,0.21393
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:30-22:45[,0.23367,0.14131,0.04120,0.20470
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:45-23:00[,0.23103,0.13940,0.04120,0.20207
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:00-23:15[,0.22564,0.13510,0.04120,0.19667
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:15-23:30[,0.22251,0.13277,0.04120,0.19355
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:30-23:45[,0.22209,0.13277,0.04120,0.19312
+29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:45-00:00[,0.22168,0.13277,0.04120,0.19272
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:00-00:15[,0.28972,0.21599,0.01500,0.26075
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:15-00:30[,0.27650,0.20503,0.01500,0.24753
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:30-00:45[,0.26689,0.19702,0.01500,0.23792
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:45-01:00[,0.26087,0.19200,0.01500,0.23190
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:00-01:15[,0.25836,0.19000,0.01500,0.22940
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:15-01:30[,0.25509,0.18727,0.01500,0.22612
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:30-01:45[,0.25305,0.18559,0.01500,0.22408
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:45-02:00[,0.24820,0.18140,0.01500,0.21924
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:00-02:15[,0.25074,0.18401,0.01500,0.22178
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:15-02:30[,0.24345,0.17758,0.01500,0.21448
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:30-02:45[,0.23672,0.17165,0.01500,0.20776
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:45-03:00[,0.23133,0.16690,0.01500,0.20237
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:00-03:15[,0.23051,0.16620,0.01500,0.20154
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:15-03:30[,0.22748,0.16353,0.01500,0.19851
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:30-03:45[,0.22569,0.16195,0.01500,0.19672
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:45-04:00[,0.22169,0.15841,0.01500,0.19273
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:00-04:15[,0.22021,0.15710,0.01500,0.19124
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:15-04:30[,0.22424,0.16070,0.01500,0.19527
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:30-04:45[,0.23796,0.17294,0.01500,0.20900
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:45-05:00[,0.24588,0.18000,0.01500,0.21692
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:00-05:15[,0.23783,0.17280,0.01500,0.20887
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:15-05:30[,0.25157,0.18500,0.01500,0.22260
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:30-05:45[,0.26243,0.19462,0.01500,0.23346
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:45-06:00[,0.28020,0.21037,0.01500,0.25123
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:00-06:15[,0.28225,0.21175,0.01500,0.25329
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:15-06:30[,0.30089,0.22810,0.01500,0.27192
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:30-06:45[,0.30183,0.22864,0.01500,0.27287
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:45-07:00[,0.30167,0.22810,0.01500,0.27270
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:00-07:15[,0.31456,0.23917,0.01500,0.28560
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:15-07:30[,0.30652,0.23115,0.01500,0.27755
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:30-07:45[,0.29033,0.21612,0.01500,0.26136
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:45-08:00[,0.26567,0.19396,0.01500,0.23671
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:00-08:15[,0.32871,0.21583,0.05240,0.29974
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:15-08:30[,0.29891,0.18943,0.05240,0.26995
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:30-08:45[,0.26856,0.16272,0.05240,0.23959
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:45-09:00[,0.22325,0.12320,0.05240,0.19429
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:00-09:15[,0.22084,0.12098,0.05240,0.19188
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:15-09:30[,0.20628,0.10814,0.05240,0.17732
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:30-09:45[,0.17565,0.08156,0.05240,0.14669
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:45-10:00[,0.12607,0.03866,0.05240,0.09711
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:00-10:15[,0.12595,0.03855,0.05240,0.09699
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:15-10:30[,0.09461,0.01145,0.05240,0.06564
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:30-10:45[,0.28146,0.00588,0.24570,0.25250
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:45-11:00[,0.28046,0.00501,0.24570,0.25149
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:00-11:15[,0.28146,0.00588,0.24570,0.25250
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:15-11:30[,0.27863,0.00343,0.24570,0.24966
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:30-11:45[,0.27863,0.00343,0.24570,0.24967
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:45-12:00[,0.27792,0.00281,0.24570,0.24895
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:00-12:15[,0.27694,0.00196,0.24570,0.24797
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:15-12:30[,0.27640,0.00150,0.24570,0.24743
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:30-12:45[,0.27639,0.00149,0.24570,0.24742
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:45-13:00[,0.27599,0.00115,0.24570,0.24703
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:00-13:15[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:15-13:30[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:30-13:45[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:45-14:00[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:00-14:15[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:15-14:30[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:30-14:45[,0.08262,0.00109,0.05240,0.05365
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:45-15:00[,0.08274,0.00120,0.05240,0.05378
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:00-15:15[,0.08366,0.00200,0.05240,0.05470
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:15-15:30[,0.08531,0.00343,0.05240,0.05634
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:30-15:45[,0.08712,0.00501,0.05240,0.05815
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:45-16:00[,0.08812,0.00588,0.05240,0.05915
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:00-16:15[,0.09519,0.01203,0.05240,0.06622
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:15-16:30[,0.12568,0.03855,0.05240,0.09672
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:30-16:45[,0.17155,0.07840,0.05240,0.14259
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:45-17:00[,0.18729,0.09200,0.05240,0.15832
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:00-17:15[,0.17073,0.07755,0.05240,0.14177
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:15-17:30[,0.20805,0.10981,0.05240,0.17909
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:30-17:45[,0.22575,0.12500,0.05240,0.19678
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:45-18:00[,0.28444,0.17557,0.05240,0.25547
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:00-18:15[,0.26204,0.15599,0.05240,0.23307
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:15-18:30[,0.31339,0.20000,0.05240,0.28443
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:30-18:45[,0.34919,0.23040,0.05240,0.32023
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:45-19:00[,0.35244,0.23261,0.05240,0.32347
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:00-19:15[,0.33010,0.21282,0.05240,0.30113
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:15-19:30[,0.34807,0.22755,0.05240,0.31910
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:30-19:45[,0.52557,0.21358,0.24570,0.49660
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:45-20:00[,0.50806,0.19814,0.24570,0.47910
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:00-20:15[,0.49789,0.18914,0.24570,0.46892
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:15-20:30[,0.49618,0.18765,0.24570,0.46722
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:30-20:45[,0.48713,0.18022,0.24570,0.45816
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:45-21:00[,0.47302,0.16864,0.24570,0.44405
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:00-21:15[,0.29914,0.18559,0.05240,0.27017
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:15-21:30[,0.28741,0.17600,0.05240,0.25845
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:30-21:45[,0.28345,0.17300,0.05240,0.25448
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:45-22:00[,0.26436,0.15702,0.05240,0.23540
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:00-22:15[,0.22999,0.15999,0.01500,0.20102
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:15-22:30[,0.21670,0.14891,0.01500,0.18773
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:30-22:45[,0.20747,0.14131,0.01500,0.17850
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:45-23:00[,0.20483,0.13940,0.01500,0.17587
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:00-23:15[,0.19944,0.13510,0.01500,0.17047
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:15-23:30[,0.19631,0.13277,0.01500,0.16735
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:30-23:45[,0.19589,0.13277,0.01500,0.16692
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:45-00:00[,0.19548,0.13277,0.01500,0.16652
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:00-00:15[,0.28972,0.21599,0.01500,0.26075
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:15-00:30[,0.27650,0.20503,0.01500,0.24753
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:30-00:45[,0.26689,0.19702,0.01500,0.23792
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:45-01:00[,0.26087,0.19200,0.01500,0.23190
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:00-01:15[,0.25836,0.19000,0.01500,0.22940
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:15-01:30[,0.25509,0.18727,0.01500,0.22612
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:30-01:45[,0.25305,0.18559,0.01500,0.22408
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:45-02:00[,0.24820,0.18140,0.01500,0.21924
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:00-02:15[,0.25074,0.18401,0.01500,0.22178
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:15-02:30[,0.24345,0.17758,0.01500,0.21448
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:30-02:45[,0.23672,0.17165,0.01500,0.20776
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:45-03:00[,0.23133,0.16690,0.01500,0.20237
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:00-03:15[,0.23051,0.16620,0.01500,0.20154
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:15-03:30[,0.22748,0.16353,0.01500,0.19851
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:30-03:45[,0.22569,0.16195,0.01500,0.19672
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:45-04:00[,0.22169,0.15841,0.01500,0.19273
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:00-04:15[,0.22021,0.15710,0.01500,0.19124
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:15-04:30[,0.22424,0.16070,0.01500,0.19527
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:30-04:45[,0.23796,0.17294,0.01500,0.20900
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:45-05:00[,0.24588,0.18000,0.01500,0.21692
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:00-05:15[,0.23783,0.17280,0.01500,0.20887
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:15-05:30[,0.25157,0.18500,0.01500,0.22260
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:30-05:45[,0.26243,0.19462,0.01500,0.23346
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:45-06:00[,0.28020,0.21037,0.01500,0.25123
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:00-06:15[,0.28225,0.21175,0.01500,0.25329
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:15-06:30[,0.30089,0.22810,0.01500,0.27192
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:30-06:45[,0.30183,0.22864,0.01500,0.27287
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:45-07:00[,0.30167,0.22810,0.01500,0.27270
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:00-07:15[,0.35196,0.23917,0.05240,0.32300
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:15-07:30[,0.34392,0.23115,0.05240,0.31495
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:30-07:45[,0.32773,0.21612,0.05240,0.29876
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:45-08:00[,0.30307,0.19396,0.05240,0.27411
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:00-08:15[,0.32871,0.21583,0.05240,0.29974
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:15-08:30[,0.29891,0.18943,0.05240,0.26995
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:30-08:45[,0.26856,0.16272,0.05240,0.23959
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:45-09:00[,0.22325,0.12320,0.05240,0.19429
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:00-09:15[,0.22084,0.12098,0.05240,0.19188
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:15-09:30[,0.39958,0.10814,0.24570,0.37062
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:30-09:45[,0.36895,0.08156,0.24570,0.33999
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:45-10:00[,0.31937,0.03866,0.24570,0.29041
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:00-10:15[,0.31925,0.03855,0.24570,0.29029
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:15-10:30[,0.28791,0.01145,0.24570,0.25894
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:30-10:45[,0.28146,0.00588,0.24570,0.25250
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:45-11:00[,0.28046,0.00501,0.24570,0.25149
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:00-11:15[,0.28146,0.00588,0.24570,0.25250
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:15-11:30[,0.27863,0.00343,0.24570,0.24966
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:30-11:45[,0.27863,0.00343,0.24570,0.24967
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:45-12:00[,0.27792,0.00281,0.24570,0.24895
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:00-12:15[,0.27694,0.00196,0.24570,0.24797
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:15-12:30[,0.08310,0.00150,0.05240,0.05413
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:30-12:45[,0.08309,0.00149,0.05240,0.05412
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:45-13:00[,0.08269,0.00115,0.05240,0.05373
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:00-13:15[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:15-13:30[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:30-13:45[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:45-14:00[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:00-14:15[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:15-14:30[,0.08261,0.00108,0.05240,0.05364
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:30-14:45[,0.08262,0.00109,0.05240,0.05365
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:45-15:00[,0.08274,0.00120,0.05240,0.05378
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:00-15:15[,0.08366,0.00200,0.05240,0.05470
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:15-15:30[,0.08531,0.00343,0.05240,0.05634
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:30-15:45[,0.08712,0.00501,0.05240,0.05815
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:45-16:00[,0.08812,0.00588,0.05240,0.05915
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:00-16:15[,0.09519,0.01203,0.05240,0.06622
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:15-16:30[,0.12568,0.03855,0.05240,0.09672
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:30-16:45[,0.17155,0.07840,0.05240,0.14259
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:45-17:00[,0.18729,0.09200,0.05240,0.15832
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:00-17:15[,0.17073,0.07755,0.05240,0.14177
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:15-17:30[,0.20805,0.10981,0.05240,0.17909
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:30-17:45[,0.22575,0.12500,0.05240,0.19678
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:45-18:00[,0.28444,0.17557,0.05240,0.25547
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:00-18:15[,0.26204,0.15599,0.05240,0.23307
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:15-18:30[,0.31339,0.20000,0.05240,0.28443
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:30-18:45[,0.34919,0.23040,0.05240,0.32023
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:45-19:00[,0.35244,0.23261,0.05240,0.32347
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:00-19:15[,0.33010,0.21282,0.05240,0.30113
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:15-19:30[,0.34807,0.22755,0.05240,0.31910
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:30-19:45[,0.33227,0.21358,0.05240,0.30330
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:45-20:00[,0.31476,0.19814,0.05240,0.28580
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:00-20:15[,0.30459,0.18914,0.05240,0.27562
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:15-20:30[,0.30288,0.18765,0.05240,0.27392
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:30-20:45[,0.29383,0.18022,0.05240,0.26486
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:45-21:00[,0.27972,0.16864,0.05240,0.25075
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:00-21:15[,0.29914,0.18559,0.05240,0.27017
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:15-21:30[,0.28741,0.17600,0.05240,0.25845
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:30-21:45[,0.28345,0.17300,0.05240,0.25448
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:45-22:00[,0.26436,0.15702,0.05240,0.23540
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:00-22:15[,0.26739,0.15999,0.05240,0.23842
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:15-22:30[,0.25410,0.14891,0.05240,0.22513
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:30-22:45[,0.24487,0.14131,0.05240,0.21590
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:45-23:00[,0.24223,0.13940,0.05240,0.21327
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:00-23:15[,0.23684,0.13510,0.05240,0.20787
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:15-23:30[,0.23371,0.13277,0.05240,0.20475
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:30-23:45[,0.23329,0.13277,0.05240,0.20432
+29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:45-00:00[,0.23288,0.13277,0.05240,0.20392
 30/09/2026,EDP Indexada Horária,Simples,[00:00-00:15[,0.24234,0.13277,0.06070,0.21175
 30/09/2026,EDP Indexada Horária,Simples,[00:15-00:30[,0.24129,0.13235,0.06070,0.21079
 30/09/2026,EDP Indexada Horária,Simples,[00:30-00:45[,0.24142,0.13277,0.06070,0.21091
@@ -13490,6 +14834,342 @@
 ,,,,,,,,,,29/09/2026,Coopérnico GO,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:00-22:00[,172.90,0.28915
 ,,,,,,,,,,29/09/2026,Coopérnico GO,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:00-23:00[,147.40,0.25741
 ,,,,,,,,,,29/09/2026,Coopérnico GO,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:00-00:00[,133.35,0.23911
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[00:00-01:00[,132.56,0.23988
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[01:00-02:00[,133.35,0.23994
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[02:00-03:00[,138.10,0.24477
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[03:00-04:00[,136.68,0.24303
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[04:00-05:00[,153.94,0.26234
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[05:00-06:00[,169.13,0.27949
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[06:00-07:00[,204.69,0.32041
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[07:00-08:00[,205.31,0.32315
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[08:00-09:00[,180.72,0.29733
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[09:00-10:00[,159.64,0.27407
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[10:00-11:00[,125.57,0.23489
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[11:00-12:00[,105.20,0.21132
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[12:00-13:00[,89.07,0.19263
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[13:00-14:00[,96.60,0.20075
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[14:00-15:00[,114.17,0.22079
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[15:00-16:00[,128.12,0.23683
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[16:00-17:00[,168.38,0.28335
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[17:00-18:00[,214.28,0.33710
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[18:00-19:00[,242.07,0.37095
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[19:00-20:00[,267.38,0.40353
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[20:00-21:00[,336.51,0.48647
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[21:00-22:00[,230.37,0.35911
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[22:00-23:00[,217.27,0.34140
+,,,,,,,,,,30/09/2026,Coopérnico Único,Simples,[23:00-00:00[,,
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:00-01:00[,132.56,0.19498
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:00-02:00[,133.35,0.19504
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:00-03:00[,138.10,0.19987
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:00-04:00[,136.68,0.19813
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:00-05:00[,153.94,0.21744
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:00-06:00[,169.13,0.23459
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:00-07:00[,204.69,0.27551
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:00-08:00[,205.31,0.27825
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:00-09:00[,180.72,0.32013
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:00-10:00[,159.64,0.29687
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:00-11:00[,125.57,0.25768
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:00-12:00[,105.20,0.23412
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:00-13:00[,89.07,0.21543
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:00-14:00[,96.60,0.22355
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:00-15:00[,114.17,0.24360
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:00-16:00[,128.12,0.25962
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:00-17:00[,168.38,0.30615
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:00-18:00[,214.28,0.35990
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:00-19:00[,242.07,0.39375
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:00-20:00[,267.38,0.42633
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:00-21:00[,336.51,0.50927
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:00-22:00[,230.37,0.38191
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:00-23:00[,217.27,0.29650
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:00-00:00[,,
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:00-01:00[,132.56,0.19498
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:00-02:00[,133.35,0.19504
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:00-03:00[,138.10,0.19987
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:00-04:00[,136.68,0.19813
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:00-05:00[,153.94,0.21744
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:00-06:00[,169.13,0.23459
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:00-07:00[,204.69,0.27551
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:00-08:00[,205.31,0.34595
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:00-09:00[,180.72,0.32013
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:00-10:00[,159.64,0.29687
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:00-11:00[,125.57,0.25768
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:00-12:00[,105.20,0.23412
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:00-13:00[,89.07,0.21543
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:00-14:00[,96.60,0.22355
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:00-15:00[,114.17,0.24360
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:00-16:00[,128.12,0.25962
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:00-17:00[,168.38,0.30615
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:00-18:00[,214.28,0.35990
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:00-19:00[,242.07,0.39375
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:00-20:00[,267.38,0.42633
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:00-21:00[,336.51,0.50927
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:00-22:00[,230.37,0.38191
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:00-23:00[,217.27,0.36420
+,,,,,,,,,,30/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:00-00:00[,,
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:00-01:00[,132.56,0.19498
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:00-02:00[,133.35,0.19504
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:00-03:00[,138.10,0.19987
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:00-04:00[,136.68,0.19813
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:00-05:00[,153.94,0.21744
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:00-06:00[,169.13,0.23459
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:00-07:00[,204.69,0.27551
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:00-08:00[,205.31,0.27825
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:00-09:00[,180.72,0.27783
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:00-10:00[,159.64,0.25457
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:00-11:00[,125.57,0.31739
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:00-12:00[,105.20,0.39582
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:00-13:00[,89.07,0.37713
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:00-14:00[,96.60,0.18125
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:00-15:00[,114.17,0.20130
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:00-16:00[,128.12,0.21732
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:00-17:00[,168.38,0.26385
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:00-18:00[,214.28,0.31760
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:00-19:00[,242.07,0.35145
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:00-20:00[,267.38,0.48603
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:00-21:00[,336.51,0.67097
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:00-22:00[,230.37,0.33961
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:00-23:00[,217.27,0.29650
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:00-00:00[,,
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:00-01:00[,132.56,0.19498
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:00-02:00[,133.35,0.19504
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:00-03:00[,138.10,0.19987
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:00-04:00[,136.68,0.19813
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:00-05:00[,153.94,0.21744
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:00-06:00[,169.13,0.23459
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:00-07:00[,204.69,0.27551
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:00-08:00[,205.31,0.30365
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:00-09:00[,180.72,0.27783
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:00-10:00[,159.64,0.40757
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:00-11:00[,125.57,0.41939
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:00-12:00[,105.20,0.39582
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:00-13:00[,89.07,0.22413
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:00-14:00[,96.60,0.18125
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:00-15:00[,114.17,0.20130
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:00-16:00[,128.12,0.21732
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:00-17:00[,168.38,0.26385
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:00-18:00[,214.28,0.31760
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:00-19:00[,242.07,0.35145
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:00-20:00[,267.38,0.38403
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:00-21:00[,336.51,0.46697
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:00-22:00[,230.37,0.33961
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:00-23:00[,217.27,0.32190
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:00-00:00[,,
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:00-01:00[,132.56,0.19417
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:00-02:00[,133.35,0.19425
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:00-03:00[,138.10,0.19906
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:00-04:00[,136.68,0.19733
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:00-05:00[,153.94,0.21664
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:00-06:00[,169.13,0.23379
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:00-07:00[,204.69,0.27471
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:00-08:00[,205.31,0.27745
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:00-09:00[,180.72,0.28903
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:00-10:00[,159.64,0.26577
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:00-11:00[,125.57,0.32323
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:00-12:00[,105.20,0.39632
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:00-13:00[,89.07,0.37763
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:00-14:00[,96.60,0.19245
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:00-15:00[,114.17,0.21249
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:00-16:00[,128.12,0.22853
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:00-17:00[,168.38,0.27505
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:00-18:00[,214.28,0.32880
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:00-19:00[,242.07,0.36265
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:00-20:00[,267.38,0.49187
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:00-21:00[,336.51,0.67147
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:00-22:00[,230.37,0.35081
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:00-23:00[,217.27,0.29570
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:00-00:00[,,
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:00-01:00[,132.56,0.19417
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:00-02:00[,133.35,0.19425
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:00-03:00[,138.10,0.19906
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:00-04:00[,136.68,0.19733
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:00-05:00[,153.94,0.21664
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:00-06:00[,169.13,0.23379
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:00-07:00[,204.69,0.27471
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:00-08:00[,205.31,0.31485
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:00-09:00[,180.72,0.28903
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:00-10:00[,159.64,0.41074
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:00-11:00[,125.57,0.41989
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:00-12:00[,105.20,0.39632
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:00-13:00[,89.07,0.23266
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:00-14:00[,96.60,0.19245
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:00-15:00[,114.17,0.21249
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:00-16:00[,128.12,0.22853
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:00-17:00[,168.38,0.27505
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:00-18:00[,214.28,0.32880
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:00-19:00[,242.07,0.36265
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:00-20:00[,267.38,0.39522
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:00-21:00[,336.51,0.47817
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:00-22:00[,230.37,0.35081
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:00-23:00[,217.27,0.33310
+,,,,,,,,,,30/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:00-00:00[,,
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[00:00-01:00[,202.51,0.31920
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[01:00-02:00[,186.06,0.29938
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[02:00-03:00[,175.03,0.28626
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[03:00-04:00[,162.52,0.27204
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[04:00-05:00[,167.69,0.27777
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[05:00-06:00[,190.70,0.30371
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[06:00-07:00[,224.15,0.34236
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[07:00-08:00[,220.10,0.33997
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[08:00-09:00[,172.80,0.28816
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[09:00-10:00[,87.33,0.19051
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[10:00-11:00[,15.22,0.10727
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[11:00-12:00[,3.89,0.09416
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[12:00-13:00[,1.52,0.09143
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[13:00-14:00[,1.08,0.09091
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[14:00-15:00[,1.11,0.09094
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[15:00-16:00[,4.08,0.09435
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[16:00-17:00[,55.25,0.15323
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[17:00-18:00[,121.98,0.23054
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[18:00-19:00[,204.75,0.32756
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[19:00-20:00[,213.02,0.33960
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[20:00-21:00[,181.41,0.30356
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[21:00-22:00[,172.90,0.29189
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[22:00-23:00[,147.40,0.26045
+,,,,,,,,,,29/09/2026,Coopérnico Único,Simples,[23:00-00:00[,133.35,0.24248
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[00:00-01:00[,202.51,0.27430
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[01:00-02:00[,186.06,0.25448
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[02:00-03:00[,175.03,0.24136
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[03:00-04:00[,162.52,0.22714
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[04:00-05:00[,167.69,0.23287
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[05:00-06:00[,190.70,0.25881
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[06:00-07:00[,224.15,0.29746
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[07:00-08:00[,220.10,0.29507
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[08:00-09:00[,172.80,0.31096
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[09:00-10:00[,87.33,0.21331
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[10:00-11:00[,15.22,0.13007
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[11:00-12:00[,3.89,0.11696
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[12:00-13:00[,1.52,0.11423
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[13:00-14:00[,1.08,0.11371
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[14:00-15:00[,1.11,0.11374
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[15:00-16:00[,4.08,0.11715
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[16:00-17:00[,55.25,0.17603
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[17:00-18:00[,121.98,0.25334
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[18:00-19:00[,204.75,0.35037
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[19:00-20:00[,213.02,0.36240
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[20:00-21:00[,181.41,0.32636
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[21:00-22:00[,172.90,0.31469
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[22:00-23:00[,147.40,0.21555
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Diário,[23:00-00:00[,133.35,0.19758
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[00:00-01:00[,202.51,0.27430
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[01:00-02:00[,186.06,0.25448
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[02:00-03:00[,175.03,0.24136
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[03:00-04:00[,162.52,0.22714
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[04:00-05:00[,167.69,0.23287
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[05:00-06:00[,190.70,0.25881
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[06:00-07:00[,224.15,0.29746
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[07:00-08:00[,220.10,0.36277
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[08:00-09:00[,172.80,0.31096
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[09:00-10:00[,87.33,0.21331
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[10:00-11:00[,15.22,0.13007
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[11:00-12:00[,3.89,0.11696
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[12:00-13:00[,1.52,0.11423
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[13:00-14:00[,1.08,0.11371
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[14:00-15:00[,1.11,0.11374
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[15:00-16:00[,4.08,0.11715
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[16:00-17:00[,55.25,0.17603
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[17:00-18:00[,121.98,0.25334
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[18:00-19:00[,204.75,0.35037
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[19:00-20:00[,213.02,0.36240
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[20:00-21:00[,181.41,0.32636
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[21:00-22:00[,172.90,0.31469
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[22:00-23:00[,147.40,0.28325
+,,,,,,,,,,29/09/2026,Coopérnico Único,Bi-horário - Ciclo Semanal,[23:00-00:00[,133.35,0.26528
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[00:00-01:00[,202.51,0.27430
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[01:00-02:00[,186.06,0.25448
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[02:00-03:00[,175.03,0.24136
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[03:00-04:00[,162.52,0.22714
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[04:00-05:00[,167.69,0.23287
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[05:00-06:00[,190.70,0.25881
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[06:00-07:00[,224.15,0.29746
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[07:00-08:00[,220.10,0.29507
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[08:00-09:00[,172.80,0.26866
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[09:00-10:00[,87.33,0.17101
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[10:00-11:00[,15.22,0.18977
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[11:00-12:00[,3.89,0.27866
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[12:00-13:00[,1.52,0.27593
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[13:00-14:00[,1.08,0.07141
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[14:00-15:00[,1.11,0.07145
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[15:00-16:00[,4.08,0.07485
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[16:00-17:00[,55.25,0.13373
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[17:00-18:00[,121.98,0.21104
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[18:00-19:00[,204.75,0.30807
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[19:00-20:00[,213.02,0.42210
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[20:00-21:00[,181.41,0.48806
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[21:00-22:00[,172.90,0.27239
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[22:00-23:00[,147.40,0.21555
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Diário,[23:00-00:00[,133.35,0.19758
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[00:00-01:00[,202.51,0.27430
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[01:00-02:00[,186.06,0.25448
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[02:00-03:00[,175.03,0.24136
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[03:00-04:00[,162.52,0.22714
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[04:00-05:00[,167.69,0.23287
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[05:00-06:00[,190.70,0.25881
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[06:00-07:00[,224.15,0.29746
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[07:00-08:00[,220.10,0.32047
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[08:00-09:00[,172.80,0.26866
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[09:00-10:00[,87.33,0.32401
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[10:00-11:00[,15.22,0.29177
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[11:00-12:00[,3.89,0.27866
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[12:00-13:00[,1.52,0.12293
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[13:00-14:00[,1.08,0.07141
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[14:00-15:00[,1.11,0.07145
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[15:00-16:00[,4.08,0.07485
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[16:00-17:00[,55.25,0.13373
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[17:00-18:00[,121.98,0.21104
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[18:00-19:00[,204.75,0.30807
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[19:00-20:00[,213.02,0.32010
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[20:00-21:00[,181.41,0.28406
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[21:00-22:00[,172.90,0.27239
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[22:00-23:00[,147.40,0.24095
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário - Ciclo Semanal,[23:00-00:00[,133.35,0.22298
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[00:00-01:00[,202.51,0.27349
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[01:00-02:00[,186.06,0.25367
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[02:00-03:00[,175.03,0.24056
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[03:00-04:00[,162.52,0.22634
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[04:00-05:00[,167.69,0.23207
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[05:00-06:00[,190.70,0.25801
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[06:00-07:00[,224.15,0.29666
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[07:00-08:00[,220.10,0.29427
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[08:00-09:00[,172.80,0.27986
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[09:00-10:00[,87.33,0.18221
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[10:00-11:00[,15.22,0.19562
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[11:00-12:00[,3.89,0.27916
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[12:00-13:00[,1.52,0.27643
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[13:00-14:00[,1.08,0.08261
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[14:00-15:00[,1.11,0.08264
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[15:00-16:00[,4.08,0.08605
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[16:00-17:00[,55.25,0.14493
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[17:00-18:00[,121.98,0.22224
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[18:00-19:00[,204.75,0.31927
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[19:00-20:00[,213.02,0.42795
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[20:00-21:00[,181.41,0.48856
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[21:00-22:00[,172.90,0.28359
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[22:00-23:00[,147.40,0.21475
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Diário,[23:00-00:00[,133.35,0.19678
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[00:00-01:00[,202.51,0.27349
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[01:00-02:00[,186.06,0.25367
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[02:00-03:00[,175.03,0.24056
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[03:00-04:00[,162.52,0.22634
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[04:00-05:00[,167.69,0.23207
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[05:00-06:00[,190.70,0.25801
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[06:00-07:00[,224.15,0.29666
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[07:00-08:00[,220.10,0.33167
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[08:00-09:00[,172.80,0.27986
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[09:00-10:00[,87.33,0.32719
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[10:00-11:00[,15.22,0.29227
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[11:00-12:00[,3.89,0.27916
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[12:00-13:00[,1.52,0.13145
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[13:00-14:00[,1.08,0.08261
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[14:00-15:00[,1.11,0.08264
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[15:00-16:00[,4.08,0.08605
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[16:00-17:00[,55.25,0.14493
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[17:00-18:00[,121.98,0.22224
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[18:00-19:00[,204.75,0.31927
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[19:00-20:00[,213.02,0.33130
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[20:00-21:00[,181.41,0.29525
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[21:00-22:00[,172.90,0.28359
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[22:00-23:00[,147.40,0.25215
+,,,,,,,,,,29/09/2026,Coopérnico Único,Tri-horário > 20.7 kVA - Ciclo Semanal,[23:00-00:00[,133.35,0.23418
 ,,,,,,,,,,30/09/2026,EDP Indexada Horária,Simples,[00:00-01:00[,132.56,0.24143
 ,,,,,,,,,,30/09/2026,EDP Indexada Horária,Simples,[01:00-02:00[,133.35,0.24150
 ,,,,,,,,,,30/09/2026,EDP Indexada Horária,Simples,[02:00-03:00[,138.10,0.24671
