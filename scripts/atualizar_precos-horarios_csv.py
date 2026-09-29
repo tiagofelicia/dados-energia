@@ -218,7 +218,7 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
     # 4. Calcular preços para cada comercializador
     resultados = []
     comercializadores = [
-        "Alfa Power Index BTN", "Coopérnico Base", "Coopérnico GO", "EDP Indexada Horária",
+        "Alfa Power Index BTN", "Coopérnico Base", "Coopérnico GO", "Coopérnico Único", "EDP Indexada Horária",
         "EZU Tarifa Indexada", "Galp Plano Dinâmico", "G9 Smart Dynamic SPOT 8!",
         "MeoEnergia Tarifa Dinâmica", "Repsol Leve Sem Mais",
         "Iberdrola - Simples Indexado Dinâmico", "Plenitude - Tendência",
@@ -368,6 +368,10 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
     
     elif nome_tarifario == "Coopérnico Base":
         return (omie_kwh + constantes_dict.get('Coop_CS_CR', 0.0) + constantes_dict.get('Coop_K', 0.0)) * perdas + constantes_dict.get('Financiamento_TSE', 0.0)
+
+    elif nome_tarifario == "Coopérnico Único":
+        # Único: as perdas aplicam-se só ao OMIE (k e CS+CR ficam fora do fator)
+        return omie_kwh * perdas + constantes_dict.get('Coop_CS_CR', 0.0) + constantes_dict.get('Coop_K', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0)
 
     elif nome_tarifario == "Coopérnico GO":
         return (omie_kwh + constantes_dict.get('Coop_CS_CR', 0.0) + constantes_dict.get('Coop_K', 0.0)) * perdas + constantes_dict.get('Coop_GO', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0)
