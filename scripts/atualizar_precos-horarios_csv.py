@@ -28,7 +28,7 @@ except (AttributeError, OSError):
 CHAVES_CONSTANTES_UTILIZADAS = {
     # Tarifários
     'Alfa_CGS', 'Alfa_K',
-    'Coop_CS_CR', 'Coop_K', 'Coop_GO',
+    'Coop_CS_CR', 'Coop_CS', 'Coop_K', 'Coop_GO',
     'EDP_H_K1', 'EDP_H_K2',
     'EZU_K', 'EZU_CGS',
     'Galp_Ci',
@@ -370,8 +370,8 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
         return (omie_kwh + constantes_dict.get('Coop_CS_CR', 0.0) + constantes_dict.get('Coop_K', 0.0)) * perdas + constantes_dict.get('Financiamento_TSE', 0.0)
 
     elif nome_tarifario == "Coopérnico Único":
-        # Único: as perdas aplicam-se só ao OMIE (k e CS+CR ficam fora do fator)
-        return omie_kwh * perdas + constantes_dict.get('Coop_CS_CR', 0.0) + constantes_dict.get('Coop_K', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0)
+        # Único: a margem k fica fora das perdas (no Base multiplica-as)
+        return (omie_kwh + constantes_dict.get('Coop_CS', 0.0)) * perdas + constantes_dict.get('Coop_K', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0)
 
     elif nome_tarifario == "Coopérnico GO":
         return (omie_kwh + constantes_dict.get('Coop_CS_CR', 0.0) + constantes_dict.get('Coop_K', 0.0)) * perdas + constantes_dict.get('Coop_GO', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0)
