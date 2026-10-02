@@ -55,6 +55,7 @@ data/
 ├── mapas/        Preços e mix de produção por país/zona europeia
 ├── agregados/    Médias e totais pré-calculados (diário, mensal, anual)
 ├── emissoes/     Intensidade carbónica e preço do CO2 (leilões EU ETS)
+├── erc/          Encargos de regulação imputados ao consumo (REN)
 ├── referencia/   Tabelas de referência (tecnologias, vocabulários)
 ├── regulado/     Dados regulados ERSE/E-Redes (atualização anual)
 └── manifest.json Catálogo de tudo o que está acima
@@ -325,6 +326,64 @@ onde 0,2016 tCO₂/MWh térmico é o valor por omissão do regulamento de monito
 
 ⚠️ **Não reutilize os fatores de `fatores_emissao.csv` nesta conta.** Esses são de ciclo de vida (IPCC AR5); aqui é preciso o fator de **combustão apenas**, que é o único que o ETS cobra.
 
+### `data/erc/` — Encargos de regulação imputados ao consumo (REN)
+
+O custo dos serviços de sistema (restrições técnicas, reserva de aFRR e mFRR, desvios…) que a REN, como gestor do sistema, imputa ao consumo, a cada **15 minutos**, desde **14/03/2024** (antes disso a REN não publica). Fonte: **[REN — SIME](https://mercado.ren.pt/PT/Electr/InfoMercado/InfSistema/ERC/Paginas/default.aspx)**, as três páginas ERC-ISP, ERC-BRP e ERC-Tipo. Um ficheiro por mês, atualizado 2×/dia; a REN publica com 1 a 2 dias de atraso.
+
+| Ficheiro | Conteúdo | Tamanho |
+|---|---|---|
+| `isp/erc_isp_AAAA-MM.csv` | Por período: total, componentes e consumo de mercado | ~0,4 MB/mês |
+| `brp/erc_brp_AAAA-MM.csv` | O total repartido por agente de mercado (BRP) | ~1,1 MB/mês até 09/2025, ~2,3 MB/mês depois |
+| `tipo/erc_tipo_AAAA-MM.csv` | O total repartido por tipo de encargo, com quantidade | ~2 MB/mês |
+| `erc_tipo_codigos.csv` | O que significa cada código do `tipo` (PT e EN) e a unidade da quantidade | 10 KB |
+
+#### `erc_isp_AAAA-MM.csv`
+
+```
+dia,data_iso,periodo,intervalo,data_utc,consumo_mwh,erc_total_eur,erc_total_eur_mwh,rt_pdbf_eur,rt_pdbf_eur_mwh,rt_pdvd_eur,rt_pdvd_eur_mwh,rt_phf_eur,rt_phf_eur_mwh,banda_afrr_eur,banda_afrr_eur_mwh,banda_mfrr_eur,banda_mfrr_eur_mwh,outros_eur,outros_eur_mwh
+30/09/2026,2026-09-30,1,[23:00-23:15[,2026-09-29 22:00,1599.164,23678.393,14.807,7607.624,4.757,,,,,14055.25,8.789,3465.698,2.167,-1450.179,-0.907
+```
+
+| Coluna | |
+|---|---|
+| `dia`, `data_iso` | Dia de **mercado** (hora de Espanha), não dia civil: o período 1 de 30/09 é das 23:00 às 23:15 de **29/09** em hora de Portugal |
+| `periodo` | 1 a 96 (92 e 100 nos dias de mudança de hora). A chave é `(data_iso, periodo)` |
+| `intervalo` | Hora de Portugal. Repete-se ou salta nos dias de mudança de hora; o `data_utc` (início do período) não |
+| `consumo_mwh` | Consumo de mercado no período, MWh |
+| `erc_total_eur`, `erc_total_eur_mwh` | O total, em € e em €/MWh de consumo |
+| `rt_pdbf_*`, `rt_pdvd_*`, `rt_phf_*` | Restrições técnicas no PDBF (programa diário base), após o PDVD (programa viável definitivo) e no PHF (programa horário final) |
+| `banda_afrr_*`, `banda_mfrr_*` | Banda de reserva contratada: regulação secundária (aFRR) e terciária (mFRR) |
+| `outros_*` | O resto (desvios, energias de regulação, incumprimentos…). Pode ser negativo |
+
+Valores médios, em €/MWh de consumo:
+
+| Ano | RT PDBF | RT PDVD | RT PHF | Banda aFRR | Banda mFRR | Outros | **Total** |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 2024 (desde 14/03) | 1,97 | 1,53 | 1,29 | 2,65 | 2,04 | −0,88 | **8,59** |
+| 2025 | 6,74 | 1,75 | 0,30 | 3,40 | 1,52 | −0,66 | **13,05** |
+| 2026 (até 30/09) | 9,90 | 1,88 | 0,18 | 3,95 | 1,85 | −0,72 | **17,03** |
+
+#### `erc_brp_AAAA-MM.csv` e `erc_tipo_AAAA-MM.csv`
+
+```
+data_iso,periodo,minutos,brp,unidade_liquidacao,erc_eur
+2026-09-01,1,15,ALDRP,ALDRP,-11.262669
+
+data_iso,periodo,codigo,quantidade,valor_eur
+2026-09-01,1,DSVEVEXC,51.504174,7163.715563
+```
+
+Formato longo e magro: uma linha por período × agente (ou × código), **só as linhas com valor**. O intervalo e o `data_utc` de cada período estão no `isp` — junte por `(data_iso, periodo)`. No `tipo`, a unidade da `quantidade` depende do código (MWh para energia, MW para banda): ver `erc_tipo_codigos.csv`.
+
+⚠️ **O `brp` foi horário até 30/09/2025.** Até essa data a REN reparte o ERC por agente à hora (`periodo` 1 a 24, `minutos` = 60); a partir de 01/10/2025, ao quarto de hora (`periodo` 1 a 96, `minutos` = 15). O período 1 de um dia de 2024 no `brp` corresponde aos períodos 1 a 4 do `isp`. **Filtre ou agregue pela coluna `minutos` antes de juntar com o `isp`.** O `isp` e o `tipo` são de 15 minutos desde o início.
+
+**As três vistas são coerentes:** em cada período, a soma do `brp` dá o `erc_total_eur` do `isp`, e cada grupo de códigos do `tipo` dá a componente respetiva do `isp`: `RTPDBF*` → `rt_pdbf_eur`, `RTPDVD*` → `rt_pdvd_eur`, `RTPF*` → `rt_phf_eur`, `BAFRR*` → `banda_afrr_eur`, `BMFRR*` → `banda_mfrr_eur`, e todos os outros códigos → `outros_eur`. Os totais mensais batem com os agregados que a própria REN publica na vista "Anual".
+
+⚠️ **Exceção da fonte:** em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026), o `erc_total_eur` publicado pela REN fica abaixo da soma das componentes — 241 371 € no conjunto. O `brp` acompanha o total e o `tipo` acompanha as componentes. Os valores ficam como a REN os publica.
+
+- Alguns códigos do `tipo` não aparecem na tabela da página da REN mas vêm na API, e estão aqui: os `APAGAO*` (acerto e reposição do apagão de 28/04/2025, com valores em 28 e 29/04/2025) e os `RTPDBFRST`/`RTPDBFINC` (as restrições no PDBF até 15/07/2025; a partir de 16/07/2025 vêm separadas em restrição, `RTPDBFF1*`, e reequilíbrio, `RTPDBFF2*`).
+- No dicionário, o rótulo inglês dos códigos `CURTLM*` vem da API com um `¿` no lugar de um travessão; está corrigido.
+
 ### `data/referencia/` — Tabelas de referência
 
 | Ficheiro | Conteúdo | Atualização |
@@ -375,6 +434,7 @@ Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
 - **[OMIP](https://www.omip.pt)** — mercado a prazo / futuros
 - **[MIBGAS](https://www.mibgas.es)** — mercado ibérico de gás natural
 - **[REN](https://datahub.ren.pt)** — produção, consumo e bombagem em Portugal
+- **[REN — SIME](https://mercado.ren.pt/PT/Electr/InfoMercado/InfSistema/ERC/Paginas/default.aspx)** — encargos de regulação imputados ao consumo (ERC)
 - **[ENTSO-E Transparency Platform](https://transparency.entsoe.eu)** — preços day-ahead e produção europeia
 - **[Energy-Charts](https://www.energy-charts.info)** (Fraunhofer ISE) — mix de produção europeu
 - **[ERSE](https://www.erse.pt)** e **[E-Redes](https://www.e-redes.pt)** — perfis, perdas e tarifas reguladas
