@@ -238,7 +238,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/MIBEL_ano_atual_ACUM.csv"
   },
   {
-   "bytes": 2933279,
+   "bytes": 2943503,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -266,7 +266,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-atuais",
-   "linhas": 26300,
+   "linhas": 26396,
    "resolucao_nativa": [
     {
      "ate": null,
@@ -276,7 +276,7 @@
    ],
    "titulo": "Produção elétrica do ano corrente",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-01",
+   "ultima_data": "2026-10-02",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_dados_atuais.csv"
   },
   {
@@ -322,7 +322,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/historico/"
   },
   {
-   "bytes": 105001,
+   "bytes": 105002,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_bombagem_diaria.csv",
    "colunas": [
@@ -341,7 +341,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 11771,
+   "bytes": 11819,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -355,7 +355,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 15217,
+   "bytes": 8859,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -372,14 +372,14 @@
    ],
    "titulo": "Instantâneo de produção do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-01",
+   "ultima_data": "2026-10-02",
    "url": "https://dados.tiagofelicia.pt/data/producao/hoje.json"
   },
   {
    "avisos": [
     "A resolução varia por país e cada ficheiro declara a sua em interval_minutes: 15 minutos em 20 países, 60 em 13 (entre eles Portugal, que na ENTSO-E é horário apesar de a REN publicar a 15 minutos) e 30 em Chipre e Irlanda."
    ],
-   "bytes": 143084647,
+   "bytes": 143105157,
    "cadencia": "cada 4h (PT/ES) · 2x/dia (todos)",
    "caminho": "data/producao/producao-entsoe/",
    "descricao": "Geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços, para 35 países. Um ficheiro por país e semana ISO.",
@@ -703,6 +703,149 @@
    "url": "https://dados.tiagofelicia.pt/data/emissoes/eua_co2.csv"
   },
   {
+   "avisos": [
+    "Os dias são dias de MERCADO (hora de Espanha): o período 1 começa às 23:00 do dia anterior em hora de Portugal.",
+    "A chave é (data_iso, periodo). Nos dias de mudança de hora o 'intervalo' repete-se ou salta; o 'data_utc' não.",
+    "Em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026) o erc_total_eur publicado pela REN fica abaixo da soma das componentes (241 371 EUR no conjunto). Os valores são guardados como a fonte os dá; nos restantes períodos a diferença é de arredondamento (< 0,01 EUR)."
+   ],
+   "bytes": 12937392,
+   "cadencia": "2x/dia (num PC em Portugal)",
+   "caminho": "data/erc/isp/",
+   "colunas": [
+    "dia",
+    "data_iso",
+    "periodo",
+    "intervalo",
+    "data_utc",
+    "consumo_mwh",
+    "erc_total_eur",
+    "erc_total_eur_mwh",
+    "rt_pdbf_eur",
+    "rt_pdbf_eur_mwh",
+    "rt_pdvd_eur",
+    "rt_pdvd_eur_mwh",
+    "rt_phf_eur",
+    "rt_phf_eur_mwh",
+    "banda_afrr_eur",
+    "banda_afrr_eur_mwh",
+    "banda_mfrr_eur",
+    "banda_mfrr_eur_mwh",
+    "outros_eur",
+    "outros_eur_mwh"
+   ],
+   "descricao": "Encargos de Regulação Imputados ao Consumo, por período de 15 minutos, desde 14/03/2024: total em EUR e em EUR/MWh, as componentes (restrições técnicas, banda de aFRR e mFRR, outros) e o consumo de mercado. Um ficheiro por mês. Fonte: REN (SIME).",
+   "ficheiros": 31,
+   "formato": "csv",
+   "grupo": "erc",
+   "id": "erc-isp",
+   "padrao": "data/erc/isp/erc_isp_*.csv",
+   "resolucao_nativa": [
+    {
+     "ate": null,
+     "de": null,
+     "intervalo_minutos": 15
+    }
+   ],
+   "titulo": "Encargos de regulação (ERC) — por período",
+   "tolerancia_dias": 5,
+   "ultima_data": "2026-09-30",
+   "url": "https://dados.tiagofelicia.pt/data/erc/isp/"
+  },
+  {
+   "avisos": [
+    "HORÁRIO até 30/09/2025 (periodo 1-24, minutos=60) e de 15 minutos desde 01/10/2025 (periodo 1-96, minutos=15). Antes de juntar com o erc-isp por (data_iso, periodo), filtre ou agregue pela coluna 'minutos'."
+   ],
+   "bytes": 48338459,
+   "cadencia": "2x/dia (num PC em Portugal)",
+   "caminho": "data/erc/brp/",
+   "colunas": [
+    "data_iso",
+    "periodo",
+    "minutos",
+    "brp",
+    "unidade_liquidacao",
+    "erc_eur"
+   ],
+   "descricao": "O ERC de cada período repartido por agente de mercado (BRP / unidade de liquidação). Formato longo, só linhas com valor.",
+   "ficheiros": 31,
+   "formato": "csv",
+   "grupo": "erc",
+   "id": "erc-brp",
+   "padrao": "data/erc/brp/erc_brp_*.csv",
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
+   "titulo": "Encargos de regulação (ERC) — por agente",
+   "tolerancia_dias": 5,
+   "ultima_data": "2026-09-30",
+   "url": "https://dados.tiagofelicia.pt/data/erc/brp/"
+  },
+  {
+   "avisos": [
+    "A unidade da quantidade varia com o código (MWh para energia, MW para banda): ver a coluna 'unidade' do dicionário."
+   ],
+   "bytes": 68963577,
+   "cadencia": "2x/dia (num PC em Portugal)",
+   "caminho": "data/erc/tipo/",
+   "colunas": [
+    "data_iso",
+    "periodo",
+    "codigo",
+    "quantidade",
+    "valor_eur"
+   ],
+   "descricao": "O ERC de cada período repartido por tipo de encargo (desvios, energia de aFRR/mFRR/RR, restrições técnicas, bandas…), com quantidade e valorização. Formato longo, só linhas com valor; os códigos estão em erc_tipo_codigos.csv.",
+   "ficheiros": 31,
+   "formato": "csv",
+   "grupo": "erc",
+   "id": "erc-tipo",
+   "padrao": "data/erc/tipo/erc_tipo_*.csv",
+   "resolucao_nativa": [
+    {
+     "ate": null,
+     "de": null,
+     "intervalo_minutos": 15
+    }
+   ],
+   "titulo": "Encargos de regulação (ERC) — por tipo de encargo",
+   "tolerancia_dias": 5,
+   "ultima_data": "2026-09-30",
+   "url": "https://dados.tiagofelicia.pt/data/erc/tipo/"
+  },
+  {
+   "bytes": 10281,
+   "cadencia": "quando há tipos novos",
+   "caminho": "data/erc/erc_tipo_codigos.csv",
+   "colunas": [
+    "codigo",
+    "tipo_id",
+    "tipo",
+    "subtipo",
+    "tipo_en",
+    "subtipo_en",
+    "unidade"
+   ],
+   "descricao": "Dicionário dos códigos do erc-tipo: tipo, subtipo (PT e EN) e unidade da quantidade. Cresce quando a REN cria tipos novos.",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "erc",
+   "id": "erc-codigos",
+   "linhas": 87,
+   "titulo": "Encargos de regulação (ERC) — códigos dos tipos de encargo",
+   "tolerancia_dias": 400,
+   "ultima_data": null,
+   "url": "https://dados.tiagofelicia.pt/data/erc/erc_tipo_codigos.csv"
+  },
+  {
    "bytes": 9773,
    "cadencia": "quando as fontes mudam",
    "caminho": "data/referencia/tecnologias.json",
@@ -766,10 +909,11 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-02T05:43:15+00:00",
+ "gerado_em": "2026-10-02T15:08:44+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
+  "erc": "Encargos de regulação (REN)",
   "gas": "Mercado de gás natural",
   "mapas": "Europa",
   "omie": "Preços de mercado (OMIE / OMIP)",
@@ -781,8 +925,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 360518206,
-  "datasets": 28,
-  "ficheiros": 1540
+  "bytes": 490792340,
+  "datasets": 32,
+  "ficheiros": 1634
  }
 }
