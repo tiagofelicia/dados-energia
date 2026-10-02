@@ -456,7 +456,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
   },
   {
-   "bytes": 196215,
+   "bytes": 196365,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_spot.csv",
    "colunas": [
@@ -476,7 +476,7 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-mibgas",
-   "linhas": 3943,
+   "linhas": 3946,
    "titulo": "Índices MIBGAS",
    "tolerancia_dias": 2,
    "ultima_data": "2026-10-01",
@@ -502,7 +502,7 @@
     "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
     "horizonte 'intradiario' entrega no próprio dia da sessão e 'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."
    ],
-   "bytes": 3322323,
+   "bytes": 3324550,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_futuros.csv",
    "colunas": [
@@ -524,10 +524,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-futuros",
-   "linhas": 35278,
+   "linhas": 35301,
    "titulo": "Curva forward do gás ibérico",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-01",
+   "ultima_data": "2026-10-02",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_futuros.csv"
   },
   {
@@ -536,7 +536,7 @@
     "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial.",
     "A chave é (data_iso, produto, entrega_inicio): os produtos de estação W e S cotam duas estações em simultâneo e aparecem duas vezes na mesma sessão."
    ],
-   "bytes": 618329,
+   "bytes": 619219,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_ttf_spread.csv",
    "colunas": [
@@ -553,10 +553,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-ttf-spread",
-   "linhas": 11136,
+   "linhas": 11152,
    "titulo": "Spread PVB-TTF",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-01",
+   "ultima_data": "2026-10-02",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
@@ -909,7 +909,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-02T15:42:06+00:00",
+ "gerado_em": "2026-10-02T16:51:13+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -925,7 +925,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 490794378,
+  "bytes": 490797645,
   "datasets": 32,
   "ficheiros": 1634
  }
