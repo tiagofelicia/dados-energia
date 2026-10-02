@@ -23,6 +23,16 @@ Dados" usa a mesma API (Exports/GetExports) e devolve um xlsx para qualquer
 intervalo de datas, mas o xlsx do ISP NÃO traz o consumo de mercado, que o
 JSON traz. Por isso o script usa o JSON nas três vistas.
 
+ONDE CORRE: NÃO NO GITHUB ACTIONS
+---------------------------------
+O mercadoservices.ren.pt só aceita ligações de alguns países europeus
+(testado a 02/10/2026: responde de PT, FR, DE, IT, CH, GB, PL e SE; não dos
+EUA nem da Ásia). Os runners alojados do GitHub ficam nos EUA e dão timeout.
+Por isso não há workflow: o script corre num PC em Portugal, por uma tarefa
+agendada que mantém um clone leve do repositório, corre a versão deste script
+que está no GitHub e faz push de data/erc. O manifesto atualiza-se com esse
+push (gerar_hoje.yml dispara em push a data/erc/**).
+
 A API pede um cabeçalho X-ApiKey. A chave é a que as próprias páginas enviam:
 vem no JavaScript que qualquer visitante recebe, não é um segredo. Se a REN a
 mudar, o script pára com "API key is invalid." A nova chave está no ficheiro
@@ -122,7 +132,10 @@ CHAVE_API = os.environ.get("REN_API_KEY") or "mercado_mL273BtiLeRcqfqBqImWBf5uvP
 
 DATA_INICIAL = date(2024, 3, 14)
 REVISAO_DIAS = 7
-TIMEOUT = 60
+# (ligação, leitura). A ligação curta é de propósito: o mercadoservices só
+# aceita ligações de alguns países europeus e, de fora, o pacote é descartado
+# em silêncio — sem isto cada tentativa esperava 60 s por nada.
+TIMEOUT = (15, 60)
 TENTATIVAS = 3
 PARALELO = 4
 
@@ -161,6 +174,11 @@ VISTAS = {
 
 class ChaveInvalida(Exception):
     pass
+
+
+class SemLigacao(Exception):
+    """O servidor não aceita a ligação. Não adianta tentar as outras vistas:
+    estão todas no mesmo servidor."""
 
 
 # ============================================================
@@ -216,6 +234,13 @@ def pedir(controlador, metodo, **params):
             ultimo_erro = e
             if tentativa < TENTATIVAS:
                 time.sleep(2 ** tentativa)
+    if isinstance(ultimo_erro, requests.exceptions.ConnectTimeout):
+        raise SemLigacao(
+            "o mercadoservices.ren.pt não aceitou a ligação. Este servidor da REN "
+            "só responde a alguns países europeus (testado a 02/10/2026: responde "
+            "de PT, FR, DE, IT, CH, GB, PL e SE; não responde dos EUA nem da Ásia). "
+            "Os runners alojados do GitHub ficam nos EUA e não chegam lá — o script "
+            "tem de correr a partir de uma máquina na Europa.")
     raise RuntimeError(f"{metodo} {params}: {ultimo_erro}")
 
 
@@ -451,7 +476,7 @@ def processar_vista(vista, inicio, fim, paralelo):
             for d, fut in futuros:
                 try:
                     _, linhas, cods, aviso = fut.result()
-                except ChaveInvalida:
+                except (ChaveInvalida, SemLigacao):
                     raise
                 except Exception as e:
                     falhados.append((d, e))
@@ -505,7 +530,7 @@ def main():
     for vista in args.vistas:
         try:
             publicado = ultimo_publicado(vista)
-        except ChaveInvalida as e:
+        except (ChaveInvalida, SemLigacao) as e:
             print(f"❌ {e}")
             sys.exit(1)
         except Exception as e:
@@ -533,7 +558,7 @@ def main():
         t0 = time.time()
         try:
             n, sem_dados, falhados, avisos = processar_vista(vista, inicio, fim, args.paralelo)
-        except ChaveInvalida as e:
+        except (ChaveInvalida, SemLigacao) as e:
             print(f"❌ {e}")
             sys.exit(1)
         algum_ok = algum_ok or n > 0

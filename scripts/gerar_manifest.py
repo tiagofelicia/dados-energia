@@ -372,14 +372,17 @@ REGISTO = [
     # Em cada período, Σ brp = erc_total_eur do isp, e Σ tipo = soma das
     # componentes do isp. As duas coincidem em todos os períodos menos 137 (ver
     # o aviso do erc-isp): é uma inconsistência da fonte, não da recolha.
-    # A REN publica com 1 a 2 dias de atraso, daí a tolerância de 4.
+    # Recolhidos num PC em Portugal (tarefa agendada), não por um workflow: o
+    # servidor da REN não aceita ligações dos runners do GitHub. A REN publica
+    # com ~2 dias de atraso; a tolerância de 5 deixa o PC estar desligado um
+    # fim de semana sem alarme.
     dict(id="erc-isp", grupo="erc", caminho="data/erc/isp/erc_isp_*.csv",
          titulo="Encargos de regulação (ERC) — por período",
          descricao="Encargos de Regulação Imputados ao Consumo, por período de "
                    "15 minutos, desde 14/03/2024: total em EUR e em EUR/MWh, as "
                    "componentes (restrições técnicas, banda de aFRR e mFRR, outros) "
                    "e o consumo de mercado. Um ficheiro por mês. Fonte: REN (SIME).",
-         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
+         cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data_iso",
          resolucao_nativa=RESOLUCAO_ERC,
          avisos=["Os dias são dias de MERCADO (hora de Espanha): o período 1 começa "
                  "às 23:00 do dia anterior em hora de Portugal.",
@@ -394,7 +397,7 @@ REGISTO = [
          titulo="Encargos de regulação (ERC) — por agente",
          descricao="O ERC de cada período repartido por agente de mercado (BRP / "
                    "unidade de liquidação). Formato longo, só linhas com valor.",
-         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
+         cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data_iso",
          resolucao_nativa=RESOLUCAO_ERC_BRP,
          avisos=["HORÁRIO até 30/09/2025 (periodo 1-24, minutos=60) e de 15 "
                  "minutos desde 01/10/2025 (periodo 1-96, minutos=15). Antes de "
@@ -406,7 +409,7 @@ REGISTO = [
                    "energia de aFRR/mFRR/RR, restrições técnicas, bandas…), com "
                    "quantidade e valorização. Formato longo, só linhas com valor; "
                    "os códigos estão em erc_tipo_codigos.csv.",
-         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
+         cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data_iso",
          resolucao_nativa=RESOLUCAO_ERC,
          avisos=["A unidade da quantidade varia com o código (MWh para energia, MW "
                  "para banda): ver a coluna 'unidade' do dicionário."]),
