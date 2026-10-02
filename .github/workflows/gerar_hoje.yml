@@ -38,6 +38,7 @@ on:
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
       - "Atualizar CO2 (EU ETS)"
+      - "Atualizar ERC (REN)"
     types: [completed]
 
   schedule:
