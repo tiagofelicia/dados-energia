@@ -328,7 +328,9 @@ onde 0,2016 tCO₂/MWh térmico é o valor por omissão do regulamento de monito
 
 ### `data/erc/` — Encargos de regulação imputados ao consumo (REN)
 
-O custo dos serviços de sistema (restrições técnicas, reserva de aFRR e mFRR, desvios…) que a REN, como gestor do sistema, imputa ao consumo, a cada **15 minutos**, desde **14/03/2024** (antes disso a REN não publica). Fonte: **[REN — SIME](https://mercado.ren.pt/PT/Electr/InfoMercado/InfSistema/ERC/Paginas/default.aspx)**, as três páginas ERC-ISP, ERC-BRP e ERC-Tipo. Um ficheiro por mês, atualizado 2×/dia; a REN publica com 1 a 2 dias de atraso.
+O custo dos serviços de sistema (restrições técnicas, reserva de aFRR e mFRR, desvios…) que a REN, como gestor do sistema, imputa ao consumo, a cada **15 minutos**, desde **14/03/2024** (antes disso a REN não publica). Fonte: **[REN — SIME](https://mercado.ren.pt/PT/Electr/InfoMercado/InfSistema/ERC/Paginas/default.aspx)**, as três páginas ERC-ISP, ERC-BRP e ERC-Tipo. Um ficheiro por mês, atualizado 2×/dia; a REN publica com cerca de 2 dias de atraso.
+
+ℹ️ Ao contrário dos outros datasets, este não é atualizado por um workflow do GitHub Actions: o servidor da REN só aceita ligações de alguns países europeus e os runners do GitHub ficam nos EUA. A recolha corre numa máquina em Portugal (`scripts/atualizar_erc_ren.py`, por tarefa agendada) e os dados chegam por push.
 
 | Ficheiro | Conteúdo | Tamanho |
 |---|---|---|
