@@ -38,8 +38,16 @@ on:
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
       - "Atualizar CO2 (EU ETS)"
-      - "Atualizar ERC (REN)"
     types: [completed]
+
+  # Os ERC da REN não vêm de um workflow: o servidor da REN não aceita
+  # ligações dos runners do GitHub (EUA), por isso são recolhidos num PC em
+  # Portugal e chegam por push. É esse push que tem de atualizar o manifesto.
+  # Não há ciclo: o commit deste workflow não toca em data/erc, e os pushes
+  # feitos com o GITHUB_TOKEN não disparam workflows.
+  push:
+    branches: [main]
+    paths: ['data/erc/**']
 
   schedule:
     - cron: '50 */6 * * *'
