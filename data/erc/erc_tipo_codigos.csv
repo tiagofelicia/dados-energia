@@ -1,0 +1,88 @@
+﻿codigo,tipo_id,tipo,subtipo,tipo_en,subtipo_en,unidade
+DSVEVEXC,DSVEV,Desvios,Excesso,Imbalance,Surplus,MWh
+DSVEVDEF,DSVEV,Desvios,Defeito,Imbalance,Deficit,MWh
+IGCCSUB,IGCC,Coordenação de Desvios,Subir,Imbalance Netting,Up,MWh
+IGCCDES,IGCC,Coordenação de Desvios,Descer,Imbalance Netting,Down,MWh
+EAFRRSUB,EAFRR,Energia de aFRR,Subir,aFRR energy,Up,MWh
+EAFRRDES,EAFRR,Energia de aFRR,Descer,aFRR energy,Down,MWh
+EMFRRENSASUB,EMFRR,Energia de mFRR - Ativação - Programada,Subir,mFRR Energy - Scheduled Activation,Up,MWh
+EMFRRENSADES,EMFRR,Energia de mFRR - Ativação - Programada,Descer,mFRR Energy - Scheduled Activation,Down,MWh
+EMFRRENDA1SUB,EMFRR,Energia de mFRR - Ativação - Direta Q(t),Subir,mFRR Energy - Direct Activation Q(t),Up,MWh
+EMFRRENDA1DES,EMFRR,Energia de mFRR - Ativação - Direta Q(t),Descer,mFRR Energy - Direct Activation Q(t),Down,MWh
+EMFRRENDA2SUB,EMFRR,Energia de mFRR - Ativação - Direta Q(t-1),Subir,mFRR Energy - Direct Activation Q(t-1),Up,MWh
+EMFRRENDA2DES,EMFRR,Energia de mFRR - Ativação - Direta Q(t-1),Descer,mFRR Energy - Direct Activation Q(t-1),Down,MWh
+EMFRRPRSAIMP,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Programada,Importação,mFRR Energy - Interconnection Balance - Scheduled Activation,Import,MWh
+EMFRRPRSAEXP,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Programada,Exportação,mFRR Energy - Interconnection Balance - Scheduled Activation,Export,MWh
+EMFRRPRDA1IMP,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Direta Q(t),Importação,mFRR Energy - Interconnection Balance - Direct Activation Q(t),Import,MWh
+EMFRRPRDA1EXP,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Direta Q(t),Exportação,mFRR Energy - Interconnection Balance - Direct Activation Q(t),Export,MWh
+EMFRRPRDA2IMP,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Direta Q(t-1),Importação,mFRR Energy - Interconnection Balance - Direct Activation Q(t-1),Import,MWh
+EMFRRPRDA2EXP,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Direta Q(t-1),Exportação,mFRR Energy - Interconnection Balance - Direct Activation Q(t-1),Export,MWh
+EMFRREASA,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Programada,Erro Arredondamento,mFRR Energy - Interconnection Balance - Scheduled Activation,Rounding Error,
+EMFRREADA,EMFRR,Energia de mFRR - Saldo Interligação - Ativação Direta,Erro Arredondamento,mFRR Energy - Interconnection Balance - Direct Activation,Rounding Error,
+TERREENRGSUB,TERRE,Energia de RR,RR - Subir,RR Energy,RR - Up,MWh
+TERREENRGDES,TERRE,Energia de RR,RR - Descer,RR Energy,RR - Down,MWh
+TERREPROGIMP,TERRE,Energia de RR,Saldo Interligação - Importação,RR Energy,Interconnection Balance - Import,MWh
+TERREPROGEXP,TERRE,Energia de RR,Saldo Interligação - Exportação,RR Energy,Interconnection Balance - Export,MWh
+RTPDBFRST,RTPDBF,Energia de Restrição Técnica no PDBF,ERT,Technical Constraints in PDBF,TC,MWh
+RTPDBFINC,RTPDBF,Energia de Restrição Técnica no PDBF,Incumprimentos,Technical Constraints in PDBF,Non-compliances,MWh
+RTPDBFF1RST,RTPDBF,Energia de Restrição Técnica no PDBF - Restrição,ERT,Technical Constraints in PDBF - Constraints,TC,MWh
+RTPDBFF1INC,RTPDBF,Energia de Restrição Técnica no PDBF - Restrição,Incumprimentos,Technical Constraints in PDBF - Constraints,Non-compliances,MWh
+RTPDBFF2RST,RTPDBF,Energia de Restrição Técnica no PDBF - Reequilíbrio,ERT,Technical Constraints in PDBF - Rebalancing,TC,MWh
+RTPDBFF2INC,RTPDBF,Energia de Restrição Técnica no PDBF - Reequilíbrio,Incumprimentos,Technical Constraints in PDBF - Rebalancing,Non-compliances,MWh
+RTPDVDRST,RTPDVD,Energia de Restrição Técnica após PDVD,ERT,Technical Constraints in PDVD,TC,MWh
+RTPDVDINC,RTPDVD,Energia de Restrição Técnica após PDVD,Incumprimentos,Technical Constraints in PDVD,Non-compliances,MWh
+RTPFSASUB,RTPF,Restrição técnica após PF - Ativação Programada,Subir,Technical Constraints after PF - Scheduled Activation,Up,MWh
+RTPFSADES,RTPF,Restrição técnica após PF - Ativação Programada,Descer,Technical Constraints after PF - Scheduled Activation,Down,MWh
+RTPFDA1SUB,RTPF,Restrição técnica após PF - Ativação Direta Q(t),Subir,Technical Constraints after PF - Direct Activation Q(t),Up,MWh
+RTPFDA1DES,RTPF,Restrição técnica após PF - Ativação Direta Q(t),Descer,Technical Constraints after PF - Direct Activation Q(t),Down,MWh
+RTPFDA2SUB,RTPF,Restrição técnica após PF - Ativação Direta Q(t-1),Subir,Technical Constraints after PF - Direct Activation Q(t-1),Up,MWh
+RTPFDA2DES,RTPF,Restrição técnica após PF - Ativação Direta Q(t-1),Descer,Technical Constraints after PF - Direct Activation Q(t-1),Down,MWh
+FSKARCFQ,FSKAR,Energia FSKAR,Controlo Frequência,FSKAR Energy,Frequency Control,MWh
+FSKARRMP,FSKAR,Energia FSKAR,Rampa,FSKAR Energy,Ramping,MWh
+FSKARNIT,FSKAR,Energia FSKAR,Não Intencional,FSKAR Energy,Unintended,MWh
+CSINCCSC,CSINC,Compensação Síncrona,CS,Synchronous Compensation,SC,MWh
+CSINCINC,CSINC,Compensação Síncrona,Incumprimentos,Synchronous Compensation,Non-compliances,MWh
+EVDISPEVD,EVDISP,Ensaio de Verificação de Disponibilidade,Ensaio,Availability Verification Test,Test,MWh
+EVDISPREP,EVDISP,Ensaio de Verificação de Disponibilidade,Repetição,Availability Verification Test,Repetition,MWh
+RTMFRRTSASUB,RTMFRRT,Produto Específico Transitório de mFRR - Ativação Programada,Subir,mFRR Specific Transitory Product - Scheduled Activation,Up,MWh
+RTMFRRTSADES,RTMFRRT,Produto Específico Transitório de mFRR - Ativação Programada,Descer,mFRR Specific Transitory Product - Scheduled Activation,Down,MWh
+RTMFRRTDA1SUB,RTMFRRT,Produto Específico Transitório de mFRR - Ativação Direta Q(t),Subir,mFRR Specific Transitory Product - Direct Activation Q(t),Up,MWh
+RTMFRRTDA1DES,RTMFRRT,Produto Específico Transitório de mFRR - Ativação Direta Q(t),Descer,mFRR Specific Transitory Product - Direct Activation Q(t),Down,MWh
+RTMFRRTDA2SUB,RTMFRRT,Produto Específico Transitório de mFRR - Ativação Direta Q(t-1),Subir,mFRR Specific Transitory Product - Direct Activation Q(t-1),Up,MWh
+RTMFRRTDA2DES,RTMFRRT,Produto Específico Transitório de mFRR - Ativação Direta Q(t-1),Descer,mFRR Specific Transitory Product - Direct Activation Q(t-1),Down,MWh
+BAFRRMRCSUB,BAFRR,Banda de aFRR,Subir,aFRR Capacity,Up,MW
+BAFRRMRCDES,BAFRR,Banda de aFRR,Descer,aFRR Capacity,Down,MW
+BAFRREXTSUB,BAFRR,Banda Extraordinária de aFRR,Subir,aFRR Capacity - Extraordinary,Up,MW
+BAFRREXTDES,BAFRR,Banda Extraordinária de aFRR,Descer,aFRR Capacity - Extraordinary,Down,MW
+BAFRRINCSUB,BAFRR,Incumprimentos de Banda aFRR,Subir,aFRR Capacity - Non-compliances,Up,MW
+BAFRRINCDES,BAFRR,Incumprimentos de Banda aFRR,Descer,aFRR Capacity - Non-compliances,Down,MW
+BMFRRANO,BMFRR,Banda de mFRR,Anual,mFRR Capacity,Annual,MW
+BMFRRTRI,BMFRR,Banda de mFRR,Trimestral,mFRR Capacity,Quarterly,MW
+BMFRRMES,BMFRR,Banda de mFRR,Mensal,mFRR Capacity,Monthly,MW
+BMFRRINC,BMFRR,Banda de mFRR,Incumprimentos,mFRR Capacity,Non-compliances,MW
+ARRQACFX,ARRQA,Arranque Autónomo,Coeficiente Fixo,Black start,Fixed Factor,
+ARRQAEAA,ARRQA,Arranque Autónomo,Energia Mobilizada,Black start,Activated Energy,MWh
+ARRQAEED,ARRQA,Arranque Autónomo,Ensaio Disponibilidade,Black start,Availability Test,MWh
+ARRQAIDP,ARRQA,Arranque Autónomo - Incumprimento,Disponibilidade,Black start - Non-compliances,Availability,
+ARRQAIIA,ARRQA,Arranque Autónomo - Incumprimento,Instrução Arranque,Black start - Non-compliances,Startup Instruction,
+ARRQAIED,ARRQA,Arranque Autónomo - Incumprimento,Verificação Disponibilidade,Black start - Non-compliances,Availability Test,
+ARRQAITA,ARRQA,Arranque Autónomo - Incumprimento,Acumulado Trimestral,Black start - Non-compliances,Quarterly Accumulated,
+IDINCAMSUB,IDINC,Incumprimento da Instrução de Despacho,Subir,Non-compliance with Dispatch Instruction,Up,MWh
+IDINCAMDES,IDINC,Incumprimento da Instrução de Despacho,Descer,Non-compliance with Dispatch Instruction,Down,MWh
+IDINCUFMIN,IDINC,Incumprimento da Instrução de Limitação de Potência - UF,Mínimo,Non-compliance with Power Limitation Instruction - Physical Units,Minimum,MWh
+IDINCUFMAX,IDINC,Incumprimento da Instrução de Limitação de Potência - UF,Máximo,Non-compliance with Power Limitation Instruction - Physical Units,Maximum,MWh
+IDINCAOMIN,IDINC,Incumprimento da Instrução de Limitação de Potência - AB,Mínimo,Non-compliance with Power Limitation Instruction - Bid Area,Minimum,MWh
+IDINCAOMAX,IDINC,Incumprimento da Instrução de Limitação de Potência - AB,Máximo,Non-compliance with Power Limitation Instruction - Bid Area,Maximum,MWh
+APOIOIMP,APOIO,Intercâmbio de apoio Ibérico,Importação,Iberian support cooperation,Import,MWh
+APOIOEXP,APOIO,Intercâmbio de apoio Ibérico,Exportação,Iberian support cooperation,Export,MWh
+COMISS,COMISS,Energia de Comissionamento,,Commissioning Energy,,MWh
+INCGENF1,INCGEN,Penalização Unidades de Programação Genéricas,Fase 1,Penalty for Generic Programming Units,Stage 1,MWh
+INCGENF2,INCGEN,Penalização Unidades de Programação Genéricas,Fase 2,Penalty for Generic Programming Units,Stage 2,MWh
+APAGAOPDBC,APAGAO,Apagão 28 de abril 2025 - Acerto e Reposição,PDBC,April 28 2025 Blackout - Settlement and Restoration,PDBC,
+APAGAOPIBC1,APAGAO,Apagão 28 de abril 2025 - Acerto e Reposição,PIBCI 1ª Sessão,April 28 2025 Blackout - Settlement and Restoration,PIBCI 1ª Session,
+APAGAOPIBC2,APAGAO,Apagão 28 de abril 2025 - Acerto e Reposição,PIBCI 2ª Sessão,April 28 2025 Blackout - Settlement and Restoration,PIBCI 2ª Session,
+APAGAOPIBC3,APAGAO,Apagão 28 de abril 2025 - Acerto e Reposição,PIBCI 3ª Sessão,April 28 2025 Blackout - Settlement and Restoration,PIBCI 3ª Session,
+APAGAOPBCIC,APAGAO,Apagão 28 de abril 2025 - Acerto e Reposição,PIBCIC,April 28 2025 Blackout - Settlement and Restoration,PIBCIC,
+APAGAOREPOS,APAGAO,Apagão 28 de abril 2025 - Acerto e Reposição,Reposição,April 28 2025 Blackout - Settlement and Restoration,Restoration,
+CURTLMENRG,CURTLM,Redução de Geração (Curtailment) - Energia Mobilizada,,Generation Curtailment – Mobilised Energy,,MWh
+CURTLMINC,CURTLM,Redução de Geração (Curtailment) - Incumprimentos,,Generation Curtailment – Non-compliance,,MWh
