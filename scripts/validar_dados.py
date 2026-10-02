@@ -156,6 +156,24 @@ REGRAS = {
         # Há dias com dois leilões e preços diferentes: a chave tem de os separar.
         chave=["data_iso", "leilao", "contrato"], cobertura="data_iso"),
 
+    # Sem 'cobertura' de propósito: as componentes do isp (rt_phf_eur, por
+    # exemplo) passam semanas vazias por razões legítimas, e o alarme de
+    # "coluna morta" dispararia sem haver defeito.
+    # O 'dia' do isp é o dia de MERCADO, mas a regra dos 92/96/100 quartos vale
+    # na mesma: a mudança de hora cai no mesmo domingo em Portugal e em Espanha.
+    "erc-isp": dict(
+        colunas=["dia", "data_iso", "periodo", "data_utc", "consumo_mwh",
+                 "erc_total_eur", "erc_total_eur_mwh"],
+        chave=["data_iso", "periodo"], calendario="dia"),
+    "erc-brp": dict(
+        colunas=["data_iso", "periodo", "minutos", "brp", "unidade_liquidacao", "erc_eur"],
+        chave=["data_iso", "periodo", "brp", "unidade_liquidacao"]),
+    "erc-tipo": dict(
+        colunas=["data_iso", "periodo", "codigo", "quantidade", "valor_eur"],
+        chave=["data_iso", "periodo", "codigo"]),
+    "erc-codigos": dict(
+        colunas=["codigo", "tipo", "subtipo", "unidade"], chave=["codigo"]),
+
     # Padrões cujos ficheiros têm grão diferente: cada um com a sua chave.
     "agregados-omie": dict(
         chave={"omie_diario.csv": ["data_iso"], "omie_mensal.csv": ["mes"],
@@ -174,7 +192,7 @@ REGRAS = {
 # porque são ficheiros fechados que já não mudam. A frescura desses continua a
 # ser verificada sempre — é barata e é a que interessa.
 LENTOS = {"omie-historico", "producao-historico", "producao-entsoe",
-          "mapas-precos", "mapas-producao"}
+          "mapas-precos", "mapas-producao", "erc-brp", "erc-tipo"}
 
 
 class Relatorio:

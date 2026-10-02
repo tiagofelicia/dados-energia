@@ -146,6 +146,19 @@ RESOLUCAO_REN = [
     dict(de=None, ate=None, intervalo_minutos=15),
 ]
 
+# ERC: a REN só os publica desde 14/03/2024. O isp e o tipo são de 15 minutos
+# desde o primeiro dia. O brp NÃO: até 30/09/2025 a repartição por agente é
+# horária (24 períodos por dia), e passa a 15 minutos a 01/10/2025, com o MIBEL.
+# Verificado nos ficheiros: a soma do brp numa hora de 2024 é igual à soma dos
+# quatro períodos correspondentes do isp. O brp traz por isso a coluna 'minutos'.
+RESOLUCAO_ERC = [
+    dict(de=None, ate=None, intervalo_minutos=15),
+]
+RESOLUCAO_ERC_BRP = [
+    dict(de=None, ate="2025-09-30", intervalo_minutos=60),
+    dict(de="2025-10-01", ate=None, intervalo_minutos=15),
+]
+
 # As 9 zonas que continuavam a casar por hora em 2026-09-17, quando as outras 39
 # já estavam a 15 minutos. São quase todas de fora do acoplamento SDAC, que é o
 # que explica não terem acompanhado a mudança de 01/10/2025.
@@ -355,6 +368,54 @@ REGISTO = [
                  "aviação e são outro instrumento.",
                  "Só há leilões em dias úteis, e nem todos: cerca de 220 por ano."]),
 
+    # ---------- ERC (REN) ----------
+    # Em cada período, Σ brp = erc_total_eur do isp, e Σ tipo = soma das
+    # componentes do isp. As duas coincidem em todos os períodos menos 137 (ver
+    # o aviso do erc-isp): é uma inconsistência da fonte, não da recolha.
+    # A REN publica com 1 a 2 dias de atraso, daí a tolerância de 4.
+    dict(id="erc-isp", grupo="erc", caminho="data/erc/isp/erc_isp_*.csv",
+         titulo="Encargos de regulação (ERC) — por período",
+         descricao="Encargos de Regulação Imputados ao Consumo, por período de "
+                   "15 minutos, desde 14/03/2024: total em EUR e em EUR/MWh, as "
+                   "componentes (restrições técnicas, banda de aFRR e mFRR, outros) "
+                   "e o consumo de mercado. Um ficheiro por mês. Fonte: REN (SIME).",
+         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
+         resolucao_nativa=RESOLUCAO_ERC,
+         avisos=["Os dias são dias de MERCADO (hora de Espanha): o período 1 começa "
+                 "às 23:00 do dia anterior em hora de Portugal.",
+                 "A chave é (data_iso, periodo). Nos dias de mudança de hora o "
+                 "'intervalo' repete-se ou salta; o 'data_utc' não.",
+                 "Em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026) o "
+                 "erc_total_eur publicado pela REN fica abaixo da soma das "
+                 "componentes (241 371 EUR no conjunto). Os valores são guardados "
+                 "como a fonte os dá; nos restantes períodos a diferença é de "
+                 "arredondamento (< 0,01 EUR)."]),
+    dict(id="erc-brp", grupo="erc", caminho="data/erc/brp/erc_brp_*.csv",
+         titulo="Encargos de regulação (ERC) — por agente",
+         descricao="O ERC de cada período repartido por agente de mercado (BRP / "
+                   "unidade de liquidação). Formato longo, só linhas com valor.",
+         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
+         resolucao_nativa=RESOLUCAO_ERC_BRP,
+         avisos=["HORÁRIO até 30/09/2025 (periodo 1-24, minutos=60) e de 15 "
+                 "minutos desde 01/10/2025 (periodo 1-96, minutos=15). Antes de "
+                 "juntar com o erc-isp por (data_iso, periodo), filtre ou agregue "
+                 "pela coluna 'minutos'."]),
+    dict(id="erc-tipo", grupo="erc", caminho="data/erc/tipo/erc_tipo_*.csv",
+         titulo="Encargos de regulação (ERC) — por tipo de encargo",
+         descricao="O ERC de cada período repartido por tipo de encargo (desvios, "
+                   "energia de aFRR/mFRR/RR, restrições técnicas, bandas…), com "
+                   "quantidade e valorização. Formato longo, só linhas com valor; "
+                   "os códigos estão em erc_tipo_codigos.csv.",
+         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data_iso",
+         resolucao_nativa=RESOLUCAO_ERC,
+         avisos=["A unidade da quantidade varia com o código (MWh para energia, MW "
+                 "para banda): ver a coluna 'unidade' do dicionário."]),
+    dict(id="erc-codigos", grupo="erc", caminho="data/erc/erc_tipo_codigos.csv",
+         titulo="Encargos de regulação (ERC) — códigos dos tipos de encargo",
+         descricao="Dicionário dos códigos do erc-tipo: tipo, subtipo (PT e EN) e "
+                   "unidade da quantidade. Cresce quando a REN cria tipos novos.",
+         cadencia="quando há tipos novos", tolerancia_dias=400, deteccao="estatico"),
+
     # ---------- Referência ----------
     dict(id="referencia-tecnologias", grupo="referencia",
          caminho="data/referencia/tecnologias.json",
@@ -391,6 +452,7 @@ GRUPOS = {
     "gas": "Mercado de gás natural",
     "agregados": "Séries pré-calculadas",
     "emissoes": "Emissões",
+    "erc": "Encargos de regulação (REN)",
     "referencia": "Tabelas de referência",
     "regulado": "Dados regulados (ERSE / E-Redes)",
 }
