@@ -7,7 +7,9 @@ import requests
 import re
 import sys
 from datetime import datetime
+import glob
 import io
+import os
 import csv
 
 # Windows: quando o output é redirecionado (ficheiro de log, pipe), o stdout usa
@@ -44,6 +46,54 @@ CHAVES_CONSTANTES_UTILIZADAS = {
     'TAR_Energia_Tri_Vazio', 'TAR_Energia_Tri_Cheias', 'TAR_Energia_Tri_Ponta',
     'TAR_Energia_Tri_27.6_Vazio', 'TAR_Energia_Tri_27.6_Cheias', 'TAR_Energia_Tri_27.6_Ponta',
 }
+
+# ============================================================
+# 0b. ERC QUARTO-HORÁRIO
+# ============================================================
+# Os tarifários abaixo cobram os Encargos de Regulação imputados ao consumo (ERC)
+# da REN quarto de hora a quarto de hora, e não uma média mensal. Até aqui usava-se
+# uma constante (a média recente) igual para todo o dia; agora usa-se a previsão de
+# cada quarto de hora feita a partir dos ERC já publicados (data/erc/isp/, recolhidos
+# pelo atualizar_erc_ren.py). A constante da BD fica como recurso: entra quando não
+# há dados da REN ou quando estão demasiado atrasados.
+#
+# Porquê: o ERC anda ao contrário do OMIE (correlação intradiária de −0,78 entre
+# out/2025 e set/2026). Nas horas de sol chegou a estar 14 €/MWh acima da média do
+# dia (set/2026); com uma constante, essas horas pareciam mais baratas do que são.
+#
+# A previsão, para o quarto de hora s de um dia do tipo T (útil, sábado, domingo):
+#     ERC(s) = A(s) + [B_T(s) − C(s)]
+#   A   média de s nos últimos 7 dias publicados (o nível recente);
+#   B_T média de s nos dias do tipo T das últimas 8 semanas;
+#   C   média de s em todos os dias das últimas 8 semanas.
+# A janela de 7 dias mistura 5 dias úteis com um sábado e um domingo; o termo B−C
+# repõe a diferença própria do tipo de dia (aos domingos de manhã chega a +12 €/MWh,
+# porque o consumo cai e boa parte do ERC é um custo fixo por hora).
+# Testado em 12 meses, com os dados que haveria disponíveis em cada dia: erro médio
+# por quarto de hora de 5,0 €/MWh, contra 8,8 com a constante. Os feriados NÃO se
+# comportam como domingos, por isso não há calendário de feriados.
+#
+# Valor por tarifário (CGS/CS/CG = ERC, em €/kWh):
+#   Alfa, Coopérnico, EZU, Meo, Plenitude → substitui a constante *_CGS/_CS/_CG,
+#       que nas fórmulas é somada ao OMIE antes das perdas;
+#   G9 → substitui o G9_K2, que a G9 soma DEPOIS das perdas: o K2 publicado
+#       (0,0185) já traz as perdas (0,0185 ÷ 1,16 ≈ 0,0159), por isso o dinâmico é
+#       ERC × perdas.
+TARIFARIOS_COM_ERC = {
+    "Alfa Power Index BTN", "Coopérnico Único", "EZU Tarifa Indexada",
+    "G9 Smart Dynamic SPOT 8!", "MeoEnergia Tarifa Dinâmica", "Plenitude - Tendência",
+}
+ERC_JANELA_NIVEL_DIAS = 7
+ERC_JANELA_TIPO_DIAS = 56
+# Há quartos de hora isolados entre −629 e +1328 €/MWh (desvios, o apagão de
+# 28/04/2025). Sem corte, um só desses fica 7 dias a puxar a média do slot (a
+# previsão chegou a 302 €/MWh). Cortar não custou precisão no teste.
+ERC_LIMITES_MWH = (-10.0, 60.0)
+# Mais do que isto entre o último dia publicado pela REN e o dia a calcular, e a
+# previsão deixa de valer: volta-se às constantes da BD (e avisa-se). A REN publica
+# com 2 a 3 dias de atraso; o .bat local usa o data/erc do clone, que não é
+# atualizado, e por isso também cai aqui ao fim de uns dias.
+ERC_ATRASO_MAX_DIAS = 10
 
 
 def validar_constantes(constantes_dict):
@@ -130,14 +180,86 @@ def carregar_dados_locais(ficheiro_historico):
 
 
 # ============================================================
+# 1b. PREVISÃO DO ERC QUARTO-HORÁRIO
+# ============================================================
+
+def _tipo_de_dia(data):
+    return "sab" if data.weekday() == 5 else ("dom" if data.weekday() == 6 else "util")
+
+
+def carregar_previsao_erc(pasta_isp, dias_alvo):
+    """
+    Prevê o ERC (€/MWh) de cada quarto de hora dos dias pedidos, a partir dos
+    ficheiros mensais da REN em data/erc/isp/ (ver o bloco 0b no topo).
+
+    Devolve (previsao, ultimo_dia):
+      previsao   {(date, 'HH:MM'): €/MWh} — hora de Portugal, início do intervalo;
+      ultimo_dia último dia (hora de Portugal) com ERC publicado, ou None.
+    Um dia sem previsão fica fora do dicionário, e o cálculo usa a constante.
+
+    Os ficheiros da REN estão em dia de MERCADO (o período 1 começa às 23:00 do
+    dia anterior); aqui tudo passa para hora de Portugal a partir do data_utc,
+    para bater com os intervalos deste CSV. Nos dias de mudança de hora, os dois
+    01:00–01:15 do recuo partilham a mesma previsão e o salto da primavera
+    simplesmente não tem esses slots.
+    """
+    ficheiros = sorted(glob.glob(os.path.join(pasta_isp, "erc_isp_????-??.csv")))
+    if not ficheiros:
+        print(f"⚠️ ERC: sem ficheiros em '{pasta_isp}' — usam-se as constantes da BD.")
+        return {}, None
+
+    # 56 dias cabem sempre nos últimos 4 meses
+    try:
+        erc = pd.concat([pd.read_csv(f, encoding="utf-8-sig", usecols=["data_utc", "erc_total_eur_mwh"])
+                         for f in ficheiros[-4:]], ignore_index=True)
+    except Exception as e:
+        print(f"⚠️ ERC: não foi possível ler os ficheiros da REN ({e}) — usam-se as constantes da BD.")
+        return {}, None
+
+    local = pd.to_datetime(erc["data_utc"], format="%Y-%m-%d %H:%M", utc=True).dt.tz_convert("Europe/Lisbon")
+    erc["dia"] = local.dt.tz_localize(None).dt.normalize()
+    erc["hhmm"] = local.dt.strftime("%H:%M")
+    erc["u"] = pd.to_numeric(erc["erc_total_eur_mwh"], errors="coerce").clip(*ERC_LIMITES_MWH)
+    # dia × slot (o recuo da hora junta os dois 01:xx no mesmo slot)
+    tabela = erc.groupby(["dia", "hhmm"])["u"].mean().unstack()
+    ultimo = tabela.index.max()
+
+    nivel = tabela[tabela.index > ultimo - pd.Timedelta(days=ERC_JANELA_NIVEL_DIAS)].mean()
+    janela = tabela[tabela.index > ultimo - pd.Timedelta(days=ERC_JANELA_TIPO_DIAS)]
+    base = janela.mean()
+    tipos = pd.Series([_tipo_de_dia(d) for d in janela.index], index=janela.index)
+
+    print(f"ℹ️ ERC: dados da REN até {ultimo.strftime('%d/%m/%Y')} "
+          f"(nível: {ERC_JANELA_NIVEL_DIAS} dias; tipo de dia: {ERC_JANELA_TIPO_DIAS} dias)")
+    previsao = {}
+    for dia in dias_alvo:
+        dia = pd.Timestamp(dia).normalize()
+        atraso = (dia - ultimo).days
+        if atraso > ERC_ATRASO_MAX_DIAS:
+            print(f"⚠️ ERC: {dia.strftime('%d/%m/%Y')} fica {atraso} dias depois do último dia da REN "
+                  f"(máx. {ERC_ATRASO_MAX_DIAS}) — usam-se as constantes da BD nesse dia.")
+            continue
+        do_tipo = janela[tipos == _tipo_de_dia(dia)].mean()
+        # Sem dados do tipo num slot, fica só o nível; sem nível, o slot cai na constante
+        prev = (nivel + (do_tipo - base)).fillna(nivel).dropna()
+        for hhmm, v in prev.items():
+            previsao[(dia.date(), hhmm)] = float(v)
+        print(f"   - {dia.strftime('%d/%m/%Y')} ({_tipo_de_dia(dia)}): ERC previsto médio "
+              f"{prev.mean():.2f} €/MWh (de {prev.min():.2f} a {prev.max():.2f}) em {len(prev)} quartos de hora")
+    return previsao, ultimo
+
+
+# ============================================================
 # 2. MOTOR DE CÁLCULO
 # ============================================================
 
-def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
+def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
     """
     Função principal que orquestra todos os cálculos.
     Garante que todos os intervalos de tempo (96 por dia) são gerados, mesmo que faltem dados OMIE no final do dia.
+    previsao_erc: {(date, 'HH:MM'): €/MWh} de carregar_previsao_erc(); vazio = constantes.
     """
+    previsao_erc = previsao_erc or {}
     print("ℹ️ A iniciar cálculos dos tarifários...")
 
     # 1. Carregar dados de configuração do Excel (caminho local ou URL)
@@ -271,15 +393,21 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
                         'OMIE_PT': None,
                         'TAR': None,
                         'OMIE*Perdas+TAR': None,
+                        'ERC': None,
                         '_ordem_ciclo': ordem_ciclo.get(ciclo['opcao_nome'], 99)
                     })
         else:
             # CASO 2: HÁ DADOS OMIE -> Calcular normalmente
             omie_kwh = row['Preco'] / 1000.0
             perdas = row['Perdas']
-            
+            # ERC previsto deste quarto de hora (€/MWh), ou None → constante da BD
+            erc_mwh = previsao_erc.get((dt.date(), hora_inicio))
+            erc_kwh = erc_mwh / 1000.0 if erc_mwh is not None else None
+
             for comercializador in comercializadores:
-                preco_comercializador_kwh = calcular_preco_comercializador(comercializador, omie_kwh, perdas, constantes_dict)
+                preco_comercializador_kwh = calcular_preco_comercializador(comercializador, omie_kwh, perdas, constantes_dict, erc_kwh)
+                # Só nas linhas dos tarifários que o usam: vazio = não se aplica ou usou-se a constante
+                erc_linha = erc_mwh if comercializador in TARIFARIOS_COM_ERC else None
                 
                 ciclos_processar = []
                 ciclos_processar.append({'ciclo_codigo': 'S','periodo': None, 'opcao_nome': 'Simples','tar_key': 'TAR_Energia_Simples'})
@@ -314,6 +442,7 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
                         'OMIE_PT': round(omie_kwh, 5),
                         'TAR': round(tar_kwh, 5),
                         'OMIE*Perdas+TAR': round(omie_perdas_tar_kwh, 5),
+                        'ERC': round(erc_linha, 5) if erc_linha is not None else None,
                         '_ordem_ciclo': ordem_ciclo.get(ciclo_info['opcao_nome'], 99)
                     })
 
@@ -359,22 +488,29 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config):
     return df_quarto_horario_final, df_horario_final, constantes_utilizadas
 
 
-def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_dict):
+def _erc_ou_constante(erc_kwh, constantes_dict, chave):
+    """ERC previsto do quarto de hora (€/kWh) ou, sem previsão, a constante da BD."""
+    return erc_kwh if erc_kwh is not None else constantes_dict.get(chave, 0.0)
+
+
+def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_dict, erc_kwh=None):
     """
     Calcula o preço do comercializador baseado nas fórmulas específicas. RETORNA: Preço em €/kWh
+    erc_kwh: ERC previsto deste quarto de hora (€/kWh) para os TARIFARIOS_COM_ERC;
+             None → usa-se a constante da BD (ver o bloco 0b no topo).
     """
     if "Alfa Power Index BTN" in nome_tarifario:
-        return ((omie_kwh + constantes_dict.get('Alfa_CGS', 0.0)) * perdas + constantes_dict.get('Alfa_K', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0))
-    
+        return ((omie_kwh + _erc_ou_constante(erc_kwh, constantes_dict, 'Alfa_CGS')) * perdas + constantes_dict.get('Alfa_K', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0))
+
     elif nome_tarifario == "Coopérnico Único":
         # Único: a margem k fica fora das perdas (só o OMIE e o CS as levam)
-        return (omie_kwh + constantes_dict.get('Coop_CS', 0.0)) * perdas + constantes_dict.get('Coop_K', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0)
+        return (omie_kwh + _erc_ou_constante(erc_kwh, constantes_dict, 'Coop_CS')) * perdas + constantes_dict.get('Coop_K', 0.0) + constantes_dict.get('Financiamento_TSE', 0.0)
 
     elif "EDP Indexada Horária" in nome_tarifario:
         return (omie_kwh * perdas * constantes_dict.get('EDP_H_K1', 1.0) + constantes_dict.get('EDP_H_K2', 0.0))
     
     elif "EZU Tarifa Indexada" in nome_tarifario:
-        return (omie_kwh + constantes_dict.get('EZU_K', 0.0) + constantes_dict.get('EZU_CGS', 0.0)) * perdas + constantes_dict.get('Financiamento_TSE', 0.0)
+        return (omie_kwh + constantes_dict.get('EZU_K', 0.0) + _erc_ou_constante(erc_kwh, constantes_dict, 'EZU_CGS')) * perdas + constantes_dict.get('Financiamento_TSE', 0.0)
         
     elif "Galp Plano Dinâmico" in nome_tarifario:
         return (omie_kwh + constantes_dict.get('Galp_Ci', 0.0)) * perdas    
@@ -382,11 +518,14 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
     elif "G9 Smart Dynamic SPOT 8!" in nome_tarifario:
         # REGRA G9: Se o valor OMIE for negativo, considera-se 0.
         omie_kwh_g9 = max(0, omie_kwh)
-        return (omie_kwh_g9 * perdas * constantes_dict.get('G9_K1', 0.0) + constantes_dict.get('G9_K2', 0.0) + constantes_dict.get('G9_K3', 0.0))
+        # K2 entra depois das perdas e o valor publicado pela G9 já as traz: o
+        # dinâmico é ERC × perdas (a constante G9_K2 fica como recurso)
+        k2 = erc_kwh * perdas if erc_kwh is not None else constantes_dict.get('G9_K2', 0.0)
+        return (omie_kwh_g9 * perdas * constantes_dict.get('G9_K1', 0.0) + k2 + constantes_dict.get('G9_K3', 0.0))
     
     elif "MeoEnergia Tarifa Dinâmica" in nome_tarifario:
         # Fórmula: (OMIE + Meo_CG) * (1 + FP) + Meo_K
-        resultado_formula = (omie_kwh + constantes_dict.get('Meo_CG', 0.0)) * perdas + constantes_dict.get('Meo_K', 0.0)
+        resultado_formula = (omie_kwh + _erc_ou_constante(erc_kwh, constantes_dict, 'Meo_CG')) * perdas + constantes_dict.get('Meo_K', 0.0)
 
         # REGRA MEO: se o resultado for negativo, aplica-se €0 ao período temporal
         return max(0, resultado_formula)
@@ -398,7 +537,7 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
         return (omie_kwh * perdas + constantes_dict.get("Iberdrola_Dinamico_Q", 0.0) + constantes_dict.get('Iberdrola_mFRR', 0.0))
 
     elif "Plenitude - Tendência" in nome_tarifario:
-        return (omie_kwh + constantes_dict.get('Plenitude_CGS', 0.0) + constantes_dict.get('Plenitude_GDOs', 0.0)) * perdas + constantes_dict.get('Plenitude_Fee', 0.0)
+        return (omie_kwh + _erc_ou_constante(erc_kwh, constantes_dict, 'Plenitude_CGS') + constantes_dict.get('Plenitude_GDOs', 0.0)) * perdas + constantes_dict.get('Plenitude_Fee', 0.0)
 
     else:
         # Fallback
@@ -423,9 +562,12 @@ def exportar_para_csv_compativel(df_q_horario, df_horario, constantes_dict, nome
     df_q_export = df_q_export.rename(columns={
         'Dia': 'dia', 'Tarifário': 'tarifario', 'Opção Horária e Ciclo': 'opcao',
         'Hora': 'intervalo', 'Valor': 'col', 'OMIE_PT': 'omie',
-        'TAR': 'tar', 'OMIE*Perdas+TAR': 'omieTar'
+        'TAR': 'tar', 'OMIE*Perdas+TAR': 'omieTar', 'ERC': 'erc'
     })
-    colunas_qh = ['dia', 'tarifario', 'opcao', 'intervalo', 'col', 'omie', 'tar', 'omieTar']
+    # 'erc' (€/MWh) vai no fim de propósito: o script-horarios.js lê as colunas
+    # por posição (0 a 7) e ignora as seguintes. Só vem preenchida nos tarifários
+    # que usam o ERC previsto; vazia = não se aplica ou entrou a constante da BD.
+    colunas_qh = ['dia', 'tarifario', 'opcao', 'intervalo', 'col', 'omie', 'tar', 'omieTar', 'erc']
     df_q_export = df_q_export[colunas_qh]
 
     # --- 2. PREPARAÇÃO DA TABELA HORÁRIA ---
@@ -507,6 +649,7 @@ def main():
                                "tarifarios_eletricidade_Tiago_Felicia.xlsx")
     FICHEIRO_MIBEL_CSV = _os.path.join(_ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACUM.csv") # Input
     FICHEIRO_SAIDA_CSV = _os.path.join(_ROOT_DIR, "data", "omie", "precos-horarios.csv")     # Output
+    PASTA_ERC_ISP = _os.path.join(_ROOT_DIR, "data", "erc", "isp")                          # Input (ERC da REN)
 
     try:
         # 1. Carregar dados locais
@@ -523,13 +666,21 @@ def main():
         df_omie_filtrado = df_omie[df_omie['Data'].isin([data_omie, data_anterior])].copy()
         print(f"ℹ️ Registos filtrados para processamento: {len(df_omie_filtrado)}")
         
-        # 4. Executar cálculos, passando o URL de configuração
-        df_qh, df_h, constantes_dict = gerar_tabelas_tarifarias(
-            df_omie_filtrado, 
-            URL_CONFIG 
-        )
+        # 4. Previsão do ERC de cada quarto de hora dos 2 dias (ver bloco 0b)
+        previsao_erc, erc_ultimo_dia = carregar_previsao_erc(PASTA_ERC_ISP, [data_anterior, data_omie])
 
-        # 5. Aplicar filtro de datas (redundante mas seguro)
+        # 5. Executar cálculos, passando o URL de configuração
+        df_qh, df_h, constantes_dict = gerar_tabelas_tarifarias(
+            df_omie_filtrado,
+            URL_CONFIG,
+            previsao_erc
+        )
+        # Para a página dizer de quando são os dados da REN: AAAAMMDD, porque a
+        # TABELA_CONSTANTES é lida como números (parseFloat no script-horarios.js)
+        if previsao_erc and erc_ultimo_dia is not None:
+            constantes_dict['ERC_REN_Ultimo_Dia'] = int(erc_ultimo_dia.strftime('%Y%m%d'))
+
+        # 6. Aplicar filtro de datas (redundante mas seguro)
         df_qh['Dia_dt'] = pd.to_datetime(df_qh['Dia'])
         data_minima = pd.to_datetime(data_anterior) 
         df_qh = df_qh[df_qh['Dia_dt'] >= data_minima].copy()
@@ -540,7 +691,7 @@ def main():
         df_h = df_h.drop(columns=['Dia_dt'])
         print(f"✂️ Após filtro: {len(df_qh)} registos quarto-horários | {len(df_h)} registos horários")
 
-        # 6. Exportar para CSV
+        # 7. Exportar para CSV
         exportar_para_csv_compativel(df_qh, df_h, constantes_dict, FICHEIRO_SAIDA_CSV)
         
         print("\n" + "=" * 60)
