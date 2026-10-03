@@ -88,7 +88,7 @@
    "avisos": [
     "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 8, 11, 16, 19 e 20 campos."
    ],
-   "bytes": 1471674,
+   "bytes": 1535170,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/precos-horarios.csv",
    "colunas": [
@@ -99,14 +99,15 @@
     "col",
     "omie",
     "tar",
-    "omieTar"
+    "omieTar",
+    "erc"
    ],
    "descricao": "Preço quarto-horário final por tarifário indexado e opção horária.",
    "ficheiros": 1,
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-precos-horarios",
-   "linhas": 13957,
+   "linhas": 13958,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -909,7 +910,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-03T19:16:19+00:00",
+ "gerado_em": "2026-10-03T20:28:33+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -925,7 +926,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 491827018,
+  "bytes": 491890514,
   "datasets": 32,
   "ficheiros": 1634
  }
