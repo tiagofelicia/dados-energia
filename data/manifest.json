@@ -164,7 +164,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
-   "bytes": 7551,
+   "bytes": 7544,
    "cadencia": "diária",
    "caminho": "data/omie/records_omie.json",
    "descricao": "Recordes históricos (dia/hora mais caro e mais barato, etc.) e agregados mensais e anuais.",
@@ -174,7 +174,7 @@
    "id": "omie-records",
    "titulo": "Recordes OMIE",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-02",
+   "ultima_data": "2026-10-03",
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
@@ -341,7 +341,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 11819,
+   "bytes": 11812,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -909,7 +909,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-03T05:23:42+00:00",
+ "gerado_em": "2026-10-03T12:05:12+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -925,7 +925,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 491358152,
+  "bytes": 491358138,
   "datasets": 32,
   "ficheiros": 1634
  }
