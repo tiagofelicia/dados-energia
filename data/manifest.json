@@ -7,7 +7,7 @@
     "Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do ficheiro; pd.read_csv traz essas linhas como dados.",
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado."
    ],
-   "bytes": 1839994,
+   "bytes": 1840570,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -42,7 +42,7 @@
    ],
    "titulo": "Preços OMIE do ano corrente",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-04",
+   "ultima_data": "2026-10-05",
    "url": "https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv"
   },
   {
@@ -88,7 +88,7 @@
    "avisos": [
     "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 8, 11, 16, 19 e 20 campos."
    ],
-   "bytes": 1535170,
+   "bytes": 1534984,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/precos-horarios.csv",
    "colunas": [
@@ -122,7 +122,7 @@
    ],
    "titulo": "Preços finais por tarifário indexado",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-04",
+   "ultima_data": "2026-10-05",
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
@@ -140,7 +140,7 @@
    "linhas": 81,
    "titulo": "Futuros OMIP — sessão em curso",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-04",
+   "ultima_data": "2026-10-05",
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
@@ -175,11 +175,11 @@
    "id": "omie-records",
    "titulo": "Recordes OMIE",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-03",
+   "ultima_data": "2026-10-04",
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 6849,
+   "bytes": 8041,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -205,7 +205,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
-   "bytes": 921306,
+   "bytes": 921506,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/MIBEL_ano_atual_ACUM.csv",
    "colunas": [
@@ -235,7 +235,7 @@
    ],
    "titulo": "MIBEL acumulado (intermédio de pipeline)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-04",
+   "ultima_data": "2026-10-05",
    "url": "https://dados.tiagofelicia.pt/data/omie/MIBEL_ano_atual_ACUM.csv"
   },
   {
@@ -910,7 +910,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-04T14:07:22+00:00",
+ "gerado_em": "2026-10-04T14:46:21+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -926,7 +926,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 491984433,
+  "bytes": 491986215,
   "datasets": 32,
   "ficheiros": 1634
  }
