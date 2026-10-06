@@ -259,7 +259,7 @@ dia,data_iso,produto,entrega_inicio,entrega_fim,spread,ttf_derivado
 
 ### `data/agregados/` — Séries pré-calculadas
 
-Derivados de `data/omie/` e `data/producao/`, para quem quer médias e totais sem descarregar as séries quarto-horárias completas (~94 MB).
+Derivados de `data/omie/`, `data/producao/` e `data/erc/`, para quem quer médias e totais sem descarregar as séries quarto-horárias completas (~94 MB).
 
 | Ficheiro | Conteúdo | Tamanho |
 |---|---|---|
@@ -269,6 +269,9 @@ Derivados de `data/omie/` e `data/producao/`, para quem quer médias e totais se
 | `producao_anual.csv` | Produção, consumo e quota renovável por ano | 2 KB |
 | `producao_mensal.csv` | Por mês | 24 KB |
 | `producao_diario.csv` | Por dia | 672 KB |
+| `erc_resumo.json` | Encargos de regulação (ERC) da REN: intervalo publicado, componentes, intervalos dos ficheiros abaixo e a **previsão própria** para os 14 dias seguintes ao último publicado (o cálculo dos simuladores), com o erro dessa previsão em cada antecedência, medido no último ano — o único bloco que não é real. Alimenta a página [/erc](https://www.tiagofelicia.pt/erc) | 30 KB |
+| `erc_diario/AAAA.json` | Um ficheiro por ano. `mercado`: por dia de mercado, `[MWh, €, € de cada componente]` (os totais da REN; Σ€ ÷ ΣMWh de um mês bate com o resumo mensal dela). `dias`: por dia em hora de Portugal, o ERC (`e`, €/MWh) e o consumo (`m`, MWh) de cada hora, o OMIE PT médio de cada hora (`o`), os quartos de hora no dia (`n`), o mais caro e o mais barato (`max`, `min`), o fator de perdas médio (`p`) e, por ciclo e período horário pela ordem de `ordem_c`, o ERC pesado pelo perfil ERSE BTN C e a soma dos pesos × 1000 (`c`). `p` e `c` só desde 2025 | 170–260 KB/ano |
+| `erc_omie/AAAA-MM.json` | Um ficheiro por mês, desde 03/2024: por dia e quarto de hora (hora de Portugal), o OMIE PT, o ERC (o real ou, nos dias ainda sem valor publicado, a previsão própria, com `erc_previsto` = quantos quartos de hora o são) e o fator de perdas BT da ERSE (desde 2025). `slots` só aparece nos dias de mudança de hora (92 ou 100 quartos de hora) | ~50 KB/mês |
 
 Cada linha traz `dias` (e `quartos`, no OMIE) com quantos entraram no cálculo — é assim que se vê que o mês ou ano corrente ainda está incompleto.
 

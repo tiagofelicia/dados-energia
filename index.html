@@ -240,6 +240,12 @@ const recordes = await r.json();</code></pre>
         <td>Produção, consumo, quota renovável e saldo importador por ano.</td><td>2 KB</td></tr>
     <tr><td><a href="data/agregados/producao_mensal.csv">producao_mensal.csv</a></td><td>Idem, por mês.</td><td>24 KB</td></tr>
     <tr><td><a href="data/agregados/producao_diario.csv">producao_diario.csv</a></td><td>Idem, por dia.</td><td>672 KB</td></tr>
+    <tr><td><a href="data/agregados/erc_resumo.json">erc_resumo.json</a></td>
+        <td>Encargos de regulação (ERC) da REN: intervalos publicados, componentes e previsão própria a 14 dias com o erro medido.</td><td>30 KB</td></tr>
+    <tr><td><a href="data/agregados/erc_diario/">erc_diario/AAAA.json</a></td>
+        <td>Por ano: totais por dia de mercado (MWh, € e € por componente) e, por dia em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, perdas e ERC por período horário BTN.</td><td>170–260 KB/ano</td></tr>
+    <tr><td><a href="data/agregados/erc_omie/">erc_omie/AAAA-MM.json</a></td>
+        <td>Por mês, dia e quarto de hora: OMIE PT, ERC (real ou previsão própria) e fator de perdas (desde 2025).</td><td>~50 KB/mês</td></tr>
   </table>
   <p class="nota">Cada linha traz <code>dias</code> (e <code>quartos</code>, no OMIE) com quantos entraram
      no cálculo — é assim que se vê que o mês ou ano corrente ainda está incompleto.
