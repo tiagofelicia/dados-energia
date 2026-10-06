@@ -11,6 +11,16 @@
 #   → data/emissoes/fatores_emissao.csv
 #   Os dois derivam de data/producao/ e correm 1x/dia — partilham o workflow.
 #
+# gerar_erc_resumo.py
+#   → data/agregados/erc_resumo.json (resumo + previsão própria, para a página /erc)
+#   → data/agregados/erc_diario/AAAA.json (por dia e hora; a página calcula daqui
+#     qualquer período escolhido)
+#   Deriva de data/erc/isp/ (enviado 2x/dia pela tarefa num PC em Portugal) e
+#   da folha OMIE_PERDAS_CICLOS do simulador (períodos horários e perdas).
+#   → data/agregados/erc_omie/AAAA-MM.json (OMIE PT, ERC e perdas por quarto de
+#     hora, para a página escolher um dia; só reescreve os meses que mudam)
+#   ~1 min: mede o erro da previsão do ERC a partir de ~70 origens no último ano.
+#
 # Não recolhe nada de fora: deriva dos CSV que já estão no repositório. Por isso
 # corre DEPOIS dos workflows que os escrevem — o OMIE fecha às 18:00 UTC e a
 # produção REN às 20:15, daí as 21:30.
@@ -82,13 +92,18 @@ jobs:
           set -o pipefail
           python scripts/gerar_intensidade_carbonica.py 2>&1 | tee -a logs/agregados.log
 
+      - name: Gerar resumo do ERC
+        run: |
+          set -o pipefail
+          python scripts/gerar_erc_resumo.py 2>&1 | tee -a logs/agregados.log
+
       # Os scripts não reescrevem os ficheiros que não mudaram, por isso a action
       # não deteta alterações e não commita — nenhum commit vazio.
       - name: Fazer commit dos derivados (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
-          commit_message: "📊 BOT: Atualizar agregados + intensidade carbónica"
-          file_pattern: "data/agregados/* data/emissoes/*"
+          commit_message: "📊 BOT: Atualizar agregados + intensidade carbónica + ERC"
+          file_pattern: "data/agregados/* data/agregados/erc_diario/* data/agregados/erc_omie/* data/emissoes/*"
 
       - name: Fazer upload do log como artefacto
         if: always()
