@@ -399,7 +399,7 @@
     "O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos. A resolução a que a fonte publicou está em resolucao_nativa, e varia por zona.",
     "values pode conter null em dias parcialmente publicados."
    ],
-   "bytes": 100787619,
+   "bytes": 100823662,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/precos_qh/",
    "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e série de 96 valores.",
@@ -438,7 +438,7 @@
    ],
    "titulo": "Preços day-ahead europeus",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-06",
+   "ultima_data": "2026-10-07",
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
@@ -965,7 +965,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-06T20:02:23+00:00",
+ "gerado_em": "2026-10-06T20:07:42+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -981,7 +981,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 496475757,
+  "bytes": 496511800,
   "datasets": 35,
   "ficheiros": 1710
  }
