@@ -87,9 +87,12 @@ mesmos dados em texto diferente.
 INCREMENTAL E IDEMPOTENTE
 -------------------------
 Por omissão, volta a pedir os últimos REVISAO_DIAS dias já guardados (para
-apanhar correções da REN) e todos os que faltam até ao último publicado. Cada
-dia pedido substitui o que lá estava. Um ficheiro só é reescrito se o texto
-mudar, por isso uma corrida sem novidades não produz commit.
+apanhar correções da REN) e todos os que faltam até ao último publicado. Ao
+domingo a revisão vai REVISAO_PROFUNDA_DIAS para trás: a REN corrige dias com
+meses (em 06/10/2026 havia dias de maio, junho, julho e setembro diferentes do
+que tinha sido guardado a 02/10). Cada dia pedido substitui o que lá estava.
+Um ficheiro só é reescrito se o texto mudar, por isso uma corrida sem
+novidades não produz commit.
 
 USO
 ---
@@ -131,7 +134,8 @@ BASE_API = "https://mercadoservices.ren.pt/api/"
 CHAVE_API = os.environ.get("REN_API_KEY") or "mercado_mL273BtiLeRcqfqBqImWBf5uvPTmdW4VHxb4EeD6"
 
 DATA_INICIAL = date(2024, 3, 14)
-REVISAO_DIAS = 7
+REVISAO_DIAS = 40              # em todas as corridas (~10 s por vista)
+REVISAO_PROFUNDA_DIAS = 365    # ao domingo (~45 s por vista)
 # (ligação, leitura). A ligação curta é de propósito: o mercadoservices só
 # aceita ligações de alguns países europeus e, de fora, o pacote é descartado
 # em silêncio — sem isto cada tentativa esperava 60 s por nada.
@@ -519,13 +523,16 @@ def main():
                    help=f"recolher desde {DATA_INICIAL.isoformat()}")
     p.add_argument("--desde", type=date.fromisoformat, metavar="AAAA-MM-DD")
     p.add_argument("--ate", type=date.fromisoformat, metavar="AAAA-MM-DD")
-    p.add_argument("--revisao", type=int, default=REVISAO_DIAS, metavar="N",
-                   help=f"dias já guardados a voltar a pedir (omissão: {REVISAO_DIAS})")
+    p.add_argument("--revisao", type=int, default=None, metavar="N",
+                   help=f"dias já guardados a voltar a pedir (omissão: {REVISAO_DIAS}; "
+                        f"ao domingo {REVISAO_PROFUNDA_DIAS})")
     p.add_argument("--paralelo", type=int, default=PARALELO, metavar="N",
                    help=f"pedidos em simultâneo (omissão: {PARALELO})")
     args = p.parse_args()
+    if args.revisao is None:
+        args.revisao = REVISAO_PROFUNDA_DIAS if date.today().weekday() == 6 else REVISAO_DIAS
 
-    print(f"⚡ ERC da REN — vistas: {', '.join(args.vistas)}")
+    print(f"⚡ ERC da REN — vistas: {', '.join(args.vistas)} · revisão de {args.revisao} dias")
     algum_ok, houve_falhas = False, False
     for vista in args.vistas:
         try:
