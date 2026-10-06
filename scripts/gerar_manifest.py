@@ -342,6 +342,38 @@ REGISTO = [
          # no limite — o validador dava alarme em dias em que nada estava mal,
          # que é a maneira mais rápida de ensinar alguém a ignorar alarmes.
          cadencia="1x/dia", tolerancia_dias=3, deteccao="meta:producao.ultima_data"),
+    dict(id="agregados-erc", grupo="agregados", caminho="data/agregados/erc_resumo.json",
+         titulo="Resumo do ERC e previsão própria a 14 dias",
+         descricao="Encargos de regulação da REN: intervalo publicado, componentes, "
+                   "intervalos dos ficheiros erc_diario/ e erc_omie/, e a previsão "
+                   "própria para os 14 dias seguintes ao último publicado. Derivado de "
+                   "data/erc/isp/.",
+         avisos=["O bloco 'previsao' NÃO é real: é a previsão própria para os 14 "
+                 "dias seguintes ao último publicado (erc_previsao.py) e o erro dessa "
+                 "previsão em cada antecedência, medido no último ano."],
+         # tolerancia_dias=6: herda os 5 do erc-isp (a REN publica com atraso e a
+         # recolha é num PC) mais o dia do agregado.
+         cadencia="1x/dia", tolerancia_dias=6, deteccao="meta:ultima_data"),
+    dict(id="agregados-erc-diario", grupo="agregados", caminho="data/agregados/erc_diario/*.json",
+         titulo="ERC por dia e por hora (um ficheiro por ano)",
+         descricao="Totais por dia de mercado (MWh, EUR e EUR por componente) e, por dia "
+                   "em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, "
+                   "fator de perdas e ERC por período horário BTN pesado pelo perfil "
+                   "ERSE BTN C, desde 14/03/2024. Derivado de data/erc/isp/, data/omie/ "
+                   "e da folha OMIE_PERDAS_CICLOS.",
+         cadencia="1x/dia", tolerancia_dias=6, deteccao="meta:ultima_data",
+         avisos=["Os totais em 'mercado' são por dia de MERCADO (das 23:00 da véspera "
+                 "às 23:00, hora de Portugal); os de 'dias' são por dia em hora de Portugal.",
+                 "'p' e 'c' só existem desde 2025; 'c' segue a ordem de 'ordem_c'."]),
+    dict(id="agregados-erc-omie", grupo="agregados", caminho="data/agregados/erc_omie/*.json",
+         titulo="OMIE PT, ERC e perdas por quarto de hora (um ficheiro por mês)",
+         descricao="Por dia e quarto de hora, em hora de Portugal: o OMIE PT, o ERC e o "
+                   "fator de perdas BT da ERSE (desde 2025), desde 14/03/2024. Derivado de "
+                   "data/omie/, data/erc/isp/ e da folha OMIE_PERDAS_CICLOS.",
+         cadencia="1x/dia", tolerancia_dias=3, deteccao="meta:ultima_data",
+         avisos=["Nos dias ainda sem ERC publicado, o ERC é previsão própria "
+                 "(erc_previsao.py); 'erc_previsto' diz quantos quartos de hora do dia o são.",
+                 "'slots' só aparece nos dias de mudança de hora (92 ou 100 quartos de hora)."]),
     dict(id="emissoes", grupo="emissoes", caminho="data/emissoes/intensidade_*.csv",
          titulo="Intensidade carbónica da produção elétrica",
          descricao="gCO2eq/kWh da produção nacional, a 15 minutos desde 2010, "
