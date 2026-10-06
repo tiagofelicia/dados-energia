@@ -10,6 +10,10 @@ import os
 import json
 import hashlib
 
+# ERC quarto-horário (coluna M). Fica na mesma pasta: quando o script corre, a
+# pasta dele está no sys.path.
+import erc_previsao
+
 print("✅ Bibliotecas carregadas")
 
 # ===================================================================
@@ -24,6 +28,12 @@ PASTA_SIMULADOR = os.path.join(ROOT_DIR, "data", "simuladores", "simulador-tarif
 FICHEIRO_EXCEL = os.path.join(PASTA_SIMULADOR, "tarifarios_eletricidade_Tiago_Felicia.xlsx")
 ABA_EXCEL = "OMIE_PERDAS_CICLOS"
 COLUNA_PARA_ESCREVER = 11 # Coluna K
+# ERC da REN em €/MWh, a seguir às Perdas (L): o real até ao último dia publicado
+# e uma previsão no resto (erc_previsao.py). Os simuladores usam-no quarto de hora
+# a quarto de hora nos tarifários que o faturam assim, e a média do período nos
+# que faturam a média (Luzigas).
+COLUNA_ERC = 13 # Coluna M
+PASTA_ERC_ISP = os.path.join(ROOT_DIR, "data", "erc", "isp")
 # Intermédio da Fase 1 (atualizar_mibel_ano_atual_ACUM.py) — partilhado com o pipeline do site
 FICHEIRO_MIBEL_CSV = os.path.join(ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACUM.csv")
 
@@ -34,6 +44,60 @@ ABAS_PARA_CSV = ["Constantes", "Tarifarios_fixos", "Indexados", "OMIE_PERDAS_CIC
 print(f"ℹ️ Fonte de dados: '{FICHEIRO_MIBEL_CSV}'")
 print("⚠️ Dados OMIE e futuros")
 # ===================================================================
+
+def escrever_coluna_erc(sheet):
+    """
+    Escreve o ERC (€/MWh) de cada linha da folha OMIE_PERDAS_CICLOS na coluna M:
+    o real onde a REN já publicou e a previsão no resto (erc_previsao.py).
+
+    Cada linha é localizada pelo instante em que começa: o dia (coluna A, texto
+    'MM/DD/AAAA') mais a posição da linha dentro do dia, em hora de Portugal — o
+    mesmo alinhamento que o Passo 5 usa para o OMIE. Assim os dias de 92 e 100
+    quartos de hora ficam certos sem depender das etiquetas da coluna Hora.
+
+    A coluna é sempre reescrita de ponta a ponta: sem dados da REN fica vazia e
+    os simuladores usam as constantes da BD, nunca valores de uma corrida antiga.
+
+    Devolve o último dia publicado pela REN (daí em diante é previsão), ou None.
+    """
+    print(f"   - A escrever o ERC na Coluna {COLUNA_ERC} (M)...")
+    linhas, dias = [], []
+    for (celula,) in sheet.iter_rows(min_row=2, max_col=1):
+        valor = celula.value
+        if valor is None or str(valor).strip() == "":
+            continue
+        try:
+            dia = (pd.Timestamp(valor) if isinstance(valor, datetime)
+                   else pd.to_datetime(str(valor).strip(), format="%m/%d/%Y"))
+        except (ValueError, TypeError):
+            continue
+        linhas.append(celula.row)
+        dias.append(dia.normalize())
+
+    tabela = pd.DataFrame({"linha": linhas, "dia": dias})
+    posicao = tabela.groupby("dia").cumcount()
+    inicio_utc = (tabela["dia"].dt.tz_localize("Europe/Lisbon")
+                  + pd.to_timedelta(15 * posicao, unit="m")).dt.tz_convert("UTC")
+
+    dados = erc_previsao.carregar(PASTA_ERC_ISP)
+    if dados is not None:
+        print(f"     ERC: dados da REN até {dados['ultimo'].strftime('%d/%m/%Y')} "
+              f"({dados['atraso']} dias de atraso)")
+        if dados["desatualizado"]:
+            print(f"     ⚠️ Mais de {erc_previsao.ATRASO_MAX_DIAS} dias de atraso: só os valores reais, "
+                  f"sem previsões (os simuladores usam as constantes nesses dias).")
+    valores, contagem = erc_previsao.erc_instantes(dados, inicio_utc)
+
+    sheet.cell(row=1, column=COLUNA_ERC, value="ERC")
+    for r in range(2, sheet.max_row + 1):
+        sheet.cell(row=r, column=COLUNA_ERC, value=None)
+    for linha, valor in zip(tabela["linha"], valores):
+        if not np.isnan(valor):
+            sheet.cell(row=linha, column=COLUNA_ERC, value=round(float(valor), 2))
+    print(f"     ERC escrito: {contagem['real']} quartos de hora reais, {contagem['curto']} previstos "
+          f"a curto prazo, {contagem['longo']} a longo prazo, {contagem['sem']} vazios.")
+    return dados["ultimo"] if dados is not None else None
+
 
 def run_update_process():
     """
@@ -325,7 +389,10 @@ def run_update_process():
             excel_row_index = int(row['index']) + 2  # +1 (0-based to 1-based) +1 (skip header)
             preco = row['Preco']
             sheet.cell(row=excel_row_index, column=COLUNA_PARA_ESCREVER, value=preco)
-            
+
+        # 7b. ERC da REN na coluna M (real + previsão)
+        ultimo_dia_erc = escrever_coluna_erc(sheet)
+
         # ===================================================================
             
         # 8. Atualizar as datas de OMIE/OMIP
@@ -335,9 +402,14 @@ def run_update_process():
         ultima_data_omie = pd.read_csv(FICHEIRO_MIBEL_CSV, parse_dates=['Data'])['Data'].max()
         sheet_const['B90'] = ultima_data_omie.strftime('%m/%d/%Y')
         sheet_const['B91'] = data_relatorio_omip.strftime('%m/%d/%Y')
+        # Último dia com ERC real da REN (a coluna M é previsão daí em diante); o
+        # simulador assinala a previsão no "ERC Médio do Perfil". O rótulo também é
+        # escrito aqui, para não depender de o xlsx do git já ter a linha 92.
+        sheet_const['A92'] = 'Data_Valores_ERC'
+        sheet_const['B92'] = ultimo_dia_erc.strftime('%m/%d/%Y') if ultimo_dia_erc is not None else None
 
         wb.save(FICHEIRO_EXCEL)
-        print(f"✅ O ficheiro Excel foi atualizado com sucesso!\n   Data_Valores_OMIE = {ultima_data_omie.date()}\n   Data_Valores_OMIP = {data_relatorio_omip.date()}")
+        print(f"✅ O ficheiro Excel foi atualizado com sucesso!\n   Data_Valores_OMIE = {ultima_data_omie.date()}\n   Data_Valores_OMIP = {data_relatorio_omip.date()}\n   Data_Valores_ERC = {ultimo_dia_erc.date() if ultimo_dia_erc is not None else '(sem dados da REN)'}")
 
         # ============================================================
         # PASSO 6: Exportar abas do Excel como CSVs individuais

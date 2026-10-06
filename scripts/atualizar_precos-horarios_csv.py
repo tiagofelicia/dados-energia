@@ -7,10 +7,12 @@ import requests
 import re
 import sys
 from datetime import datetime
-import glob
 import io
-import os
 import csv
+
+# ERC quarto-horário (ver o bloco 0b). Fica na mesma pasta: quando o script
+# corre, a pasta dele está no sys.path.
+import erc_previsao
 
 # Windows: quando o output é redirecionado (ficheiro de log, pipe), o stdout usa
 # cp1252 e qualquer emoji dos prints lança UnicodeEncodeError, abortando o script.
@@ -61,17 +63,9 @@ CHAVES_CONSTANTES_UTILIZADAS = {
 # out/2025 e set/2026). Nas horas de sol chegou a estar 14 €/MWh acima da média do
 # dia (set/2026); com uma constante, essas horas pareciam mais baratas do que são.
 #
-# A previsão, para o quarto de hora s de um dia do tipo T (útil, sábado, domingo):
-#     ERC(s) = A(s) + [B_T(s) − C(s)]
-#   A   média de s nos últimos 7 dias publicados (o nível recente);
-#   B_T média de s nos dias do tipo T das últimas 8 semanas;
-#   C   média de s em todos os dias das últimas 8 semanas.
-# A janela de 7 dias mistura 5 dias úteis com um sábado e um domingo; o termo B−C
-# repõe a diferença própria do tipo de dia (aos domingos de manhã chega a +12 €/MWh,
-# porque o consumo cai e boa parte do ERC é um custo fixo por hora).
-# Testado em 12 meses, com os dados que haveria disponíveis em cada dia: erro médio
-# por quarto de hora de 5,0 €/MWh, contra 8,8 com a constante. Os feriados NÃO se
-# comportam como domingos, por isso não há calendário de feriados.
+# A previsão está no erc_previsao.py, partilhado com a Fase 2A (coluna ERC da folha
+# OMIE_PERDAS_CICLOS, que os simuladores leem): os dois dão o mesmo número para o
+# mesmo quarto de hora. Ver lá o método e os testes.
 #
 # Valor por tarifário (CGS/CS/CG = ERC, em €/kWh):
 #   Alfa, Coopérnico, EZU, Meo, Plenitude → substitui a constante *_CGS/_CS/_CG,
@@ -83,17 +77,9 @@ TARIFARIOS_COM_ERC = {
     "Alfa Power Index BTN", "Coopérnico Único", "EZU Tarifa Indexada",
     "G9 Smart Dynamic SPOT 8!", "MeoEnergia Tarifa Dinâmica", "Plenitude - Tendência",
 }
-ERC_JANELA_NIVEL_DIAS = 7
-ERC_JANELA_TIPO_DIAS = 56
-# Há quartos de hora isolados entre −629 e +1328 €/MWh (desvios, o apagão de
-# 28/04/2025). Sem corte, um só desses fica 7 dias a puxar a média do slot (a
-# previsão chegou a 302 €/MWh). Cortar não custou precisão no teste.
-ERC_LIMITES_MWH = (-10.0, 60.0)
-# Mais do que isto entre o último dia publicado pela REN e o dia a calcular, e a
-# previsão deixa de valer: volta-se às constantes da BD (e avisa-se). A REN publica
-# com 2 a 3 dias de atraso; o .bat local usa o data/erc do clone, que não é
-# atualizado, e por isso também cai aqui ao fim de uns dias.
-ERC_ATRASO_MAX_DIAS = 10
+# Com os dados da REN mais de erc_previsao.ATRASO_MAX_DIAS atrasados, volta-se às
+# constantes da BD (e avisa-se). O .bat local usa o data/erc do clone, que não é
+# atualizado, e por isso também cai aí ao fim de umas semanas.
 
 
 def validar_constantes(constantes_dict):
@@ -183,69 +169,45 @@ def carregar_dados_locais(ficheiro_historico):
 # 1b. PREVISÃO DO ERC QUARTO-HORÁRIO
 # ============================================================
 
-def _tipo_de_dia(data):
-    return "sab" if data.weekday() == 5 else ("dom" if data.weekday() == 6 else "util")
-
-
 def carregar_previsao_erc(pasta_isp, dias_alvo):
     """
-    Prevê o ERC (€/MWh) de cada quarto de hora dos dias pedidos, a partir dos
-    ficheiros mensais da REN em data/erc/isp/ (ver o bloco 0b no topo).
+    Prevê o ERC (€/MWh) de cada quarto de hora dos dias pedidos, com o
+    erc_previsao.py (ver o bloco 0b no topo).
 
     Devolve (previsao, ultimo_dia):
       previsao   {(date, 'HH:MM'): €/MWh} — hora de Portugal, início do intervalo;
       ultimo_dia último dia (hora de Portugal) com ERC publicado, ou None.
     Um dia sem previsão fica fora do dicionário, e o cálculo usa a constante.
 
-    Os ficheiros da REN estão em dia de MERCADO (o período 1 começa às 23:00 do
-    dia anterior); aqui tudo passa para hora de Portugal a partir do data_utc,
-    para bater com os intervalos deste CSV. Nos dias de mudança de hora, os dois
-    01:00–01:15 do recuo partilham a mesma previsão e o salto da primavera
-    simplesmente não tem esses slots.
+    Nos dias de mudança de hora, os dois 01:00–01:15 do recuo partilham a mesma
+    previsão e o salto da primavera simplesmente não tem esses slots.
     """
-    ficheiros = sorted(glob.glob(os.path.join(pasta_isp, "erc_isp_????-??.csv")))
-    if not ficheiros:
-        print(f"⚠️ ERC: sem ficheiros em '{pasta_isp}' — usam-se as constantes da BD.")
-        return {}, None
-
-    # 56 dias cabem sempre nos últimos 4 meses
     try:
-        erc = pd.concat([pd.read_csv(f, encoding="utf-8-sig", usecols=["data_utc", "erc_total_eur_mwh"])
-                         for f in ficheiros[-4:]], ignore_index=True)
+        dados = erc_previsao.carregar(pasta_isp)
     except Exception as e:
         print(f"⚠️ ERC: não foi possível ler os ficheiros da REN ({e}) — usam-se as constantes da BD.")
         return {}, None
+    if dados is None:
+        print("⚠️ ERC: sem dados da REN — usam-se as constantes da BD.")
+        return {}, None
 
-    local = pd.to_datetime(erc["data_utc"], format="%Y-%m-%d %H:%M", utc=True).dt.tz_convert("Europe/Lisbon")
-    erc["dia"] = local.dt.tz_localize(None).dt.normalize()
-    erc["hhmm"] = local.dt.strftime("%H:%M")
-    erc["u"] = pd.to_numeric(erc["erc_total_eur_mwh"], errors="coerce").clip(*ERC_LIMITES_MWH)
-    # dia × slot (o recuo da hora junta os dois 01:xx no mesmo slot)
-    tabela = erc.groupby(["dia", "hhmm"])["u"].mean().unstack()
-    ultimo = tabela.index.max()
+    ultimo = dados["ultimo"]
+    print(f"ℹ️ ERC: dados da REN até {ultimo.strftime('%d/%m/%Y')} ({dados['atraso']} dias de atraso)")
+    if dados["desatualizado"]:
+        print(f"⚠️ ERC: mais de {erc_previsao.ATRASO_MAX_DIAS} dias de atraso — usam-se as constantes da BD.")
+        return {}, ultimo
 
-    nivel = tabela[tabela.index > ultimo - pd.Timedelta(days=ERC_JANELA_NIVEL_DIAS)].mean()
-    janela = tabela[tabela.index > ultimo - pd.Timedelta(days=ERC_JANELA_TIPO_DIAS)]
-    base = janela.mean()
-    tipos = pd.Series([_tipo_de_dia(d) for d in janela.index], index=janela.index)
-
-    print(f"ℹ️ ERC: dados da REN até {ultimo.strftime('%d/%m/%Y')} "
-          f"(nível: {ERC_JANELA_NIVEL_DIAS} dias; tipo de dia: {ERC_JANELA_TIPO_DIAS} dias)")
     previsao = {}
     for dia in dias_alvo:
         dia = pd.Timestamp(dia).normalize()
-        atraso = (dia - ultimo).days
-        if atraso > ERC_ATRASO_MAX_DIAS:
-            print(f"⚠️ ERC: {dia.strftime('%d/%m/%Y')} fica {atraso} dias depois do último dia da REN "
-                  f"(máx. {ERC_ATRASO_MAX_DIAS}) — usam-se as constantes da BD nesse dia.")
+        prev, troco = erc_previsao.prever_dia(dados, dia)
+        if prev is None:
+            print(f"⚠️ ERC: sem previsão para {dia.strftime('%d/%m/%Y')} — usa-se a constante da BD nesse dia.")
             continue
-        do_tipo = janela[tipos == _tipo_de_dia(dia)].mean()
-        # Sem dados do tipo num slot, fica só o nível; sem nível, o slot cai na constante
-        prev = (nivel + (do_tipo - base)).fillna(nivel).dropna()
         for hhmm, v in prev.items():
             previsao[(dia.date(), hhmm)] = float(v)
-        print(f"   - {dia.strftime('%d/%m/%Y')} ({_tipo_de_dia(dia)}): ERC previsto médio "
-              f"{prev.mean():.2f} €/MWh (de {prev.min():.2f} a {prev.max():.2f}) em {len(prev)} quartos de hora")
+        print(f"   - {dia.strftime('%d/%m/%Y')} ({erc_previsao.tipo_de_dia(dia)}, {troco} prazo): ERC previsto "
+              f"médio {prev.mean():.2f} €/MWh (de {prev.min():.2f} a {prev.max():.2f}) em {len(prev)} quartos de hora")
     return previsao, ultimo
 
 
