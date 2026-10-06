@@ -7,7 +7,7 @@
     "Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do ficheiro; pd.read_csv traz essas linhas como dados.",
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado."
    ],
-   "bytes": 1841430,
+   "bytes": 1841275,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -27,7 +27,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-atuais",
-   "linhas": 35209,
+   "linhas": 35207,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -126,7 +126,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
-   "bytes": 3691,
+   "bytes": 3536,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/futuros_omip.csv",
    "colunas": [
@@ -137,14 +137,14 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-futuros",
-   "linhas": 75,
+   "linhas": 73,
    "titulo": "Futuros OMIP — sessão em curso",
    "tolerancia_dias": 3,
    "ultima_data": "2026-10-07",
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
-   "bytes": 525521,
+   "bytes": 527657,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -161,7 +161,7 @@
    "padrao": "data/omie/historico/omip_historico_*.csv",
    "titulo": "Futuros OMIP — histórico de sessões",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-05",
+   "ultima_data": "2026-10-06",
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
@@ -965,7 +965,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-06T16:43:45+00:00",
+ "gerado_em": "2026-10-06T17:13:18+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -981,7 +981,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 495977440,
+  "bytes": 495979266,
   "datasets": 35,
   "ficheiros": 1706
  }
