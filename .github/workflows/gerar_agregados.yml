@@ -15,8 +15,9 @@
 #   → data/agregados/erc_resumo.json (resumo + previsão própria, para a página /erc)
 #   → data/agregados/erc_diario/AAAA.json (por dia e hora; a página calcula daqui
 #     qualquer período escolhido)
-#   Deriva de data/erc/isp/ (enviado 2x/dia pela tarefa num PC em Portugal) e
-#   da folha OMIE_PERDAS_CICLOS do simulador (períodos horários e perdas).
+#   Deriva de data/erc/isp/ (enviado 2x/dia pela tarefa num PC em Portugal), da
+#   folha OMIE_PERDAS_CICLOS do simulador (períodos horários e perdas) e de
+#   data/producao/ (quota solar de cada hora e ERC por classe de quota solar).
 #   → data/agregados/erc_omie/AAAA-MM.json (OMIE PT, ERC e perdas por quarto de
 #     hora, para a página escolher um dia; só reescreve os meses que mudam)
 #   → data/agregados/erc_tipo/AAAA.json (€ e quantidade de cada tipo de encargo
