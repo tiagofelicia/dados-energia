@@ -657,7 +657,7 @@
    "bytes": 626036,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_diario/",
-   "descricao": "Totais por dia de mercado (MWh, EUR e EUR por componente) e, por dia em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, fator de perdas e ERC por período horário BTN pesado pelo perfil ERSE BTN C, desde 14/03/2024. Derivado de data/erc/isp/, data/omie/ e da folha OMIE_PERDAS_CICLOS.",
+   "descricao": "Totais por dia de mercado (MWh, EUR e EUR por componente) e, por dia em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, fator de perdas e ERC por período horário BTN pesado pelo perfil ERSE BTN C e quota solar de cada hora, desde 14/03/2024. Derivado de data/erc/isp/, data/omie/, data/producao/ e da folha OMIE_PERDAS_CICLOS.",
    "ficheiros": 4,
    "formato": "json",
    "grupo": "agregados",
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-07T15:36:17+00:00",
+ "gerado_em": "2026-10-07T16:12:25+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
