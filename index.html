@@ -248,6 +248,8 @@ const recordes = await r.json();</code></pre>
         <td>Por mês, dia e quarto de hora: OMIE PT, ERC (real ou previsão própria) e fator de perdas (desde 2025).</td><td>~50 KB/mês</td></tr>
     <tr><td><a href="data/agregados/erc_tipo/">erc_tipo/AAAA.json</a></td>
         <td>Por ano e dia de mercado: valor (€) e quantidade (MWh ou MW) de cada tipo de encargo do ERC — restrições técnicas, bandas e energia de reserva, desvios, incumprimentos e outros serviços.</td><td>150–230 KB/ano</td></tr>
+    <tr><td><a href="data/agregados/servicos_sistema/">servicos_sistema/AAAA-MM.json</a></td>
+        <td>Por mês, dia e hora: OMIE PT, redução de geração, desvios, energia de reserva ativada, restrições técnicas e bandas (quantidade e valor).</td><td>~100 KB/mês</td></tr>
   </table>
   <p class="nota">Cada linha traz <code>dias</code> (e <code>quartos</code>, no OMIE) com quantos entraram
      no cálculo — é assim que se vê que o mês ou ano corrente ainda está incompleto.
