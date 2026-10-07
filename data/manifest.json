@@ -598,7 +598,7 @@
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
-   "bytes": 719334,
+   "bytes": 719341,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -636,10 +636,10 @@
    "avisos": [
     "O bloco 'previsao' NÃO é real: é a previsão própria para os 14 dias seguintes ao último publicado (erc_previsao.py) e o erro dessa previsão em cada antecedência, medido no último ano."
    ],
-   "bytes": 29113,
+   "bytes": 36335,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_resumo.json",
-   "descricao": "Encargos de regulação da REN: intervalo publicado, componentes, intervalos dos ficheiros erc_diario/ e erc_omie/, e a previsão própria para os 14 dias seguintes ao último publicado. Derivado de data/erc/isp/.",
+   "descricao": "Encargos de regulação da REN: intervalo publicado, componentes, intervalos dos ficheiros erc_diario/, erc_omie/ e erc_tipo/, grupos e nomes dos tipos de encargo, e a previsão própria para os 14 dias seguintes ao último publicado. Derivado de data/erc/isp/.",
    "ficheiros": 1,
    "formato": "json",
    "grupo": "agregados",
@@ -689,10 +689,29 @@
   },
   {
    "avisos": [
+    "Lista plana por dia: [quartos de hora, i, EUR, quantidade, …], com i = posição do código em 'codigos'; nomes, unidades e grupos em erc_resumo.json → tipos.",
+    "EUR positivo = custo, negativo = receita. A soma dos códigos de um dia dá a soma das componentes; o total publicado fica abaixo dela nalguns quartos de hora, na fonte."
+   ],
+   "bytes": 552892,
+   "cadencia": "1x/dia",
+   "caminho": "data/agregados/erc_tipo/",
+   "descricao": "Por dia de mercado, o valor (EUR) e a quantidade (MWh ou MW) de cada código da vista Tipo da REN: restrições técnicas, bandas e energia de reserva, desvios, incumprimentos e outros serviços, desde 14/03/2024. Derivado de data/erc/tipo/.",
+   "ficheiros": 4,
+   "formato": "json",
+   "grupo": "agregados",
+   "id": "agregados-erc-tipo",
+   "padrao": "data/agregados/erc_tipo/*.json",
+   "titulo": "ERC por tipo de encargo (um ficheiro por ano)",
+   "tolerancia_dias": 6,
+   "ultima_data": "2026-10-04",
+   "url": "https://dados.tiagofelicia.pt/data/agregados/erc_tipo/"
+  },
+  {
+   "avisos": [
     "São emissões de CICLO DE VIDA, não diretas: não comparáveis com o Inventário Nacional da APA nem com o indicador da EEA.",
     "Cobre a produção nacional, não o consumo: as importações de Espanha (25% do consumo em 2024) não estão incluídas."
    ],
-   "bytes": 478223,
+   "bytes": 478225,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/",
    "colunas": [
@@ -965,7 +984,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-07T06:05:43+00:00",
+ "gerado_em": "2026-10-07T08:39:27+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -981,8 +1000,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 496598811,
-  "datasets": 35,
-  "ficheiros": 1710
+  "bytes": 497158934,
+  "datasets": 36,
+  "ficheiros": 1714
  }
 }
