@@ -375,6 +375,18 @@ REGISTO = [
          avisos=["Nos dias ainda sem ERC publicado, o ERC é previsão própria "
                  "(erc_previsao.py); 'erc_previsto' diz quantos quartos de hora do dia o são.",
                  "'slots' só aparece nos dias de mudança de hora (92 ou 100 quartos de hora)."]),
+    dict(id="agregados-servicos-sistema", grupo="agregados", caminho="data/agregados/servicos_sistema/*.json",
+         titulo="Serviços de sistema por hora (um ficheiro por mês)",
+         descricao="Por dia e hora, em hora de Portugal: OMIE PT médio e, por indicador "
+                   "(redução de geração, desvios em excesso e em falta, energia de reserva "
+                   "aFRR/mFRR/RR a subir e a descer, restrições técnicas e bandas de reserva), "
+                   "a quantidade e o valor, desde 14/03/2024. Derivado de data/erc/tipo/, "
+                   "data/erc/isp/ e data/omie/.",
+         cadencia="1x/dia", tolerancia_dias=6, deteccao="meta:ultima_data",
+         avisos=["Quantidades em MWh, exceto nas bandas (soma dos MW dos quartos de hora "
+                 "da hora); valor em EUR, positivo = custo, negativo = receita.",
+                 "Os indicadores (códigos da vista Tipo) e o OMIE PT médio de cada dia "
+                 "estão em metadata.json."]),
     dict(id="agregados-erc-tipo", grupo="agregados", caminho="data/agregados/erc_tipo/*.json",
          titulo="ERC por tipo de encargo (um ficheiro por ano)",
          descricao="Por dia de mercado, o valor (EUR) e a quantidade (MWh ou MW) de cada "
