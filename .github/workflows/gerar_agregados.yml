@@ -19,7 +19,14 @@
 #   da folha OMIE_PERDAS_CICLOS do simulador (períodos horários e perdas).
 #   → data/agregados/erc_omie/AAAA-MM.json (OMIE PT, ERC e perdas por quarto de
 #     hora, para a página escolher um dia; só reescreve os meses que mudam)
+#   → data/agregados/erc_tipo/AAAA.json (€ e quantidade de cada tipo de encargo
+#     por dia de mercado, para o bloco "De onde vem o ERC"; deriva de data/erc/tipo/)
 #   ~1 min: mede o erro da previsão do ERC a partir de ~70 origens no último ano.
+#
+# gerar_servicos_sistema.py (depois do anterior: lê-lhe as constantes)
+#   → data/agregados/servicos_sistema/AAAA-MM.json (reservas, desvios, restrições
+#     e redução de geração por hora, para a página /servicos-sistema) e o
+#     metadata.json com os indicadores e o OMIE PT médio de cada dia
 #
 # Não recolhe nada de fora: deriva dos CSV que já estão no repositório. Por isso
 # corre DEPOIS dos workflows que os escrevem — o OMIE fecha às 18:00 UTC e a
@@ -97,13 +104,18 @@ jobs:
           set -o pipefail
           python scripts/gerar_erc_resumo.py 2>&1 | tee -a logs/agregados.log
 
+      - name: Gerar serviços de sistema
+        run: |
+          set -o pipefail
+          python scripts/gerar_servicos_sistema.py 2>&1 | tee -a logs/agregados.log
+
       # Os scripts não reescrevem os ficheiros que não mudaram, por isso a action
       # não deteta alterações e não commita — nenhum commit vazio.
       - name: Fazer commit dos derivados (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
-          commit_message: "📊 BOT: Atualizar agregados + intensidade carbónica + ERC"
-          file_pattern: "data/agregados/* data/agregados/erc_diario/* data/agregados/erc_omie/* data/emissoes/*"
+          commit_message: "📊 BOT: Atualizar agregados + intensidade carbónica + ERC + serviços de sistema"
+          file_pattern: "data/agregados/* data/agregados/erc_diario/* data/agregados/erc_omie/* data/agregados/erc_tipo/* data/agregados/servicos_sistema/* data/emissoes/*"
 
       - name: Fazer upload do log como artefacto
         if: always()
