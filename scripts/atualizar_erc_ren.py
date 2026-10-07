@@ -73,6 +73,14 @@ FICHEIROS
   data/erc/brp/erc_brp_AAAA-MM.csv     período × agente
   data/erc/tipo/erc_tipo_AAAA-MM.csv   período × código de encargo
   data/erc/erc_tipo_codigos.csv        o que significa cada código do tipo
+  data/erc/erc_agentes.csv             o nome oficial de cada agente (BRP) do brp
+
+O brp só traz o código do agente (EDPGM, GALPW…). O nome vem da lista de
+unidades de programação da REN (UnidadesProgramacao/GetUnidadesProgramacao, na
+mesma API): o da unidade de comercialização em vigor ou, se não houver (EDPGM,
+SIMPE), o de uma unidade de venda, sem os sufixos (" - Venda", "(UP)"…). Só se
+pedem os códigos que ainda não estão no ficheiro; ao domingo, todos. Se estes
+pedidos falharem, a recolha do ERC não é afetada.
 
 O brp e o tipo são ficheiros longos e por isso magros: só data_iso e periodo
 como tempo (o intervalo e o data_utc estão no isp, que serve de tabela de
@@ -128,6 +136,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 PASTA = os.path.join(ROOT_DIR, "data", "erc")
 FICHEIRO_CODIGOS = os.path.join(PASTA, "erc_tipo_codigos.csv")
+FICHEIRO_AGENTES = os.path.join(PASTA, "erc_agentes.csv")
 
 BASE_API = "https://mercadoservices.ren.pt/api/"
 # A chave das páginas da REN, tal como está no JavaScript delas (antes do btoa).
@@ -165,6 +174,7 @@ CAMPOS_ISP = {
 COLUNAS_BRP = ["data_iso", "periodo", "minutos", "brp", "unidade_liquidacao", "erc_eur"]
 COLUNAS_TIPO = ["data_iso", "periodo", "codigo", "quantidade", "valor_eur"]
 COLUNAS_CODIGOS = ["codigo", "tipo_id", "tipo", "subtipo", "tipo_en", "subtipo_en", "unidade"]
+COLUNAS_AGENTES = ["codigo", "nome", "unidade_programacao", "tipo_unidade"]
 
 VISTAS = {
     "isp": dict(controlador="ERCPeriodo", ultimo="GetERCLatest", dia="GetERCByDay",
@@ -436,6 +446,65 @@ def gravar_codigos(novos):
 
 
 # ============================================================
+# Nomes dos agentes (BRP)
+# ============================================================
+
+_SUFIXOS_UNIDADE = re.compile(r"\s*(\((UP|Venda[^)]*|Bombagem)\)|[-–]\s*(Venda|Compra)\b.*)\s*$", re.IGNORECASE)
+
+
+def nome_agente(unidades):
+    """(nome, unidade, tipo) a partir das unidades de programação de um agente."""
+    limpo = lambda u: _SUFIXOS_UNIDADE.sub("", (u.get("nome_unid") or "").strip()).strip()
+    com = [u for u in unidades if (u.get("unid_tipo") or "").strip() == "Comercialização"]
+    em_vigor = [u for u in com if not u.get("data_fim")] or com
+    if em_vigor:
+        u = sorted(em_vigor, key=lambda x: x.get("data_init") or "")[-1]
+    else:
+        # Sem comercialização: uma unidade de venda dá o nome da empresa
+        venda = [u for u in unidades if "Venda" in (u.get("nome_unid") or "")]
+        if not venda:
+            return None
+        u = venda[0]
+    return limpo(u), (u.get("sigla_unid") or "").strip(), (u.get("unid_tipo") or "").strip()
+
+
+def atualizar_agentes(todos=False):
+    """Upsert de data/erc/erc_agentes.csv com os agentes que aparecem no brp."""
+    codigos = set()
+    for f in ficheiros_vista("brp"):
+        _, cab, linhas = ler_csv(f)
+        if cab:
+            i = cab.index("brp")
+            codigos.update(l[i].strip() for l in linhas if l[i].strip())
+    texto, _, linhas = ler_csv(FICHEIRO_AGENTES)
+    atuais = {l[0]: l[1:] for l in linhas}
+    pedir_estes = sorted(codigos if todos else codigos - set(atuais))
+    novos, falhas = 0, []
+    for c in pedir_estes:
+        try:
+            r = nome_agente(pedir("UnidadesProgramacao", "GetUnidadesProgramacao", tipoQuery="",
+                                  agentesQuery=c, unidProgQuery="", stateQuery="") or [])
+        except Exception:
+            falhas.append(c)
+            continue
+        if r:
+            novos += c not in atuais
+            atuais[c] = list(r)
+    escreveu = escrever_csv(FICHEIRO_AGENTES, COLUNAS_AGENTES,
+                            [[c] + atuais[c] for c in sorted(atuais)], texto)
+    sem_nome = sorted(codigos - set(atuais))
+    partes = [f"  nomes dos agentes: {len(atuais)} no ficheiro"]
+    if novos:
+        partes.append(f" ({novos} novos)")
+    if sem_nome:
+        partes.append(" · sem nome: " + ", ".join(sem_nome))
+    if falhas:
+        partes.append(f" · {len(falhas)} pedidos falharam")
+    partes.append(" · " + ("gravado" if escreveu else "sem alterações"))
+    print("".join(partes))
+
+
+# ============================================================
 # Recolha
 # ============================================================
 
@@ -578,6 +647,13 @@ def main():
             print(f"   ⚠️  {len(falhados)} dia(s) falharam: "
                   + ", ".join(d.isoformat() for d, _ in falhados)
                   + " — repetir com --desde/--ate.")
+
+    if "brp" in args.vistas:
+        # Os nomes não são essenciais: uma falha aqui não estraga a recolha
+        try:
+            atualizar_agentes(todos=date.today().weekday() == 6)
+        except Exception as e:
+            print(f"  ⚠️  nomes dos agentes não atualizados: {e}")
 
     print(f"\n{'✅' if not houve_falhas else '⚠️ '} Concluído "
           f"({datetime.now():%Y-%m-%d %H:%M}).")

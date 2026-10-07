@@ -173,6 +173,8 @@ REGRAS = {
         chave=["data_iso", "periodo", "codigo"]),
     "erc-codigos": dict(
         colunas=["codigo", "tipo", "subtipo", "unidade"], chave=["codigo"]),
+    "erc-agentes": dict(
+        colunas=["codigo", "nome", "unidade_programacao", "tipo_unidade"], chave=["codigo"]),
 
     # Padrões cujos ficheiros têm grão diferente: cada um com a sua chave.
     "agregados-omie": dict(

@@ -375,6 +375,17 @@ REGISTO = [
          avisos=["Nos dias ainda sem ERC publicado, o ERC é previsão própria "
                  "(erc_previsao.py); 'erc_previsto' diz quantos quartos de hora do dia o são.",
                  "'slots' só aparece nos dias de mudança de hora (92 ou 100 quartos de hora)."]),
+    dict(id="agregados-agentes", grupo="agregados", caminho="data/agregados/agentes/*.json",
+         titulo="Consumo e ERC por agente de mercado (um ficheiro por ano)",
+         descricao="Por dia de mercado, o consumo abastecido e o ERC imputado a cada agente "
+                   "(BRP), e por mês o consumo de cada agente em cada hora, desde 14/03/2024. "
+                   "Consumo = (ERC do agente ÷ ERC total) × consumo do mercado, período a "
+                   "período. Derivado de data/erc/brp/, data/erc/isp/ e data/erc/erc_agentes.csv.",
+         cadencia="1x/dia", tolerancia_dias=6, deteccao="meta:ultima_data",
+         avisos=["Um agente (BRP) pode representar vários comercializadores: as quotas são "
+                 "por agente de mercado, não por marca comercial.",
+                 "Nos períodos com ERC total ≈ 0 usa-se a quota do agente nesse dia; o brp "
+                 "foi horário até 30/09/2025."]),
     dict(id="agregados-servicos-sistema", grupo="agregados", caminho="data/agregados/servicos_sistema/*.json",
          titulo="Serviços de sistema por hora (um ficheiro por mês)",
          descricao="Por dia e hora, em hora de Portugal: OMIE PT médio e, por indicador "
@@ -476,6 +487,12 @@ REGISTO = [
          descricao="Dicionário dos códigos do erc-tipo: tipo, subtipo (PT e EN) e "
                    "unidade da quantidade. Cresce quando a REN cria tipos novos.",
          cadencia="quando há tipos novos", tolerancia_dias=400, deteccao="estatico"),
+    dict(id="erc-agentes", grupo="erc", caminho="data/erc/erc_agentes.csv",
+         titulo="Encargos de regulação (ERC) — nomes dos agentes",
+         descricao="Nome oficial de cada agente (BRP) do erc-brp, da lista de unidades de "
+                   "programação da REN. Cresce quando aparecem agentes novos; os nomes são "
+                   "revistos todas as semanas.",
+         cadencia="quando há agentes novos", tolerancia_dias=400, deteccao="estatico"),
 
     # ---------- Referência ----------
     dict(id="referencia-tecnologias", grupo="referencia",
