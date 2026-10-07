@@ -345,7 +345,8 @@ REGISTO = [
     dict(id="agregados-erc", grupo="agregados", caminho="data/agregados/erc_resumo.json",
          titulo="Resumo do ERC e previsão própria a 14 dias",
          descricao="Encargos de regulação da REN: intervalo publicado, componentes, "
-                   "intervalos dos ficheiros erc_diario/ e erc_omie/, e a previsão "
+                   "intervalos dos ficheiros erc_diario/, erc_omie/ e erc_tipo/, grupos e "
+                   "nomes dos tipos de encargo, e a previsão "
                    "própria para os 14 dias seguintes ao último publicado. Derivado de "
                    "data/erc/isp/.",
          avisos=["O bloco 'previsao' NÃO é real: é a previsão própria para os 14 "
@@ -374,6 +375,19 @@ REGISTO = [
          avisos=["Nos dias ainda sem ERC publicado, o ERC é previsão própria "
                  "(erc_previsao.py); 'erc_previsto' diz quantos quartos de hora do dia o são.",
                  "'slots' só aparece nos dias de mudança de hora (92 ou 100 quartos de hora)."]),
+    dict(id="agregados-erc-tipo", grupo="agregados", caminho="data/agregados/erc_tipo/*.json",
+         titulo="ERC por tipo de encargo (um ficheiro por ano)",
+         descricao="Por dia de mercado, o valor (EUR) e a quantidade (MWh ou MW) de cada "
+                   "código da vista Tipo da REN: restrições técnicas, bandas e energia de "
+                   "reserva, desvios, incumprimentos e outros serviços, desde 14/03/2024. "
+                   "Derivado de data/erc/tipo/.",
+         cadencia="1x/dia", tolerancia_dias=6, deteccao="meta:ultima_data",
+         avisos=["Lista plana por dia: [quartos de hora, i, EUR, quantidade, …], com i = "
+                 "posição do código em 'codigos'; nomes, unidades e grupos em "
+                 "erc_resumo.json → tipos.",
+                 "EUR positivo = custo, negativo = receita. A soma dos códigos de um dia dá a "
+                 "soma das componentes; o total publicado fica abaixo dela nalguns quartos de "
+                 "hora, na fonte."]),
     dict(id="emissoes", grupo="emissoes", caminho="data/emissoes/intensidade_*.csv",
          titulo="Intensidade carbónica da produção elétrica",
          descricao="gCO2eq/kWh da produção nacional, a 15 minutos desde 2010, "

@@ -22,6 +22,8 @@ erc_resumo.json (~25 KB)
                o erro dessa previsão em cada horizonte, medido no último ano
   diario       anos e intervalo dos ficheiros por ano (abaixo)
   dias_omie    intervalo dos ficheiros por mês (abaixo)
+  tipos        anos e intervalo de erc_tipo/, os grupos e, por código,
+               [grupo, tipo, subtipo, unidade]
 
 erc_diario/AAAA.json (~250 KB por ano), um por ano civil:
   mercado  por dia de MERCADO: [MWh, €, € de cada componente] — os totais
@@ -43,6 +45,14 @@ erc_omie/AAAA-MM.json (~50 KB por mês), que a página só descarrega quando se
 escolhe um dia: por quarto de hora, o OMIE PT, o ERC (o real ou, nos dias ainda
 sem valor publicado, a previsão própria; erc_previsto = quantos o são) e o fator
 de perdas (desde 2025). 'slots' só nos dias de mudança de hora.
+
+erc_tipo/AAAA.json (~150 KB por ano), para o bloco "De onde vem o ERC": por dia
+de MERCADO, o valor (€, positivo = custo, negativo = receita) e a quantidade
+(MWh ou MW, como na vista Tipo da REN) de cada código, numa lista plana
+[quartos de hora do dia, i, €, quantidade, i, €, quantidade, …], em que i é a
+posição do código em "codigos" (no cabeçalho do ficheiro). Os nomes, as
+unidades e o grupo de cada código vão no resumo (tipos.codigos), e os grupos,
+pela ordem do gráfico, em tipos.grupos.
 
 COMO SE CALCULA
 ---------------
@@ -89,6 +99,9 @@ PASTA_AGREGADOS = os.path.join(ROOT_DIR, "data", "agregados")
 SAIDA = os.path.join(PASTA_AGREGADOS, "erc_resumo.json")
 PASTA_DIARIO = os.path.join(PASTA_AGREGADOS, "erc_diario")
 PASTA_DIAS = os.path.join(PASTA_AGREGADOS, "erc_omie")
+PASTA_TIPO = os.path.join(ROOT_DIR, "data", "erc", "tipo")
+FICHEIRO_CODIGOS = os.path.join(ROOT_DIR, "data", "erc", "erc_tipo_codigos.csv")
+PASTA_TIPO_SAIDA = os.path.join(PASTA_AGREGADOS, "erc_tipo")
 
 FUSO = "Europe/Lisbon"
 JANELA_ERRO_DIAS = 365
@@ -107,6 +120,27 @@ COMPONENTES = [
 ]
 CICLOS = {"BD": ["V", "F"], "BS": ["V", "F"], "TD": ["V", "C", "P"], "TS": ["V", "C", "P"]}
 ORDEM_C = [f"{c}.{p}" for c, ps in CICLOS.items() for p in ps]
+
+# Grupos dos códigos da vista Tipo, pela ordem do gráfico em cascata: (id, nome,
+# componente do isp onde a REN os soma, prefixos dos códigos). O primeiro prefixo
+# que serve decide; o que não servir a nenhum vai para "outros_servicos".
+GRUPOS_TIPO = [
+    ("rt_pdbf_restricao", "Restrições técnicas no PDBF — restrição", "rt_pdbf", ("RTPDBFF1",)),
+    ("rt_pdbf_reequilibrio", "Restrições técnicas no PDBF — reequilíbrio", "rt_pdbf", ("RTPDBFF2",)),
+    ("rt_pdbf", "Restrições técnicas no PDBF (antes da separação)", "rt_pdbf", ("RTPDBF",)),
+    ("rt_pdvd", "Restrições técnicas após o PDVD", "rt_pdvd", ("RTPDVD",)),
+    ("rt_phf", "Restrições técnicas após o PHF", "rt_phf", ("RTPF",)),
+    ("banda_afrr", "Banda de reserva aFRR", "banda_afrr", ("BAFRR",)),
+    ("banda_mfrr", "Banda de reserva mFRR", "banda_mfrr", ("BMFRR",)),
+    ("energia_afrr", "Energia de reserva aFRR", "outros", ("EAFRR",)),
+    ("energia_mfrr", "Energia de reserva mFRR", "outros", ("EMFRR",)),
+    ("mfrr_transitorio", "Produto transitório de mFRR", "outros", ("RTMFRRT",)),
+    ("energia_rr", "Energia de reserva RR", "outros", ("TERRE",)),
+    ("desvios", "Desvios", "outros", ("DSVEV",)),
+    ("igcc", "Coordenação de desvios (IGCC)", "outros", ("IGCC",)),
+    ("incumprimentos", "Incumprimentos de instruções de despacho", "outros", ("IDINC",)),
+    ("outros_servicos", "Outros serviços e acertos", "outros", ()),
+]
 
 
 def r(v, casas=3):
@@ -329,6 +363,67 @@ def ficheiros_dias(pasta_isp, ciclos, omie, pasta_saida):
 
 
 # ============================================================
+# Ficheiros por ano da vista Tipo (de onde vem o ERC)
+# ============================================================
+
+def grupo_do_codigo(codigo):
+    for gid, _, _, prefixos in GRUPOS_TIPO:
+        if any(codigo.startswith(p) for p in prefixos):
+            return gid
+    return "outros_servicos"
+
+
+def ficheiros_tipo(pasta_tipo, ficheiro_codigos, df, pasta_saida):
+    """Por dia de mercado, o valor (€) e a quantidade de cada código da vista
+    Tipo da REN. A soma dos códigos de um dia dá a soma das componentes do isp
+    (o total publicado fica abaixo dela nalguns períodos, na fonte)."""
+    ficheiros = sorted(glob.glob(os.path.join(pasta_tipo, "erc_tipo_????-??.csv")))
+    if not ficheiros:
+        print(f"⚠️ Sem ficheiros em {pasta_tipo}: detalhe por tipo não gerado.")
+        return None
+    t = pd.concat([pd.read_csv(f, encoding="utf-8-sig", usecols=["data_iso", "codigo", "quantidade", "valor_eur"],
+                               dtype={"codigo": str}) for f in ficheiros], ignore_index=True)
+    t["valor_eur"] = pd.to_numeric(t["valor_eur"], errors="coerce").fillna(0)
+    t["quantidade"] = pd.to_numeric(t["quantidade"], errors="coerce").fillna(0).abs()
+    g = t.groupby(["data_iso", "codigo"])[["valor_eur", "quantidade"]].sum()
+    n_qh = df.groupby("data_iso").size()           # quartos de hora de cada dia de mercado
+
+    nomes = {}
+    if os.path.exists(ficheiro_codigos):
+        cod = pd.read_csv(ficheiro_codigos, encoding="utf-8-sig", dtype=str).fillna("")
+        nomes = {x["codigo"]: (x["tipo"], x["subtipo"], x["unidade"]) for _, x in cod.iterrows()}
+    presentes = sorted(g.index.get_level_values("codigo").unique())
+    codigos = {c: [grupo_do_codigo(c)] + list(nomes.get(c, (c, "", ""))) for c in presentes}
+
+    dias_todos = g.index.get_level_values("data_iso").unique()
+    anos = sorted({int(d[:4]) for d in dias_todos})
+    escritos = 0
+    for ano in anos:
+        gg = g[g.index.get_level_values("data_iso").str[:4] == str(ano)]
+        lista = sorted(gg.index.get_level_values("codigo").unique())
+        idx = {c: i for i, c in enumerate(lista)}
+        dias = {}
+        for dia, gd in gg.groupby(level="data_iso"):
+            linha = [int(n_qh.get(dia, 0))]
+            for (_, c), x in gd.iterrows():
+                if x["valor_eur"] == 0 and x["quantidade"] == 0:
+                    continue
+                linha += [idx[c], r(x["valor_eur"], 0), r(x["quantidade"], 1)]
+            dias[dia] = linha
+        if escrever_json(os.path.join(pasta_saida, f"{ano}.json"),
+                         {"ano": ano, "codigos": lista, "dias": dias}):
+            escritos += 1
+
+    meta = {"anos": anos, "de": min(dias_todos), "ate": max(dias_todos)}
+    meta["ultima_data"] = meta["ate"]
+    escrever_json(os.path.join(pasta_saida, "metadata.json"), meta)
+    print(f"   erc_tipo/: {len(anos)} anos, {escritos} reescritos; {len(presentes)} códigos, "
+          f"dias de {meta['de']} a {meta['ate']}")
+    return dict(meta, grupos=[{"id": gid, "nome": nome, "comp": comp} for gid, nome, comp, _ in GRUPOS_TIPO],
+                codigos=codigos)
+
+
+# ============================================================
 # Previsão própria a 14 dias + erro medido
 # ============================================================
 
@@ -403,6 +498,9 @@ def main():
     p.add_argument("--saida", default=SAIDA)
     p.add_argument("--pasta-diario", default=PASTA_DIARIO)
     p.add_argument("--pasta-dias", default=PASTA_DIAS)
+    p.add_argument("--tipo", default=PASTA_TIPO)
+    p.add_argument("--codigos", default=FICHEIRO_CODIGOS)
+    p.add_argument("--pasta-tipo", default=PASTA_TIPO_SAIDA)
     args = p.parse_args()
 
     df = ler_isp(args.isp)
@@ -420,6 +518,7 @@ def main():
         "previsao": bloco_previsao(df, args.isp),
         "diario": ficheiros_diarios(df, ciclos, omie, args.pasta_diario),
         "dias_omie": ficheiros_dias(args.isp, ciclos, omie, args.pasta_dias),
+        "tipos": ficheiros_tipo(args.tipo, args.codigos, df, args.pasta_tipo),
     }
 
     # Sem alterações além do gerado_em → não reescrever (nada de commits vazios)
