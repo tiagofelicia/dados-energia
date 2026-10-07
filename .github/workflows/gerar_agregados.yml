@@ -28,6 +28,11 @@
 #     e redução de geração por hora, para a página /servicos-sistema) e o
 #     metadata.json com os indicadores e o OMIE PT médio de cada dia
 #
+# gerar_quotas_agentes.py
+#   → data/agregados/agentes/AAAA.json (consumo e ERC de cada agente de mercado
+#     por dia, e por hora em cada mês, para a página /quotas-agentes) e o
+#     metadata.json com os nomes (de data/erc/erc_agentes.csv) e as cores
+#
 # Não recolhe nada de fora: deriva dos CSV que já estão no repositório. Por isso
 # corre DEPOIS dos workflows que os escrevem — o OMIE fecha às 18:00 UTC e a
 # produção REN às 20:15, daí as 21:30.
@@ -109,13 +114,18 @@ jobs:
           set -o pipefail
           python scripts/gerar_servicos_sistema.py 2>&1 | tee -a logs/agregados.log
 
+      - name: Gerar quotas por agente
+        run: |
+          set -o pipefail
+          python scripts/gerar_quotas_agentes.py 2>&1 | tee -a logs/agregados.log
+
       # Os scripts não reescrevem os ficheiros que não mudaram, por isso a action
       # não deteta alterações e não commita — nenhum commit vazio.
       - name: Fazer commit dos derivados (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
-          commit_message: "📊 BOT: Atualizar agregados + intensidade carbónica + ERC + serviços de sistema"
-          file_pattern: "data/agregados/* data/agregados/erc_diario/* data/agregados/erc_omie/* data/agregados/erc_tipo/* data/agregados/servicos_sistema/* data/emissoes/*"
+          commit_message: "📊 BOT: Atualizar agregados + intensidade carbónica + ERC + serviços de sistema + agentes"
+          file_pattern: "data/agregados/* data/agregados/erc_diario/* data/agregados/erc_omie/* data/agregados/erc_tipo/* data/agregados/servicos_sistema/* data/agregados/agentes/* data/emissoes/*"
 
       - name: Fazer upload do log como artefacto
         if: always()
