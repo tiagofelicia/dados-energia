@@ -598,7 +598,7 @@
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
-   "bytes": 719220,
+   "bytes": 719334,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -629,7 +629,7 @@
    "padrao": "data/agregados/producao_*.csv",
    "titulo": "Agregados de produção (diário, mensal, anual)",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-05",
+   "ultima_data": "2026-10-06",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
@@ -692,7 +692,7 @@
     "São emissões de CICLO DE VIDA, não diretas: não comparáveis com o Inventário Nacional da APA nem com o indicador da EEA.",
     "Cobre a produção nacional, não o consumo: as importações de Espanha (25% do consumo em 2024) não estão incluídas."
    ],
-   "bytes": 478148,
+   "bytes": 478223,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/",
    "colunas": [
@@ -716,7 +716,7 @@
    "padrao": "data/emissoes/intensidade_*.csv",
    "titulo": "Intensidade carbónica da produção elétrica",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-05",
+   "ultima_data": "2026-10-06",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/"
   },
   {
@@ -965,7 +965,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-06T23:52:04+00:00",
+ "gerado_em": "2026-10-07T00:54:44+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -981,7 +981,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 496519869,
+  "bytes": 496520058,
   "datasets": 35,
   "ficheiros": 1710
  }
