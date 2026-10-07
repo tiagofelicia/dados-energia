@@ -22,6 +22,9 @@ erc_resumo.json (~25 KB)
                o erro dessa previsão em cada horizonte, medido no último ano
   diario       anos e intervalo dos ficheiros por ano (abaixo)
   dias_omie    intervalo dos ficheiros por mês (abaixo)
+  solar        por mês e classe de quota solar no quarto de hora (produção
+               solar ÷ consumo; limites em "classes"): [classe, quartos de
+               hora, MWh, €, € de cada componente…] — o ERC de cada classe
   tipos        anos e intervalo de erc_tipo/, os grupos e, por código,
                [grupo, tipo, subtipo, unidade]
 
@@ -39,7 +42,10 @@ erc_diario/AAAA.json (~250 KB por ano), um por ano civil:
              c    por ciclo e período horário, pela ordem de ORDEM_C (no
                   cabeçalho do ficheiro, "ordem_c"): €/MWh pesado pelo BTN C e
                   a soma dos pesos × 1000, alternados [€, peso, €, peso, …]
-           p e c só existem desde 2025 (a folha do simulador começa aí).
+             s    quota solar de cada hora (%, inteiro): produção solar ÷ consumo, dos
+                  dados de produção da REN (data/producao)
+           p e c só existem desde 2025 (a folha do simulador começa aí); s só
+           com a produção reportada (balanço fechado).
 
 erc_omie/AAAA-MM.json (~50 KB por mês), que a página só descarrega quando se
 escolhe um dia: por quarto de hora, o OMIE PT, o ERC (o real ou, nos dias ainda
@@ -89,6 +95,7 @@ import pandas as pd
 
 import erc_previsao
 from gerar_records_omie import ATUAIS_PATH, HISTORICO_GLOB, cortar_futuros, ler_csv_omie
+import gerar_records_producao as producao
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SCRIPT_DIR)
@@ -119,6 +126,9 @@ COMPONENTES = [
     ("outros", "Outros"),
 ]
 CICLOS = {"BD": ["V", "F"], "BS": ["V", "F"], "TD": ["V", "C", "P"], "TS": ["V", "C", "P"]}
+# Classes de quota solar (produção solar ÷ consumo, %) de um quarto de hora:
+# limites inferiores; a 1.ª ("noite") é a de quase nenhum sol
+CLASSES_SOLAR = [0, 0.5, 20, 40, 60]
 ORDEM_C = [f"{c}.{p}" for c, ps in CICLOS.items() for p in ps]
 
 # Grupos dos códigos da vista Tipo, pela ordem do gráfico em cascata: (id, nome,
@@ -213,6 +223,62 @@ def ler_omie_pt(primeiro_dia):
     return o[["data", "inicio_utc", "omie"]]
 
 
+def ler_producao(primeiro_dia):
+    """Solar e consumo (MW médios) de cada quarto de hora, com o início em hora
+    de Portugal (sem fuso). Só os intervalos com o balanço fechado: no dia em
+    curso, os que ainda não foram reportados vêm com as fontes a zero."""
+    ano0 = pd.Timestamp(primeiro_dia).year
+    fs = [f for f in sorted(glob.glob(producao.HISTORICO_GLOB)) if int(f[-8:-4]) >= ano0]
+    if os.path.exists(producao.ATUAIS_PATH):
+        fs.append(producao.ATUAIS_PATH)
+    partes = []
+    for f in fs:
+        x = producao.ler_csv_producao(f)
+        if not {"Solar", "Consumo", "dia", "intervalo"} <= set(x.columns):
+            continue
+        ok = producao._desvio_balanco(x) <= producao.TOLERANCIA_BALANCO_MW
+        x = x[ok]
+        partes.append(pd.DataFrame({
+            "t": pd.to_datetime(x["dia"] + " " + x["intervalo"].str[1:6], format="%d/%m/%Y %H:%M", errors="coerce"),
+            "solar": pd.to_numeric(x["Solar"], errors="coerce"),
+            "cons_ren": pd.to_numeric(x["Consumo"], errors="coerce")}))
+    if not partes:
+        return None
+    pr = pd.concat(partes, ignore_index=True).dropna()
+    pr = pr[(pr["t"] >= pd.Timestamp(primeiro_dia)) & (pr["cons_ren"] > 0)]
+    # O mesmo instante em dois ficheiros (ou a hora repetida de outubro): o primeiro
+    return pr.drop_duplicates("t", keep="first")
+
+
+def juntar_solar(df, prod):
+    """Os quartos de hora do isp com a produção solar e o consumo da REN."""
+    if prod is None or not len(prod):
+        return None
+    local = df["inicio_utc"].dt.tz_convert(FUSO).dt.tz_localize(None)
+    j = df.assign(t=local).merge(prod, on="t")
+    j["quota_solar"] = 100 * j["solar"] / j["cons_ren"]
+    return j
+
+
+def tabela_solar(df, prod):
+    """Por mês (hora de Portugal) e classe de quota solar: quartos de hora, MWh,
+    € e € de cada componente."""
+    j = juntar_solar(df, prod)
+    if j is None:
+        return None
+    comp = [f"{c}_eur" for c, _ in COMPONENTES]
+    j["classe"] = (np.searchsorted(CLASSES_SOLAR, j["quota_solar"], side="right") - 1).clip(0)
+    j["mes"] = j["dia_local"].dt.strftime("%Y-%m")
+    g = j.groupby(["mes", "classe"]).agg(n=("consumo_mwh", "size"), mwh=("consumo_mwh", "sum"),
+                                          eur=("erc_total_eur", "sum"), **{c: (c, "sum") for c in comp})
+    meses = {}
+    for (m, k), x in g.iterrows():
+        meses.setdefault(m, []).append([int(k), int(x["n"]), r(x["mwh"], 0), r(x["eur"], 0)] + [r(x[c], 0) for c in comp])
+    return {"classes": CLASSES_SOLAR, "componentes": [c for c, _ in COMPONENTES],
+            "de": j["dia_local"].min().strftime("%Y-%m-%d"), "ate": j["dia_local"].max().strftime("%Y-%m-%d"),
+            "meses": meses}
+
+
 def escrever_json(caminho, conteudo, ignorar=()):
     """Escreve só se o conteúdo mudou (ignorando as chaves dadas). Devolve True se escreveu."""
     if os.path.exists(caminho):
@@ -237,7 +303,7 @@ def escrever_json(caminho, conteudo, ignorar=()):
 # Ficheiros por ano (a base dos blocos que seguem o período)
 # ============================================================
 
-def ficheiros_diarios(df, ciclos, omie, pasta):
+def ficheiros_diarios(df, ciclos, omie, prod, pasta):
     comp = [f"{c}_eur" for c, _ in COMPONENTES]
 
     # Totais por dia de mercado, como a REN
@@ -256,6 +322,13 @@ def ficheiros_diarios(df, ciclos, omie, pasta):
     if omie is not None:
         oo = omie.assign(dia_local=omie["data"], hora=omie["inicio_utc"].dt.tz_convert(FUSO).dt.hour)
         o_h = oo.groupby(["dia_local", "hora"])["omie"].mean().unstack().reindex(columns=range(24))
+
+    # Quota solar de cada hora (produção solar ÷ consumo da REN)
+    s_h = None
+    j = juntar_solar(df, prod)
+    if j is not None:
+        hh = j.groupby(["dia_local", "hora"])[["solar", "cons_ren"]].sum()
+        s_h = (100 * hh["solar"] / hh["cons_ren"]).unstack().reindex(columns=range(24))
 
     # Extremos de cada dia (quarto de hora)
     qh = df.dropna(subset=["erc_total_eur_mwh"])
@@ -298,6 +371,8 @@ def ficheiros_diarios(df, ciclos, omie, pasta):
                 d["p"] = r(perdas[dia], 4)
             if dia in per:
                 d["c"] = [x for k in ORDEM_C for x in per[dia].get(k, (None, 0))]
+            if s_h is not None and dia in s_h.index and s_h.loc[dia].notna().any():
+                d["s"] = [None if (v is None or not np.isfinite(v)) else int(round(v)) for v in s_h.loc[dia]]
             dias[dia.strftime("%Y-%m-%d")] = d
         if escrever_json(os.path.join(pasta, f"{ano}.json"),
                          {"ano": ano, "componentes": [c for c, _ in COMPONENTES],
@@ -307,7 +382,8 @@ def ficheiros_diarios(df, ciclos, omie, pasta):
     meta = {"anos": anos, "de": e_h.index.min().strftime("%Y-%m-%d"),
             "ate": e_h.index.max().strftime("%Y-%m-%d"),
             "mercado_ate": merc.index.max(),
-            "periodos_desde": min(per).strftime("%Y-%m-%d") if per else None}
+            "periodos_desde": min(per).strftime("%Y-%m-%d") if per else None,
+            "solar_ate": s_h.dropna(how="all").index.max().strftime("%Y-%m-%d") if s_h is not None else None}
     meta["ultima_data"] = meta["ate"]
     escrever_json(os.path.join(pasta, "metadata.json"), meta)
     print(f"   erc_diario/: {len(anos)} anos, {escritos} reescritos; dias de {meta['de']} a {meta['ate']}")
@@ -506,6 +582,7 @@ def main():
     df = ler_isp(args.isp)
     ciclos = ler_ciclos(args.ciclos)
     omie = ler_omie_pt(df["data_iso"].min())
+    prod = ler_producao(df["data_iso"].min())
     print(f"⚖️ ERC: {len(df)} quartos de hora, {df['data_iso'].min()} → {df['data_iso'].max()}")
 
     resumo = {
@@ -516,7 +593,8 @@ def main():
         "ultima_data": df["data_iso"].max(),
         "componentes": [{"id": c, "nome": n} for c, n in COMPONENTES],
         "previsao": bloco_previsao(df, args.isp),
-        "diario": ficheiros_diarios(df, ciclos, omie, args.pasta_diario),
+        "diario": ficheiros_diarios(df, ciclos, omie, prod, args.pasta_diario),
+        "solar": tabela_solar(df, prod),
         "dias_omie": ficheiros_dias(args.isp, ciclos, omie, args.pasta_dias),
         "tipos": ficheiros_tipo(args.tipo, args.codigos, df, args.pasta_tipo),
     }

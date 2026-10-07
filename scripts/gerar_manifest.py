@@ -360,8 +360,8 @@ REGISTO = [
          descricao="Totais por dia de mercado (MWh, EUR e EUR por componente) e, por dia "
                    "em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, "
                    "fator de perdas e ERC por período horário BTN pesado pelo perfil "
-                   "ERSE BTN C, desde 14/03/2024. Derivado de data/erc/isp/, data/omie/ "
-                   "e da folha OMIE_PERDAS_CICLOS.",
+                   "ERSE BTN C e quota solar de cada hora, desde 14/03/2024. Derivado de "
+                   "data/erc/isp/, data/omie/, data/producao/ e da folha OMIE_PERDAS_CICLOS.",
          cadencia="1x/dia", tolerancia_dias=6, deteccao="meta:ultima_data",
          avisos=["Os totais em 'mercado' são por dia de MERCADO (das 23:00 da véspera "
                  "às 23:00, hora de Portugal); os de 'dias' são por dia em hora de Portugal.",
