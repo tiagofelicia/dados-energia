@@ -689,6 +689,25 @@
   },
   {
    "avisos": [
+    "Quantidades em MWh, exceto nas bandas (soma dos MW dos quartos de hora da hora); valor em EUR, positivo = custo, negativo = receita.",
+    "Os indicadores (códigos da vista Tipo) e o OMIE PT médio de cada dia estão em metadata.json."
+   ],
+   "bytes": 3286606,
+   "cadencia": "1x/dia",
+   "caminho": "data/agregados/servicos_sistema/",
+   "descricao": "Por dia e hora, em hora de Portugal: OMIE PT médio e, por indicador (redução de geração, desvios em excesso e em falta, energia de reserva aFRR/mFRR/RR a subir e a descer, restrições técnicas e bandas de reserva), a quantidade e o valor, desde 14/03/2024. Derivado de data/erc/tipo/, data/erc/isp/ e data/omie/.",
+   "ficheiros": 33,
+   "formato": "json",
+   "grupo": "agregados",
+   "id": "agregados-servicos-sistema",
+   "padrao": "data/agregados/servicos_sistema/*.json",
+   "titulo": "Serviços de sistema por hora (um ficheiro por mês)",
+   "tolerancia_dias": 6,
+   "ultima_data": "2026-10-04",
+   "url": "https://dados.tiagofelicia.pt/data/agregados/servicos_sistema/"
+  },
+  {
+   "avisos": [
     "Lista plana por dia: [quartos de hora, i, EUR, quantidade, …], com i = posição do código em 'codigos'; nomes, unidades e grupos em erc_resumo.json → tipos.",
     "EUR positivo = custo, negativo = receita. A soma dos códigos de um dia dá a soma das componentes; o total publicado fica abaixo dela nalguns quartos de hora, na fonte."
    ],
@@ -984,7 +1003,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-07T08:39:27+00:00",
+ "gerado_em": "2026-10-07T09:43:06+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1000,8 +1019,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 497158934,
-  "datasets": 36,
-  "ficheiros": 1714
+  "bytes": 500445540,
+  "datasets": 37,
+  "ficheiros": 1747
  }
 }
