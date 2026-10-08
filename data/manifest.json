@@ -821,7 +821,7 @@
     "A chave é (data_iso, periodo). Nos dias de mudança de hora o 'intervalo' repete-se ou salta; o 'data_utc' não.",
     "Em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026) o erc_total_eur publicado pela REN fica abaixo da soma das componentes (241 371 EUR no conjunto). Os valores são guardados como a fonte os dá; nos restantes períodos a diferença é de arredondamento (< 0,01 EUR)."
    ],
-   "bytes": 13006086,
+   "bytes": 13019341,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/isp/",
    "colunas": [
@@ -861,14 +861,14 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por período",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-05",
+   "ultima_data": "2026-10-06",
    "url": "https://dados.tiagofelicia.pt/data/erc/isp/"
   },
   {
    "avisos": [
     "HORÁRIO até 30/09/2025 (periodo 1-24, minutos=60) e de 15 minutos desde 01/10/2025 (periodo 1-96, minutos=15). Antes de juntar com o erc-isp por (data_iso, periodo), filtre ou agregue pela coluna 'minutos'."
    ],
-   "bytes": 48714283,
+   "bytes": 48789491,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/brp/",
    "colunas": [
@@ -899,14 +899,14 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por agente",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-05",
+   "ultima_data": "2026-10-06",
    "url": "https://dados.tiagofelicia.pt/data/erc/brp/"
   },
   {
    "avisos": [
     "A unidade da quantidade varia com o código (MWh para energia, MW para banda): ver a coluna 'unidade' do dicionário."
    ],
-   "bytes": 69329971,
+   "bytes": 69385806,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/tipo/",
    "colunas": [
@@ -931,7 +931,7 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por tipo de encargo",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-05",
+   "ultima_data": "2026-10-06",
    "url": "https://dados.tiagofelicia.pt/data/erc/tipo/"
   },
   {
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-08T17:08:11+00:00",
+ "gerado_em": "2026-10-08T17:46:12+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1059,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 501954524,
+  "bytes": 502098822,
   "datasets": 39,
   "ficheiros": 1752
  }
