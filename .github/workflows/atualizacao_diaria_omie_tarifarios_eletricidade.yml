@@ -2,13 +2,14 @@
 #   → data/omie/MIBEL_ano_atual_ACUM.csv (preços OMIE horários PT/ES, ~12 meses)
 # Fase 2A (eletricidade): atualizar_tarifarios_eletricidade.py
 #   → escreve OMIE+futuros OMIP no xlsx do simulador
+#   → valida a BD (validar_tarifarios_eletricidade.py); com erros não exporta
 #   → exporta as abas como CSVs individuais + manifest.json
 # Fase 2B (site): corre DEPOIS da 2A porque precos-horarios lê o xlsx fresco
 #   → atualizar_omie_dados_atuais.py  → data/omie/omie_dados_atuais.csv
 #   → atualizar_precos-horarios_csv.py → data/omie/precos-horarios.csv
 #   → gerar_records_omie.py                 → data/omie/records_omie.json (incremental)
-# Deploy: xlsx + CSVs do simulador para o espaço Hugging Face (transição;
-#   o nome do xlsx no HF mantém o emoji por compatibilidade).
+# Deploy: CSVs do simulador para o espaço Hugging Face (transição; o xlsx
+#   deixou de ir — ver o step do deploy).
 #
 # O xlsx atualizado NÃO é committed (binário sem delta inflaria o histórico).
 # No git, o xlsx é a base de tarifários mantida manualmente.
@@ -111,7 +112,11 @@ jobs:
       # =========================================================
       # FASE 2A — Excel do simulador de eletricidade + CSVs das abas
       # =========================================================
+      # O Passo 6 valida a BD (validar_tarifarios_eletricidade.py). Com erros não
+      # exporta os CSVs — ficam os da última versão boa — e escreve o output
+      # bd_bloqueada=true, sem chumbar o step: as fases 2B correm na mesma.
       - name: Executar Fase 2A (atualizar_tarifarios_eletricidade.py)
+        id: fase2a
         run: |
           echo "=== FASE 2A (TARIFÁRIOS) INICIADA: $(date) ===" >> logs/diaria_omie.log
           python scripts/atualizar_tarifarios_eletricidade.py >> logs/diaria_omie.log 2>&1
@@ -160,6 +165,15 @@ jobs:
           commit_message: "BOT: Atualização (Fase 2) Ficheiros OMIE processados"
           file_pattern: "data/omie/omie_dados_atuais.csv data/omie/futuros_omip.csv data/omie/precos-horarios.csv data/omie/records_omie.json data/omie/historico/omip_historico_*.csv"
 
+      # Só avisa, não chumba: o gerar_hoje.yml só dispara se esta corrida acabar
+      # verde, e os dados do site (2B) não têm culpa de um erro nos tarifários.
+      # O alarme por email é o validar_bd_eletricidade.yml, que valida o mesmo
+      # xlsx a cada push e uma vez por dia. Os erros estão no resumo da corrida.
+      - name: Avisar se a BD do simulador não foi publicada
+        if: steps.fase2a.outputs.bd_bloqueada == 'true'
+        run: |
+          echo "::warning::BD de tarifários com erros: os CSVs do simulador NÃO foram publicados (ficam os anteriores). Ver o resumo desta corrida."
+
       # O log NÃO é committed — vai só como artefacto.
       - name: Fazer upload do log como artefacto
         if: always()
@@ -172,7 +186,18 @@ jobs:
       # =========================================================
       # DEPLOY — Hugging Face (transição)
       # =========================================================
+      # Com a BD bloqueada não se envia nada: o HF fica igual ao dados-energia,
+      # com os CSVs da última versão boa.
+      #
+      # Só os CSVs + manifest, sem o xlsx (desde 2026-10-09). Cada versão do xlsx
+      # era um ficheiro LFS de ~5 MB que ficava a contar para a quota do HF até
+      # ser apagado à mão (o usedStorage do espaço era exatamente a soma das
+      # versões do xlsx), e nenhum simulador precisa dele: todos leem os CSVs e
+      # usavam o xlsx só como último recurso, no mesmo servidor — se os CSVs do
+      # HF falham, o xlsx do HF falha com eles. Os CSVs são git normal e não
+      # contam para a quota.
       - name: Enviar ficheiros para o Hugging Face
+        if: steps.fase2a.outputs.bd_bloqueada != 'true'
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
@@ -182,21 +207,16 @@ jobs:
             exit 1
           fi
 
-          FICHEIRO_LOCAL="data/simuladores/simulador-tarifarios-eletricidade/tarifarios_eletricidade_Tiago_Felicia.xlsx"
-          # No HF mantém o nome antigo (com emoji) — é o URL que os simuladores publicados usam
-          FICHEIRO_HF="Tarifarios_🔌_Eletricidade_Tiago_Felicia.xlsx"
           PASTA_CSV_LOCAL="data/simuladores/simulador-tarifarios-eletricidade/csv"
           REPO_HF="tiagofelicia/simulador-tarifarios-eletricidade"
 
           echo "Clonando o repositório $REPO_HF..."
           git lfs install
 
-          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS existentes
-          # (vamos substituir o xlsx de qualquer forma — poupa tempo e evita
-          # falhas de smudge no checkout).
+          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS que ainda lá
+          # estejam (poupa tempo e evita falhas de smudge no checkout).
           GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
 
-          cp -f "$FICHEIRO_LOCAL" "hf_repo/$FICHEIRO_HF"
           mkdir -p hf_repo/data/csv
           cp -f "$PASTA_CSV_LOCAL"/*.csv hf_repo/data/csv/
           cp -f "$PASTA_CSV_LOCAL"/manifest.json hf_repo/data/csv/
@@ -205,10 +225,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git lfs track "*.xlsx"
-          git add .gitattributes
-          git add "$FICHEIRO_HF"
           git add data/csv/
 
-          git commit -m "🔌 HF: Atualização automática Excel + CSVs via GitHub Actions" || echo "Sem alterações para enviar"
+          git commit -m "🔌 HF: Atualização automática CSVs via GitHub Actions" || echo "Sem alterações para enviar"
           git push

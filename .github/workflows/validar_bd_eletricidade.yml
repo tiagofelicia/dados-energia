@@ -1,0 +1,78 @@
+# Valida a BD do simulador de eletricidade (o xlsx mantido à mão).
+#
+# validar_tarifarios_eletricidade.py
+#   → não escreve nada. Só lê o xlsx do repositório, reporta e chumba se houver erro.
+#
+# PORQUÊ
+# ------
+# O Passo 6 do atualizar_tarifarios_eletricidade.py faz a mesma validação e,
+# com erros, não publica os CSVs do simulador. Mas não chumba a corrida, de
+# propósito: o gerar_hoje.yml só dispara se ela acabar verde, e os dados do
+# site não têm culpa de um erro nos tarifários. Sem alarme, a BD podia ficar
+# dias por publicar sem ninguém dar por isso — o simulador continuava a
+# funcionar, só que com o OMIE parado.
+#
+# Este workflow é o alarme. Corre:
+#   * a cada push do xlsx — o erro aparece no próprio commit (✗) minutos
+#     depois de o enviar, com a lista no resumo da corrida e email do GitHub;
+#   * uma vez por dia, para o email se repetir enquanto o xlsx não for corrigido.
+#
+# Não precisa de secrets nem de permissões de escrita: só lê o checkout.
+
+name: Validar BD Tarifários Eletricidade
+
+on:
+  push:
+    paths:
+      - 'data/simuladores/simulador-tarifarios-eletricidade/tarifarios_eletricidade_Tiago_Felicia.xlsx'
+      - 'scripts/validar_tarifarios_eletricidade.py'
+      - '.github/workflows/validar_bd_eletricidade.yml'
+  schedule:
+    # 20:15 UTC — depois do último bot do dia (18:00/19:00 UTC) e do validar_dados.yml
+    - cron: '15 20 * * *'
+  workflow_dispatch:
+
+# Antecipar o default Node24 (silencia o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Não commita nada. O grupo serve só para não haver duas validações em paralelo.
+concurrency:
+  group: validar-bd-eletricidade
+  cancel-in-progress: false
+
+jobs:
+  validar:
+    name: Validar xlsx do simulador de eletricidade
+    # Mesma label dos outros workflows (ver atualizar_tarifarios_gas.yml).
+    # Marcha-atrás: 'ubuntu-24.04'.
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Os erros saem como anotações no topo da corrida e no resumo; sai !=0 se houver algum
+      - name: Validar
+        run: python scripts/validar_tarifarios_eletricidade.py
