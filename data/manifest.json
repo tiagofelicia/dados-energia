@@ -179,7 +179,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 7806,
+   "bytes": 6721,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -201,7 +201,7 @@
    ],
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-09",
+   "ultima_data": "2026-10-10",
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
@@ -356,7 +356,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 13629,
+   "bytes": 13630,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -457,7 +457,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
   },
   {
-   "bytes": 196855,
+   "bytes": 196875,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_spot.csv",
    "colunas": [
@@ -480,11 +480,11 @@
    "linhas": 3953,
    "titulo": "Índices MIBGAS",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-08",
+   "ultima_data": "2026-10-09",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1832,
+   "bytes": 1831,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -494,7 +494,7 @@
    "id": "gas-hoje",
    "titulo": "Instantâneo MIBGAS do dia",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-08",
+   "ultima_data": "2026-10-09",
    "url": "https://dados.tiagofelicia.pt/data/gas/hoje.json"
   },
   {
@@ -503,7 +503,7 @@
     "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
     "horizonte 'intradiario' entrega no próprio dia da sessão e 'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."
    ],
-   "bytes": 3337391,
+   "bytes": 3337414,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_futuros.csv",
    "colunas": [
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-09T21:07:26+00:00",
+ "gerado_em": "2026-10-09T23:28:14+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1059,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 503342466,
+  "bytes": 503341424,
   "datasets": 39,
   "ficheiros": 1752
  }
