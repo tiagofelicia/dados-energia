@@ -13,6 +13,8 @@ import hashlib
 # ERC quarto-horário (coluna M). Fica na mesma pasta: quando o script corre, a
 # pasta dele está no sys.path.
 import erc_previsao
+# Validação da BD antes de exportar os CSVs (Passo 6)
+import validar_tarifarios_eletricidade
 
 print("✅ Bibliotecas carregadas")
 
@@ -97,6 +99,79 @@ def escrever_coluna_erc(sheet):
     print(f"     ERC escrito: {contagem['real']} quartos de hora reais, {contagem['curto']} previstos "
           f"a curto prazo, {contagem['longo']} a longo prazo, {contagem['sem']} vazios.")
     return dados["ultimo"] if dados is not None else None
+
+
+def sinalizar_bd_bloqueada(motivo):
+    """
+    Os CSVs do simulador não foram publicados: ficam os da última versão boa.
+
+    Não é uma excepção de propósito. As fases 2B (dados do site) correm na mesma
+    e a corrida acaba verde — o gerar_hoje.yml só dispara se ela acabar verde.
+    O workflow lê o output bd_bloqueada para avisar e saltar o deploy no HF; o
+    alarme (email) é do validar_bd_eletricidade.yml.
+    """
+    print(f"   ❌ BD NÃO PUBLICADA: {motivo}")
+    print("      Os CSVs e o manifest anteriores ficam como estão.")
+    saida = os.environ.get("GITHUB_OUTPUT")
+    if saida:
+        with open(saida, "a", encoding="utf-8") as f:
+            f.write("bd_bloqueada=true\n")
+
+
+def validar_e_exportar_csvs():
+    """
+    Valida as quatro abas e, só se não houver erros, exporta-as como CSVs + manifest.
+
+    A exportação é tudo ou nada: os ficheiros novos são escritos ao lado (.tmp) e
+    só substituem os publicados depois de os quatro estarem escritos, com o
+    manifest em último lugar. Antes, uma aba que falhasse ficava de fora do
+    manifest e as outras eram publicadas na mesma.
+    """
+    try:
+        abas = validar_tarifarios_eletricidade.ler_abas(FICHEIRO_EXCEL)
+        relatorio = validar_tarifarios_eletricidade.validar(abas)
+    except Exception as e:
+        # Um xlsx ilegível ou um bug do validador não pode parar as fases 2B:
+        # não se publica (na dúvida, fica a última versão boa) e segue-se.
+        import traceback
+        traceback.print_exc()
+        sinalizar_bd_bloqueada(f"a validação não correu: {e}")
+        return None
+    print("   " + relatorio.texto().replace("\n", "\n   "))
+    relatorio.escrever_resumo_github("Validação da BD do simulador de eletricidade (Fase 2A)")
+    if relatorio.erros:
+        sinalizar_bd_bloqueada(f"{len(relatorio.erros)} erro(s) na validação")
+        return None
+
+    os.makedirs(PASTA_CSV, exist_ok=True)
+    temporarios = []
+    manifest = {}
+    try:
+        for aba in ABAS_PARA_CSV:
+            tmp = os.path.join(PASTA_CSV, f"{aba}.csv.tmp")
+            temporarios.append(tmp)
+            abas[aba].to_csv(tmp, index=False, encoding='utf-8-sig')
+            # Hash MD5 do conteúdo para o manifest (o simulador compara-o com o da cache)
+            with open(tmp, 'rb') as f:
+                manifest[aba] = hashlib.md5(f.read()).hexdigest()[:8]
+            print(f"   ✅ {aba}.csv ({len(abas[aba])} registos) [{manifest[aba]}]")
+        tmp_manifest = os.path.join(PASTA_CSV, "manifest.json.tmp")
+        temporarios.append(tmp_manifest)
+        with open(tmp_manifest, 'w', encoding='utf-8') as f:
+            json.dump(manifest, f)
+    except Exception as e:
+        for tmp in temporarios:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+        sinalizar_bd_bloqueada(f"falha ao exportar: {e}")
+        return None
+
+    for aba in ABAS_PARA_CSV:
+        os.replace(os.path.join(PASTA_CSV, f"{aba}.csv.tmp"), os.path.join(PASTA_CSV, f"{aba}.csv"))
+    os.replace(tmp_manifest, os.path.join(PASTA_CSV, "manifest.json"))
+    print(f"   ✅ manifest.json gerado: {manifest}")
+    print("✅ Exportação de CSVs concluída.")
+    return manifest
 
 
 def run_update_process():
@@ -412,31 +487,11 @@ def run_update_process():
         print(f"✅ O ficheiro Excel foi atualizado com sucesso!\n   Data_Valores_OMIE = {ultima_data_omie.date()}\n   Data_Valores_OMIP = {data_relatorio_omip.date()}\n   Data_Valores_ERC = {ultimo_dia_erc.date() if ultimo_dia_erc is not None else '(sem dados da REN)'}")
 
         # ============================================================
-        # PASSO 6: Exportar abas do Excel como CSVs individuais
+        # PASSO 6: Validar a BD e exportar as abas como CSVs individuais
         # ============================================================
 
-        print(f"\n⏳ Passo 6: A exportar abas do Excel como CSVs individuais...")
-        os.makedirs(PASTA_CSV, exist_ok=True)
-
-        manifest = {}
-        for aba in ABAS_PARA_CSV:
-            try:
-                df_aba = pd.read_excel(FICHEIRO_EXCEL, sheet_name=aba)
-                csv_path = os.path.join(PASTA_CSV, f"{aba}.csv")
-                df_aba.to_csv(csv_path, index=False, encoding='utf-8-sig')
-                # Gerar hash MD5 do conteúdo para o manifest
-                with open(csv_path, 'rb') as f:
-                    manifest[aba] = hashlib.md5(f.read()).hexdigest()[:8]
-                print(f"   ✅ {aba}.csv ({len(df_aba)} registos) [{manifest[aba]}]")
-            except Exception as e:
-                print(f"   ❌ Falha ao exportar '{aba}': {e}")
-
-        # Gerar manifest.json para validação de cache no simulador
-        manifest_path = os.path.join(PASTA_CSV, "manifest.json")
-        with open(manifest_path, 'w', encoding='utf-8') as f:
-            json.dump(manifest, f)
-        print(f"   ✅ manifest.json gerado: {manifest}")
-        print("✅ Exportação de CSVs concluída.")
+        print(f"\n⏳ Passo 6: A validar a BD e a exportar as abas como CSVs individuais...")
+        validar_e_exportar_csvs()
 
     except Exception as e:
         import traceback
