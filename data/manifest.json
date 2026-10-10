@@ -561,7 +561,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
-   "bytes": 757091,
+   "bytes": 757204,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -594,11 +594,11 @@
    "padrao": "data/agregados/omie_*.csv",
    "titulo": "Agregados OMIE (diário, mensal, anual)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-10",
+   "ultima_data": "2026-10-11",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
-   "bytes": 719568,
+   "bytes": 719682,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -629,14 +629,14 @@
    "padrao": "data/agregados/producao_*.csv",
    "titulo": "Agregados de produção (diário, mensal, anual)",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-08",
+   "ultima_data": "2026-10-09",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
    "avisos": [
     "O bloco 'previsao' NÃO é real: é a previsão própria para os 14 dias seguintes ao último publicado (erc_previsao.py) e o erro dessa previsão em cada antecedência, medido no último ano."
    ],
-   "bytes": 47282,
+   "bytes": 47335,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_resumo.json",
    "descricao": "Encargos de regulação da REN: intervalo publicado, componentes, intervalos dos ficheiros erc_diario/, erc_omie/ e erc_tipo/, grupos e nomes dos tipos de encargo, e a previsão própria para os 14 dias seguintes ao último publicado. Derivado de data/erc/isp/.",
@@ -654,7 +654,7 @@
     "Os totais em 'mercado' são por dia de MERCADO (das 23:00 da véspera às 23:00, hora de Portugal); os de 'dias' são por dia em hora de Portugal.",
     "'p' e 'c' só existem desde 2025; 'c' segue a ordem de 'ordem_c'."
    ],
-   "bytes": 686703,
+   "bytes": 719575,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_diario/",
    "descricao": "Totais por dia de mercado (MWh, EUR e EUR por componente) e, por dia em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, fator de perdas e ERC por período horário BTN pesado pelo perfil ERSE BTN C e quota solar de cada hora, desde 14/03/2024. Derivado de data/erc/isp/, data/omie/, data/producao/ e da tabela OMIE_PERDAS_CICLOS do simulador.",
@@ -673,7 +673,7 @@
     "Nos dias ainda sem ERC publicado, o ERC é previsão própria (erc_previsao.py); 'erc_previsto' diz quantos quartos de hora do dia o são.",
     "'slots' só aparece nos dias de mudança de hora (92 ou 100 quartos de hora)."
    ],
-   "bytes": 1489405,
+   "bytes": 1688169,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_omie/",
    "descricao": "Por dia e quarto de hora, em hora de Portugal: o OMIE PT, o ERC e o fator de perdas BT da ERSE (desde 2025), desde 14/03/2024. Derivado de data/omie/, data/erc/isp/ e da tabela OMIE_PERDAS_CICLOS do simulador.",
@@ -684,7 +684,7 @@
    "padrao": "data/agregados/erc_omie/*.json",
    "titulo": "OMIE PT, ERC e perdas por quarto de hora (um ficheiro por mês)",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-10",
+   "ultima_data": "2026-10-11",
    "url": "https://dados.tiagofelicia.pt/data/agregados/erc_omie/"
   },
   {
@@ -692,7 +692,7 @@
     "Um agente (BRP) pode representar vários comercializadores: as quotas são por agente de mercado, não por marca comercial.",
     "Nos períodos com ERC total ≈ 0 usa-se a quota do agente nesse dia; o brp foi horário até 30/09/2025."
    ],
-   "bytes": 658337,
+   "bytes": 658339,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/agentes/",
    "descricao": "Por dia de mercado, o consumo abastecido e o ERC imputado a cada agente (BRP), e por mês o consumo de cada agente em cada hora, desde 14/03/2024. Consumo = (ERC do agente ÷ ERC total) × consumo do mercado, período a período. Derivado de data/erc/brp/, data/erc/isp/ e data/erc/erc_agentes.csv.",
@@ -749,7 +749,7 @@
     "São emissões de CICLO DE VIDA, não diretas: não comparáveis com o Inventário Nacional da APA nem com o indicador da EEA.",
     "Cobre a produção nacional, não o consumo: as importações de Espanha (25% do consumo em 2024) não estão incluídas."
    ],
-   "bytes": 478380,
+   "bytes": 478451,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/",
    "colunas": [
@@ -773,7 +773,7 @@
    "padrao": "data/emissoes/intensidade_*.csv",
    "titulo": "Intensidade carbónica da produção elétrica",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-08",
+   "ultima_data": "2026-10-09",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/"
   },
   {
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-10T16:24:21+00:00",
+ "gerado_em": "2026-10-10T16:32:35+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1059,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 503462382,
+  "bytes": 503694371,
   "datasets": 39,
   "ficheiros": 1752
  }
