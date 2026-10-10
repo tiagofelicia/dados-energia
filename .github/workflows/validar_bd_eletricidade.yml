@@ -1,7 +1,8 @@
 # Valida a BD do simulador de eletricidade (o xlsx mantido à mão).
 #
 # validar_tarifarios_eletricidade.py
-#   → não escreve nada. Só lê o xlsx do repositório, reporta e chumba se houver erro.
+#   → não escreve nada. Lê o xlsx do repositório, as bases (base/) e os ficheiros
+#     por ano da OMIE_PERDAS_CICLOS (csv/), reporta e chumba se houver erro.
 #
 # PORQUÊ
 # ------
@@ -13,7 +14,7 @@
 # funcionar, só que com o OMIE parado.
 #
 # Este workflow é o alarme. Corre:
-#   * a cada push do xlsx — o erro aparece no próprio commit (✗) minutos
+#   * a cada push do xlsx ou de uma base — o erro aparece no próprio commit (✗) minutos
 #     depois de o enviar, com a lista no resumo da corrida e email do GitHub;
 #   * uma vez por dia, para o email se repetir enquanto o xlsx não for corrigido.
 #
@@ -25,7 +26,9 @@ on:
   push:
     paths:
       - 'data/simuladores/simulador-tarifarios-eletricidade/tarifarios_eletricidade_Tiago_Felicia.xlsx'
+      - 'data/simuladores/simulador-tarifarios-eletricidade/base/**'
       - 'scripts/validar_tarifarios_eletricidade.py'
+      - 'scripts/omie_perdas_ciclos.py'
       - '.github/workflows/validar_bd_eletricidade.yml'
   schedule:
     # 20:15 UTC — depois do último bot do dia (18:00/19:00 UTC) e do validar_dados.yml

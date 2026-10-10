@@ -1,10 +1,12 @@
 # Fase 1: atualizar_mibel_ano_atual_ACUM.py
 #   → data/omie/MIBEL_ano_atual_ACUM.csv (preços OMIE horários PT/ES, ~12 meses)
 # Fase 2A (eletricidade): atualizar_tarifarios_eletricidade.py
-#   → escreve OMIE+futuros OMIP no xlsx do simulador
+#   → monta os ficheiros por ano da OMIE_PERDAS_CICLOS (base + OMIE/futuros + ERC)
+#     e escreve as datas de referência no xlsx do simulador
 #   → valida a BD (validar_tarifarios_eletricidade.py); com erros não exporta
 #   → exporta as abas como CSVs individuais + manifest.json
 # Fase 2B (site): corre DEPOIS da 2A porque precos-horarios lê o xlsx fresco
+#   (constantes) e os ficheiros por ano da OMIE_PERDAS_CICLOS (períodos e perdas)
 #   → atualizar_omie_dados_atuais.py  → data/omie/omie_dados_atuais.csv
 #   → atualizar_precos-horarios_csv.py → data/omie/precos-horarios.csv
 #   → gerar_records_omie.py                 → data/omie/records_omie.json (incremental)
@@ -130,7 +132,7 @@ jobs:
           file_pattern: "data/simuladores/simulador-tarifarios-eletricidade/csv/*"
 
       # =========================================================
-      # FASE 2B — Dados do site (lê o xlsx fresco da Fase 2A)
+      # FASE 2B — Dados do site (lê o xlsx e os ficheiros por ano da Fase 2A)
       # =========================================================
       - name: Executar Fase 2B - omie_dados_atuais
         run: |
