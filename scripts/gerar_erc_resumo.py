@@ -44,13 +44,14 @@ erc_diario/AAAA.json (~250 KB por ano), um por ano civil:
                   a soma dos pesos × 1000, alternados [€, peso, €, peso, …]
              s    quota solar de cada hora (%, inteiro): produção solar ÷ consumo, dos
                   dados de produção da REN (data/producao)
-           p e c só existem desde 2025 (a folha do simulador começa aí); s só
+           p e c só existem desde o 1.º ano da OMIE_PERDAS_CICLOS (2025; 14/03/2024
+           com o 2024 importado — antes não há ERC); s só
            com a produção reportada (balanço fechado).
 
 erc_omie/AAAA-MM.json (~50 KB por mês), que a página só descarrega quando se
 escolhe um dia: por quarto de hora, o OMIE PT, o ERC (o real ou, nos dias ainda
 sem valor publicado, a previsão própria; erc_previsto = quantos o são) e o fator
-de perdas (desde 2025). 'slots' só nos dias de mudança de hora.
+de perdas (desde o 1.º ano da OMIE_PERDAS_CICLOS). 'slots' só nos dias de mudança de hora.
 
 erc_tipo/AAAA.json (~150 KB por ano), para o bloco "De onde vem o ERC": por dia
 de MERCADO, o valor (€, positivo = custo, negativo = receita) e a quantidade
@@ -65,8 +66,8 @@ COMO SE CALCULA
 • Médias como as da REN: Σ€ ÷ ΣMWh (pesadas pelo consumo do mercado).
 • Os totais diários usam o dia de MERCADO (data_iso), como a REN; as horas, os
   períodos horários e os extremos usam a hora de Portugal (data_utc).
-• Os períodos horários, os pesos BTN C e as perdas vêm da folha
-  OMIE_PERDAS_CICLOS do simulador (data/simuladores/.../csv). Cada linha é
+• Os períodos horários, os pesos BTN C e as perdas vêm dos ficheiros por ano
+  OMIE_PERDAS_CICLOS_AAAA.csv do simulador (data/simuladores/.../csv). Cada linha é
   alinhada pelo instante em que começa (dia + posição no dia), como no
   atualizar_tarifarios_eletricidade.py. O OMIE PT vem de data/omie/
   (histórico + dados atuais), só com dias reais.
@@ -81,7 +82,7 @@ para não haver commits vazios.
 USO
 ---
   python gerar_erc_resumo.py
-  python gerar_erc_resumo.py --isp <pasta> --ciclos <csv> --saida <json>
+  python gerar_erc_resumo.py --isp <pasta> --ciclos <pasta ou csv> --saida <json>
 """
 
 import argparse
@@ -94,14 +95,15 @@ import numpy as np
 import pandas as pd
 
 import erc_previsao
+import omie_perdas_ciclos as opc
 from gerar_records_omie import ATUAIS_PATH, HISTORICO_GLOB, cortar_futuros, ler_csv_omie
 import gerar_records_producao as producao
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 PASTA_ISP = os.path.join(ROOT_DIR, "data", "erc", "isp")
-FICHEIRO_CICLOS = os.path.join(ROOT_DIR, "data", "simuladores", "simulador-tarifarios-eletricidade",
-                               "csv", "OMIE_PERDAS_CICLOS.csv")
+# Pasta dos ficheiros por ano da OMIE_PERDAS_CICLOS (ver omie_perdas_ciclos.py)
+PASTA_CICLOS = opc.PASTA_CSV
 PASTA_AGREGADOS = os.path.join(ROOT_DIR, "data", "agregados")
 SAIDA = os.path.join(PASTA_AGREGADOS, "erc_resumo.json")
 PASTA_DIARIO = os.path.join(PASTA_AGREGADOS, "erc_diario")
@@ -181,12 +183,17 @@ def ler_isp(pasta):
 
 
 def ler_ciclos(caminho):
-    """Folha OMIE_PERDAS_CICLOS: períodos horários, pesos BTN C e perdas por
-    quarto de hora, indexados pelo instante de início em UTC."""
-    if not os.path.exists(caminho):
-        print(f"⚠️ Sem {caminho}: períodos horários e perdas ficam de fora.")
+    """Tabela OMIE_PERDAS_CICLOS do simulador: períodos horários, pesos BTN C e
+    perdas por quarto de hora, indexados pelo instante de início em UTC.
+
+    caminho: a pasta dos ficheiros por ano (lidos todos — os anos fechados
+    continuam a contar depois de saírem do ficheiro único) ou um CSV."""
+    ficheiros = opc.ficheiros_para_leitura(caminho) if os.path.isdir(caminho) else (
+        [caminho] if os.path.exists(caminho) else [])
+    if not ficheiros:
+        print(f"⚠️ Sem {opc.NOME} em {caminho}: períodos horários e perdas ficam de fora.")
         return None
-    c = pd.read_csv(caminho, encoding="utf-8-sig", dtype=str)
+    c = pd.concat([pd.read_csv(f, encoding="utf-8-sig", dtype=str) for f in ficheiros], ignore_index=True)
     c = c[c["Data"].notna() & (c["Data"].str.strip() != "")].copy()
     dia = pd.to_datetime(c["Data"].str.strip(), format="%m/%d/%Y")
     pos = c.groupby(dia).cumcount()
@@ -570,7 +577,7 @@ def bloco_previsao(df, pasta_isp):
 def main():
     p = argparse.ArgumentParser(description="Dados do ERC da REN para a página do site.")
     p.add_argument("--isp", default=PASTA_ISP)
-    p.add_argument("--ciclos", default=FICHEIRO_CICLOS)
+    p.add_argument("--ciclos", default=PASTA_CICLOS, help="pasta dos ficheiros por ano (ou um CSV)")
     p.add_argument("--saida", default=SAIDA)
     p.add_argument("--pasta-diario", default=PASTA_DIARIO)
     p.add_argument("--pasta-dias", default=PASTA_DIAS)

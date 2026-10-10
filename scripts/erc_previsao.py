@@ -6,8 +6,8 @@ ERC da REN (Encargos de Regulação imputados ao Consumo) por quarto de hora: o
 valor real onde a REN já publicou e uma previsão no resto. É usado por:
 
   atualizar_precos-horarios_csv.py      Preços Horários (hoje e amanhã)
-  atualizar_tarifarios_eletricidade.py  coluna ERC da folha OMIE_PERDAS_CICLOS,
-                                        que os simuladores leem
+  atualizar_tarifarios_eletricidade.py  coluna ERC dos ficheiros por ano da
+                                        OMIE_PERDAS_CICLOS, que os simuladores leem
 
 Os dois chamam as mesmas funções, por isso dão o mesmo número para o mesmo
 quarto de hora.

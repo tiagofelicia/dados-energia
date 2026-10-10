@@ -5,6 +5,7 @@
 import pandas as pd
 import requests
 import re
+import os
 import sys
 from datetime import datetime
 import io
@@ -13,6 +14,8 @@ import csv
 # ERC quarto-horário (ver o bloco 0b). Fica na mesma pasta: quando o script
 # corre, a pasta dele está no sys.path.
 import erc_previsao
+# Ficheiros por ano da tabela OMIE_PERDAS_CICLOS do simulador (períodos e perdas)
+import omie_perdas_ciclos as opc
 
 # Windows: quando o output é redirecionado (ficheiro de log, pipe), o stdout usa
 # cp1252 e qualquer emoji dos prints lança UnicodeEncodeError, abortando o script.
@@ -63,8 +66,8 @@ CHAVES_CONSTANTES_UTILIZADAS = {
 # out/2025 e set/2026). Nas horas de sol chegou a estar 14 €/MWh acima da média do
 # dia (set/2026); com uma constante, essas horas pareciam mais baratas do que são.
 #
-# A previsão está no erc_previsao.py, partilhado com a Fase 2A (coluna ERC da folha
-# OMIE_PERDAS_CICLOS, que os simuladores leem): os dois dão o mesmo número para o
+# A previsão está no erc_previsao.py, partilhado com a Fase 2A (coluna ERC dos ficheiros
+# por ano da OMIE_PERDAS_CICLOS, que os simuladores leem): os dois dão o mesmo número para o
 # mesmo quarto de hora. Ver lá o método e os testes.
 #
 # Valor por tarifário (CGS/CS/CG = ERC, em €/kWh):
@@ -124,6 +127,20 @@ def validar_constantes(constantes_dict):
     print("   data/simuladores/simulador-tarifarios-eletricidade/tarifarios_eletricidade_Tiago_Felicia.xlsx")
     print("=" * 72)
     return False
+
+
+def ler_omie_perdas_ciclos():
+    """
+    Períodos horários (BD/BS/TD/TS) e perdas de cada quarto de hora, dos ficheiros
+    por ano da OMIE_PERDAS_CICLOS (data/simuladores/.../csv/), do ano mais recente
+    para o mais antigo. No workflow, a Fase 2A acabou de os escrever. Num clone
+    local que ainda não os tenha, usa o ficheiro único antigo.
+    """
+    ficheiros = opc.ficheiros_para_leitura()
+    if not ficheiros:
+        raise FileNotFoundError(f"sem ficheiros {opc.NOME}_AAAA.csv nem {opc.FICHEIRO_COMBINADO} em {opc.PASTA_CSV}")
+    print(f"   - Períodos e perdas de: {', '.join(os.path.basename(f) for f in ficheiros)}")
+    return pd.concat([opc.ler(f) for f in ficheiros], ignore_index=True)
 
 
 # ============================================================
@@ -241,10 +258,10 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
         # Guarda: constantes em falta dariam preços a 0 sem qualquer erro visível
         validar_constantes(constantes_dict)
 
-        # O read_excel precisa de "reiniciar" o cursor dos bytes
-        excel_bytes.seek(0) 
-        omie_perdas_ciclos = pd.read_excel(excel_bytes, sheet_name="OMIE_PERDAS_CICLOS")
-        
+        # Períodos horários e perdas: os ficheiros por ano da OMIE_PERDAS_CICLOS
+        # (já não são uma folha do xlsx — ver omie_perdas_ciclos.py)
+        omie_perdas_ciclos = ler_omie_perdas_ciclos()
+
         omie_perdas_ciclos['DataHora'] = omie_perdas_ciclos.apply(lambda r: pd.to_datetime(f"{r['Data']} {r['Hora']}", errors='coerce'), axis=1)
         omie_perdas_ciclos['DataHora'] = (omie_perdas_ciclos['DataHora'].dt.tz_localize('Europe/Madrid', nonexistent='shift_forward', ambiguous='NaT').dt.tz_convert('Europe/Lisbon').dt.tz_localize(None))
         omie_perdas_ciclos['DataHora'] = omie_perdas_ciclos['DataHora'] + pd.Timedelta(minutes=45)

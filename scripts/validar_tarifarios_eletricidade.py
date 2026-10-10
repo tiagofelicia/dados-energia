@@ -20,14 +20,21 @@ segue dá erro em lado nenhum — o simulador calcula, só que mal:
   * um nome_pos_promo com uma gralha parte a cadeia de fases do 1.º ano, e o
     simulador mostra "⚠ fase seguinte não encontrada na BD" aos visitantes.
 
+Verifica também a tabela OMIE_PERDAS_CICLOS, que deixou de ser uma folha do
+xlsx e passou a ser um ficheiro por ano (ver omie_perdas_ciclos.py): as bases
+exportadas pelo autor (base/) e os ficheiros publicados (csv/). Aí o que se
+verifica é o calendário — todos os dias do ano, 96 quartos de hora por dia e
+92/100 nos dias em que o relógio muda — os ciclos horários, os perfis BTN (que
+somam 1000 num ano), as perdas, e no ficheiro publicado o OMIE e o ERC.
+
 ONDE CORRE
 ----------
   1. Passo 6 do atualizar_tarifarios_eletricidade.py: com erros, os CSVs do
      simulador NÃO são exportados e ficam os da última versão boa.
-  2. Workflow validar_bd_eletricidade.yml, a cada push do xlsx e uma vez por
-     dia. É ele o alarme: chumba, e o GitHub manda email.
-  3. À mão, antes de enviar o xlsx:
-       python scripts/validar_tarifarios_eletricidade.py [caminho.xlsx]
+  2. Workflow validar_bd_eletricidade.yml, a cada push do xlsx ou de uma base,
+     e uma vez por dia. É ele o alarme: chumba, e o GitHub manda email.
+  3. À mão, antes de enviar o xlsx (e as bases, se as houver):
+       python scripts/validar_tarifarios_eletricidade.py [caminho.xlsx] [--base pasta]
 
 ERROS E AVISOS
 --------------
@@ -47,8 +54,8 @@ lista do simulador, AVISO para o que pode ser legítimo. Só os erros bloqueiam.
 
 USO
 ---
-  python validar_tarifarios_eletricidade.py               # o xlsx do repositório
-  python validar_tarifarios_eletricidade.py outro.xlsx
+  python validar_tarifarios_eletricidade.py               # o xlsx, as bases e os anos do repositório
+  python validar_tarifarios_eletricidade.py outro.xlsx --base "G:/O meu disco"
   python validar_tarifarios_eletricidade.py --so-avisar   # sai sempre com 0
 """
 
@@ -57,14 +64,15 @@ import math
 import os
 import sys
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 import pandas as pd
 
+import omie_perdas_ciclos as opc
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SCRIPT_DIR)
-FICHEIRO_EXCEL = os.path.join(ROOT_DIR, "data", "simuladores", "simulador-tarifarios-eletricidade",
-                              "tarifarios_eletricidade_Tiago_Felicia.xlsx")
+FICHEIRO_EXCEL = os.path.join(opc.PASTA_SIMULADOR, "tarifarios_eletricidade_Tiago_Felicia.xlsx")
 
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -77,8 +85,10 @@ except (AttributeError, OSError):
 # Regras
 # ============================================================
 
-ABAS = ["Constantes", "Tarifarios_fixos", "Indexados", "OMIE_PERDAS_CICLOS"]
+ABAS = ["Constantes", "Tarifarios_fixos", "Indexados"]
 ABAS_TARIFARIOS = ["Tarifarios_fixos", "Indexados"]
+# Folha antiga: se o xlsx ainda a trouxer, é ignorada (só avisa)
+ABA_OMIE_ANTIGA = "OMIE_PERDAS_CICLOS"
 
 # Colunas de que o simulador depende. Não é o cabeçalho todo de propósito: uma
 # coluna nova é bem-vinda, uma coluna a menos não.
@@ -99,8 +109,6 @@ COLUNAS = {
         "tar_incluida_energia", "tar_incluida_potencia", "financiamento_tse_incluido",
         "100_Verde", "site_adesao"],
     "Constantes": ["constante", "valor_unitário"],
-    "OMIE_PERDAS_CICLOS": ["Data", "Hora", "BD", "BS", "TD", "TS",
-                           "BTN_A", "BTN_B", "BTN_C", "OMIE", "Perdas"],
 }
 
 # Uma linha com dados tem de ter estes campos preenchidos
@@ -181,8 +189,14 @@ CONSTANTES_USADAS = [
 # Escritas pelo bot (B90–B92), em MM/DD/AAAA. A do ERC só existe no xlsx do bot.
 DATAS_CONSTANTES = {"Data_Valores_OMIE": True, "Data_Valores_OMIP": True, "Data_Valores_ERC": False}
 
-# OMIE_PERDAS_CICLOS: abaixo desta fração de linhas com OMIE, avisa
-COBERTURA_OMIE_MIN = 0.99
+# OMIE_PERDAS_CICLOS (bases e ficheiros por ano)
+CICLOS_VALIDOS = {"Simp": {"S"}, "BD": {"V", "F"}, "BS": {"V", "F"},
+                  "TD": {"V", "C", "P"}, "TS": {"V", "C", "P"}}
+PERFIS = ["BTN_A", "BTN_B", "BTN_C"]
+# Os perfis BTN da ERSE somam 1000 num ano (2025 e 2026: 1000,000000). Uma soma
+# diferente é um quarto de hora a mais, a menos ou com o valor errado.
+SOMA_PERFIL = 1000.0
+TOLERANCIA_SOMA = 0.001
 
 
 # ============================================================
@@ -523,25 +537,104 @@ def ver_constantes(df, rel):
             rel.aviso(aba, f"{nome} (linha {ln}) não é um número: \"{fmt(v)}\"")
 
 
-def ver_omie(df, rel):
-    aba = "OMIE_PERDAS_CICLOS"
-    com_data = df[df["Data"].notna()]
-    if com_data.empty:
-        rel.erro(aba, "folha sem linhas")
+def ver_tabela_ano(ano, df, rel, aba, base=False, fechado=False):
+    """Uma base (base=True) ou um ficheiro publicado de um ano da OMIE_PERDAS_CICLOS.
+    As linhas contam como no ficheiro: a 1.ª linha de dados é a 2."""
+    colunas = opc.COLUNAS_BASE if base else opc.COLUNAS_ANO
+    faltam = [c for c in colunas if c not in df.columns]
+    if faltam:
+        rel.erro(aba, f"coluna(s) em falta: {', '.join(faltam)}")
         return
-    for c in ("OMIE", "Perdas", "BTN_A", "BTN_B", "BTN_C"):
-        nums = pd.to_numeric(com_data[c], errors="coerce")
-        maus = com_data.index[com_data[c].notna() & nums.isna()]
-        if len(maus):
-            rel.erro(aba, f"{c} não numérico — linha(s) {linhas([i + 2 for i in maus])}")
-    perdas = pd.to_numeric(com_data["Perdas"], errors="coerce")
-    lo, hi = LIMITES_PERDAS
-    fora = com_data.index[perdas.notna() & ((perdas < lo) | (perdas > hi))]
+    if df.empty:
+        rel.erro(aba, "ficheiro sem linhas")
+        return
+    ln = lambda idx: linhas([i + 2 for i in idx])
+
+    # Calendário: todos os dias do ano, cada um num bloco seguido, com 96 quartos
+    # de hora (92 e 100 nos dias em que o relógio muda)
+    dia = pd.to_datetime(df["Data"], format="%m/%d/%Y", errors="coerce")
+    maus = df.index[dia.isna()]
+    if len(maus):
+        rel.erro(aba, f"Data que não é MM/DD/AAAA — linha(s) {ln(maus)}")
+        return
+    fora = df.index[dia.dt.year != ano]
     if len(fora):
-        rel.erro(aba, f"Perdas fora do intervalo plausível [{lo}, {hi}] — linha(s) {linhas([i + 2 for i in fora])}")
-    cobertura = pd.to_numeric(com_data["OMIE"], errors="coerce").notna().mean()
-    if cobertura < COBERTURA_OMIE_MIN:
-        rel.aviso(aba, f"só {cobertura:.1%} das linhas com data têm OMIE")
+        rel.erro(aba, f"datas fora de {ano} — linha(s) {ln(fora)}")
+        return
+    if not dia.is_monotonic_increasing:
+        rel.erro(aba, "os dias não estão por ordem (cada dia tem de estar num bloco seguido)")
+    contagem = dia.dt.date.value_counts()
+    todos = [date(ano, 1, 1) + timedelta(days=i) for i in range((date(ano + 1, 1, 1) - date(ano, 1, 1)).days)]
+    em_falta = [d for d in todos if d not in contagem.index]
+    if em_falta:
+        rel.erro(aba, f"{len(em_falta)} dia(s) em falta: " + ", ".join(d.strftime("%d/%m") for d in em_falta[:8])
+                 + (" …" if len(em_falta) > 8 else ""))
+    errados = [(d, n, opc.quartos_do_dia(d)) for d, n in sorted(contagem.items()) if n != opc.quartos_do_dia(d)]
+    if errados:
+        rel.erro(aba, f"{len(errados)} dia(s) com o número errado de quartos de hora: "
+                 + ", ".join(f"{d.strftime('%d/%m')} tem {n} (devia ter {e})" for d, n, e in errados[:6])
+                 + (" …" if len(errados) > 6 else ""))
+
+    maus = df.index[~df["Hora"].fillna("").str.match(opc.RE_HORA)]
+    if len(maus):
+        exemplos = ", ".join(sorted(set(df.loc[maus[:50], "Hora"].fillna("(vazio)")))[:5])
+        rel.erro(aba, f"Hora fora do formato HH:MM de 00:00 a 23:59 ({exemplos}) — os simuladores não "
+                      f"encontravam esses quartos de hora — linha(s) {ln(maus)}")
+
+    for c, validos in CICLOS_VALIDOS.items():
+        maus = df.index[~df[c].isin(validos)]
+        if len(maus):
+            rel.erro(aba, f"{c} com valor fora de {sorted(validos)} — linha(s) {ln(maus)}")
+
+    for c in PERFIS:
+        nums = pd.to_numeric(df[c], errors="coerce")
+        maus = df.index[nums.isna() | (nums < 0)]
+        if len(maus):
+            rel.erro(aba, f"{c} vazio, negativo ou não numérico — linha(s) {ln(maus)}")
+        elif abs(nums.sum() - SOMA_PERFIL) > TOLERANCIA_SOMA:
+            rel.erro(aba, f"{c} soma {nums.sum():.6f} no ano (devia somar {SOMA_PERFIL:g})")
+
+    perdas = pd.to_numeric(df["Perdas"], errors="coerce")
+    lo, hi = LIMITES_PERDAS
+    maus = df.index[perdas.isna() | (perdas < lo) | (perdas > hi)]
+    if len(maus):
+        rel.erro(aba, f"Perdas vazias ou fora do intervalo plausível [{lo}, {hi}] — linha(s) {ln(maus)}")
+
+    if base:
+        return
+    # O simulador conta um OMIE em falta como 0 €/MWh. Num ano aberto os futuros
+    # cobrem até 31/12, por isso um buraco é sempre um erro.
+    omie = pd.to_numeric(df["OMIE"], errors="coerce")
+    maus = df.index[omie.isna()]
+    if len(maus):
+        rel.erro(aba, f"OMIE vazio ou não numérico em {len(maus)} quarto(s) de hora — linha(s) {ln(maus)}")
+    erc = pd.to_numeric(df["ERC"], errors="coerce")
+    maus = df.index[df["ERC"].notna() & erc.isna()]
+    if len(maus):
+        rel.erro(aba, f"ERC não numérico — linha(s) {ln(maus)}")
+    # Fechado = sem estimativas: o ERC tem de estar todo (a partir do 1.º dia com
+    # dados da REN; antes disso fica vazio e os simuladores usam a constante)
+    sem_erc = erc.isna() & (dia.dt.date >= opc.ERC_DESDE)
+    if fechado and sem_erc.any():
+        rel.erro(aba, f"ano fechado com {int(sem_erc.sum())} quarto(s) de hora sem ERC")
+
+
+def ver_estado_anos(estado, rel, ano_atual=None):
+    """Que anos há, quais estão fechados e se cada ano aberto tem a sua base."""
+    aba = opc.NOME
+    ano_atual = ano_atual or opc.hoje_pt().year
+    sem_base = (estado["abertos_manifest"] | estado["publicados"]) - estado["bases"] - estado["fechados"]
+    for a in sorted(sem_base):
+        rel.erro(aba, f"{a} está aberto mas falta a base ({os.path.basename(opc.caminho_base(a))}): "
+                      f"o ano deixava de ser atualizado")
+    for a in sorted(estado["fechados_manifest"] - estado["publicados"]):
+        rel.erro(aba, f"{a} está fechado no manifest mas o ficheiro {os.path.basename(opc.caminho_ano(a))} não existe")
+    for a in estado.get("importar", []):
+        if not os.path.exists(opc.caminho_historico(a)):
+            rel.erro(aba, f"há base de {a}, mas não há histórico do OMIE desse ano "
+                          f"({os.path.basename(opc.caminho_historico(a))}) para o montar")
+    if ano_atual not in estado["bases"] | estado["fechados"]:
+        rel.aviso(aba, f"não há base de {ano_atual}: os simuladores estimam {ano_atual} a partir do ano anterior")
 
 
 # ============================================================
@@ -549,16 +642,21 @@ def ver_omie(df, rel):
 # ============================================================
 
 def ler_abas(caminho):
-    """{aba: DataFrame} das quatro abas; None nas que não existem.
+    """{aba: DataFrame} das três abas; None nas que não existem. Em "_folhas" vão
+    os nomes de todas as folhas do xlsx (para avisar da folha OMIE antiga).
 
     Lido exatamente como o Passo 6 sempre leu (pd.read_excel com as opções por
     omissão), para que os CSVs exportados destes DataFrames não mudem.
     """
     with pd.ExcelFile(caminho) as xl:
-        return {aba: (xl.parse(aba) if aba in xl.sheet_names else None) for aba in ABAS}
+        abas = {aba: (xl.parse(aba) if aba in xl.sheet_names else None) for aba in ABAS}
+        abas["_folhas"] = list(xl.sheet_names)
+    return abas
 
 
-def validar(abas):
+def validar(abas, anos=None, bases=None, estado=None):
+    """abas: o xlsx (ler_abas). anos: {ano: DataFrame} dos ficheiros publicados (ou
+    a publicar); bases: {ano: DataFrame} das bases; estado: opc.estado_dos_anos()."""
     rel = Relatorio()
     ok = ver_colunas(abas, rel)
 
@@ -571,20 +669,37 @@ def validar(abas):
 
     if "Constantes" in ok:
         ver_constantes(ok["Constantes"], rel)
-    if "OMIE_PERDAS_CICLOS" in ok:
-        ver_omie(ok["OMIE_PERDAS_CICLOS"], rel)
+    if ABA_OMIE_ANTIGA in abas.get("_folhas", []):
+        rel.aviso("xlsx", f"a folha {ABA_OMIE_ANTIGA} já não é usada (os dados vêm de base/ e de csv/): "
+                          f"pode deixar de a exportar")
+
+    fechados = estado["fechados"] if estado else set()
+    for a, df in sorted((bases or {}).items()):
+        ver_tabela_ano(a, df, rel, os.path.basename(opc.caminho_base(a)), base=True)
+    for a, df in sorted((anos or {}).items()):
+        ver_tabela_ano(a, df, rel, os.path.basename(opc.caminho_ano(a)), fechado=a in fechados)
+    if estado:
+        ver_estado_anos(estado, rel)
     return rel
 
 
 def main():
-    p = argparse.ArgumentParser(description="Valida a BD (xlsx) do simulador de eletricidade.")
+    p = argparse.ArgumentParser(description="Valida a BD do simulador de eletricidade: o xlsx, "
+                                            "as bases e os ficheiros por ano da OMIE_PERDAS_CICLOS.")
     p.add_argument("xlsx", nargs="?", default=FICHEIRO_EXCEL, help="por omissão, o xlsx do repositório")
+    p.add_argument("--base", default=opc.PASTA_BASE, help="pasta das bases (por omissão, a do repositório)")
+    p.add_argument("--csv", default=opc.PASTA_CSV, help="pasta dos ficheiros por ano publicados")
     p.add_argument("--so-avisar", dest="so_avisar", action="store_true",
                    help="reportar tudo mas sair sempre com 0")
     args = p.parse_args()
 
     print(f"validar_tarifarios_eletricidade — {os.path.basename(args.xlsx)}")
-    rel = validar(ler_abas(args.xlsx))
+    estado = opc.estado_dos_anos(args.csv, args.base)
+    bases = {a: opc.ler(opc.caminho_base(a, args.base)) for a in sorted(estado["bases"])}
+    anos = {a: opc.ler(opc.caminho_ano(a, args.csv)) for a in sorted(estado["publicados"])}
+    print(f"bases: {sorted(bases) or '—'} · anos publicados: {sorted(anos) or '—'} "
+          f"(fechados: {sorted(estado['fechados']) or '—'})")
+    rel = validar(ler_abas(args.xlsx), anos=anos, bases=bases, estado=estado)
     print(rel.texto())
 
     if os.environ.get("GITHUB_ACTIONS") == "true":

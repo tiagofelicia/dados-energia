@@ -361,7 +361,7 @@ REGISTO = [
                    "em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, "
                    "fator de perdas e ERC por período horário BTN pesado pelo perfil "
                    "ERSE BTN C e quota solar de cada hora, desde 14/03/2024. Derivado de "
-                   "data/erc/isp/, data/omie/, data/producao/ e da folha OMIE_PERDAS_CICLOS.",
+                   "data/erc/isp/, data/omie/, data/producao/ e da tabela OMIE_PERDAS_CICLOS do simulador.",
          cadencia="1x/dia", tolerancia_dias=6, deteccao="meta:ultima_data",
          avisos=["Os totais em 'mercado' são por dia de MERCADO (das 23:00 da véspera "
                  "às 23:00, hora de Portugal); os de 'dias' são por dia em hora de Portugal.",
@@ -370,7 +370,7 @@ REGISTO = [
          titulo="OMIE PT, ERC e perdas por quarto de hora (um ficheiro por mês)",
          descricao="Por dia e quarto de hora, em hora de Portugal: o OMIE PT, o ERC e o "
                    "fator de perdas BT da ERSE (desde 2025), desde 14/03/2024. Derivado de "
-                   "data/omie/, data/erc/isp/ e da folha OMIE_PERDAS_CICLOS.",
+                   "data/omie/, data/erc/isp/ e da tabela OMIE_PERDAS_CICLOS do simulador.",
          cadencia="1x/dia", tolerancia_dias=3, deteccao="meta:ultima_data",
          avisos=["Nos dias ainda sem ERC publicado, o ERC é previsão própria "
                  "(erc_previsao.py); 'erc_previsto' diz quantos quartos de hora do dia o são.",

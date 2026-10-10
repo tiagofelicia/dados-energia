@@ -3,18 +3,20 @@ import pandas as pd
 import numpy as np
 import requests
 import openpyxl
-from datetime import datetime
+from datetime import datetime, date
 import io
 import re
 import os
 import json
 import hashlib
 
-# ERC quarto-horário (coluna M). Fica na mesma pasta: quando o script corre, a
+# ERC quarto-horário (coluna ERC). Fica na mesma pasta: quando o script corre, a
 # pasta dele está no sys.path.
 import erc_previsao
 # Validação da BD antes de exportar os CSVs (Passo 6)
 import validar_tarifarios_eletricidade
+# Ficheiros por ano da tabela OMIE_PERDAS_CICLOS (caminhos, colunas, leitura, estado)
+import omie_perdas_ciclos as opc
 
 print("✅ Bibliotecas carregadas")
 
@@ -28,59 +30,68 @@ ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 PASTA_SIMULADOR = os.path.join(ROOT_DIR, "data", "simuladores", "simulador-tarifarios-eletricidade")
 
 FICHEIRO_EXCEL = os.path.join(PASTA_SIMULADOR, "tarifarios_eletricidade_Tiago_Felicia.xlsx")
-ABA_EXCEL = "OMIE_PERDAS_CICLOS"
-COLUNA_PARA_ESCREVER = 11 # Coluna K
-# ERC da REN em €/MWh, a seguir às Perdas (L): o real até ao último dia publicado
-# e uma previsão no resto (erc_previsao.py). Os simuladores usam-no quarto de hora
-# a quarto de hora nos tarifários que o faturam assim, e a média do período nos
-# que faturam a média (Luzigas).
-COLUNA_ERC = 13 # Coluna M
+# ERC da REN em €/MWh (coluna ERC dos ficheiros por ano): o real até ao último dia
+# publicado e uma previsão no resto (erc_previsao.py). Os simuladores usam-no quarto
+# de hora a quarto de hora nos tarifários que o faturam assim, e a média do período
+# nos que faturam a média (Luzigas).
 PASTA_ERC_ISP = os.path.join(ROOT_DIR, "data", "erc", "isp")
 # Intermédio da Fase 1 (atualizar_mibel_ano_atual_ACUM.py) — partilhado com o pipeline do site
 FICHEIRO_MIBEL_CSV = os.path.join(ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACUM.csv")
 
-# CSVs individuais (espelham as abas do Excel para o simulador)
-PASTA_CSV = os.path.join(PASTA_SIMULADOR, "csv")
-ABAS_PARA_CSV = ["Constantes", "Tarifarios_fixos", "Indexados", "OMIE_PERDAS_CICLOS"]
+# CSVs individuais: as três abas do xlsx e a OMIE_PERDAS_CICLOS, que já não vem do
+# xlsx — um ficheiro por ano (csv/OMIE_PERDAS_CICLOS_AAAA.csv), montado a partir da
+# base do ano (base/OMIE_PERDAS_CICLOS_base_AAAA.csv). Ver omie_perdas_ciclos.py.
+PASTA_CSV = opc.PASTA_CSV
+ABAS_PARA_CSV = ["Constantes", "Tarifarios_fixos", "Indexados"]
+# Transição: o v64 e o Dual v18 publicados leem um ficheiro único com o ano anterior
+# e o atual (csv/OMIE_PERDAS_CICLOS.csv). Passa a False — e sai do manifest — quando
+# todas as versões publicadas dos simuladores lerem os ficheiros por ano.
+PUBLICAR_COMBINADO = True
 
 print(f"ℹ️ Fonte de dados: '{FICHEIRO_MIBEL_CSV}'")
 print("⚠️ Dados OMIE e futuros")
 # ===================================================================
 
-def escrever_coluna_erc(sheet):
+def montar_ano(base, anterior, precos_pt):
     """
-    Escreve o ERC (€/MWh) de cada linha da folha OMIE_PERDAS_CICLOS na coluna M:
-    o real onde a REN já publicou e a previsão no resto (erc_previsao.py).
+    Monta o ficheiro de um ano aberto: as colunas da base (calendário, ciclos,
+    perfis, perdas) + OMIE + ERC (preenchido a seguir, em calcular_erc).
 
-    Cada linha é localizada pelo instante em que começa: o dia (coluna A, texto
-    'MM/DD/AAAA') mais a posição da linha dentro do dia, em hora de Portugal — o
-    mesmo alinhamento que o Passo 5 usa para o OMIE. Assim os dias de 92 e 100
-    quartos de hora ficam certos sem depender das etiquetas da coluna Hora.
+    Cada linha é localizada pelo dia (texto 'MM/DD/AAAA') e pela posição dentro do
+    dia, em hora de Portugal — o alinhamento que o Passo 5 sempre usou. Assim os
+    dias de 92 e 100 quartos de hora ficam certos sem depender das etiquetas Hora.
 
-    A coluna é sempre reescrita de ponta a ponta: sem dados da REN fica vazia e
-    os simuladores usam as constantes da BD, nunca valores de uma corrida antiga.
-
-    Devolve o último dia publicado pela REN (daí em diante é previsão), ou None.
+    O OMIE parte do ficheiro já publicado (anterior) e só é substituído onde há
+    preço novo (precos_pt: real do MIBEL ou futuros OMIP). O MIBEL acumulado só
+    cobre os últimos ~12 meses: sem isto, os primeiros dias do ano perdiam o preço
+    quando saíssem dessa janela — é o que o xlsx fazia, ao manter o que lá estava.
     """
-    print(f"   - A escrever o ERC na Coluna {COLUNA_ERC} (M)...")
-    linhas, dias = [], []
-    for (celula,) in sheet.iter_rows(min_row=2, max_col=1):
-        valor = celula.value
-        if valor is None or str(valor).strip() == "":
-            continue
-        try:
-            dia = (pd.Timestamp(valor) if isinstance(valor, datetime)
-                   else pd.to_datetime(str(valor).strip(), format="%m/%d/%Y"))
-        except (ValueError, TypeError):
-            continue
-        linhas.append(celula.row)
-        dias.append(dia.normalize())
+    df = base[opc.COLUNAS_BASE].reset_index(drop=True)
+    df["_dia"] = pd.to_datetime(df["Data"], format="%m/%d/%Y").dt.date
+    df["_pos"] = df.groupby("_dia").cumcount() + 1
 
-    tabela = pd.DataFrame({"linha": linhas, "dia": dias})
-    posicao = tabela.groupby("dia").cumcount()
-    inicio_utc = (tabela["dia"].dt.tz_localize("Europe/Lisbon")
-                  + pd.to_timedelta(15 * posicao, unit="m")).dt.tz_convert("UTC")
+    if anterior is not None:
+        a = anterior[["Data", "OMIE"]].reset_index(drop=True)
+        a["_dia"] = pd.to_datetime(a["Data"], format="%m/%d/%Y").dt.date
+        a["_pos"] = a.groupby("_dia").cumcount() + 1
+        df = df.merge(a[["_dia", "_pos", "OMIE"]], on=["_dia", "_pos"], how="left")
+    else:
+        df["OMIE"] = np.nan
 
+    if precos_pt is not None and len(precos_pt):
+        p = precos_pt.rename(columns={"Data": "_dia", "Hora": "_pos"})[["_dia", "_pos", "Preco"]]
+        df = df.merge(p, on=["_dia", "_pos"], how="left")
+        df["OMIE"] = df["Preco"].where(df["Preco"].notna(), df["OMIE"])
+        df = df.drop(columns="Preco")
+
+    df["OMIE"] = df["OMIE"] + 0.0   # -0.0 → 0.0, como na ida e volta pelo xlsx
+    df["ERC"] = np.nan
+    return df
+
+
+def carregar_erc():
+    """Os dados do ERC da REN (erc_previsao.carregar), ou None se não houver."""
+    print("   - A ler o ERC da REN...")
     dados = erc_previsao.carregar(PASTA_ERC_ISP)
     if dados is not None:
         print(f"     ERC: dados da REN até {dados['ultimo'].strftime('%d/%m/%Y')} "
@@ -88,17 +99,128 @@ def escrever_coluna_erc(sheet):
         if dados["desatualizado"]:
             print(f"     ⚠️ Mais de {erc_previsao.ATRASO_MAX_DIAS} dias de atraso: só os valores reais, "
                   f"sem previsões (os simuladores usam as constantes nesses dias).")
-    valores, contagem = erc_previsao.erc_instantes(dados, inicio_utc)
+    return dados
 
-    sheet.cell(row=1, column=COLUNA_ERC, value="ERC")
-    for r in range(2, sheet.max_row + 1):
-        sheet.cell(row=r, column=COLUNA_ERC, value=None)
-    for linha, valor in zip(tabela["linha"], valores):
-        if not np.isnan(valor):
-            sheet.cell(row=linha, column=COLUNA_ERC, value=round(float(valor), 2))
-    print(f"     ERC escrito: {contagem['real']} quartos de hora reais, {contagem['curto']} previstos "
+
+def instantes_utc(df):
+    """Instante em que começa cada linha (dia + posição no dia, em hora de Portugal), em UTC."""
+    return (pd.to_datetime(df["_dia"]).dt.tz_localize("Europe/Lisbon")
+            + pd.to_timedelta(15 * (df["_pos"] - 1), unit="m")).dt.tz_convert("UTC")
+
+
+def arredondar_erc(valores):
+    # round() do Python, valor a valor — o mesmo arredondamento que ia para o xlsx.
+    # O "+ 0.0" faz de -0.0 um 0.0, como fazia a ida e volta pelo xlsx (um ERC de
+    # -0,004 €/MWh saía "-0.0" no CSV)
+    return [round(float(v), 2) + 0.0 if not np.isnan(v) else np.nan for v in valores]
+
+
+def calcular_erc(anos, dados):
+    """
+    Preenche o ERC (€/MWh) dos anos abertos ({ano: DataFrame de montar_ano}): o
+    real onde a REN já publicou e a previsão própria no resto (erc_previsao.py).
+
+    O valor de cada quarto de hora não depende dos outros pedidos, por isso
+    calcular só os anos abertos dá o mesmo que dava a folha inteira.
+
+    A coluna é sempre recalculada de ponta a ponta: sem dados da REN fica vazia e
+    os simuladores usam as constantes da BD, nunca valores de uma corrida antiga.
+    """
+    if not anos:
+        return
+    ordem = sorted(anos)
+    todos = pd.concat([anos[a][["_dia", "_pos"]] for a in ordem], ignore_index=True)
+    valores, contagem = erc_previsao.erc_instantes(dados, instantes_utc(todos))
+    valores = arredondar_erc(valores)
+    inicio = 0
+    for a in ordem:
+        n = len(anos[a])
+        anos[a]["ERC"] = pd.Series(valores[inicio:inicio + n], dtype="float64").to_numpy()
+        inicio += n
+    print(f"     ERC: {contagem['real']} quartos de hora reais, {contagem['curto']} previstos "
           f"a curto prazo, {contagem['longo']} a longo prazo, {contagem['sem']} vazios.")
-    return dados["ultimo"] if dados is not None else None
+
+
+def erc_real(df, dados):
+    """Só o ERC real (sem previsões) de cada linha, arredondado; NaN onde a REN não o tem."""
+    if dados is None:
+        return np.full(len(df), np.nan)
+    idx = pd.DatetimeIndex(instantes_utc(df))
+    return np.array(arredondar_erc(dados["reais"].reindex(idx).to_numpy(dtype=float, copy=True)), dtype=float)
+
+
+def com_posicoes(df):
+    df = df.reset_index(drop=True)
+    df["_dia"] = pd.to_datetime(df["Data"], format="%m/%d/%Y").dt.date
+    df["_pos"] = df.groupby("_dia").cumcount() + 1
+    return df
+
+
+def montar_fechado(publicado, base, dados):
+    """
+    Um ano fechado volta a ser montado em cada corrida, mas só é reescrito se mudar:
+    as colunas fixas vêm da base (se houver — assim uma base corrigida conta) ou do
+    próprio ficheiro, o OMIE fica como está (é definitivo) e o ERC é o real da REN,
+    que corrige dias com meses de atraso. Onde a REN deixar de ter o valor, fica o
+    que lá estava.
+    """
+    df = com_posicoes((base if base is not None else publicado)[opc.COLUNAS_BASE])
+    pub = com_posicoes(publicado[["Data", "OMIE", "ERC"]]).rename(columns={"ERC": "_erc_antes"})
+    df = df.merge(pub[["_dia", "_pos", "OMIE", "_erc_antes"]], on=["_dia", "_pos"], how="left")
+    reais = erc_real(df, dados)
+    df["ERC"] = np.where(~np.isnan(reais), reais, df["_erc_antes"].to_numpy(dtype=float))
+    return df.drop(columns="_erc_antes")
+
+
+def importar_ano(ano, base, dados):
+    """
+    Um ano passado que ainda não existe (ex.: 2024) entra pela base: as colunas fixas
+    da base, o OMIE PT do histórico (data/omie/historico/omie_historico_AAAA.csv, por
+    dia e posição no dia) e o ERC real da REN. Fecha logo.
+    """
+    caminho = opc.caminho_historico(ano)
+    if not os.path.exists(caminho):
+        raise ValueError(f"há base de {ano} mas não há histórico do OMIE desse ano ({caminho})")
+    h = pd.read_csv(caminho, encoding="utf-8-sig", float_precision="round_trip",
+                    dtype={"dia": str, "hora": str, "BD": str, "BS": str, "TD": str, "TS": str})
+    h["_dia"] = pd.to_datetime(h["dia"], format="%d/%m/%Y").dt.date
+    h["_pos"] = h.groupby("_dia").cumcount() + 1
+    h = h.rename(columns={"preco_pt": "OMIE"})
+
+    df = com_posicoes(base[opc.COLUNAS_BASE])
+    df = df.merge(h[["_dia", "_pos", "OMIE", "BD", "BS", "TD", "TS", "hora"]].add_suffix("_h")
+                  .rename(columns={"_dia_h": "_dia", "_pos_h": "_pos"}), on=["_dia", "_pos"], how="left")
+    diferentes = int(sum((df[c] != df[c + "_h"]).sum() for c in ["BD", "BS", "TD", "TS"]))
+    diferentes += int((df["Hora"] != df["hora_h"]).sum())
+    if diferentes:
+        print(f"     ⚠️ {ano}: {diferentes} valor(es) de ciclos ou horas da base diferentes do histórico (fica a base).")
+    df["OMIE"] = df["OMIE_h"] + 0.0
+    df = df.drop(columns=[c for c in df.columns if c.endswith("_h")])
+    df["ERC"] = erc_real(df, dados)
+    return df
+
+
+def mesmo_conteudo(novo, publicado):
+    """O ano montado é igual ao publicado (valores, não bytes)?"""
+    a = novo[opc.COLUNAS_ANO].reset_index(drop=True)
+    b = publicado[opc.COLUNAS_ANO].reset_index(drop=True)
+    return a.shape == b.shape and a.equals(b.astype(a.dtypes.to_dict()))
+
+
+def ano_completo(ano, df, ultima_data_omie, ultimo_dia_erc):
+    """
+    Um ano fecha quando já tem tudo real: o OMIE até ao fim de 31/12 em hora de
+    Portugal — a última hora sai do dia de mercado 1/1 seguinte, em hora de Espanha,
+    por isso é preciso o MIBEL até lá — e o ERC real da REN até 31/12.
+    """
+    if pd.Timestamp(ultima_data_omie).date() < date(ano + 1, 1, 1):
+        return False
+    if ultimo_dia_erc is None or pd.Timestamp(ultimo_dia_erc).date() < date(ano, 12, 31):
+        return False
+    if df["OMIE"].isna().any() or df["ERC"].isna().any():
+        print(f"     ⚠️ {ano} já devia fechar mas tem quartos de hora sem OMIE ou sem ERC: fica aberto.")
+        return False
+    return True
 
 
 def sinalizar_bd_bloqueada(motivo):
@@ -118,18 +240,28 @@ def sinalizar_bd_bloqueada(motivo):
             f.write("bd_bloqueada=true\n")
 
 
-def validar_e_exportar_csvs():
+def validar_e_exportar_csvs(anos_novos, estado, fechar):
     """
-    Valida as quatro abas e, só se não houver erros, exporta-as como CSVs + manifest.
+    Valida as três abas do xlsx e os anos abertos acabados de montar e, só se não
+    houver erros, exporta tudo: os CSVs das abas, um ficheiro por ano aberto, o
+    ficheiro único da transição (PUBLICAR_COMBINADO) e o manifest.
+
+    anos_novos: {ano: DataFrame} dos ficheiros a escrever (abertos, importados e
+    fechados que mudaram); estado: o de opc.estado_dos_anos() no início da corrida;
+    fechar: os anos que passam a fechados nesta corrida (incluindo os importados).
+    Os outros anos ficam como estão publicados.
 
     A exportação é tudo ou nada: os ficheiros novos são escritos ao lado (.tmp) e
-    só substituem os publicados depois de os quatro estarem escritos, com o
-    manifest em último lugar. Antes, uma aba que falhasse ficava de fora do
-    manifest e as outras eram publicadas na mesma.
+    só substituem os publicados depois de todos estarem escritos, com o manifest
+    em último lugar. Antes, uma aba que falhasse ficava de fora do manifest e as
+    outras eram publicadas na mesma.
     """
+    anos_novos = {a: df[opc.COLUNAS_ANO] for a, df in anos_novos.items()}
+    # Os que fecham nesta corrida já são validados como fechados (ERC completo)
+    estado_validacao = dict(estado, fechados=estado["fechados"] | set(fechar))
     try:
         abas = validar_tarifarios_eletricidade.ler_abas(FICHEIRO_EXCEL)
-        relatorio = validar_tarifarios_eletricidade.validar(abas)
+        relatorio = validar_tarifarios_eletricidade.validar(abas, anos=anos_novos, estado=estado_validacao)
     except Exception as e:
         # Um xlsx ilegível ou um bug do validador não pode parar as fases 2B:
         # não se publica (na dúvida, fica a última versão boa) e segue-se.
@@ -143,32 +275,69 @@ def validar_e_exportar_csvs():
         sinalizar_bd_bloqueada(f"{len(relatorio.erros)} erro(s) na validação")
         return None
 
+    def md5(caminho):
+        # Hash MD5 do conteúdo para o manifest (o simulador compara-o com o da cache)
+        with open(caminho, 'rb') as f:
+            return hashlib.md5(f.read()).hexdigest()[:8]
+
     os.makedirs(PASTA_CSV, exist_ok=True)
-    temporarios = []
+    trocas = []          # (temporário, definitivo), pela ordem em que vão substituir
     manifest = {}
     try:
         for aba in ABAS_PARA_CSV:
-            tmp = os.path.join(PASTA_CSV, f"{aba}.csv.tmp")
-            temporarios.append(tmp)
-            abas[aba].to_csv(tmp, index=False, encoding='utf-8-sig')
-            # Hash MD5 do conteúdo para o manifest (o simulador compara-o com o da cache)
-            with open(tmp, 'rb') as f:
-                manifest[aba] = hashlib.md5(f.read()).hexdigest()[:8]
+            final = os.path.join(PASTA_CSV, f"{aba}.csv")
+            trocas.append((final + ".tmp", final))
+            abas[aba].to_csv(final + ".tmp", index=False, encoding='utf-8-sig')
+            manifest[aba] = md5(final + ".tmp")
             print(f"   ✅ {aba}.csv ({len(abas[aba])} registos) [{manifest[aba]}]")
-        tmp_manifest = os.path.join(PASTA_CSV, "manifest.json.tmp")
-        temporarios.append(tmp_manifest)
-        with open(tmp_manifest, 'w', encoding='utf-8') as f:
+
+        # Os anos: os abertos acabados de montar e os outros tal como estão publicados
+        tabelas = {}
+        for ano in sorted(estado["publicados"] | set(anos_novos)):
+            if ano in anos_novos:
+                final = opc.caminho_ano(ano)
+                trocas.append((final + ".tmp", final))
+                anos_novos[ano].to_csv(final + ".tmp", index=False, encoding='utf-8-sig')
+                tabelas[ano] = (anos_novos[ano], md5(final + ".tmp"))
+            else:
+                tabelas[ano] = (None, md5(opc.caminho_ano(ano)))
+
+        # Transição: o ficheiro único com o ano atual e o anterior, por esta ordem
+        # (a do antigo xlsx), para as versões publicadas que ainda o leem
+        if PUBLICAR_COMBINADO:
+            ano_atual = opc.hoje_pt().year
+            partes = []
+            for ano in (ano_atual, ano_atual - 1):
+                if ano in tabelas:
+                    df, _ = tabelas[ano]
+                    partes.append(df if df is not None else opc.ler(opc.caminho_ano(ano))[opc.COLUNAS_ANO])
+            final = os.path.join(PASTA_CSV, opc.FICHEIRO_COMBINADO)
+            trocas.append((final + ".tmp", final))
+            pd.concat(partes, ignore_index=True).to_csv(final + ".tmp", index=False, encoding='utf-8-sig')
+            manifest[opc.NOME] = md5(final + ".tmp")
+            print(f"   ✅ {opc.FICHEIRO_COMBINADO} (transição: {ano_atual} + {ano_atual - 1}) [{manifest[opc.NOME]}]")
+
+        for ano, (df, h) in tabelas.items():
+            manifest[f"{opc.NOME}_{ano}"] = h
+            estado_ano = opc.FECHADO if (ano in estado["fechados"] or ano in fechar) else opc.ABERTO
+            nota = "reescrito" if df is not None else "sem alterações"
+            print(f"   ✅ {opc.NOME}_{ano}.csv ({estado_ano}, {nota}) [{h}]")
+        manifest["anos"] = {str(ano): (opc.FECHADO if (ano in estado["fechados"] or ano in fechar) else opc.ABERTO)
+                            for ano in tabelas}
+
+        final = os.path.join(PASTA_CSV, "manifest.json")
+        trocas.append((final + ".tmp", final))
+        with open(final + ".tmp", 'w', encoding='utf-8') as f:
             json.dump(manifest, f)
     except Exception as e:
-        for tmp in temporarios:
+        for tmp, _ in trocas:
             if os.path.exists(tmp):
                 os.remove(tmp)
         sinalizar_bd_bloqueada(f"falha ao exportar: {e}")
         return None
 
-    for aba in ABAS_PARA_CSV:
-        os.replace(os.path.join(PASTA_CSV, f"{aba}.csv.tmp"), os.path.join(PASTA_CSV, f"{aba}.csv"))
-    os.replace(tmp_manifest, os.path.join(PASTA_CSV, "manifest.json"))
+    for tmp, final in trocas:
+        os.replace(tmp, final)
     print(f"   ✅ manifest.json gerado: {manifest}")
     print("✅ Exportação de CSVs concluída.")
     return manifest
@@ -180,9 +349,21 @@ def run_update_process():
     """
     try:
         # ========================================================
+        # PASSO 0: Que anos há (abertos, fechados) — ver omie_perdas_ciclos.py
+        # ========================================================
+        estado = opc.estado_dos_anos()
+        anos_abertos = estado["abertos"]
+        print(f"\nℹ️ OMIE_PERDAS_CICLOS — anos abertos: {anos_abertos or '—'} · "
+              f"fechados: {sorted(estado['fechados']) or '—'}"
+              + (f" · a importar do histórico: {estado['importar']}" if estado["importar"] else ""))
+        # Os passos 3 e 4 precisam de pelo menos um ano; sem anos abertos os preços
+        # calculados simplesmente não são usados
+        anos_calculo = anos_abertos or [opc.hoje_pt().year]
+
+        # ========================================================
         # PASSO 1: Extração de Dados de Futuros (OMIP)
         # ========================================================
-        
+
         print("\n⏳ Passo 1: A extrair dados de futuros do ficheiro OMIPdaily.xlsx...")
         url_omip_excel = "https://www.omip.pt/sites/default/files/dados/eod/omipdaily.xlsx"
         resposta_http = requests.get(url_omip_excel, timeout=20)
@@ -275,7 +456,9 @@ def run_update_process():
 
         # 3a. Criar calendário base
         calendario_es = pd.DataFrame({
-            'Data': pd.date_range(start='2026-01-01', end='2027-12-31', freq='D')
+            # Do 1.º ano aberto até ao fim do ano a seguir ao último (os futuros
+            # semanais/mensais/trimestrais propagam-se por estes dias)
+            'Data': pd.date_range(start=f'{min(anos_calculo)}-01-01', end=f'{max(anos_calculo) + 1}-12-31', freq='D')
         })
         calendario_es['Ano'] = calendario_es['Data'].dt.year
         calendario_es['Mes'] = calendario_es['Data'].dt.month
@@ -349,8 +532,10 @@ def run_update_process():
 
         ultima_data_historica = dados_combinados_qh['Data'].max()
         
-        # Até 2027-01-01
-        datas_futuras = pd.date_range(start=ultima_data_historica + pd.Timedelta(days=1), end='2027-01-01', freq='D')
+        # Até 1/1 do ano a seguir ao último ano aberto: a última hora de 31/12 em
+        # Portugal é o dia de mercado 1/1 seguinte em Espanha
+        datas_futuras = pd.date_range(start=ultima_data_historica + pd.Timedelta(days=1),
+                                      end=f'{max(anos_calculo) + 1}-01-01', freq='D')
 
         futuro_qh = []
         for data in datas_futuras:
@@ -398,8 +583,8 @@ def run_update_process():
         dados_finais_pt = dados_finais_es.sort_values('datetime_pt').copy()
         dados_finais_pt['Hora_PT'] = dados_finais_pt.groupby('Data_PT').cumcount() + 1
 
-        # Selecionar apenas 2026 e 2027
-        dados_finais_pt = dados_finais_pt[dados_finais_pt['datetime_pt'].dt.year.isin([2026, 2027])].copy()
+        # Selecionar apenas os anos abertos (os fechados não voltam a ser escritos)
+        dados_finais_pt = dados_finais_pt[dados_finais_pt['datetime_pt'].dt.year.isin(anos_calculo)].copy()
         dados_finais_pt = dados_finais_pt[['Data_PT', 'Hora_PT', 'Preco']].rename(
             columns={'Data_PT': 'Data', 'Hora_PT': 'Hora'}
         )
@@ -408,76 +593,80 @@ def run_update_process():
         print(f"✅ {len(dados_finais_pt)} registos finais (em PT) preparados.")
 
         # ============================================================
-        # PASSO 5: Atualização do ficheiro Excel
+        # PASSO 5: Ficheiros por ano da OMIE_PERDAS_CICLOS + datas no xlsx
         # ============================================================
 
-        print(f"\n⏳ Passo 5: A preparar dados para o ficheiro '{FICHEIRO_EXCEL}'...")
+        print("\n⏳ Passo 5: A montar os ficheiros por ano da OMIE_PERDAS_CICLOS...")
 
-        # 1. Ler a pauta de tempo 'master' do Excel (Colunas A e B)
-        print(f"   - A ler a pauta de tempo da aba '{ABA_EXCEL}' para alinhamento...")
-        df_pauta_excel = pd.read_excel(
-            FICHEIRO_EXCEL,
-            sheet_name=ABA_EXCEL,
-            usecols=['Data', 'Hora'] 
-        )
-        df_pauta_excel.dropna(subset=['Data', 'Hora'], inplace=True)
-        # Preservar a ordem original do Excel (o índice 0-based)
-        df_pauta_excel = df_pauta_excel.reset_index() 
-        
-        # 2. Preparar a pauta do Excel para o merge
-        df_pauta_excel['Data'] = pd.to_datetime(df_pauta_excel['Data']).dt.date
-        df_pauta_excel['Hora'] = df_pauta_excel.groupby('Data').cumcount() + 1
-        
-        # 3. Preparar os nossos dados calculados (do Passo 4)
-        df_dados_pt_merge = dados_finais_pt.copy()
-        df_dados_pt_merge['Data'] = pd.to_datetime(df_dados_pt_merge['Data']).dt.date
-        df_dados_pt_merge['Hora'] = df_dados_pt_merge['Hora'].astype(int)
-
-        # 4. Fazer o MERGE para alinhar os preços à pauta do Excel
-        print("   - A alinhar preços calculados com a pauta do Excel...")
-        df_final_excel = pd.merge(
-            df_pauta_excel,
-            df_dados_pt_merge[['Data', 'Hora', 'Preco']], 
-            on=['Data', 'Hora'],
-            how='left' # Manter todas as linhas da pauta
-        )
-        
-        # 5. Ordenar pela ordem original do Excel
-        df_final_excel = df_final_excel.sort_values('index').reset_index(drop=True)
-        
-        # 6. FILTRAR apenas os dados que TÊM preço (ignorar os NaN)
-        #    Manter o 'index' original do Excel e o 'Preco'
-        dados_para_escrever = df_final_excel.dropna(subset=['Preco'])[['index', 'Preco']]
-        
-        print(f"   - {len(dados_para_escrever)} preços (2026) alinhados e prontos a escrever.")
-
-        # 7. Escrever no ficheiro Excel (de forma seletiva)
-        print(f"   - A carregar '{FICHEIRO_EXCEL}' para escrita...")
-        wb = openpyxl.load_workbook(FICHEIRO_EXCEL)
-        sheet = wb[ABA_EXCEL]
-        
-        print(f"   - A escrever {len(dados_para_escrever)} preços na Coluna {COLUNA_PARA_ESCREVER} (K)...")
-        
-        # Iterar APENAS sobre as linhas que TÊM dados
-        for _, row in dados_para_escrever.iterrows():
-            # Usar o 'index' original para encontrar a linha correta no Excel
-            excel_row_index = int(row['index']) + 2  # +1 (0-based to 1-based) +1 (skip header)
-            preco = row['Preco']
-            sheet.cell(row=excel_row_index, column=COLUNA_PARA_ESCREVER, value=preco)
-
-        # 7b. ERC da REN na coluna M (real + previsão)
-        ultimo_dia_erc = escrever_coluna_erc(sheet)
-
-        # ===================================================================
-            
-        # 8. Atualizar as datas de OMIE/OMIP
-        sheet_const = wb["Constantes"]
-        # Precisamos da última data OMIE *em hora de Espanha* (antes da conversão)
-        # Temos de ler o ficheiro CSV novamente para obter a data máxima
+        # Preços calculados (Passo 4), por dia e posição no dia, em hora de Portugal
+        precos_pt = dados_finais_pt.copy()
+        precos_pt['Data'] = pd.to_datetime(precos_pt['Data']).dt.date
+        precos_pt['Hora'] = precos_pt['Hora'].astype(int)
+        # A última data OMIE *em hora de Espanha* (antes da conversão)
         ultima_data_omie = pd.read_csv(FICHEIRO_MIBEL_CSV, parse_dates=['Data'])['Data'].max()
+
+        # Uma base ou um ficheiro ilegível não pode parar as fases 2B (dados do
+        # site): não se publica a BD do simulador e segue-se, como na validação.
+        # anos_novos: os ficheiros a escrever nesta corrida (abertos, importados e
+        # fechados que mudaram); fechar: os que passam a fechados agora
+        anos_novos, fechar, ultimo_dia_erc, montagem_ok = {}, set(), None, True
+        try:
+            dados_erc = carregar_erc()
+            ultimo_dia_erc = dados_erc["ultimo"] if dados_erc is not None else None
+
+            # Abertos: base + OMIE (real e futuros) + ERC (real e previsão própria)
+            abertos = {}
+            for ano in anos_abertos:
+                base = opc.ler(opc.caminho_base(ano))
+                anterior = opc.ler(opc.caminho_ano(ano)) if os.path.exists(opc.caminho_ano(ano)) else None
+                abertos[ano] = montar_ano(base, anterior, precos_pt)
+                origem = "a partir do ficheiro publicado" if anterior is not None else "ano novo, só a base"
+                print(f"   - {ano} (aberto): {len(abertos[ano])} quartos de hora ({origem}), "
+                      f"{int(abertos[ano]['OMIE'].isna().sum())} sem OMIE")
+            calcular_erc(abertos, dados_erc)
+            for ano in anos_abertos:
+                if ano_completo(ano, abertos[ano], ultima_data_omie, ultimo_dia_erc):
+                    fechar.add(ano)
+                    print(f"   🔒 {ano} tem OMIE e ERC reais até 31/12: fica fechado a partir desta corrida.")
+            anos_novos.update(abertos)
+
+            # Passados ainda sem ficheiro: base + OMIE do histórico + ERC real; fecham já
+            for ano in estado["importar"]:
+                anos_novos[ano] = importar_ano(ano, opc.ler(opc.caminho_base(ano)), dados_erc)
+                fechar.add(ano)
+                print(f"   📥 {ano} (importado do histórico): {len(anos_novos[ano])} quartos de hora, "
+                      f"{int(anos_novos[ano]['ERC'].isna().sum())} sem ERC real — fica fechado.")
+
+            # Fechados: OMIE congelado; o ERC real (a REN corrige meses depois) e a
+            # base, se tiver sido corrigida. Só se reescreve o que mudou.
+            for ano in sorted(estado["fechados"]):
+                publicado = opc.ler(opc.caminho_ano(ano))
+                base = opc.ler(opc.caminho_base(ano)) if ano in estado["bases"] else None
+                novo = montar_fechado(publicado, base, dados_erc)
+                if mesmo_conteudo(novo, publicado):
+                    print(f"   - {ano} (fechado): sem alterações")
+                else:
+                    antes, depois = publicado["ERC"].to_numpy(dtype=float), novo["ERC"].to_numpy(dtype=float)
+                    erc_mudou = int((~((antes == depois) | (np.isnan(antes) & np.isnan(depois)))).sum())
+                    fixas_mudaram = not novo[opc.COLUNAS_BASE].reset_index(drop=True).equals(
+                        publicado[opc.COLUNAS_BASE].reset_index(drop=True))
+                    motivos = ([f"ERC corrigido pela REN em {erc_mudou} quarto(s) de hora"] if erc_mudou else []) + \
+                              (["base corrigida"] if fixas_mudaram else [])
+                    print(f"   ✏️ {ano} (fechado): reescrito — {' e '.join(motivos) or 'conteúdo diferente'}")
+                    anos_novos[ano] = novo
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            montagem_ok = False
+            sinalizar_bd_bloqueada(f"falha a montar os ficheiros por ano: {e}")
+
+        # Datas de referência na folha Constantes do xlsx (vão para o Constantes.csv)
+        print(f"   - A carregar '{FICHEIRO_EXCEL}' para escrever as datas de referência...")
+        wb = openpyxl.load_workbook(FICHEIRO_EXCEL)
+        sheet_const = wb["Constantes"]
         sheet_const['B90'] = ultima_data_omie.strftime('%m/%d/%Y')
         sheet_const['B91'] = data_relatorio_omip.strftime('%m/%d/%Y')
-        # Último dia com ERC real da REN (a coluna M é previsão daí em diante); o
+        # Último dia com ERC real da REN (a coluna ERC é previsão daí em diante); o
         # simulador assinala a previsão no "ERC Médio do Perfil". O rótulo também é
         # escrito aqui, para não depender de o xlsx do git já ter a linha 92.
         sheet_const['A92'] = 'Data_Valores_ERC'
@@ -491,7 +680,8 @@ def run_update_process():
         # ============================================================
 
         print(f"\n⏳ Passo 6: A validar a BD e a exportar as abas como CSVs individuais...")
-        validar_e_exportar_csvs()
+        if montagem_ok:
+            validar_e_exportar_csvs(anos_novos, estado, fechar)
 
     except Exception as e:
         import traceback
