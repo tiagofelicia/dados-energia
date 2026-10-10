@@ -18,7 +18,14 @@ segue dá erro em lado nenhum — o simulador calcula, só que mal:
     tinha custo_regulacao_kwh 0,0158688 em 35 linhas e 0,0160312 (o da EZU) na
     linha 2869;
   * um nome_pos_promo com uma gralha parte a cadeia de fases do 1.º ano, e o
-    simulador mostra "⚠ fase seguinte não encontrada na BD" aos visitantes.
+    simulador mostra "⚠ fase seguinte não encontrada na BD" aos visitantes;
+  * o ciclo diário e o semanal com preços diferentes, quando o comercializador
+    cobra o mesmo nos dois. Caso real, 10/10/2026: a Ibelectra Solução Segura
+    (-8%) tinha a potência do semanal errada em 27,6, 34,5 e 41,4 kVA.
+
+Uma linha pode servir várias opções horárias com os mesmos preços, separadas
+por vírgula ("Bi-horário - Ciclo Diário, Bi-horário - Ciclo Semanal"): os
+simuladores (v65, Dual v19 e motor_elet.js) leem-na como uma linha por opção.
 
 Verifica também a tabela OMIE_PERDAS_CICLOS, que deixou de ser uma folha do
 xlsx e passou a ser um ficheiro por ano (ver omie_perdas_ciclos.py): as bases
@@ -62,6 +69,7 @@ USO
 import argparse
 import math
 import os
+import re
 import sys
 from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta
@@ -340,6 +348,11 @@ def descr(r):
     return f"{r['nome']} · {r['opcao_horaria_e_ciclo']} · {fmt(numero(r['potencia_kva']))} kVA"
 
 
+def opcoes_da_linha(r):
+    """As opções horárias de uma linha: uma, ou várias separadas por vírgula."""
+    return [p.strip() for p in str(r.get("opcao_horaria_e_ciclo") or "").split(",") if p.strip()]
+
+
 # ============================================================
 # Verificações
 # ============================================================
@@ -380,8 +393,17 @@ def ver_linhas(aba, regs, rel):
             problemas[("erro", f"linha sem {', '.join(em_falta)}")].append(ln)
 
         opcao = str(r.get("opcao_horaria_e_ciclo") or "").strip()
-        if opcao and opcao not in OPCOES:
-            problemas[("erro", f"opção horária desconhecida: \"{opcao}\"")].append(ln)
+        partes = opcoes_da_linha(r)
+        for p in partes:
+            if p not in OPCOES:
+                problemas[("erro", f"opção horária desconhecida: \"{p}\"")].append(ln)
+        validas = [p for p in partes if p in OPCOES]
+        if len(set(partes)) < len(partes):
+            problemas[("erro", f"opção horária repetida na mesma linha: \"{opcao}\"")].append(ln)
+        # Só se juntam opções com os preços nas mesmas colunas (diário com semanal; bi com tri não)
+        if len({tuple(OPCOES[p]) for p in validas}) > 1:
+            problemas[("erro", f"opções com preços em colunas diferentes na mesma linha: \"{opcao}\" — separe-as")].append(ln)
+            validas = []
 
         for c in NUMERICAS:
             if c not in r or vazio(r[c]):
@@ -406,11 +428,12 @@ def ver_linhas(aba, regs, rel):
         if kva is not None and not any(abs(kva - p) < 0.001 for p in POTENCIAS_KVA):
             problemas[("aviso", f"potência {fmt(kva)} kVA fora da lista das 13 potências")].append(ln)
 
-        if aba == "Tarifarios_fixos" and opcao in OPCOES:
-            faltam = [c for c in OPCOES[opcao] if vazio(r.get(c))]
+        if aba == "Tarifarios_fixos" and validas:
+            precisa = OPCOES[validas[0]]
+            faltam = [c for c in precisa if vazio(r.get(c))]
             if faltam:
                 problemas[("erro", f"{opcao} sem {', '.join(faltam)}")].append(ln)
-            a_mais = [c for c in PRECOS_ENERGIA if c not in OPCOES[opcao] and not vazio(r.get(c))]
+            a_mais = [c for c in PRECOS_ENERGIA if c not in precisa and not vazio(r.get(c))]
             if a_mais:
                 problemas[("aviso", f"{opcao} com preço noutra coluna ({', '.join(a_mais)}), que é ignorado")].append(ln)
 
@@ -431,26 +454,67 @@ def ver_linhas(aba, regs, rel):
         getattr(rel, nivel)(aba, f"{msg} — linha(s) {linhas(lns)}")
 
 
-def chave(r):
+def chaves(r):
+    """(comercializador, nome, opção, potência) de cada opção horária da linha."""
     kva = numero(r.get("potencia_kva"))
-    return (str(r.get("comercializador") or "").strip(),
-            str(r.get("nome") or "").strip().lower(),
-            str(r.get("opcao_horaria_e_ciclo") or "").strip().lower(),
-            round(kva, 2) if kva is not None else None)
+    base = (str(r.get("comercializador") or "").strip(), str(r.get("nome") or "").strip().lower())
+    return [base + (p.lower(), round(kva, 2) if kva is not None else None) for p in opcoes_da_linha(r)]
 
 
 def ver_duplicados(regs_por_aba, rel):
-    """A mesma (comercializador, nome, opção, potência) duas vezes, na mesma folha ou nas duas."""
+    """A mesma (comercializador, nome, opção, potência) duas vezes, na mesma folha ou nas
+    duas — também uma linha com várias opções e outra só com uma delas."""
     vistos = defaultdict(list)
     for aba, regs in regs_por_aba.items():
         for ln, r in regs:
-            k = chave(r)
-            if all(k) and k[3] is not None:
-                vistos[k].append((aba, ln, r))
+            for k in set(chaves(r)):
+                if all(k) and k[3] is not None:
+                    vistos[k].append((aba, ln, r))
     for k, ocorr in vistos.items():
         if len(ocorr) > 1:
             onde = ", ".join(f"{aba} linha {ln}" for aba, ln, _ in ocorr)
-            rel.erro(ocorr[0][0], f"linha repetida ({descr(ocorr[0][2])}): {onde}")
+            r = ocorr[0][2]
+            opcao = next((p for p in opcoes_da_linha(r) if p.lower() == k[2]), k[2])
+            rel.erro(ocorr[0][0], f"linha repetida ({r['nome']} · {opcao} · {fmt(k[3])} kVA): {onde}")
+
+
+# Colunas que não contam para comparar o diário com o semanal (texto descritivo)
+IGNORAR_DIARIO_SEMANAL = {"opcao_horaria_e_ciclo", "formula_calculo"}
+
+
+def ver_diario_semanal(aba, regs, rel):
+    """O ciclo diário e o semanal em linhas separadas, com valores diferentes. O preço é o
+    mesmo nos dois em todos os comercializadores de hoje (nos indexados a energia vem da
+    fórmula, com o OMIE de cada ciclo, e não da BD): uma diferença é quase sempre gralha.
+    É aviso e não erro, para não bloquear se um dia algum cobrar mesmo diferente."""
+    grupos = defaultdict(dict)  # (comercializador, nome, potência, família) → {ciclo: (linha, registo)}
+    for ln, r in regs:
+        partes = opcoes_da_linha(r)
+        if len(partes) != 1:
+            continue  # numa linha com as duas opções os preços são os mesmos por construção
+        m = re.fullmatch(r"(.+) - Ciclo (Diário|Semanal)", partes[0])
+        if not m:
+            continue
+        kva = numero(r.get("potencia_kva"))
+        k = (str(r.get("comercializador") or "").strip(), str(r.get("nome") or "").strip(),
+             round(kva, 2) if kva is not None else None, m.group(1))
+        grupos[k][m.group(2)] = (ln, r)
+    juntos = defaultdict(list)  # (nome, família, colunas) → [(potência, linha D, linha S)]
+    for (_, nome, kva, familia), ciclos in grupos.items():
+        if len(ciclos) < 2:
+            continue
+        (ln_d, rd), (ln_s, rs) = ciclos["Diário"], ciclos["Semanal"]
+        cols = tuple(c for c in rd if c not in IGNORAR_DIARIO_SEMANAL
+                     and normalizar(rd.get(c)) != normalizar(rs.get(c)))
+        if cols:
+            juntos[(nome, familia, cols)].append((kva, ln_d, ln_s))
+    for (nome, familia, cols), casos in juntos.items():
+        casos.sort()
+        onde = "; ".join(f"{fmt(kva)} kVA (linhas {d} e {s})" for kva, d, s in casos[:6])
+        resto = f" (+{len(casos) - 6})" if len(casos) > 6 else ""
+        rel.aviso(aba, f"{nome} · {familia}: o ciclo diário e o semanal têm {', '.join(cols)} diferente "
+                       f"em {onde}{resto} — se for gralha, corrija; se o preço for o mesmo, pode juntar "
+                       f"as duas linhas numa só (\"{familia} - Ciclo Diário, {familia} - Ciclo Semanal\")")
 
 
 def ver_coerencia(aba, regs, rel):
@@ -478,7 +542,7 @@ def ver_coerencia(aba, regs, rel):
 
 def ver_cadeias(regs_por_aba, rel):
     """nome_pos_promo tem de apontar para uma linha que exista (como o encontrarLinhaPorNome)."""
-    indice = {chave(r) for regs in regs_por_aba.values() for _, r in regs}
+    indice = {k for regs in regs_por_aba.values() for _, r in regs for k in chaves(r)}
     quebradas = defaultdict(list)
     sem_meses = defaultdict(list)
     for aba, regs in regs_por_aba.items():
@@ -487,8 +551,8 @@ def ver_cadeias(regs_por_aba, rel):
             if vazio(prox):
                 continue
             prox = str(prox).strip()
-            k = chave(r)
-            if (k[0], prox.lower(), k[2], k[3]) not in indice:
+            # a fase seguinte tem de existir em cada opção horária desta linha
+            if any((k[0], prox.lower(), k[2], k[3]) not in indice for k in chaves(r)):
                 quebradas[(aba, str(r["nome"]).strip(), prox)].append(ln)
             if numero(r.get("meses_promo")) is None:
                 sem_meses[(aba, str(r["nome"]).strip())].append(ln)
@@ -664,6 +728,7 @@ def validar(abas, anos=None, bases=None, estado=None):
     for aba, rs in regs.items():
         ver_linhas(aba, rs, rel)
         ver_coerencia(aba, rs, rel)
+        ver_diario_semanal(aba, rs, rel)
     ver_duplicados(regs, rel)
     ver_cadeias(regs, rel)
 
