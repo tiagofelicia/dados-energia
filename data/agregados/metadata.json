@@ -1,14 +1,14 @@
 {
   "omie": {
     "primeira_data": "2010-01-01",
-    "ultima_data": "2026-10-09",
-    "dias": 6126
+    "ultima_data": "2026-10-10",
+    "dias": 6127
   },
   "producao": {
     "primeira_data": "2010-01-01",
-    "ultima_data": "2026-10-07",
-    "dias": 6124
+    "ultima_data": "2026-10-08",
+    "dias": 6125
   },
-  "gerado_em": "2026-10-09T01:18:49+00:00",
+  "gerado_em": "2026-10-10T01:03:55+00:00",
   "nota": "Derivados de data/omie/ e data/producao/. Os dias futuros estimados a partir dos futuros OMIP estão excluídos."
 }
