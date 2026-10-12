@@ -459,12 +459,13 @@ def ver_linhas(aba, regs, rel):
             problemas[("aviso", f"fidelização de {fmt(fid)} meses num tarifário doméstico (o limite para consumidores "
                                 f"é de {FIDELIZACAO_MAX_DOMESTICO} meses) — confirme")].append(ln)
 
-        cond = str(r.get("condicao_adesao") or "").strip()
+        # vazio() e não `or ""`: a célula vazia vem do pandas como NaN, que é verdadeiro e dava "nan"
+        cond = "" if vazio(r.get("condicao_adesao")) else str(r.get("condicao_adesao")).strip()
         if len(cond) > CONDICAO_MAX_CARACTERES:
             problemas[("aviso", f"condicao_adesao com mais de {CONDICAO_MAX_CARACTERES} caracteres (é o texto do selo: "
                                 f"curto, ex. \"Sócio ACP\"; os pormenores vão nas notas)")].append(ln)
 
-        ficha = str(r.get("ficha_padronizada") or "").strip()
+        ficha = "" if vazio(r.get("ficha_padronizada")) else str(r.get("ficha_padronizada")).strip()
         if ficha and not ficha.lower().startswith(("http://", "https://")):
             problemas[("aviso", "ficha_padronizada não é um link (tem de começar por https://)")].append(ln)
 
