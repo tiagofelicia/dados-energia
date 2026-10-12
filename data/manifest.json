@@ -868,7 +868,7 @@
    "avisos": [
     "HORÁRIO até 30/09/2025 (periodo 1-24, minutos=60) e de 15 minutos desde 01/10/2025 (periodo 1-96, minutos=15). Antes de juntar com o erc-isp por (data_iso, periodo), filtre ou agregue pela coluna 'minutos'."
    ],
-   "bytes": 48864464,
+   "bytes": 48939997,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/brp/",
    "colunas": [
@@ -899,7 +899,7 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por agente",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-07",
+   "ultima_data": "2026-10-08",
    "url": "https://dados.tiagofelicia.pt/data/erc/brp/"
   },
   {
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-12T17:43:59+00:00",
+ "gerado_em": "2026-10-12T17:46:11+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1059,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 504860151,
+  "bytes": 504935684,
   "datasets": 39,
   "ficheiros": 1784
  }
