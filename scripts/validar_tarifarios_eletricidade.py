@@ -148,10 +148,15 @@ PAGAMENTO = {"Débito Direto", "Multibanco", "Numerário/Payshop/CTT"}
 NUMERICAS = ["potencia_kva", "preco_potencia_dia", *PRECOS_ENERGIA, "custo_regulacao_kwh",
              "desconto_fatura_mes", "desconto_amigo_inicial", "desconto_amigo_mes",
              "custo_pack_mes", "desconto_mes_inicio", "desconto_meses_limite",
-             "desconto_amigo_meses", "meses_promo"]
-MESES = ["desconto_mes_inicio", "desconto_meses_limite", "desconto_amigo_meses", "meses_promo"]
+             "desconto_amigo_meses", "meses_promo", "fidelizacao_meses"]
+MESES = ["desconto_mes_inicio", "desconto_meses_limite", "desconto_amigo_meses", "meses_promo",
+         "fidelizacao_meses"]
+# Fidelização (colunas opcionais; vazio = sem fidelização). Os simuladores mostram-na com um selo e
+# a nota (contrapartida e o que se paga ao sair antes), sem mexer no custo nem na ordenação.
+# Nos contratos com consumidores a fidelização tem limite de duração: acima disto, só avisa
+FIDELIZACAO_MAX_DOMESTICO = 12
 BOOLEANAS = ["tar_incluida_energia", "tar_incluida_potencia", "financiamento_tse_incluido",
-             "100_Verde", "regulacao_iva_23", "perdas_autonomas", "apenas_fase"]
+             "100_Verde", "regulacao_iva_23", "perdas_autonomas", "apenas_fase", "so_novos_clientes"]
 
 # (mínimo, máximo), inclusive. Valores reais a 09/10/2026 em comentário.
 LIMITES = {
@@ -173,7 +178,12 @@ CONSTANTES_NO_TARIFARIO = [
     "custo_regulacao_kwh", "regulacao_iva_23", "perdas_autonomas",
     "desconto_amigo_inicial", "desconto_amigo_mes", "desconto_amigo_meses", "custo_pack_mes"]
 # Estas também costumam ser iguais, mas não mudam o preço: só avisam
-QUASE_CONSTANTES_NO_TARIFARIO = ["tipo", "segmento", "100_Verde", "site_adesao"]
+QUASE_CONSTANTES_NO_TARIFARIO = ["tipo", "segmento", "100_Verde", "site_adesao",
+                                 "fidelizacao_meses", "fidelizacao_nota", "condicao_adesao",
+                                 "so_novos_clientes", "ficha_padronizada"]
+# Oferta condicionada (coluna opcional condicao_adesao; vazio = sem condição): texto curto, igual para o
+# mesmo parceiro ("Sócio ACP", "Cliente Vodafone", "Cliente MEO (M4e ou M5e)"); os pormenores vão nas notas
+CONDICAO_MAX_CARACTERES = 40
 
 # Constantes que o simulador (Tiago_Felicia_JS_v64 + motor_elet.js) vai buscar
 # pelo nome. Datas à parte, em DATAS_CONSTANTES.
@@ -436,6 +446,27 @@ def ver_linhas(aba, regs, rel):
             a_mais = [c for c in PRECOS_ENERGIA if c not in precisa and not vazio(r.get(c))]
             if a_mais:
                 problemas[("aviso", f"{opcao} com preço noutra coluna ({', '.join(a_mais)}), que é ignorado")].append(ln)
+
+        # Fidelização: a nota sem os meses não aparece no simulador; os meses sem a nota mostram o selo
+        # sem dizer a contrapartida nem o custo de sair antes
+        fid = numero(r.get("fidelizacao_meses")) if not vazio(r.get("fidelizacao_meses")) else None
+        if fid is None and not vazio(r.get("fidelizacao_nota")):
+            problemas[("aviso", "fidelizacao_nota preenchida sem fidelizacao_meses (o simulador só a mostra com os meses)")].append(ln)
+        elif fid and vazio(r.get("fidelizacao_nota")):
+            problemas[("aviso", "fidelizacao_meses sem fidelizacao_nota (falta dizer a contrapartida e o que se paga ao sair antes)")].append(ln)
+        if fid and fid > FIDELIZACAO_MAX_DOMESTICO and "Doméstico" in str(r.get("segmento") or "") \
+                and "Não Doméstico" != str(r.get("segmento") or "").strip():
+            problemas[("aviso", f"fidelização de {fmt(fid)} meses num tarifário doméstico (o limite para consumidores "
+                                f"é de {FIDELIZACAO_MAX_DOMESTICO} meses) — confirme")].append(ln)
+
+        cond = str(r.get("condicao_adesao") or "").strip()
+        if len(cond) > CONDICAO_MAX_CARACTERES:
+            problemas[("aviso", f"condicao_adesao com mais de {CONDICAO_MAX_CARACTERES} caracteres (é o texto do selo: "
+                                f"curto, ex. \"Sócio ACP\"; os pormenores vão nas notas)")].append(ln)
+
+        ficha = str(r.get("ficha_padronizada") or "").strip()
+        if ficha and not ficha.lower().startswith(("http://", "https://")):
+            problemas[("aviso", "ficha_padronizada não é um link (tem de começar por https://)")].append(ln)
 
         tipo = str(r.get("tipo") or "").strip()
         if tipo and tipo not in TIPOS[aba]:

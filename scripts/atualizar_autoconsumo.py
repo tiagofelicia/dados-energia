@@ -23,6 +23,16 @@ ABA_EXCEL = "OMIE_CICLOS"
 COLUNA_PARA_ESCREVER = 8 # Coluna H
 # Intermédio da Fase 1 (atualizar_mibel_ano_atual_ACUM.py) — partilhado
 FICHEIRO_MIBEL_CSV = os.path.join(ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACUM.csv")
+# Ano dos dados: o ano civil corrente em Portugal. Na viragem do ano passa sozinho ao
+# seguinte — até 10/10/2026 estava "2026" escrito à mão, e a partir de 2027 os preços do
+# ano novo não chegavam à folha (a estrutura acabava a 31/12/2026). ANO_DADOS no
+# ambiente fixa outro ano (só para testes).
+ANO = int(os.environ.get("ANO_DADOS") or pd.Timestamp.now(tz="Europe/Lisbon").year)
+# Anos que se escrevem na folha: o atual e o seguinte e, em janeiro, ainda o anterior,
+# para os últimos dias de dezembro chegarem à folha depois da viragem do ano. Não o ano
+# anterior todo o ano: o MIBEL acumulado difere do histórico do OMIE em 5 quartos de hora
+# de 8 e 9/10/2025 (a folha tem os certos).
+ANOS_A_ESCREVER = [ANO, ANO + 1] + ([ANO - 1] if pd.Timestamp.now(tz="Europe/Lisbon").month == 1 else [])
 
 print(f"ℹ️ Fonte de dados: '{FICHEIRO_MIBEL_CSV}'")
 print("⚠️ MODO: Apenas dados reais (sem futuros)")
@@ -68,7 +78,7 @@ def run_update_process():
         # PASSO 2: Criar estrutura completa e converter para Portugal
         # =================================================================
 
-        print("\n⏳ Passo 2: A criar estrutura completa até 2026...")
+        print(f"\n⏳ Passo 2: A criar estrutura completa até {ANO}...")
         
         def num_quartos_dia(data_obj):
             """
@@ -88,7 +98,7 @@ def run_update_process():
             horas = (dt_next - dt0).total_seconds() / 3600
             return int(round(horas * 4)) 
         
-        datas_futuras = pd.date_range(start=ultima_data_omie + pd.Timedelta(days=1), end='2026-12-31', freq='D')
+        datas_futuras = pd.date_range(start=ultima_data_omie + pd.Timedelta(days=1), end=f'{ANO}-12-31', freq='D')
         
         futuro_qh = []
         for data in datas_futuras:
@@ -106,7 +116,7 @@ def run_update_process():
         dados_completos_qh = dados_completos_qh.sort_values(['Data', 'Hora']).reset_index(drop=True)
         
         print(f"   - Dados reais até: {ultima_data_omie.date()}")
-        print(f"   - Estrutura criada até: 2026-12-31")
+        print(f"   - Estrutura criada até: {ANO}-12-31")
         print(f"   - Registos com dados reais: {len(dados_combinados_qh)}")
         print(f"   - Registos vazios (futuros): {len(futuro_qh)}")
         
@@ -131,8 +141,8 @@ def run_update_process():
         dados_finais_pt = dados_completos_qh.sort_values('datetime_pt').copy()
         dados_finais_pt['Hora_PT'] = dados_finais_pt.groupby('Data_PT').cumcount() + 1
         
-        # Selecionar apenas 2026 e 2027
-        dados_finais_pt = dados_finais_pt[dados_finais_pt['datetime_pt'].dt.year.isin([2026, 2027])].copy()
+        # Selecionar apenas o ano atual e o seguinte (e, em janeiro, o anterior)
+        dados_finais_pt = dados_finais_pt[dados_finais_pt['datetime_pt'].dt.year.isin(ANOS_A_ESCREVER)].copy()
         dados_finais_pt = dados_finais_pt[['Data_PT', 'Hora_PT', 'Preco']].rename(
             columns={'Data_PT': 'Data', 'Hora_PT': 'Hora'}
         )
@@ -182,7 +192,7 @@ def run_update_process():
         df_dados_pt_merge['Hora'] = df_dados_pt_merge['Hora'].astype(int)
         
         # ===================================================================
-        # Adicionar um marcador para saber quais linhas são de 2026/2027
+        # Adicionar um marcador para saber quais linhas são dos ANOS_A_ESCREVER
         df_dados_pt_merge['dados_calculados'] = True
         # ===================================================================
 
@@ -201,7 +211,7 @@ def run_update_process():
         # 6. FILTRAR apenas os dados que TÊM o marcador 'dados_calculados'
         dados_para_escrever = df_final_excel[df_final_excel['dados_calculados'] == True].copy()
         
-        print(f"   - {len(dados_para_escrever)} preços (2026/2027) alinhados e prontos a escrever.")
+        print(f"   - {len(dados_para_escrever)} preços ({'/'.join(map(str, sorted(ANOS_A_ESCREVER)))}) alinhados e prontos a escrever.")
 
         # 7. Escrever no ficheiro Excel (de forma seletiva)
         print(f"   - A carregar '{FICHEIRO_EXCEL}' para escrita...")
