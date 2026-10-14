@@ -179,7 +179,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 8020,
+   "bytes": 6765,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -201,7 +201,7 @@
    ],
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-14",
+   "ultima_data": "2026-10-15",
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
@@ -239,7 +239,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/MIBEL_ano_atual_ACUM.csv"
   },
   {
-   "bytes": 3071949,
+   "bytes": 3072117,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -356,7 +356,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 13433,
+   "bytes": 15231,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -484,7 +484,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1829,
+   "bytes": 1830,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-14T22:36:05+00:00",
+ "gerado_em": "2026-10-14T23:19:01+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1059,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 507379415,
+  "bytes": 507380127,
   "datasets": 39,
   "ficheiros": 1787
  }
