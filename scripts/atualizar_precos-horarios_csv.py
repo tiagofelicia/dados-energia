@@ -143,6 +143,34 @@ def ler_omie_perdas_ciclos():
     return pd.concat([opc.ler(f) for f in ficheiros], ignore_index=True)
 
 
+FUSO_PT = 'Europe/Lisbon'
+# Etiqueta da 2.ª passagem pela hora que se repete no último domingo de outubro (01:00–02:00 em
+# Portugal): sem ela os quatro quartos de hora apareciam duas vezes com o mesmo nome e quem lê o
+# CSV (script-horarios.js, erc.html) não os conseguia distinguir.
+SUFIXO_HORA_REPETIDA = ' (2.ª)'
+
+
+def instantes_omie_perdas_ciclos(df):
+    """
+    Início, em UTC, de cada quarto de hora da OMIE_PERDAS_CICLOS.
+
+    A Data (MM/DD/AAAA) e a Hora são de Portugal e a Hora é o FIM do quarto de hora. Nos dias
+    de mudança de hora a etiqueta não chega: em outubro a hora 01:00–02:00 aparece duas vezes e
+    em março salta das 01:00 para as 02:00. Antes lia-se a etiqueta como hora de Madrid, o que
+    nesses dias empilhava vários quartos de hora no mesmo instante (o merge multiplicava linhas).
+    Agora conta-se a posição de cada linha no seu dia (vêm por ordem) a partir da meia-noite de
+    Lisboa, o que dá o instante certo também nos dias de 92 e 100 quartos de hora.
+    """
+    dia = pd.to_datetime(df['Data'], format='%m/%d/%Y', errors='coerce')
+    posicao = df.groupby('Data', sort=False).cumcount()
+    n_dia = df.groupby('Data', sort=False)['Data'].transform('size')
+    estranhos = sorted(set(df.loc[~n_dia.isin([92, 96, 100]), 'Data']))
+    if estranhos:
+        print(f"⚠️ {opc.NOME}: dias com um n.º de quartos de hora inesperado: {', '.join(estranhos[:5])}")
+    # A meia-noite nunca é ambígua nem inexistente em Lisboa (a hora muda à 01:00/02:00)
+    return (dia.dt.tz_localize(FUSO_PT) + pd.to_timedelta(posicao * 15, unit='min')).dt.tz_convert('UTC')
+
+
 # ============================================================
 # 1. CARREGADOR DE DADOS LOCAIS
 # ============================================================
@@ -261,59 +289,55 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
         # Períodos horários e perdas: os ficheiros por ano da OMIE_PERDAS_CICLOS
         # (já não são uma folha do xlsx — ver omie_perdas_ciclos.py)
         omie_perdas_ciclos = ler_omie_perdas_ciclos()
-
-        omie_perdas_ciclos['DataHora'] = omie_perdas_ciclos.apply(lambda r: pd.to_datetime(f"{r['Data']} {r['Hora']}", errors='coerce'), axis=1)
-        omie_perdas_ciclos['DataHora'] = (omie_perdas_ciclos['DataHora'].dt.tz_localize('Europe/Madrid', nonexistent='shift_forward', ambiguous='NaT').dt.tz_convert('Europe/Lisbon').dt.tz_localize(None))
-        omie_perdas_ciclos['DataHora'] = omie_perdas_ciclos['DataHora'] + pd.Timedelta(minutes=45)
-        omie_perdas_ciclos['DataHora'] = omie_perdas_ciclos['DataHora'].dt.round('15min')
+        omie_perdas_ciclos['DataHoraUTC'] = instantes_omie_perdas_ciclos(omie_perdas_ciclos)
         print("   - Ficheiro de configuração lido com sucesso.")
     except Exception as e:
         print(f"❌ Erro ao carregar configuração: {e}")
         raise
 
-    # 2. Preparar DataFrame OMIE com DataHora
+    # 2. Preparar DataFrame OMIE com o início de cada quarto de hora em UTC. Os merges fazem-se
+    # SEMPRE em UTC: em hora de Portugal sem fuso, a hora que se repete em outubro aparecia duas
+    # vezes dos dois lados e o merge multiplicava as linhas (110–117 por tarifário em 26/10/2025).
     df_omie_trabalho = df_omie.copy()
-    df_omie_trabalho['DataHora'] = df_omie_trabalho.apply(
+    df_omie_trabalho['DataHoraUTC'] = df_omie_trabalho.apply(
         lambda row: pd.Timestamp(row['Data'], tz='Europe/Madrid') + pd.Timedelta(minutes=15 * (row['Hora'] - 1)),
         axis=1
-    ).dt.tz_convert('Europe/Lisbon').dt.tz_localize(None)
+    ).dt.tz_convert('UTC')
 
 
     # --- Criar um "MOLDE" com todos os intervalos de 15 minutos ---
-    print("   - A criar molde de tempo completo para garantir 96 registos/dia...")
+    print("   - A criar molde de tempo completo (96 registos/dia; 92 e 100 nos dias de mudança de hora)...")
     dias_a_processar = df_omie_trabalho['Data'].dt.date.unique() # Usar df_omie_trabalho que já está filtrado
     todos_intervalos = []
-    
-    # Lógica para garantir os 100 quartos-horários no dia da mudança
+
+    # Da meia-noite à meia-noite seguinte de Lisboa: dá 92 e 100 quartos de hora nos dias de
+    # mudança de hora sem ter de os identificar
     for dia in dias_a_processar:
-        # Identificar o dia da mudança de hora (último Domingo de Outubro)
-        if dia.month == 10 and dia.weekday() == 6 and dia.day > (31 - 7):
-             # Dia da mudança de hora de Outubro (25 horas)
-             intervalos_dia = pd.date_range(start=pd.Timestamp(dia, tz='Europe/Lisbon'), periods=100, freq='15min')
-        elif dia.month == 3 and dia.weekday() == 6 and dia.day > (31 - 7):
-             # Dia da mudança de hora de Março (23 horas)
-             intervalos_dia = pd.date_range(start=pd.Timestamp(dia, tz='Europe/Lisbon'), periods=92, freq='15min')
-        else:
-             # Dia normal (24 horas)
-             intervalos_dia = pd.date_range(start=pd.Timestamp(dia, tz='Europe/Lisbon'), periods=96, freq='15min')
-        
-        todos_intervalos.extend(intervalos_dia)
-    
-    # DataFrame com todos os intervalos de tempo possíveis, em hora de Portugal
-    df_scaffold = pd.DataFrame({'DataHora': todos_intervalos}).copy()
-    df_scaffold['DataHora'] = df_scaffold['DataHora'].dt.tz_localize(None) # Remover fuso horário para o merge
+        inicio = pd.Timestamp(dia, tz=FUSO_PT)
+        fim = pd.Timestamp(dia + pd.Timedelta(days=1), tz=FUSO_PT)
+        todos_intervalos.extend(pd.date_range(start=inicio, end=fim, freq='15min', inclusive='left'))
+
+    # Molde: instante em UTC (chave dos merges), hora de Portugal sem fuso (etiquetas, dia,
+    # previsão do ERC) e se é a 2.ª passagem pela mesma hora (a hora que se repete em outubro)
+    df_scaffold = pd.DataFrame({'DataHoraUTC': pd.DatetimeIndex(todos_intervalos).tz_convert('UTC')})
+    df_scaffold['DataHora'] = df_scaffold['DataHoraUTC'].dt.tz_convert(FUSO_PT).dt.tz_localize(None)
+    df_scaffold['Repetida'] = df_scaffold.groupby('DataHora').cumcount() > 0
 
     # Juntar o molde com os dados OMIE. Onde não houver dados, 'Preco' será NaN.
-    df_omie_completo = pd.merge(df_scaffold, df_omie_trabalho, on='DataHora', how='left')
+    df_omie_completo = pd.merge(df_scaffold, df_omie_trabalho.drop(columns=['Data', 'Hora']),
+                                on='DataHoraUTC', how='left')
     # --------------------------------------------------------------------
 
     # 3. Fazer merge com OMIE_PERDAS_CICLOS
     df_merged = pd.merge(
         df_omie_completo,
-        omie_perdas_ciclos[['DataHora', 'Perdas', 'BD', 'BS', 'TD', 'TS']],
-        on='DataHora',
+        omie_perdas_ciclos[['DataHoraUTC', 'Perdas', 'BD', 'BS', 'TD', 'TS']],
+        on='DataHoraUTC',
         how='left'
     )
+    if len(df_merged) != len(df_scaffold):
+        raise ValueError(f"o merge mudou o n.º de quartos de hora ({len(df_scaffold)} → {len(df_merged)}): "
+                         "há instantes repetidos no OMIE ou na OMIE_PERDAS_CICLOS")
     df_merged['Perdas'] = df_merged['Perdas'].fillna(1.04)
 
     # 4. Calcular preços para cada comercializador
@@ -342,8 +366,9 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
             
         hora_inicio = dt.strftime('%H:%M')
         hora_fim = (dt + pd.Timedelta(minutes=15)).strftime('%H:%M')
-        hora_str = f"[{hora_inicio}-{hora_fim}["
-        
+        hora_str = f"[{hora_inicio}-{hora_fim}[" + (SUFIXO_HORA_REPETIDA if row['Repetida'] else '')
+        t_utc = row['DataHoraUTC']  # para ordenar: a etiqueta não chega no dia em que a hora se repete
+
         # Verifica se existe preço OMIE para este intervalo de tempo
         if pd.isna(row['Preco']):
             # CASO 1: NÃO HÁ DADOS OMIE -> Criar linhas com valores vazios
@@ -373,7 +398,8 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
                         'TAR': None,
                         'OMIE*Perdas+TAR': None,
                         'ERC': None,
-                        '_ordem_ciclo': ordem_ciclo.get(ciclo['opcao_nome'], 99)
+                        '_ordem_ciclo': ordem_ciclo.get(ciclo['opcao_nome'], 99),
+                        '_t': t_utc, '_rep': bool(row['Repetida'])
                     })
         else:
             # CASO 2: HÁ DADOS OMIE -> Calcular normalmente
@@ -422,13 +448,16 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
                         'TAR': round(tar_kwh, 5),
                         'OMIE*Perdas+TAR': round(omie_perdas_tar_kwh, 5),
                         'ERC': round(erc_linha, 5) if erc_linha is not None else None,
-                        '_ordem_ciclo': ordem_ciclo.get(ciclo_info['opcao_nome'], 99)
+                        '_ordem_ciclo': ordem_ciclo.get(ciclo_info['opcao_nome'], 99),
+                        '_t': t_utc, '_rep': bool(row['Repetida'])
                     })
 
     # 5. Gerar tabelas finais
     df_quarto_horario_final = pd.DataFrame(resultados)
+    # Ordenar pelo instante (_t) e não pela etiqueta: no dia em que a hora se repete, a ordem
+    # alfabética intercalava as duas passagens pela hora 01:00
     df_quarto_horario_final = df_quarto_horario_final.sort_values(
-        by=['Tarifário', 'Dia', '_ordem_ciclo', 'Hora'],
+        by=['Tarifário', 'Dia', '_ordem_ciclo', '_t'],
         ascending=[True, False, True, True]
     ).reset_index(drop=True)
     df_quarto_horario_final = df_quarto_horario_final.drop(columns=['_ordem_ciclo'])
@@ -441,20 +470,24 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
     for col in cols_numericas:
         df_quarto_horario_final[col] = pd.to_numeric(df_quarto_horario_final[col], errors='coerce')
         
+    # A 2.ª passagem pela hora que se repete em outubro é uma hora à parte (_rep)
     df_horario_final = df_quarto_horario_final.groupby(
-        ['Dia', 'Tarifário', 'Opção Horária e Ciclo', 'Hora_Int']
+        ['Dia', 'Tarifário', 'Opção Horária e Ciclo', 'Hora_Int', '_rep']
     ).agg(
         OMIE_PT=('OMIE_PT', 'mean'),
-        Valor=('Valor', 'mean')
+        Valor=('Valor', 'mean'),
+        _t=('_t', 'min')
     ).reset_index()
     
-    df_horario_final['Hora'] = df_horario_final['Hora_Int'].apply(lambda h: f"[{h:02d}:00-{(h + 1) % 24:02d}:00[")
+    df_horario_final['Hora'] = df_horario_final.apply(
+        lambda r: f"[{r['Hora_Int']:02d}:00-{(r['Hora_Int'] + 1) % 24:02d}:00[" + (SUFIXO_HORA_REPETIDA if r['_rep'] else ''), axis=1)
     df_horario_final['_ordem_ciclo'] = df_horario_final['Opção Horária e Ciclo'].map(ordem_ciclo)
     df_horario_final = df_horario_final.sort_values(
-        by=['Tarifário', 'Dia', '_ordem_ciclo', 'Hora_Int'],
+        by=['Tarifário', 'Dia', '_ordem_ciclo', '_t'],
         ascending=[True, False, True, True]
     ).reset_index(drop=True)
-    df_horario_final = df_horario_final.drop(columns=['_ordem_ciclo', 'Hora_Int'])
+    df_horario_final = df_horario_final.drop(columns=['_ordem_ciclo', 'Hora_Int', '_rep', '_t'])
+    df_quarto_horario_final = df_quarto_horario_final.drop(columns=['Hora_Int', '_rep', '_t'])
     df_horario_final = df_horario_final[['Dia', 'Tarifário', 'Opção Horária e Ciclo', 'Hora', 'OMIE_PT', 'Valor']]
     print(f"   - Tabela horária gerada: {len(df_horario_final)} registos")
 
@@ -500,7 +533,9 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
         # K2 entra depois das perdas e o valor publicado pela G9 já as traz: o
         # dinâmico é ERC × perdas (a constante G9_K2 fica como recurso)
         k2 = erc_kwh * perdas if erc_kwh is not None else constantes_dict.get('G9_K2', 0.0)
-        return (omie_kwh_g9 * perdas * constantes_dict.get('G9_K1', 0.0) + k2 + constantes_dict.get('G9_K3', 0.0))
+        # TSE à parte, como no simulador (financiamento_tse_incluido = False na BD)
+        return (omie_kwh_g9 * perdas * constantes_dict.get('G9_K1', 0.0) + k2 + constantes_dict.get('G9_K3', 0.0)
+                + constantes_dict.get('Financiamento_TSE', 0.0))
     
     elif "MeoEnergia Tarifa Dinâmica" in nome_tarifario:
         # Fórmula: (OMIE + Meo_CG) * (1 + FP) + Meo_K
@@ -513,7 +548,9 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
         return (omie_kwh * perdas * constantes_dict.get('Repsol_FA', 0.0) + constantes_dict.get('Repsol_Q_Tarifa', 0.0)) + constantes_dict.get('Financiamento_TSE', 0.0)
     
     elif "Iberdrola - Simples Indexado Dinâmico" in nome_tarifario:
-        return (omie_kwh * perdas + constantes_dict.get("Iberdrola_Dinamico_Q", 0.0) + constantes_dict.get('Iberdrola_mFRR', 0.0))
+        # TSE à parte, como no simulador (financiamento_tse_incluido = False na BD)
+        return (omie_kwh * perdas + constantes_dict.get("Iberdrola_Dinamico_Q", 0.0) + constantes_dict.get('Iberdrola_mFRR', 0.0)
+                + constantes_dict.get('Financiamento_TSE', 0.0))
 
     elif "Plenitude - Tendência" in nome_tarifario:
         return (omie_kwh + _erc_ou_constante(erc_kwh, constantes_dict, 'Plenitude_CGS') + constantes_dict.get('Plenitude_GDOs', 0.0)) * perdas + constantes_dict.get('Plenitude_Fee', 0.0)

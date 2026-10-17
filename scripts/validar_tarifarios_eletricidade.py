@@ -184,6 +184,10 @@ QUASE_CONSTANTES_NO_TARIFARIO = ["tipo", "segmento", "100_Verde", "site_adesao",
 # Oferta condicionada (coluna opcional condicao_adesao; vazio = sem condição): texto curto, igual para o
 # mesmo parceiro ("Sócio ACP", "Cliente Vodafone", "Cliente MEO (M4e ou M5e)"); os pormenores vão nas notas
 CONDICAO_MAX_CARACTERES = 40
+# Nomes de ofertas para clientes de um parceiro. Sem condicao_adesao, o selo 🔑 e o filtro "Ocultar
+# ofertas condicionadas" não as apanham — acontece ao acrescentar um tarifário sem preencher a coluna.
+# "MEO M<n>" e não "MEO": o MEO Energia | FIXA sozinho é para todos.
+PADROES_CONDICAO = [r"\bACP\b", r"\bVodafone\b", r"\bMEO M\d"]
 
 # Constantes que o simulador (Tiago_Felicia_JS_v64 + motor_elet.js) vai buscar
 # pelo nome. Datas à parte, em DATAS_CONSTANTES.
@@ -466,8 +470,9 @@ def ver_linhas(aba, regs, rel):
                                 f"curto, ex. \"Sócio ACP\"; os pormenores vão nas notas)")].append(ln)
 
         ficha = "" if vazio(r.get("ficha_padronizada")) else str(r.get("ficha_padronizada")).strip()
-        if ficha and not ficha.lower().startswith(("http://", "https://")):
-            problemas[("aviso", "ficha_padronizada não é um link (tem de começar por https://)")].append(ln)
+        # "www.…" também serve: os simuladores acrescentam o https://
+        if ficha and not ficha.lower().startswith(("http://", "https://", "www.")):
+            problemas[("aviso", "ficha_padronizada não é um link (tem de começar por https:// ou www.)")].append(ln)
 
         tipo = str(r.get("tipo") or "").strip()
         if tipo and tipo not in TIPOS[aba]:
@@ -502,12 +507,26 @@ def ver_duplicados(regs_por_aba, rel):
             for k in set(chaves(r)):
                 if all(k) and k[3] is not None:
                     vistos[k].append((aba, ln, r))
+    # Um erro por tarifário: copiar um tarifário inteiro repete todas as opções e potências, e o
+    # GitHub só mostra as 10 primeiras anotações (com uma por linha, o resto ficava escondido)
+    repetidos = defaultdict(list)
     for k, ocorr in vistos.items():
         if len(ocorr) > 1:
-            onde = ", ".join(f"{aba} linha {ln}" for aba, ln, _ in ocorr)
+            repetidos[k[:2]].append((k, ocorr))
+    for casos in repetidos.values():
+        casos.sort(key=lambda kc: [ln for _, ln, _ in kc[1]])
+        exemplos = []
+        for k, ocorr in casos[:3]:
             r = ocorr[0][2]
             opcao = next((p for p in opcoes_da_linha(r) if p.lower() == k[2]), k[2])
-            rel.erro(ocorr[0][0], f"linha repetida ({r['nome']} · {opcao} · {fmt(k[3])} kVA): {onde}")
+            exemplos.append(f"{opcao} · {fmt(k[3])} kVA: " + ", ".join(f"{aba} linha {ln}" for aba, ln, _ in ocorr))
+        resto = f" (+{len(casos) - 3})" if len(casos) > 3 else ""
+        segmentos = {str(r.get("segmento") or "").strip() for _, ocorr in casos for _, _, r in ocorr}
+        dica = (" — é o mesmo nome em segmentos diferentes: dê outro nome a um deles (ex.: «… · Empresarial»), "
+                "porque o simulador distingue os tarifários pelo comercializador + nome") if len(segmentos) > 1 else ""
+        primeiro = casos[0][1][0]
+        rel.erro(primeiro[0], f"linha repetida ({primeiro[2]['nome']}, {len(casos)} vez(es)): "
+                              f"{'; '.join(exemplos)}{resto}{dica}")
 
 
 # Colunas que não contam para comparar o diário com o semanal (texto descritivo)
@@ -549,17 +568,62 @@ def ver_diario_semanal(aba, regs, rel):
                        f"as duas linhas numa só (\"{familia} - Ciclo Diário, {familia} - Ciclo Semanal\")")
 
 
-def ver_coerencia(aba, regs, rel):
-    """Colunas que têm de ser iguais em todas as linhas de um tarifário."""
-    por_tarifario = defaultdict(list)
+def por_tarifario(regs):
+    """{(comercializador, nome): [(linha, registo), …]}, pela ordem do xlsx."""
+    grupos = defaultdict(list)
     for ln, r in regs:
         if not vazio(r.get("nome")):
-            por_tarifario[(str(r.get("comercializador") or "").strip(), str(r["nome"]).strip())].append((ln, r))
+            grupos[(str(r.get("comercializador") or "").strip(), str(r["nome"]).strip())].append((ln, r))
+    return grupos
 
+
+def ver_arrasto(aba, regs, rel):
+    """Uma coluna de meses que sobe de 1 em 1 em 3 ou mais linhas seguidas do mesmo tarifário: é o
+    Excel a somar 1 quando se puxa a célula (ex.: fidelizacao_meses 12, 13, 14 … 34). Nunca é de
+    propósito — os meses são do tarifário, não da potência. Devolve {(tarifário, coluna)} assinalados,
+    para o ver_coerencia não repetir o mesmo caso como aviso."""
+    assinalados = set()
+    for chave, lrs in por_tarifario(regs).items():
+        for c in MESES:
+            if c not in lrs[0][1]:
+                continue
+            seq = [(ln, numero(r.get(c))) for ln, r in lrs]
+            i = 0
+            while i < len(seq):
+                j = i
+                while (j + 1 < len(seq) and seq[j][1] is not None and seq[j + 1][1] is not None
+                       and seq[j + 1][0] == seq[j][0] + 1 and seq[j + 1][1] == seq[j][1] + 1):
+                    j += 1
+                if j - i >= 2:
+                    valores = [fmt(v) for _, v in seq[i:j + 1]]
+                    mostra = ", ".join(valores[:3]) + (f" … {valores[-1]}" if len(valores) > 3 else "")
+                    rel.erro(aba, f"{chave[1]}: {c} sobe de 1 em 1 nas linhas {seq[i][0]}–{seq[j][0]} ({mostra}) — "
+                                  f"é o Excel a somar 1 ao puxar a célula; ponha o mesmo valor em todas "
+                                  f"(copiar e colar, ou Ctrl ao puxar)")
+                    assinalados.add((chave, c))
+                i = j + 1
+    return assinalados
+
+
+def ver_condicao_pelo_nome(aba, regs, rel):
+    """Ofertas que o nome diz serem para clientes de um parceiro e sem condicao_adesao."""
+    for (_, nome), lrs in por_tarifario(regs).items():
+        if "condicao_adesao" not in lrs[0][1]:
+            return
+        padrao = next((p for p in PADROES_CONDICAO if re.search(p, nome, re.IGNORECASE)), None)
+        if padrao and all(vazio(r.get("condicao_adesao")) for _, r in lrs):
+            rel.aviso(aba, f"{nome}: o nome indica uma oferta condicionada ({re.search(padrao, nome, re.IGNORECASE).group(0)}), "
+                           f"mas condicao_adesao está vazia — sem ela não leva o selo 🔑 nem sai com o filtro "
+                           f"\"Ocultar ofertas condicionadas\"")
+
+
+def ver_coerencia(aba, regs, rel, ignorar=frozenset()):
+    """Colunas que têm de ser iguais em todas as linhas de um tarifário."""
     for nivel, colunas in (("erro", CONSTANTES_NO_TARIFARIO), ("aviso", QUASE_CONSTANTES_NO_TARIFARIO)):
-        for (_, nome), lrs in por_tarifario.items():
+        for chave, lrs in por_tarifario(regs).items():
+            nome = chave[1]
             for c in colunas:
-                if c not in lrs[0][1]:
+                if c not in lrs[0][1] or (chave, c) in ignorar:
                     continue
                 valores = Counter(normalizar(r[c]) for _, r in lrs)
                 if len(valores) < 2:
@@ -759,7 +823,8 @@ def validar(abas, anos=None, bases=None, estado=None):
     regs = {aba: linhas_com_dados(ok[aba]) for aba in ABAS_TARIFARIOS if aba in ok}
     for aba, rs in regs.items():
         ver_linhas(aba, rs, rel)
-        ver_coerencia(aba, rs, rel)
+        ver_coerencia(aba, rs, rel, ignorar=ver_arrasto(aba, rs, rel))
+        ver_condicao_pelo_nome(aba, rs, rel)
         ver_diario_semanal(aba, rs, rel)
     ver_duplicados(regs, rel)
     ver_cadeias(regs, rel)
