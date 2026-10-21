@@ -181,6 +181,15 @@ CONSTANTES_NO_TARIFARIO = [
 QUASE_CONSTANTES_NO_TARIFARIO = ["tipo", "segmento", "100_Verde", "site_adesao",
                                  "fidelizacao_meses", "fidelizacao_nota", "condicao_adesao",
                                  "so_novos_clientes", "ficha_padronizada"]
+# Datas de adesão (colunas opcionais; vazio = sem limite). Os simuladores comparam-nas com o dia de HOJE:
+#   oferta_desde / oferta_ate — fora delas a linha sai da lista (com oferta_desde preparam-se preços novos);
+#   campanha_desde / campanha_ate — fora delas o tarifário fica, sem o desconto da campanha (desconto_fatura_mes,
+#   desconto_meses_limite, desconto_mes_inicio), sem as datas e sem o link condicoes_campanha.
+# As da campanha não entram na coerência: a campanha pode ser só de algumas potências e opções. As da oferta
+# separam versões do mesmo tarifário (por_tarifario, ver_duplicados) e têm o seu aviso (ver_janelas_oferta).
+# Nada disto bloqueia a publicação: são só avisos.
+DATAS_ADESAO = ["oferta_desde", "oferta_ate", "campanha_desde", "campanha_ate"]
+HOJE = date.today()
 # Oferta condicionada (coluna opcional condicao_adesao; vazio = sem condição): texto curto, igual para o
 # mesmo parceiro ("Sócio ACP", "Cliente Vodafone", "Cliente MEO (M4e ou M5e)"); os pormenores vão nas notas
 CONDICAO_MAX_CARACTERES = 40
@@ -285,7 +294,8 @@ class Relatorio:
 # ============================================================
 
 def vazio(v):
-    if v is None:
+    # (NaT: a célula vazia numa coluna só de datas, como oferta_ate)
+    if v is None or v is pd.NaT:
         return True
     if isinstance(v, float) and math.isnan(v):
         return True
@@ -329,6 +339,31 @@ def data_mdy(v):
         return datetime.strptime(str(v).strip(), "%m/%d/%Y")
     except ValueError:
         return None
+
+
+def data_adesao(v):
+    """date, ou None. Aceita o que os simuladores aceitam (dataBD): data do Excel, número de série,
+    "31/12/2026" e "2026-12-31" (com ou sem a hora)."""
+    if isinstance(v, (datetime, pd.Timestamp)):
+        return v.date()
+    if isinstance(v, date):
+        return v
+    n = numero(v)
+    if n is not None:
+        return (datetime(1899, 12, 30) + timedelta(days=int(n))).date() if 30000 < n < 80000 else None
+    s = str(v).strip()
+    for padrao, fmt_data in ((r"^(\d{4}-\d{2}-\d{2})", "%Y-%m-%d"), (r"^(\d{1,2}[/.-]\d{1,2}[/.-]\d{4})$", None)):
+        m = re.match(padrao, s)
+        if not m:
+            continue
+        try:
+            if fmt_data:
+                return datetime.strptime(m.group(1), fmt_data).date()
+            d, mes, a = re.split(r"[/.-]", m.group(1))
+            return date(int(a), int(mes), int(d))
+        except ValueError:
+            return None
+    return None
 
 
 def normalizar(v):
@@ -474,6 +509,33 @@ def ver_linhas(aba, regs, rel):
         if ficha and not ficha.lower().startswith(("http://", "https://", "www.")):
             problemas[("aviso", "ficha_padronizada não é um link (tem de começar por https:// ou www.)")].append(ln)
 
+        # Condições da campanha: um link, como a ficha
+        cc = "" if vazio(r.get("condicoes_campanha")) else str(r.get("condicoes_campanha")).strip()
+        if cc and not cc.lower().startswith(("http://", "https://", "www.")):
+            problemas[("aviso", "condicoes_campanha não é um link (tem de começar por https:// ou www.)")].append(ln)
+
+        # Datas de adesão (ver DATAS_ADESAO)
+        datas = {}
+        for c in DATAS_ADESAO:
+            if vazio(r.get(c)):
+                continue
+            d = data_adesao(r.get(c))
+            if d is None:
+                problemas[("aviso", f"{c} não é uma data (escreva dd/mm/aaaa): \"{r.get(c)}\" — o simulador ignora-a")].append(ln)
+            else:
+                datas[c] = d
+        for qual, depois_do_fim in (("oferta", "a oferta já não aparece nos simuladores: pode tirá-la da BD"),
+                                    ("campanha", "o desconto da campanha já não conta: pode limpar as colunas da campanha")):
+            de, ate = datas.get(f"{qual}_desde"), datas.get(f"{qual}_ate")
+            if de and ate and de > ate:
+                problemas[("aviso", f"{qual}_desde depois de {qual}_ate: nunca está em vigor")].append(ln)
+            if ate and ate < HOJE:
+                problemas[("aviso", f"{qual}_ate já passou ({ate:%d/%m/%Y}): {depois_do_fim}")].append(ln)
+        if ("campanha_desde" in datas or "campanha_ate" in datas) and vazio(r.get("desconto_fatura_mes")):
+            problemas[("aviso", "campanha_desde/campanha_ate sem desconto_fatura_mes: as datas da campanha só se aplicam "
+                                "ao desconto da campanha (para uma promoção com meses_promo, use oferta_ate na linha "
+                                "da promoção)")].append(ln)
+
         tipo = str(r.get("tipo") or "").strip()
         if tipo and tipo not in TIPOS[aba]:
             problemas[("aviso", f"tipo desconhecido: \"{tipo}\"")].append(ln)
@@ -511,8 +573,12 @@ def ver_duplicados(regs_por_aba, rel):
     # GitHub só mostra as 10 primeiras anotações (com uma por linha, o resto ficava escondido)
     repetidos = defaultdict(list)
     for k, ocorr in vistos.items():
-        if len(ocorr) > 1:
-            repetidos[k[:2]].append((k, ocorr))
+        # Com datas de oferta que não se sobrepõem são versões diferentes (os preços de hoje e os que entram
+        # noutro dia): os simuladores só mostram uma de cada vez. Só se repete o que está em vigor ao mesmo tempo
+        js = [janela_oferta(r) for _, _, r in ocorr]
+        juntos = [o for i, o in enumerate(ocorr) if any(sobrepoem(js[i], js[j]) for j in range(len(ocorr)) if j != i)]
+        if len(juntos) > 1:
+            repetidos[k[:2]].append((k, juntos))
     for casos in repetidos.values():
         casos.sort(key=lambda kc: [ln for _, ln, _ in kc[1]])
         exemplos = []
@@ -524,6 +590,9 @@ def ver_duplicados(regs_por_aba, rel):
         segmentos = {str(r.get("segmento") or "").strip() for _, ocorr in casos for _, _, r in ocorr}
         dica = (" — é o mesmo nome em segmentos diferentes: dê outro nome a um deles (ex.: «… · Empresarial»), "
                 "porque o simulador distingue os tarifários pelo comercializador + nome") if len(segmentos) > 1 else ""
+        if not dica and len({janela_oferta(r) for _, ocorr in casos for _, _, r in ocorr}) > 1:
+            dica = (" — as datas de oferta (oferta_desde / oferta_ate) sobrepõem-se: para preços novos, a versão nova "
+                    "tem de começar depois de a antiga acabar")
         primeiro = casos[0][1][0]
         rel.erro(primeiro[0], f"linha repetida ({primeiro[2]['nome']}, {len(casos)} vez(es)): "
                               f"{'; '.join(exemplos)}{resto}{dica}")
@@ -547,7 +616,8 @@ def ver_diario_semanal(aba, regs, rel):
         if not m:
             continue
         kva = numero(r.get("potencia_kva"))
-        k = (str(r.get("comercializador") or "").strip(), str(r.get("nome") or "").strip(),
+        # (o nome com as datas de oferta: cada versão compara-se consigo própria)
+        k = (str(r.get("comercializador") or "").strip(), str(r.get("nome") or "").strip() + rotulo_janela(janela_oferta(r)),
              round(kva, 2) if kva is not None else None, m.group(1))
         grupos[k][m.group(2)] = (ln, r)
     juntos = defaultdict(list)  # (nome, família, colunas) → [(potência, linha D, linha S)]
@@ -568,13 +638,51 @@ def ver_diario_semanal(aba, regs, rel):
                        f"as duas linhas numa só (\"{familia} - Ciclo Diário, {familia} - Ciclo Semanal\")")
 
 
+def janela_oferta(r):
+    """(oferta_desde, oferta_ate) como datas; vazia ou inválida = sem limite (None)."""
+    return tuple(None if vazio(r.get(c)) else data_adesao(r.get(c)) for c in ("oferta_desde", "oferta_ate"))
+
+
+def sobrepoem(j1, j2):
+    """As duas janelas de adesão têm algum dia em comum (sem limite = desde sempre / para sempre)."""
+    (d1, a1), (d2, a2) = j1, j2
+    return (d1 or date.min) <= (a2 or date.max) and (d2 or date.min) <= (a1 or date.max)
+
+
+def rotulo_janela(j):
+    d, a = j
+    if not d and not a:
+        return ""
+    return " (oferta " + " ".join(p for p in ((f"de {d:%d/%m/%Y}" if d else ""), (f"até {a:%d/%m/%Y}" if a else "")) if p) + ")"
+
+
 def por_tarifario(regs):
-    """{(comercializador, nome): [(linha, registo), …]}, pela ordem do xlsx."""
+    """{(comercializador, nome): [(linha, registo), …]}, pela ordem do xlsx.
+
+    As linhas do mesmo tarifário com datas de oferta diferentes (oferta_desde / oferta_ate) são versões
+    diferentes — os preços de hoje e os que entram noutro dia — e vão em grupos separados, com as datas
+    no nome ("Nome (oferta de 01/01/2027)"): a coerência e o arrasto comparam cada versão consigo própria."""
     grupos = defaultdict(list)
     for ln, r in regs:
         if not vazio(r.get("nome")):
-            grupos[(str(r.get("comercializador") or "").strip(), str(r["nome"]).strip())].append((ln, r))
+            nome = str(r["nome"]).strip() + rotulo_janela(janela_oferta(r))
+            grupos[(str(r.get("comercializador") or "").strip(), nome)].append((ln, r))
     return grupos
+
+
+def ver_janelas_oferta(aba, regs, rel):
+    """Linhas do mesmo tarifário com datas de oferta diferentes que se sobrepõem: é uma cópia mal feita (umas
+    linhas com a data e outras sem). Para preços novos, a versão nova começa depois de a antiga acabar."""
+    janelas = defaultdict(lambda: defaultdict(list))  # (comercializador, nome) → {janela: [linhas]}
+    for ln, r in regs:
+        if not vazio(r.get("nome")):
+            janelas[(str(r.get("comercializador") or "").strip(), str(r["nome"]).strip())][janela_oferta(r)].append(ln)
+    for (_, nome), por_janela in janelas.items():
+        js = list(por_janela)
+        if any(sobrepoem(a, b) for i, a in enumerate(js) for b in js[i + 1:]):
+            partes = "; ".join(f"{rotulo_janela(j).strip(' ()') or 'sem datas'}: linha(s) {linhas(lns)}" for j, lns in por_janela.items())
+            rel.aviso(aba, f"{nome}: datas de oferta diferentes que se sobrepõem ({partes}) — ponha as mesmas em "
+                           f"todas as linhas; para preços novos, a versão nova começa depois de a antiga acabar")
 
 
 def ver_arrasto(aba, regs, rel):
@@ -826,6 +934,7 @@ def validar(abas, anos=None, bases=None, estado=None):
         ver_coerencia(aba, rs, rel, ignorar=ver_arrasto(aba, rs, rel))
         ver_condicao_pelo_nome(aba, rs, rel)
         ver_diario_semanal(aba, rs, rel)
+        ver_janelas_oferta(aba, rs, rel)
     ver_duplicados(regs, rel)
     ver_cadeias(regs, rel)
 
