@@ -821,7 +821,7 @@
     "A chave é (data_iso, periodo). Nos dias de mudança de hora o 'intervalo' repete-se ou salta; o 'data_utc' não.",
     "Em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026) o erc_total_eur publicado pela REN fica abaixo da soma das componentes (241 371 EUR no conjunto). Os valores são guardados como a fonte os dá; nos restantes períodos a diferença é de arredondamento (< 0,01 EUR)."
    ],
-   "bytes": 13197964,
+   "bytes": 13211760,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/isp/",
    "colunas": [
@@ -861,7 +861,7 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por período",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-19",
+   "ultima_data": "2026-10-20",
    "url": "https://dados.tiagofelicia.pt/data/erc/isp/"
   },
   {
@@ -906,7 +906,7 @@
    "avisos": [
     "A unidade da quantidade varia com o código (MWh para energia, MW para banda): ver a coluna 'unidade' do dicionário."
    ],
-   "bytes": 70207272,
+   "bytes": 70266585,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/tipo/",
    "colunas": [
@@ -931,7 +931,7 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por tipo de encargo",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-19",
+   "ultima_data": "2026-10-20",
    "url": "https://dados.tiagofelicia.pt/data/erc/tipo/"
   },
   {
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-22T13:51:16+00:00",
+ "gerado_em": "2026-10-22T17:46:22+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1059,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 512876893,
+  "bytes": 512950002,
   "datasets": 39,
   "ficheiros": 1822
  }
