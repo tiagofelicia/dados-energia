@@ -457,7 +457,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
   },
   {
-   "bytes": 197615,
+   "bytes": 197685,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_spot.csv",
    "colunas": [
@@ -477,14 +477,14 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-mibgas",
-   "linhas": 3963,
+   "linhas": 3964,
    "titulo": "Índices MIBGAS",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-21",
+   "ultima_data": "2026-10-22",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1835,
+   "bytes": 1829,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -494,7 +494,7 @@
    "id": "gas-hoje",
    "titulo": "Instantâneo MIBGAS do dia",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-21",
+   "ultima_data": "2026-10-22",
    "url": "https://dados.tiagofelicia.pt/data/gas/hoje.json"
   },
   {
@@ -503,7 +503,7 @@
     "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
     "horizonte 'intradiario' entrega no próprio dia da sessão e 'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."
    ],
-   "bytes": 3357568,
+   "bytes": 3359800,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_futuros.csv",
    "colunas": [
@@ -525,10 +525,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-futuros",
-   "linhas": 35643,
+   "linhas": 35666,
    "titulo": "Curva forward do gás ibérico",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-21",
+   "ultima_data": "2026-10-22",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_futuros.csv"
   },
   {
@@ -537,7 +537,7 @@
     "ttf_derivado é uma estimativa (±1 EUR/MWh), não o índice oficial.",
     "A chave é (data_iso, produto, entrega_inicio): os produtos de estação W e S cotam duas estações em simultâneo e aparecem duas vezes na mesma sessão."
    ],
-   "bytes": 630819,
+   "bytes": 631714,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_ttf_spread.csv",
    "colunas": [
@@ -554,10 +554,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-ttf-spread",
-   "linhas": 11360,
+   "linhas": 11376,
    "titulo": "Spread PVB-TTF",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-21",
+   "ultima_data": "2026-10-22",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
@@ -1043,7 +1043,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-22T20:15:45+00:00",
+ "gerado_em": "2026-10-22T22:44:12+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1059,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 513459492,
+  "bytes": 513462683,
   "datasets": 39,
   "ficheiros": 1822
  }
