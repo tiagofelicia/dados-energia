@@ -156,7 +156,15 @@ MESES = ["desconto_mes_inicio", "desconto_meses_limite", "desconto_amigo_meses",
 # Nos contratos com consumidores a fidelização tem limite de duração: acima disto, só avisa
 FIDELIZACAO_MAX_DOMESTICO = 12
 BOOLEANAS = ["tar_incluida_energia", "tar_incluida_potencia", "financiamento_tse_incluido",
-             "100_Verde", "regulacao_iva_23", "perdas_autonomas", "apenas_fase", "so_novos_clientes"]
+             "100_Verde", "regulacao_iva_23", "perdas_autonomas", "apenas_fase", "so_novos_clientes",
+             "regulacao_fixo", "regulacao_discriminada"]
+# Custos de regulação (ERS) — colunas opcionais, nas duas folhas:
+#   custo_regulacao_kwh preenchido = o tarifário cobra-os à parte; os simuladores usam o ERS do período (ERC da REN ×
+#     perdas, pesado pelo consumo) e este valor só onde falta o ERC; com regulacao_fixo = TRUE, usam este valor;
+#   regulacao_discriminada = TRUE (indexados quarto-horários) mostra a parte ERS da fórmula como custos de regulação,
+#     fora do comercializador, sem mudar o preço — só nas fórmulas com esse termo:
+FORMULAS_COM_ERS = ["Coopérnico | Único", "Alfa Energia | ALFA POWER", "Plenitude | Tendência", "EZU | Indexada",
+                    "G9 | Smart Dynamic", "BTN SPOTDEF"]
 
 # (mínimo, máximo), inclusive. Valores reais a 09/10/2026 em comentário.
 LIMITES = {
@@ -175,7 +183,7 @@ LIMITES_PERDAS = (1.0, 1.5)                   # 1,118–1,253
 # Valores diferentes entre linhas do mesmo tarifário são uma cópia mal feita.
 CONSTANTES_NO_TARIFARIO = [
     "tar_incluida_energia", "tar_incluida_potencia", "financiamento_tse_incluido",
-    "custo_regulacao_kwh", "regulacao_iva_23", "perdas_autonomas",
+    "custo_regulacao_kwh", "regulacao_iva_23", "perdas_autonomas", "regulacao_fixo", "regulacao_discriminada",
     "desconto_amigo_inicial", "desconto_amigo_mes", "desconto_amigo_meses", "custo_pack_mes"]
 # Estas também costumam ser iguais, mas não mudam o preço: só avisam
 QUASE_CONSTANTES_NO_TARIFARIO = ["tipo", "segmento", "100_Verde", "site_adesao",
@@ -536,7 +544,17 @@ def ver_linhas(aba, regs, rel):
                                 "ao desconto da campanha (para uma promoção com meses_promo, use oferta_ate na linha "
                                 "da promoção)")].append(ln)
 
+        # Custos de regulação (ver FORMULAS_COM_ERS): as marcas que não fazem nada
         tipo = str(r.get("tipo") or "").strip()
+        sem_reg = vazio(r.get("custo_regulacao_kwh")) or (numero(r.get("custo_regulacao_kwh")) or 0) <= 0
+        for c in ("regulacao_fixo", "regulacao_iva_23"):
+            if sem_reg and booleano(r.get(c)) is True:
+                problemas[("aviso", f"{c} sem custo_regulacao_kwh: não faz nada")].append(ln)
+        if booleano(r.get("regulacao_discriminada")) is True:
+            nome = str(r.get("nome") or "")
+            if aba != "Indexados" or tipo != "Indexado quarto-horário" or not any(f in nome for f in FORMULAS_COM_ERS):
+                problemas[("aviso", "regulacao_discriminada só serve nos indexados quarto-horários com o ERC na fórmula "
+                                    f"({', '.join(FORMULAS_COM_ERS)}): aqui não faz nada")].append(ln)
         if tipo and tipo not in TIPOS[aba]:
             problemas[("aviso", f"tipo desconhecido: \"{tipo}\"")].append(ln)
         seg = str(r.get("segmento") or "").strip()
