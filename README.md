@@ -79,11 +79,12 @@ data/
 Schema de `omie_dados_atuais.csv` e dos históricos:
 
 ```
-dia,hora,intervalo,Simples,BD,BS,TD,TS,preco_pt,preco_es
-01/01/2026,00:15,[00:00-00:15[,S,V,V,V,V,104.70,104.70
+dia,hora,intervalo,Simples,BD,BS,TD,TS,preco_pt,preco_es,data_utc
+01/01/2026,00:15,[00:00-00:15[,S,V,V,V,V,104.70,104.70,2026-01-01 00:00
 ```
 
 - `dia` em `DD/MM/AAAA`; `intervalo` de 15 minutos; preços em **€/MWh**.
+- `dia`, `hora` e `intervalo` são hora de Portugal; `data_utc` é o início do intervalo em UTC (`AAAA-MM-DD HH:MM`). Nos dias de mudança de hora o `intervalo` repete-se (no último domingo de outubro a hora 01:00–02:00 aparece duas vezes) ou salta (março); o `data_utc` não, e é a chave única de cada linha.
 - `Simples`, `BD` (bi-horário diário), `BS` (bi-horário semanal), `TD` (tri-horário diário), `TS` (tri-horário semanal): classificação do período horário BTN no intervalo (V = Vazio, C = Cheias, P = Ponta, F = Fora de Vazio, S = Simples). Ciclos oficiais em [tiagofelicia.pt/periodos-horarios](https://www.tiagofelicia.pt/periodos-horarios).
 - ⚠️ **O ficheiro tem 96 linhas por dia desde 2010, mas o MIBEL só casa por quartos de hora desde 1 de outubro de 2025.** Antes dessa data são 24 preços horários replicados pelos 4 intervalos. Uma média não nota diferença — replicar preserva o peso —, mas qualquer cálculo de *dispersão dentro da hora* (desvio-padrão, volatilidade, contagem de preços distintos) dá zero artificial para quinze dos dezasseis anos da série, e sugere que o mercado se tornou subitamente volátil em outubro de 2025. O que mudou foi a granularidade da publicação. A resolução a que a fonte publicou está declarada por dataset no `manifest.json`, no campo `resolucao_nativa`.
 - As fórmulas dos tarifários indexados de `precos-horarios.csv` estão documentadas em [tiagofelicia.pt/formulas-tarifarios-indexados](https://www.tiagofelicia.pt/formulas-tarifarios-indexados).
@@ -91,7 +92,7 @@ dia,hora,intervalo,Simples,BD,BS,TD,TS,preco_pt,preco_es
 ⚠️ **Dois avisos de formato**, importantes antes de escrever código sobre estes ficheiros:
 
 - **`omie_dados_atuais.csv` tem blocos extra no fim** (`TABELA_ATUALIZACOES`, `TABELA_FUTUROS_PT`, `TABELA_FUTUROS_ES`), a partir da linha ~35 135. Um `pd.read_csv` simples traz essas linhas como se fossem dados. Corte no primeiro `TABELA_`, ou use os [agregados](#dataagregados--séries-pré-calculadas) se só precisar de médias.
-- **`precos-horarios.csv` não abre com `pd.read_csv` sem argumentos.** Tem duas tabelas concatenadas *horizontalmente* — `TABELA_HORARIA` a partir da coluna 11 e `TABELA_CONSTANTES` a partir da 19 — o que produz linhas de 8, 11, 16, 19 e 20 campos e um `ParserError`.
+- **`precos-horarios.csv` não abre com `pd.read_csv` sem argumentos.** Tem duas tabelas concatenadas *horizontalmente* — `TABELA_HORARIA` a partir da coluna 11 e `TABELA_CONSTANTES` a partir da 19 — o que produz linhas de 10, 11, 16, 19 e 20 campos e um `ParserError`. A tabela quarto-horária acaba no `data_utc`, como os outros ficheiros, e a 2.ª passagem pela hora que se repete em outubro leva ` (2.ª)` no `intervalo`.
 
 Além disso, `omie_dados_atuais.csv` contém **datas futuras estimadas a partir dos futuros OMIP**, não preços de mercado. O último dia real está declarado em `futuros_omip.csv`, na chave `Data_Valores_OMIE` — as datas posteriores são estimativas. Os agregados e a intensidade carbónica já as excluem.
 
@@ -112,10 +113,10 @@ Schema dos CSV de produção:
 ```
 dia,hora,intervalo,Hídrica,Eólica,Solar,Biomassa,Ondas,Gás Natural - Ciclo Combinado,
 Gás natural - Cogeração,Carvão,Outra Térmica,Importação,Exportação,Bombagem,
-Injeção de Baterias,Consumo Baterias,Consumo
+Injeção de Baterias,Consumo Baterias,Consumo,data_utc
 ```
 
-Valores em **MW** (potência média no intervalo). Para energia: `MW × 0,25 = MWh`.
+Valores em **MW** (potência média no intervalo). Para energia: `MW × 0,25 = MWh`. O `data_utc` é o início do intervalo em UTC, como no OMIE.
 
 Os ficheiros de `producao-entsoe/` têm um schema próprio e mais rico, com `timezone`, `interval_minutes` e `unix_seconds` explícitos:
 
