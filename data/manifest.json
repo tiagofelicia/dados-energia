@@ -5,7 +5,8 @@
   {
    "avisos": [
     "Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do ficheiro; pd.read_csv traz essas linhas como dados.",
-    "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado."
+    "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado.",
+    "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
    "bytes": 1849925,
    "cadencia": "~5x/dia útil",
@@ -46,7 +47,10 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv"
   },
   {
-   "bytes": 30397400,
+   "avisos": [
+    "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
+   ],
+   "bytes": 39934952,
    "cadencia": "fecho de ano",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -59,7 +63,8 @@
     "TD",
     "TS",
     "preco_pt",
-    "preco_es"
+    "preco_es",
+    "data_utc"
    ],
    "descricao": "Séries históricas anuais desde 2010, mesmo schema do ano corrente.",
    "ficheiros": 16,
@@ -86,7 +91,8 @@
   },
   {
    "avisos": [
-    "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 8, 11, 16, 19 e 20 campos."
+    "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 10, 11, 16, 19 e 20 campos.",
+    "Na tabela quarto-horária, a 2.ª passagem pela hora que se repete em outubro leva ' (2.ª)' no intervalo, e a última coluna, data_utc, é o início do intervalo em UTC."
    ],
    "bytes": 1534143,
    "cadencia": "~5x/dia útil",
@@ -144,7 +150,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
-   "bytes": 555857,
+   "bytes": 553719,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -239,7 +245,10 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/MIBEL_ano_atual_ACUM.csv"
   },
   {
-   "bytes": 3164472,
+   "avisos": [
+    "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
+   ],
+   "bytes": 3647541,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -260,7 +269,8 @@
     "Bombagem",
     "Injeção de Baterias",
     "Consumo Baterias",
-    "Consumo"
+    "Consumo",
+    "data_utc"
    ],
    "descricao": "Produção por fonte em Portugal, potência média (MW) por intervalo de 15 minutos.",
    "ficheiros": 1,
@@ -281,7 +291,10 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_dados_atuais.csv"
   },
   {
-   "bytes": 63328926,
+   "avisos": [
+    "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
+   ],
+   "bytes": 72866478,
    "cadencia": "fecho de ano",
    "caminho": "data/producao/historico/",
    "colunas": [
@@ -302,7 +315,8 @@
     "Bombagem",
     "Injeção de Baterias",
     "Consumo Baterias",
-    "Consumo"
+    "Consumo",
+    "data_utc"
    ],
    "descricao": "Séries históricas anuais desde 2010, mesmo schema.",
    "ficheiros": 16,
@@ -356,7 +370,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 13533,
+   "bytes": 14274,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -1043,7 +1057,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-23T20:02:08+00:00",
+ "gerado_em": "2026-10-23T21:39:37+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1059,7 +1073,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 514111010,
+  "bytes": 533667786,
   "datasets": 39,
   "ficheiros": 1822
  }
