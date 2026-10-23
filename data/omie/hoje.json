@@ -112,6 +112,7 @@
    "23:45"
   ],
   "intervalos": 96,
+  "intervalos_reais": 96,
   "pt": {
    "max": 132.31,
    "max_hora": "00:00",
@@ -222,27 +223,27 @@
  "dias_atraso": 0,
  "e_hoje": true,
  "fonte": "OMIE (mercado diário MIBEL)",
- "gerado_em": "2026-10-22T23:10:17+00:00",
+ "gerado_em": "2026-10-23T10:13:23+00:00",
  "hoje": {
   "ciclos_medio_pt": {
    "bd_f": 93.43,
-   "bd_v": 132.58,
-   "bs_f": 107.34,
+   "bd_v": 132.61,
+   "bs_f": 105.78,
    "bs_v": 115.57,
    "td_c": 98.2,
    "td_p": 81.52,
-   "td_v": 132.58,
-   "ts_c": 125.0,
+   "td_v": 132.61,
+   "ts_c": 124.44,
    "ts_p": 24.93,
    "ts_v": 115.57
   },
   "data": "2026-10-23",
   "es": {
    "max": 224.0,
-   "max_hora": "23:00",
+   "max_hora": "18:45",
    "medio": 108.76,
    "min": 0.66,
-   "min_hora": "23:00",
+   "min_hora": "14:15",
    "valores": [
     134.55,
     130.0,
@@ -441,10 +442,11 @@
    "23:45"
   ],
   "intervalos": 96,
+  "intervalos_reais": 92,
   "pt": {
    "max": 224.0,
    "max_hora": "18:45",
-   "medio": 109.74,
+   "medio": 108.76,
    "min": 0.66,
    "min_hora": "14:15",
    "valores": [
@@ -540,10 +542,10 @@
     195.0,
     190.78,
     184.92,
-    132.31,
-    132.31,
-    132.31,
-    132.31
+    null,
+    null,
+    null,
+    null
    ]
   },
   "real": true
