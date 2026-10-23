@@ -487,6 +487,7 @@ def gerar_tabelas_tarifarias(df_omie, ficheiro_config, previsao_erc=None):
         ascending=[True, False, True, True]
     ).reset_index(drop=True)
     df_horario_final = df_horario_final.drop(columns=['_ordem_ciclo', 'Hora_Int', '_rep', '_t'])
+    df_quarto_horario_final['DataUTC'] = df_quarto_horario_final['_t'].dt.strftime('%Y-%m-%d %H:%M')
     df_quarto_horario_final = df_quarto_horario_final.drop(columns=['Hora_Int', '_rep', '_t'])
     df_horario_final = df_horario_final[['Dia', 'Tarifário', 'Opção Horária e Ciclo', 'Hora', 'OMIE_PT', 'Valor']]
     print(f"   - Tabela horária gerada: {len(df_horario_final)} registos")
@@ -578,12 +579,14 @@ def exportar_para_csv_compativel(df_q_horario, df_horario, constantes_dict, nome
     df_q_export = df_q_export.rename(columns={
         'Dia': 'dia', 'Tarifário': 'tarifario', 'Opção Horária e Ciclo': 'opcao',
         'Hora': 'intervalo', 'Valor': 'col', 'OMIE_PT': 'omie',
-        'TAR': 'tar', 'OMIE*Perdas+TAR': 'omieTar', 'ERC': 'erc'
+        'TAR': 'tar', 'OMIE*Perdas+TAR': 'omieTar', 'ERC': 'erc', 'DataUTC': 'data_utc'
     })
     # 'erc' (€/MWh) vai no fim de propósito: o script-horarios.js lê as colunas
-    # por posição (0 a 7) e ignora as seguintes. Só vem preenchida nos tarifários
+    # por posição (0 a 8) e ignora as seguintes. Só vem preenchida nos tarifários
     # que usam o ERC previsto; vazia = não se aplica ou entrou a constante da BD.
-    colunas_qh = ['dia', 'tarifario', 'opcao', 'intervalo', 'col', 'omie', 'tar', 'omieTar', 'erc']
+    # 'data_utc' (início do intervalo em UTC) é a 10.ª e última que cabe: a
+    # TABELA_HORARIA começa na 11.ª coluna (K).
+    colunas_qh = ['dia', 'tarifario', 'opcao', 'intervalo', 'col', 'omie', 'tar', 'omieTar', 'erc', 'data_utc']
     df_q_export = df_q_export[colunas_qh]
 
     # --- 2. PREPARAÇÃO DA TABELA HORÁRIA ---

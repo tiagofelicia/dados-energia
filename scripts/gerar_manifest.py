@@ -173,6 +173,11 @@ RESOLUCAO_MAPA_PRECOS = [
          excepcoes=[dict(zonas=ZONAS_HORARIAS, intervalo_minutos=60)]),
 ]
 
+# OMIE e produção: 'dia', 'hora' e 'intervalo' são hora de Portugal; a última coluna não.
+AVISO_DATA_UTC = ("A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). "
+                  "Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta "
+                  "(março); o data_utc não.")
+
 REGISTO = [
     # ---------- OMIE ----------
     dict(id="omie-atuais", grupo="omie", caminho="data/omie/omie_dados_atuais.csv",
@@ -185,12 +190,14 @@ REGISTO = [
          avisos=["Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do "
                  "ficheiro; pd.read_csv traz essas linhas como dados.",
                  "As datas posteriores a ultima_data_real são estimativas OMIP, "
-                 "não preços de mercado."]),
+                 "não preços de mercado.",
+                 AVISO_DATA_UTC]),
     dict(id="omie-historico", grupo="omie", caminho="data/omie/historico/omie_historico_*.csv",
          titulo="Preços OMIE — séries anuais",
          descricao="Séries históricas anuais desde 2010, mesmo schema do ano corrente.",
          cadencia="fecho de ano", tolerancia_dias=400, deteccao="glob_max",
-         resolucao_nativa=RESOLUCAO_MIBEL),
+         resolucao_nativa=RESOLUCAO_MIBEL,
+         avisos=[AVISO_DATA_UTC]),
     dict(id="omie-precos-horarios", grupo="omie", caminho="data/omie/precos-horarios.csv",
          titulo="Preços finais por tarifário indexado",
          descricao="Preço quarto-horário final por tarifário indexado e opção horária.",
@@ -198,7 +205,10 @@ REGISTO = [
          resolucao_nativa=RESOLUCAO_MIBEL,
          avisos=["Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas "
                  "horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), "
-                 "o que dá linhas de 8, 11, 16, 19 e 20 campos."]),
+                 "o que dá linhas de 10, 11, 16, 19 e 20 campos.",
+                 "Na tabela quarto-horária, a 2.ª passagem pela hora que se repete em "
+                 "outubro leva ' (2.ª)' no intervalo, e a última coluna, data_utc, é o "
+                 "início do intervalo em UTC."]),
     dict(id="omie-futuros", grupo="omie", caminho="data/omie/futuros_omip.csv",
          titulo="Futuros OMIP — sessão em curso",
          descricao="Versão leve com as tabelas de metadados e futuros OMIP (~3 KB).",
@@ -231,13 +241,15 @@ REGISTO = [
          descricao="Produção por fonte em Portugal, potência média (MW) por "
                    "intervalo de 15 minutos.",
          cadencia="cada 4h", tolerancia_dias=1, deteccao="csv_col:dia",
-         resolucao_nativa=RESOLUCAO_REN),
+         resolucao_nativa=RESOLUCAO_REN,
+         avisos=[AVISO_DATA_UTC]),
     dict(id="producao-historico", grupo="producao",
          caminho="data/producao/historico/producao_historico_*.csv",
          titulo="Produção elétrica — séries anuais",
          descricao="Séries históricas anuais desde 2010, mesmo schema.",
          cadencia="fecho de ano", tolerancia_dias=400, deteccao="glob_max",
-         resolucao_nativa=RESOLUCAO_REN),
+         resolucao_nativa=RESOLUCAO_REN,
+         avisos=[AVISO_DATA_UTC]),
     dict(id="producao-bombagem", grupo="producao",
          caminho="data/producao/producao_bombagem_diaria.csv",
          titulo="Bombagem hidroelétrica diária",

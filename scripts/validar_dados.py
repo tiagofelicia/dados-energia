@@ -33,7 +33,8 @@ O QUE VERIFICA
   existência   os ficheiros do padrão existem e não são de zero bytes
   frescura     ultima_data + tolerancia_dias >= hoje
   colunas      as colunas de que o site depende continuam lá
-  chave        a chave natural não tem duplicados
+  chave        a chave natural não tem duplicados (e, se declarada crescente,
+               vem sempre a subir pela ordem do ficheiro)
   calendário   96 quartos por dia, 92 e 100 nos dois dias de mudança de hora
   resolucao    a resolucao_nativa declarada corresponde aos dados
   cobertura    nenhuma coluna deixou de vir preenchida
@@ -106,6 +107,9 @@ RE_DIA = re.compile(r"^\d{2}/\d{2}/\d{4}$")
 #             propósito: uma coluna nova é bem-vinda, uma coluna a menos não.
 # chave       a chave natural. Lista, ou dicionário {ficheiro: chave} quando o
 #             dataset é um padrão com ficheiros de grão diferente.
+# crescente   a chave (de uma coluna) vem sempre a subir pela ordem do ficheiro.
+#             É o que apanha a hora repetida de outubro fora de ordem: na
+#             produção de 2024 e 2025 as duas passagens ficaram intercaladas.
 # calendario  coluna de dia em DD/MM/AAAA a que se aplica a regra dos 96 quartos.
 # cobertura   coluna de data ISO que define a janela recente.
 # resolucao_coluna  coluna de valores com que se confere a resolucao_nativa
@@ -115,11 +119,15 @@ RE_DIA = re.compile(r"^\d{2}/\d{2}/\d{4}$")
 REGRAS = {
     # Os dois "atuais" trazem blocos TABELA_* no fim, com outro número de
     # campos; sem tolerante=True o pandas rebenta a meio.
+    # A chave dos ficheiros quarto-horários é o data_utc: o 'intervalo' repete-se
+    # no último domingo de outubro.
     "omie-atuais": dict(
-        colunas=["dia", "hora", "intervalo", "preco_pt", "preco_es"],
+        colunas=["dia", "hora", "intervalo", "preco_pt", "preco_es", "data_utc"],
+        chave=["data_utc"], crescente=True,
         calendario="dia", resolucao_coluna="preco_pt", tolerante=True),
     "producao-atuais": dict(
-        colunas=["dia", "hora", "intervalo", "Consumo"],
+        colunas=["dia", "hora", "intervalo", "Consumo", "data_utc"],
+        chave=["data_utc"], crescente=True,
         calendario="dia", resolucao_coluna="Consumo", tolerante=True),
     "producao-bombagem": dict(
         colunas=["dia", "producao_bombagem_gwh"], chave=["dia"]),
@@ -129,10 +137,12 @@ REGRAS = {
     # calendário rende mais numa auditoria pontual — 16 anos de cada vez, com a
     # mudança de hora a cair em dias diferentes todos os anos. Daí o --lentos.
     "omie-historico": dict(
-        colunas=["dia", "hora", "intervalo", "preco_pt", "preco_es"],
+        colunas=["dia", "hora", "intervalo", "preco_pt", "preco_es", "data_utc"],
+        chave=["data_utc"], crescente=True,
         calendario="dia", resolucao_coluna="preco_pt"),
     "producao-historico": dict(
-        colunas=["dia", "hora", "intervalo", "Hídrica", "Eólica", "Solar"],
+        colunas=["dia", "hora", "intervalo", "Hídrica", "Eólica", "Solar", "data_utc"],
+        chave=["data_utc"], crescente=True,
         calendario="dia", resolucao_coluna="Eólica"),
     "omip-historico": dict(
         colunas=["Data", "Zona", "Contrato", "Valor"],
@@ -336,11 +346,21 @@ def ver_chave(regra, ficheiros, rel):
             rel.erro(f"{nome}: não abriu para verificar a chave "
                      f"({type(e).__name__}: {e})")
             continue
+        if regra.get("tolerante"):
+            # As linhas dos blocos TABELA_* do fim não têm a chave
+            d = d.dropna(subset=cols, how="all")
         dup = d[d.duplicated(subset=cols, keep=False)]
         if len(dup):
             exemplos = [" | ".join(r) for r in dup[cols].head(3).astype(str).values]
             rel.erro(f"{nome}: {len(dup)} linhas com chave "
                      f"({', '.join(cols)}) repetida — exemplos: {amostra(exemplos)}")
+        if regra.get("crescente"):
+            v = d[cols[0]].astype(str).to_numpy()
+            fora = (v[1:] <= v[:-1]).nonzero()[0]
+            if len(fora):
+                i = fora[0]
+                rel.erro(f"{nome}: {len(fora)} linhas fora de ordem pela {cols[0]} "
+                         f"— a 1.ª: {v[i]} seguida de {v[i + 1]}")
 
 
 def ver_calendario(regra, ficheiros, ultima, rel):

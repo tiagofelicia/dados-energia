@@ -23,6 +23,12 @@ FICHEIRO_CSV = os.path.join(ROOT_DIR, "data", "omie", "omie_dados_atuais.csv")  
 # pelo modo anual do simulador de eletricidade e, futuramente, pela página omip.html
 FICHEIRO_FUTUROS_CSV = os.path.join(ROOT_DIR, "data", "omie", "futuros_omip.csv")
 FICHEIRO_MIBEL_CSV = os.path.join(ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACUM.csv") # input
+# Ano dos dados: o ano civil corrente em Portugal. O ficheiro cobre-o todo (real +
+# estimado com os futuros) e ainda o 1 de janeiro seguinte: a última hora de 31/12 em
+# Portugal já é o dia de mercado de 1/1 em Espanha. Na viragem do ano passa sozinho ao
+# seguinte — até 10/10/2026 estava "2026" escrito à mão, e a 1/1/2027 o ficheiro ficava
+# sem estimativas (em 2028, vazio). ANO_DADOS no ambiente fixa outro ano (só para testes).
+ANO = int(os.environ.get("ANO_DADOS") or pd.Timestamp.now(tz="Europe/Lisbon").year)
 
 print(f"ℹ️ Fonte de dados: '{FICHEIRO_MIBEL_CSV}'")
 print("⚠️ Dados OMIE e futuros")
@@ -218,7 +224,7 @@ def run_analysis_process():
         
         # 3a. Criar calendário base
         calendario_es = pd.DataFrame({
-            'Data': pd.date_range(start='2026-01-01', end='2027-12-31', freq='D')
+            'Data': pd.date_range(start=f'{ANO}-01-01', end=f'{ANO + 1}-12-31', freq='D')
         })
         calendario_es['Ano'] = calendario_es['Data'].dt.year
         calendario_es['Mes'] = calendario_es['Data'].dt.month
@@ -292,8 +298,8 @@ def run_analysis_process():
 
         ultima_data_historica = dados_combinados_qh['Data'].max()
         
-        # Até 2027-01-01
-        datas_futuras = pd.date_range(start=ultima_data_historica + pd.Timedelta(days=1), end='2027-01-01', freq='D')
+        # Até 1 de janeiro do ano seguinte (dia de mercado ES da última hora de 31/12 em PT)
+        datas_futuras = pd.date_range(start=ultima_data_historica + pd.Timedelta(days=1), end=f'{ANO + 1}-01-01', freq='D')
 
         futuro_qh = []
         for data in datas_futuras:
@@ -347,8 +353,8 @@ def run_analysis_process():
         dados_finais_pt['Data'] = dados_finais_pt['datetime_pt'].dt.date
         dados_finais_pt['Hora'] = dados_finais_pt.groupby('Data').cumcount() + 1
 
-        # Selecionar apenas 2026 e 2027
-        dados_finais_pt = dados_finais_pt[dados_finais_pt['datetime_pt'].dt.year.isin([2026, 2027])].copy()
+        # Selecionar apenas o ano atual e o seguinte (deste, só chega o 1 de janeiro)
+        dados_finais_pt = dados_finais_pt[dados_finais_pt['datetime_pt'].dt.year.isin([ANO, ANO + 1])].copy()
 
         # Selecionar as colunas finais, MANTENDO o datetime_pt para o passo seguinte
         dados_finais_pt = dados_finais_pt[['Data', 'Hora', 'Preco_PT', 'Preco_ES', 'datetime_pt']].copy()
@@ -434,8 +440,11 @@ def run_analysis_process():
         df_principal['hora'] = end_time.dt.strftime('%H:%M')
         df_principal.loc[df_principal['hora'] == '00:00', 'hora'] = '23:59'
         df_principal['intervalo'] = '[' + start_time.dt.strftime('%H:%M') + '-' + end_time.dt.strftime('%H:%M') + '['
+        # Início do intervalo em UTC: nos dias de mudança de hora o 'intervalo' repete-se
+        # (outubro) ou salta (março); o data_utc não. Vai no fim para não mexer nas posições.
+        df_principal['data_utc'] = start_time.dt.tz_convert('UTC').dt.strftime('%Y-%m-%d %H:%M')
         df_principal.rename(columns={'Preco_PT': 'preco_pt', 'Preco_ES': 'preco_es'}, inplace=True)
-        colunas_finais = ['dia', 'hora', 'intervalo', 'Simples', 'BD', 'BS', 'TD', 'TS', 'preco_pt', 'preco_es']
+        colunas_finais = ['dia', 'hora', 'intervalo', 'Simples', 'BD', 'BS', 'TD', 'TS', 'preco_pt', 'preco_es', 'data_utc']
         df_principal = df_principal[colunas_finais]
 
         # --- 5c. Preparar Tabela de Atualização ---

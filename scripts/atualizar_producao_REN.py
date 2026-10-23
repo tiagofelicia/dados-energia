@@ -20,6 +20,10 @@ Comportamento:
         – o ano do CSV é diferente do ano corrente (rollover de ano).
   • Cada pedido tem retry com exponential backoff (3 tentativas: 2s, 4s, 8s).
   • Timeout de 60s (REN datahub tem latência variável).
+  • Última coluna 'data_utc': início do intervalo em UTC ('AAAA-MM-DD HH:MM'). É por
+    ela que o ficheiro se ordena: no último domingo de outubro a hora 01:00–02:00 de
+    Portugal passa duas vezes e, ordenando pela hora local, as duas passagens ficavam
+    intercaladas (aconteceu em 27/10/2024 e 26/10/2025).
 
 Endpoint (a REN tem alternado — não assumir que só existe um):
   • /service/download/csv/{id}                       — o histórico, separador ';'
@@ -76,6 +80,8 @@ HEADERS = {
 
 COL_GAS_CC = 'Gás Natural - Ciclo Combinado'
 COL_GAS_COG = 'Gás natural - Cogeração'
+
+FUSO_PT = 'Europe/Lisbon'
 
 
 # --- 2. BUSCA NA API ---
@@ -169,10 +175,34 @@ def buscar_dados_ren(data_inicio, data_fim, max_tentativas=3, timeout=60):
 
 # --- 3. TRANSFORMAÇÃO ---
 
+def instantes_utc(hora_local):
+    """
+    Converte a hora de Portugal (sem fuso) no instante em UTC.
+
+    Na hora que se repete em outubro, a 1.ª ocorrência é a de verão (UTC+1) e a 2.ª a de
+    inverno (UTC+0). Por isso as linhas têm de vir pela ordem em que aconteceram, como vêm
+    da REN. Uma hora inexistente (a que salta em março) dá NaT.
+    """
+    primeira = (hora_local.groupby(hora_local).cumcount() == 0).to_numpy()
+    return hora_local.dt.tz_localize(FUSO_PT, ambiguous=primeira,
+                                     nonexistent='NaT').dt.tz_convert('UTC')
+
+
+def data_utc_das_etiquetas(df):
+    """
+    data_utc das linhas gravadas antes de esta coluna existir, a partir do 'dia' e do
+    início do 'intervalo', pela ordem do ficheiro. Só serve para dias sem hora repetida:
+    os do último domingo de outubro vêm sempre da REN, que os re-pede durante 14 dias.
+    """
+    hora_local = pd.to_datetime(df['dia'] + ' ' + df['intervalo'].astype(str).str[1:6],
+                                format='%d/%m/%Y %H:%M', errors='coerce')
+    return instantes_utc(hora_local).dt.strftime('%Y-%m-%d %H:%M')
+
+
 def transformar_dados(df_ren):
     """
     Transforma o DataFrame da REN para o formato esperado:
-    cria as colunas 'dia', 'hora' e 'intervalo'.
+    cria as colunas 'dia', 'hora' e 'intervalo' e, no fim, 'data_utc'.
     """
     if df_ren is None or 'datetime' not in df_ren.columns:
         print("DataFrame de entrada inválido. Transformação cancelada.")
@@ -189,11 +219,13 @@ def transformar_dados(df_ren):
     df['intervalo'] = '[' + hora_inicio_str + '-' + hora_fim_str + '['
     # 'hora' é o fim do intervalo; '00:00' representa-se como '23:59'
     df['hora'] = hora_fim_str.replace('00:00', '23:59')
+    df['data_utc'] = instantes_utc(df['datetime']).dt.strftime('%Y-%m-%d %H:%M')
 
     cols_remover = ['Data e Hora', 'datetime']
     cols_dados = [c for c in df.columns if c not in cols_remover]
     cols_finais = ['dia', 'hora', 'intervalo'] + \
-                  [c for c in cols_dados if c not in ['dia', 'hora', 'intervalo']]
+                  [c for c in cols_dados if c not in ['dia', 'hora', 'intervalo', 'data_utc']] + \
+                  ['data_utc']
     return df[cols_finais]
 
 
@@ -215,7 +247,7 @@ def fundir_e_gravar(df_existente, df_novo):
     Funde df_novo no df_existente:
       - Remove de df_existente as linhas cujos 'dia' aparecem em df_novo
       - Anexa df_novo
-      - Ordena cronologicamente por (dia, intervalo inicial)
+      - Ordena cronologicamente por data_utc
       - Grava em OUT_PATH
     """
     if df_existente is None or df_existente.empty:
@@ -223,14 +255,21 @@ def fundir_e_gravar(df_existente, df_novo):
     else:
         dias_novos = set(df_novo['dia'].unique())
         df_keep = df_existente[~df_existente['dia'].isin(dias_novos)].copy()
+        if 'data_utc' not in df_keep.columns:
+            print("  [i] CSV sem a coluna data_utc: calculada a partir do dia e do intervalo.")
+            df_keep['data_utc'] = data_utc_das_etiquetas(df_keep)
+            repetidos = sorted(set(df_keep.loc[df_keep.duplicated(['dia', 'intervalo']), 'dia']))
+            if repetidos:
+                print(f"  [!] ATENÇÃO: hora repetida em {', '.join(repetidos)} calculada pela ordem do "
+                      f"ficheiro, que pode estar errada; re-pedir esses dias com --from/--to.",
+                      file=sys.stderr)
         final = pd.concat([df_keep, df_novo], ignore_index=True)
 
-    # Ordenação cronológica: usar o INÍCIO do intervalo (extraído de 'intervalo' [HH:MM-...]).
-    # Evita problemas com 'hora' = '23:59' representar o fim de [23:45-00:00[.
-    inicio = final['intervalo'].astype(str).str[1:6]  # '[00:00' → '00:00'
-    final['_ord'] = pd.to_datetime(final['dia'] + ' ' + inicio,
-                                   format='%d/%m/%Y %H:%M', errors='coerce')
-    final = final.dropna(subset=['_ord']).sort_values('_ord').drop(columns='_ord').reset_index(drop=True)
+    # Ordenação cronológica pelo instante em UTC: a hora de Portugal repete-se em outubro e,
+    # ordenando por ela, as duas passagens pela hora 01:00 ficavam intercaladas. O texto
+    # 'AAAA-MM-DD HH:MM' ordena-se como a data.
+    final = final.dropna(subset=['data_utc']).sort_values('data_utc', kind='stable').reset_index(drop=True)
+    final = final[[c for c in final.columns if c != 'data_utc'] + ['data_utc']]
 
     final.to_csv(OUT_PATH, index=False, encoding='utf-8-sig')
     print(f"\nSUCESSO! '{OUT_PATH}' guardado com {len(final)} registos.")
