@@ -46,6 +46,11 @@ O campo "real" distingue os dois casos, comparando com a Data_Valores_OMIE:
 Nunca omitimos o bloco: um widget que mostre "ainda não há preço para amanhã"
 é menos útil do que um que mostre a estimativa devidamente rotulada.
 
+No último dia real (o da Data_Valores_OMIE), a última hora PT (23:00-24:00) é
+00:00-01:00 CET do dia seguinte e ainda não foi leiloada. "intervalos_reais"
+diz quantos intervalos são reais; os restantes vêm a null em "valores" e não
+entram em medio/min/max nem em ciclos_medio_pt (a mesma regra do omie-diario).
+
 O ÍNDICE DE GÁS CHEGA SEMPRE COM UM DIA DE ATRASO
 -------------------------------------------------
 O MIBGAS publica o índice de um dia de gás depois de esse dia fechar, por isso a
@@ -153,19 +158,27 @@ def inicio_do_intervalo(texto):
 # OMIE
 # ============================================================
 
-def bloco_omie(g, dia, real):
-    """Constrói o bloco de um dia a partir das suas linhas quarto-horárias."""
+def bloco_omie(g, dia, real, sem_ultima_hora=False):
+    """Constrói o bloco de um dia a partir das suas linhas quarto-horárias.
+
+    sem_ultima_hora: no último dia com preços reais (Data_Valores_OMIE), a última hora
+    PT (23:00-24:00) é 00:00-01:00 CET do dia seguinte, ainda por leiloar; no CSV são
+    estimativas OMIP. Ficam a null em "valores" e fora das médias e extremos, como no
+    omie-diario.
+    """
     g = g.sort_values("_ord")
     horas = [inicio_do_intervalo(x) for x in g["intervalo"]]
+    n_reais = len(g) - 4 if (sem_ultima_hora and len(g) > 4) else len(g)
 
     bloco = {
         "data": dia.isoformat(),
         "real": real,
         "intervalos": int(len(g)),
+        "intervalos_reais": int(n_reais),
         "horas": horas,
     }
     for zona, col in (("pt", "preco_pt"), ("es", "preco_es")):
-        s = pd.to_numeric(g[col], errors="coerce")
+        s = pd.to_numeric(g[col], errors="coerce").iloc[:n_reais]
         if s.notna().sum() == 0:
             bloco[zona] = None
             continue
@@ -176,14 +189,14 @@ def bloco_omie(g, dia, real):
             "min_hora": horas[i_min],
             "max": _num(s.max()),
             "max_hora": horas[i_max],
-            "valores": [_num(v) for v in s],
+            "valores": [_num(v) for v in s] + [None] * (len(g) - n_reais),
         }
 
     ciclos = {}
     for col_ciclo, mapa in CICLOS.items():
         if col_ciclo not in g.columns:
             continue
-        medias = g.groupby(col_ciclo)["preco_pt"].mean()
+        medias = g.iloc[:n_reais].groupby(col_ciclo)["preco_pt"].mean()
         for codigo, destino in mapa.items():
             if codigo in medias.index:
                 ciclos[destino] = _num(medias[codigo])
@@ -232,12 +245,14 @@ def gerar_omie(alvo):
         "fonte": "OMIE (mercado diário MIBEL)",
         "e_hoje": dia_hoje == hoje_lisboa(),
         "dias_atraso": (hoje_lisboa() - dia_hoje).days,
-        "hoje": bloco_omie(df[df["_d"] == dia_hoje], dia_hoje, True),
+        "hoje": bloco_omie(df[df["_d"] == dia_hoje], dia_hoje, True,
+                           sem_ultima_hora=dia_hoje == ultimo_real),
         "amanha": None,
     }
     g_am = df[df["_d"] == dia_amanha]
     if len(g_am):
-        out["amanha"] = bloco_omie(g_am, dia_amanha, dia_amanha <= ultimo_real)
+        out["amanha"] = bloco_omie(g_am, dia_amanha, dia_amanha <= ultimo_real,
+                                   sem_ultima_hora=dia_amanha == ultimo_real)
 
     return out
 
