@@ -69,7 +69,7 @@ data/
 |---|---|---|
 | `omie_dados_atuais.csv` | Preços quarto-horários do ano corrente, incluindo datas futuras estimadas a partir dos futuros OMIP | ~5×/dia útil |
 | `historico/omie_historico_AAAA.csv` | Séries históricas anuais (2010–presente), mesmo schema | Fecho de ano |
-| `hoje.json` | Instantâneo do dia: preços de hoje e de amanhã, médias por período do ciclo horário (~8 KB) | A cada atualização |
+| `hoje.json` | Instantâneo do dia: preços de hoje e de amanhã, médias por período do ciclo horário (~8 KB); no último dia publicado a última hora (23h–24h PT, ainda por leiloar) vem a `null` e fica fora das médias — ver `intervalos_reais` | A cada atualização |
 | `precos-horarios.csv` | Preço quarto-horário final por tarifário indexado e opção horária | ~5×/dia útil |
 | `futuros_omip.csv` | Versão leve só com as tabelas de metadados e futuros OMIP da sessão em curso (~3 KB) | ~5×/dia útil |
 | `historico/omip_historico_AAAA.csv` | Histórico de sessões OMIP: uma linha por sessão × zona × contrato | Diária |
