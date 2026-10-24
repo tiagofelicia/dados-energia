@@ -1,7 +1,7 @@
 {
  "data": "2026-10-24",
- "dias_atraso": 0,
- "e_hoje": true,
+ "dias_atraso": 1,
+ "e_hoje": false,
  "es": {
   "max_30d": 92.87,
   "max_30d_dia": "2026-10-24",
@@ -14,7 +14,7 @@
   "var_dia_pct": 3.13
  },
  "fonte": "MIBGAS (mercado ibérico de gás natural)",
- "gerado_em": "2026-10-24T21:52:03+00:00",
+ "gerado_em": "2026-10-24T23:29:56+00:00",
  "pt": {
   "max_30d": 92.73,
   "max_30d_dia": "2026-10-24",

@@ -187,7 +187,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 8022,
+   "bytes": 6962,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -209,7 +209,7 @@
    ],
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-24",
+   "ultima_data": "2026-10-25",
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
@@ -372,7 +372,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 14840,
+   "bytes": 14841,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -502,7 +502,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1831,
+   "bytes": 1832,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -579,7 +579,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
-   "bytes": 758893,
+   "bytes": 759013,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -612,11 +612,11 @@
    "padrao": "data/agregados/omie_*.csv",
    "titulo": "Agregados OMIE (diário, mensal, anual)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-24",
+   "ultima_data": "2026-10-25",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
-   "bytes": 721162,
+   "bytes": 721280,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -647,14 +647,14 @@
    "padrao": "data/agregados/producao_*.csv",
    "titulo": "Agregados de produção (diário, mensal, anual)",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-22",
+   "ultima_data": "2026-10-23",
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
    "avisos": [
     "O bloco 'previsao' NÃO é real: é a previsão própria para os 14 dias seguintes ao último publicado (erc_previsao.py) e o erro dessa previsão em cada antecedência, medido no último ano."
    ],
-   "bytes": 47717,
+   "bytes": 47718,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_resumo.json",
    "descricao": "Encargos de regulação da REN: intervalo publicado, componentes, intervalos dos ficheiros erc_diario/, erc_omie/ e erc_tipo/, grupos e nomes dos tipos de encargo, e a previsão própria para os 14 dias seguintes ao último publicado. Derivado de data/erc/isp/.",
@@ -691,7 +691,7 @@
     "Nos dias ainda sem ERC publicado, o ERC é previsão própria (erc_previsao.py); 'erc_previsto' diz quantos quartos de hora do dia o são.",
     "'slots' só aparece nos dias de mudança de hora (92 ou 100 quartos de hora)."
    ],
-   "bytes": 1711941,
+   "bytes": 1714693,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_omie/",
    "descricao": "Por dia e quarto de hora, em hora de Portugal: o OMIE PT, o ERC e o fator de perdas BT da ERSE (desde 2025), desde 14/03/2024. Derivado de data/omie/, data/erc/isp/ e da tabela OMIE_PERDAS_CICLOS do simulador.",
@@ -702,7 +702,7 @@
    "padrao": "data/agregados/erc_omie/*.json",
    "titulo": "OMIE PT, ERC e perdas por quarto de hora (um ficheiro por mês)",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-24",
+   "ultima_data": "2026-10-25",
    "url": "https://dados.tiagofelicia.pt/data/agregados/erc_omie/"
   },
   {
@@ -767,7 +767,7 @@
     "São emissões de CICLO DE VIDA, não diretas: não comparáveis com o Inventário Nacional da APA nem com o indicador da EEA.",
     "Cobre a produção nacional, não o consumo: as importações de Espanha (25% do consumo em 2024) não estão incluídas."
    ],
-   "bytes": 479429,
+   "bytes": 479503,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/",
    "colunas": [
@@ -791,7 +791,7 @@
    "padrao": "data/emissoes/intensidade_*.csv",
    "titulo": "Intensidade carbónica da produção elétrica",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-10-22",
+   "ultima_data": "2026-10-23",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/"
   },
   {
@@ -1061,7 +1061,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-24T22:32:00+00:00",
+ "gerado_em": "2026-10-24T23:29:58+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1077,7 +1077,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 535128179,
+  "bytes": 535130186,
   "datasets": 39,
   "ficheiros": 1822
  }
