@@ -292,7 +292,11 @@ REGISTO = [
          avisos=["O campo resolution diz sempre PT15M, mesmo no histórico horário: "
                  "os valores horários são replicados pelos 4 quartos. A resolução "
                  "a que a fonte publicou está em resolucao_nativa, e varia por zona.",
-                 "values pode conter null em dias parcialmente publicados."]),
+                 "values pode conter null em dias parcialmente publicados.",
+                 "values tem sempre 96 posições do dia local, também nos dias de mudança "
+                 "de hora: em outubro fica só a 1.ª passagem pela hora que se repete e em "
+                 "março a hora que não existe é preenchida com o valor anterior. Para "
+                 "Portugal, os valores exatos estão em data/omie/."]),
     dict(id="mapas-producao", grupo="mapas", caminho="data/mapas/producao/*.json",
          titulo="Mix de produção europeu diário",
          descricao="Produção diária por país e tecnologia (GWh) e quota renovável, "
