@@ -413,7 +413,8 @@
   {
    "avisos": [
     "O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos. A resolução a que a fonte publicou está em resolucao_nativa, e varia por zona.",
-    "values pode conter null em dias parcialmente publicados."
+    "values pode conter null em dias parcialmente publicados.",
+    "values tem sempre 96 posições do dia local, também nos dias de mudança de hora: em outubro fica só a 1.ª passagem pela hora que se repete e em março a hora que não existe é preenchida com o valor anterior. Para Portugal, os valores exatos estão em data/omie/."
    ],
    "bytes": 101432550,
    "cadencia": "1x/dia",
@@ -1059,7 +1060,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-24T12:44:10+00:00",
+ "gerado_em": "2026-10-24T13:15:02+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
