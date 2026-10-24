@@ -257,6 +257,7 @@ dia,data_iso,produto,entrega_inicio,entrega_fim,spread,ttf_derivado
 
 - O campo `resolution` diz sempre `PT15M`, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos, para uniformidade.
 - `values` pode conter `null` em dias parcialmente publicados.
+- ⚠️ **`values` tem sempre 96 posições do dia local de cada zona, também nos dias de mudança de hora.** As fontes (ENTSO-E, Energy-Charts) publicam em UTC, com 92 ou 100 quartos de hora nesses dias, mas aqui cada valor vai para a posição da sua hora local: no último domingo de outubro fica só a 1.ª passagem pela hora que se repete, e no último domingo de março a hora que não existe é preenchida com o valor anterior. O `avg` desses dias segue os 96 valores. Para Portugal, os valores exatos estão em `data/omie/`.
 
 ### `data/agregados/` — Séries pré-calculadas
 
