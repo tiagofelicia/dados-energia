@@ -414,12 +414,13 @@
    "avisos": [
     "O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos. A resolução a que a fonte publicou está em resolucao_nativa, e varia por zona.",
     "values pode conter null em dias parcialmente publicados.",
-    "values tem sempre 96 posições do dia local, também nos dias de mudança de hora: em outubro fica só a 1.ª passagem pela hora que se repete e em março a hora que não existe é preenchida com o valor anterior. Para Portugal, os valores exatos estão em data/omie/."
+    "values segue o relógio real do dia local de cada zona: 96 posições, 92 no último domingo de março e 100 no último domingo de outubro. A posição i é o quarto de hora que começa i×15 minutos depois da meia-noite local, no fuso indicado em metadata.json (fusos). Nesses dias, min_hour e max_hour levam ' (2.ª)' quando o extremo cai na 2.ª passagem pela hora repetida.",
+    "Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições (só a 1.ª passagem pela hora repetida; a hora que não existe preenchida com o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não os tem."
    ],
    "bytes": 101485670,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/precos_qh/",
-   "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e série de 96 valores.",
+   "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e a série quarto-horária do dia local (96 valores; 92 e 100 nos dias de mudança de hora).",
    "ficheiros": 107,
    "formato": "json",
    "grupo": "mapas",
@@ -1060,7 +1061,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-24T19:05:45+00:00",
+ "gerado_em": "2026-10-24T21:13:55+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
