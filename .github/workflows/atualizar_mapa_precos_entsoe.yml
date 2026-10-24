@@ -12,6 +12,15 @@ on:
     - cron: '0 15 * * *'
 
   workflow_dispatch: # Permite execução manual
+    inputs:
+      refazer:
+        description: "Refazer dias já gravados: vazio = atualização normal; 'mudancas-hora' = os dias de mudança de hora desde 2018; ou datas AAAA-MM-DD separadas por espaços"
+        required: false
+        default: ""
+      simular:
+        description: "No modo refazer: só mostrar o resultado no log, sem gravar"
+        type: boolean
+        default: true
 
 # Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
 env:
@@ -39,7 +48,9 @@ jobs:
     # testada primeiro no atualizar_tarifarios_gas.yml, que é o único com Chrome
     # e Selenium; ver lá a explicação completa. Marcha-atrás: 'ubuntu-24.04'.
     runs-on: ubuntu-26.04
-    timeout-minutes: 60
+    # 120 e nao 60 por causa do modo 'refazer': os dias de mudanca de hora desde
+    # 2018 sao ~800 pedidos (17 dias x 48 zonas). As corridas diarias levam 5-20 min.
+    timeout-minutes: 120
     permissions:
       contents: write
 
@@ -69,7 +80,27 @@ jobs:
       - name: Atualizar preços ENTSO-E
         env:
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
-        run: python scripts/atualizar_mapa_precos_entsoe.py
+          REFAZER: ${{ inputs.refazer }}
+          SIMULAR: ${{ inputs.simular }}
+        run: |
+          # Nas corridas agendadas 'refazer' vem vazio. O que vem do formulário só
+          # chega à linha de comandos se for 'mudancas-hora' ou uma lista de datas.
+          if [ -z "$REFAZER" ]; then
+            python scripts/atualizar_mapa_precos_entsoe.py
+          else
+            ARGS=()
+            if [ "$REFAZER" = "mudancas-hora" ]; then
+              ARGS+=(--mudancas-hora)
+            elif [[ "$REFAZER" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{4}-[0-9]{2}-[0-9]{2})*$ ]]; then
+              read -r -a DIAS <<< "$REFAZER"
+              ARGS+=(--refazer-dias "${DIAS[@]}")
+            else
+              echo "::error::'refazer' tem de ficar vazio, ser 'mudancas-hora' ou datas AAAA-MM-DD separadas por espaços."
+              exit 1
+            fi
+            if [ "$SIMULAR" = "true" ]; then ARGS+=(--simular); fi
+            python scripts/atualizar_mapa_precos_entsoe.py "${ARGS[@]}"
+          fi
 
       - name: Fazer commit dos dados atualizados (com retry)
         uses: ./.github/actions/commit-with-retry
