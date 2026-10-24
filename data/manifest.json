@@ -416,7 +416,7 @@
     "values pode conter null em dias parcialmente publicados.",
     "values tem sempre 96 posições do dia local, também nos dias de mudança de hora: em outubro fica só a 1.ª passagem pela hora que se repete e em março a hora que não existe é preenchida com o valor anterior. Para Portugal, os valores exatos estão em data/omie/."
    ],
-   "bytes": 101474398,
+   "bytes": 101485670,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/precos_qh/",
    "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e série de 96 valores.",
@@ -1060,7 +1060,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-24T18:50:05+00:00",
+ "gerado_em": "2026-10-24T19:05:45+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1076,7 +1076,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 535111425,
+  "bytes": 535122697,
   "datasets": 39,
   "ficheiros": 1822
  }
