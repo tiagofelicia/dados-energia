@@ -800,12 +800,14 @@ def _grelha_antiga(values, dia, tz_name):
     return grelha
 
 
-def _diferencas(a, b):
-    """Posicoes em que duas listas de precos (arredondados a 2 casas) diferem."""
-    if len(a) != len(b):
-        return list(range(max(len(a), len(b))))
-    return [i for i, (x, y) in enumerate(zip(a, b))
-            if (x is None) != (y is None) or (x is not None and abs(x - y) > 0.005)]
+def _diferencas(novo, antigo):
+    """Posicoes em que o dia novo (arrumado como o antigo) difere do gravado, com
+    precos arredondados a 2 casas. Onde o gravado nao tinha valor (ex.: a 1.a hora
+    em falta em BG e RO) nao conta: o dia novo so preenche esse buraco."""
+    if len(novo) != len(antigo):
+        return list(range(max(len(novo), len(antigo))))
+    return [i for i, (x, y) in enumerate(zip(novo, antigo))
+            if y is not None and (x is None or abs(x - y) > 0.005)]
 
 
 def _refazer_zona_dia(token, zone, dia, antigo):
@@ -844,6 +846,11 @@ def refazer_dias(token, dias, zones, simular=False, forcar=False):
             if ym not in cache:
                 cache[ym] = load_monthly_file(ym)
             antigo = cache[ym].get(dia, {}).get(zone)
+            if not antigo:
+                # So se corrige o que ja esta gravado: uma zona sem dados nesse dia
+                # (ex.: SI em 2018-2019) ficaria com um dia solto no meio do vazio
+                conta("nao existia", zone, dia)
+                continue
             try:
                 novo, motivo = _refazer_zona_dia(token, zone, dia, antigo)
             except Exception as e:
@@ -855,25 +862,25 @@ def refazer_dias(token, dias, zones, simular=False, forcar=False):
             if not novo:
                 conta("sem dados", zone, dia)
                 continue
-            if antigo and antigo.get("values") == novo["values"]:
+            if antigo.get("values") == novo["values"]:
                 conta("ja estava", zone, dia)
                 continue
-            if antigo and antigo.get("values"):
+            if antigo.get("values"):
                 dif = _diferencas(_grelha_antiga(novo["values"], dia, ZONE_TIMEZONES.get(zone, "Europe/Berlin")),
                                   antigo["values"])
                 if dif and not forcar:
                     conta("incoerente", zone, dia, f"{len(dif)} posicoes diferem fora da hora da mudanca (1.a: {dif[0]})")
                     continue
             cache[ym].setdefault(dia, {})[zone] = novo
-            conta("refeito", zone, dia, f"{len(antigo['values']) if antigo else 0} -> {len(novo['values'])} valores")
+            conta("refeito", zone, dia, f"{len(antigo.get('values') or [])} -> {len(novo['values'])} valores")
             time.sleep(0.3)
         print("ok")
 
     print("\nResultado:")
-    for motivo in ("refeito", "ja estava", "incoerente", "sem dados", "saltado", "erro"):
+    for motivo in ("refeito", "ja estava", "incoerente", "sem dados", "nao existia", "saltado", "erro"):
         linhas = resultado.get(motivo, [])
         print(f"  {motivo:<11} {len(linhas):>4}")
-        if motivo != "refeito" and motivo != "ja estava":
+        if motivo not in ("refeito", "ja estava", "nao existia"):
             for zona, dia, detalhe in linhas:
                 print(f"     {zona} {dia} {detalhe}")
 
