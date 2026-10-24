@@ -7,8 +7,10 @@ Token: deve estar em variavel de ambiente ENTSOE_TOKEN
 
 Modo diario (default):  python atualizar_mapa_precos_entsoe.py
 Modo backfill:          python atualizar_mapa_precos_entsoe.py --backfill
+Refazer dias:           python atualizar_mapa_precos_entsoe.py --mudancas-hora [--simular]
+                        python atualizar_mapa_precos_entsoe.py --refazer-dias 2025-10-26 2026-03-29
 
-Gera ficheiros em data/mapa_precos_qh/.
+Gera ficheiros em data/mapas/precos_qh/.
 
 Formato:
 {
@@ -19,10 +21,16 @@ Formato:
       "max": 89.50, "max_hour": "19:00",
       "resolution": "PT15M",
       "source": "entsoe",                // ou "energy-charts" (fonte secundaria)
-      "values": [25.1, 25.1, 24.8, ...]  // 96 ou 24 valores
+      "values": [25.1, 25.1, 24.8, ...]  // 96 valores; 92 ou 100 nos dias de mudanca de hora
     }
   }
 }
+
+'values' segue o tempo real desde a meia-noite local da zona: o valor i comeca
+i x 15 min depois dessa meia-noite. No ultimo domingo de outubro (100 valores)
+a hora que se repete aparece duas vezes, pela ordem, e a 2.a passagem leva
+' (2.ª)' em min_hour/max_hour; no ultimo domingo de marco (92) a hora que nao
+existe nao tem posicao. O fuso de cada zona esta em metadata.json ('fusos').
 
 Nota: dias recolhidos antes de "source" existir nao tem o campo; para esses,
 a ausencia significa "entsoe". Nunca se misturam as duas fontes no mesmo
@@ -531,35 +539,41 @@ def parse_energy_charts(data):
 def group_by_local_day(points, tz_name):
     """Agrupa pontos por dia local. Devolve dict {YYYY-MM-DD: list[(local_dt, price, resolution)]}.
 
-    Se o mesmo (dia, hora_local) aparecer com varias resolucoes, prefere PT15M > PT30M > PT60M.
+    Se o mesmo instante aparecer com varias resolucoes, prefere PT15M > PT30M > PT60M.
+
+    A chave e o instante UTC e nao a hora local: no ultimo domingo de outubro a
+    hora que se repete tem as mesmas horas locais nas duas passagens (datetimes
+    com o mesmo fuso comparam-se pela hora do relogio), e a 2.a passagem perdia-se.
     """
     tz = ZoneInfo(tz_name)
-    # bucket: (day, local_dt) -> (price, res_priority)
+    # bucket: (day, utc_dt) -> (price, res_priority)
     res_priority = {"PT15M": 3, "PT30M": 2, "PT60M": 1, "PT1H": 1}
     bucket = {}
     for utc_dt, price, res in points:
         local_dt = utc_dt.astimezone(tz)
         day = local_dt.strftime("%Y-%m-%d")
-        key = (day, local_dt)
+        key = (day, utc_dt)
         prio = res_priority.get(res, 0)
         existing = bucket.get(key)
         if existing is None or prio > existing[1]:
             bucket[key] = (price, prio, res)
 
     daily = {}
-    for (day, local_dt), (price, prio, res) in bucket.items():
-        daily.setdefault(day, []).append((local_dt, price, res))
+    for (day, utc_dt), (price, prio, res) in bucket.items():
+        # astimezone marca fold=1 na 2.a passagem pela hora que se repete
+        daily.setdefault(day, []).append((utc_dt.astimezone(tz), price, res))
 
     for day in daily:
-        daily[day].sort(key=lambda x: x[0])
+        daily[day].sort(key=lambda x: x[0].timestamp())   # pelo instante, nao pelo relogio
     return daily
 
 
 def compute_day_stats(day_points):
     """Recebe lista [(local_dt, price, res)] de UM dia local, ordenada.
 
-    Devolve dict com avg/min/max/min_hour/max_hour/resolution/values,
-    onde values cobre 24h locais (pode ser 96 para PT15M ou 24 para PT60M).
+    Devolve dict com avg/min/max/min_hour/max_hour/resolution/values, onde
+    values cobre o dia local inteiro pelo tempo real: 96 posicoes a PT15M (24 a
+    PT60M), e 92 ou 100 nos dias de mudanca de hora.
     """
     if not day_points:
         return None
@@ -568,17 +582,24 @@ def compute_day_stats(day_points):
     res_priority = {"PT15M": 3, "PT30M": 2, "PT60M": 1, "PT1H": 1}
     best_res = max((p[2] for p in day_points), key=lambda r: res_priority.get(r, 0))
     res_sec = RESOLUTION_SECONDS[best_res]
-    expected_slots = 24 * 3600 // res_sec  # 96, 48 ou 24
+
+    # Posicoes pelo tempo real desde a meia-noite local (em UTC): a subtracao de
+    # datetimes com o mesmo fuso conta horas do relogio e, nos dias de mudanca de
+    # hora, sobrepunha as duas passagens (outubro) ou deixava um buraco (marco).
+    # A meia-noite nunca e ambigua nem inexistente.
+    d0 = day_points[0][0]
+    tz = d0.tzinfo
+    day_start = datetime(d0.year, d0.month, d0.day, tzinfo=tz)
+    day_start_utc = day_start.astimezone(timezone.utc)
+    day_end_utc = (day_start + timedelta(days=1)).astimezone(timezone.utc)
+    expected_slots = int((day_end_utc - day_start_utc).total_seconds() // res_sec)  # 96; 92/100 na mudanca de hora
 
     # Reduzir a lista a um valor por slot (caso haja sobreposicao).
     # Se houver pontos com resolucao mais grossa misturados (ex: HH:00 com PT60M
     # e HH:00 PT15M), o passo anterior ja preferiu o mais fino.
-    # Aqui assumimos slots alinhados ao inicio do dia local.
-    day_start = day_points[0][0].replace(hour=0, minute=0, second=0, microsecond=0)
-
     slots = [None] * expected_slots
     for local_dt, price, _res in day_points:
-        delta = (local_dt - day_start).total_seconds()
+        delta = (local_dt.astimezone(timezone.utc) - day_start_utc).total_seconds()
         idx = int(delta // res_sec)
         if 0 <= idx < expected_slots:
             slots[idx] = price
@@ -636,8 +657,10 @@ def compute_day_stats(day_points):
     max_idx = max(range(expected_slots), key=lambda i: slots[i] if slots[i] is not None else float("-inf"))
 
     def slot_label(idx):
-        total_min = idx * (res_sec // 60)
-        return f"{total_min // 60:02d}:{total_min % 60:02d}"
+        # Hora do relogio local do inicio do slot; a 2.a passagem pela hora que se
+        # repete leva ' (2.ª)', como no precos-horarios.csv
+        t = (day_start_utc + timedelta(seconds=idx * res_sec)).astimezone(tz)
+        return t.strftime("%H:%M") + (" (2.ª)" if t.fold else "")
 
     return {
         "avg": round(avg, 2),
@@ -667,27 +690,30 @@ def save_monthly_file(year_month, data):
 
 
 def save_metadata(latest_date):
-    """Grava 'ultima_data', que o frontend usa como ultimo dia disponivel.
+    """Grava 'ultima_data', que o frontend usa como ultimo dia disponivel, e
+    'fusos' (o fuso IANA de cada zona), para quem le os dados poder converter a
+    posicao i de 'values' em instante: meia-noite local + i x 15 min.
 
-    Nunca a faz recuar: um backfill de um intervalo antigo (ex: --start
-    2026-06-21 --end 2026-07-03) so conhece dias antigos e, sem esta guarda,
-    apagaria a data real mais recente. Devolve o valor que ficou no ficheiro.
+    Nunca faz recuar a 'ultima_data': um backfill de um intervalo antigo (ex:
+    --start 2026-06-21 --end 2026-07-03) so conhece dias antigos e, sem esta
+    guarda, apagaria a data real mais recente. Devolve o valor que ficou no ficheiro.
     """
     filepath = os.path.join(DATA_DIR, "metadata.json")
-    atual = None
+    atual = {}
     if os.path.exists(filepath):
         try:
             with open(filepath, "r", encoding="utf-8") as f:
-                atual = json.load(f).get("ultima_data")
+                atual = json.load(f)
         except (ValueError, OSError):
-            atual = None
+            atual = {}
 
-    if atual and atual >= latest_date:
-        return atual
-
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump({"ultima_data": latest_date}, f, ensure_ascii=False)
-    return latest_date
+    data_atual = atual.get("ultima_data")
+    ultima = data_atual if (data_atual and data_atual >= latest_date) else latest_date
+    novo = {"ultima_data": ultima, "fusos": dict(sorted(ZONE_TIMEZONES.items()))}
+    if novo != atual:
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(novo, f, ensure_ascii=False)
+    return ultima
 
 
 # ----- Datas -----------------------------------------------------------------
@@ -724,6 +750,143 @@ def get_month_ranges(start_date, end_date):
         else:
             current = current.replace(month=current.month + 1)
     return ranges
+
+
+# ----- Refazer dias ----------------------------------------------------------
+#
+# Ate 24/10/2026 os dias de mudanca de hora ficavam com 96 posicoes pela hora do
+# relogio: em outubro so a 1.a passagem pela hora que se repete, em marco a hora
+# que nao existe preenchida com o valor anterior. '--refazer-dias' volta a pedir
+# esses dias as fontes e grava-os com o comprimento real (92/100), mas so se o
+# resto do dia coincidir com o que ja la esta (ver _grelha_antiga): assim muda a
+# hora da mudanca e mais nada.
+
+INICIO_DADOS = date(2018, 1, 1)   # primeiro mes de data/mapas/precos_qh/
+
+
+def dias_mudanca_hora(inicio, fim):
+    """Ultimos domingos de marco e de outubro entre 'inicio' e 'fim' (inclusive)."""
+    out = []
+    for ano in range(inicio.year, fim.year + 1):
+        for mes in (3, 10):
+            d = date(ano, mes, 31)
+            d -= timedelta(days=(d.weekday() + 1) % 7)   # recua ate domingo
+            if inicio <= d <= fim:
+                out.append(d)
+    return out
+
+
+def _grelha_antiga(values, dia, tz_name):
+    """Os 'values' com o comprimento real arrumados como a versao antiga os
+    arrumava: 96 posicoes pela hora do relogio, so a 1.a passagem pela hora que
+    se repete, e a hora que nao existe preenchida com o valor anterior."""
+    if len(values) == 96:
+        return values
+    tz = ZoneInfo(tz_name)
+    d = date.fromisoformat(dia)
+    inicio = datetime(d.year, d.month, d.day, tzinfo=tz).astimezone(timezone.utc)
+    grelha = [None] * 96
+    for i, v in enumerate(values):
+        t = (inicio + timedelta(minutes=15 * i)).astimezone(tz)
+        if not t.fold:
+            grelha[(t.hour * 60 + t.minute) // 15] = v
+    ultimo_conhecido = max((i for i, v in enumerate(grelha) if v is not None), default=-1)
+    ant = None
+    for i in range(ultimo_conhecido + 1):
+        if grelha[i] is None:
+            grelha[i] = ant
+        else:
+            ant = grelha[i]
+    return grelha
+
+
+def _diferencas(a, b):
+    """Posicoes em que duas listas de precos (arredondados a 2 casas) diferem."""
+    if len(a) != len(b):
+        return list(range(max(len(a), len(b))))
+    return [i for i, (x, y) in enumerate(zip(a, b))
+            if (x is None) != (y is None) or (x is not None and abs(x - y) > 0.005)]
+
+
+def _refazer_zona_dia(token, zone, dia, antigo):
+    """Volta a pedir o dia a mesma fonte de onde veio. Devolve (stats, motivo)."""
+    tz = ZONE_TIMEZONES.get(zone, "Europe/Berlin")
+    d = date.fromisoformat(dia)
+    fonte = (antigo or {}).get("source")
+    bzn = (antigo or {}).get("bidding_zone")
+    if fonte == "gme":
+        return None, "veio do GME (refazer com importar_precos_gme.py --overwrite)"
+    if fonte == "energy-charts" or bzn:
+        # Ex.: DE-LU e AT em 2018, copiados da zona conjunta DE-AT-LU
+        data = fetch_energy_charts_json(bzn or zone, d - timedelta(days=1), d + timedelta(days=1))
+        novo = _daily_from_points(parse_energy_charts(data), tz, dia, dia,
+                                  source="energy-charts").get(dia)
+        if novo and bzn:
+            novo["bidding_zone"] = bzn
+        return novo, None
+    return fetch_zone_range(token, zone, d, d, fallback_end_date=d).get(dia), None
+
+
+def refazer_dias(token, dias, zones, simular=False, forcar=False):
+    """Refaz 'dias' em todas as 'zones'. Grava um dia so se, tirando a hora da
+    mudanca, coincidir com o que ja esta no ficheiro (ou com --forcar)."""
+    cache = {}
+    resultado = {}   # motivo -> [(zona, dia, detalhe)]
+
+    def conta(motivo, zona, dia, detalhe=""):
+        resultado.setdefault(motivo, []).append((zona, dia, detalhe))
+
+    for i, zone in enumerate(zones, 1):
+        print(f"[{i}/{len(zones)}] {zone}...", end=" ", flush=True)
+        for d in dias:
+            dia = d.isoformat()
+            ym = dia[:7]
+            if ym not in cache:
+                cache[ym] = load_monthly_file(ym)
+            antigo = cache[ym].get(dia, {}).get(zone)
+            try:
+                novo, motivo = _refazer_zona_dia(token, zone, dia, antigo)
+            except Exception as e:
+                conta("erro", zone, dia, short_error(e, token))
+                continue
+            if motivo:
+                conta("saltado", zone, dia, motivo)
+                continue
+            if not novo:
+                conta("sem dados", zone, dia)
+                continue
+            if antigo and antigo.get("values") == novo["values"]:
+                conta("ja estava", zone, dia)
+                continue
+            if antigo and antigo.get("values"):
+                dif = _diferencas(_grelha_antiga(novo["values"], dia, ZONE_TIMEZONES.get(zone, "Europe/Berlin")),
+                                  antigo["values"])
+                if dif and not forcar:
+                    conta("incoerente", zone, dia, f"{len(dif)} posicoes diferem fora da hora da mudanca (1.a: {dif[0]})")
+                    continue
+            cache[ym].setdefault(dia, {})[zone] = novo
+            conta("refeito", zone, dia, f"{len(antigo['values']) if antigo else 0} -> {len(novo['values'])} valores")
+            time.sleep(0.3)
+        print("ok")
+
+    print("\nResultado:")
+    for motivo in ("refeito", "ja estava", "incoerente", "sem dados", "saltado", "erro"):
+        linhas = resultado.get(motivo, [])
+        print(f"  {motivo:<11} {len(linhas):>4}")
+        if motivo != "refeito" and motivo != "ja estava":
+            for zona, dia, detalhe in linhas:
+                print(f"     {zona} {dia} {detalhe}")
+
+    if simular:
+        print("\n[--simular] nada gravado.")
+        return resultado
+    mudados = sorted({dia[:7] for zona, dia, _ in resultado.get("refeito", [])})
+    for ym in mudados:
+        save_monthly_file(ym, cache[ym])
+        print(f"  {ym}.json gravado")
+    if dias:
+        save_metadata(max(dias).isoformat())   # nunca faz recuar a data; grava os fusos
+    return resultado
 
 
 # ----- Main ------------------------------------------------------------------
@@ -873,6 +1036,14 @@ def main():
     parser.add_argument("--zones", nargs="+", help="Subconjunto de zonas (debug)")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Imprime URLs, status HTTP e excertos das respostas")
+    parser.add_argument("--refazer-dias", nargs="+", metavar="AAAA-MM-DD",
+                        help="Refaz so estes dias, em todas as zonas (ver 'Refazer dias')")
+    parser.add_argument("--mudancas-hora", action="store_true",
+                        help=f"Refaz os dias de mudanca de hora desde {INICIO_DADOS} ate ontem")
+    parser.add_argument("--simular", action="store_true",
+                        help="Com --refazer-dias/--mudancas-hora: mostra o resultado sem gravar")
+    parser.add_argument("--forcar", action="store_true",
+                        help="Com --refazer-dias/--mudancas-hora: grava mesmo os dias incoerentes")
     args = parser.parse_args()
 
     global VERBOSE
@@ -884,6 +1055,22 @@ def main():
         sys.exit(1)
 
     os.makedirs(DATA_DIR, exist_ok=True)
+
+    if args.refazer_dias or args.mudancas_hora:
+        ontem = datetime.now(timezone.utc).date() - timedelta(days=1)
+        if args.mudancas_hora:
+            dias = dias_mudanca_hora(INICIO_DADOS, ontem)
+        else:
+            try:
+                dias = sorted({datetime.strptime(x, "%Y-%m-%d").date() for x in args.refazer_dias})
+            except ValueError:
+                print(f"ERRO: --refazer-dias quer datas AAAA-MM-DD: {args.refazer_dias}", file=sys.stderr)
+                sys.exit(1)
+        print(f"Modo REFAZER: {len(dias)} dia(s): {', '.join(d.isoformat() for d in dias)}")
+        refazer_dias(token, dias, args.zones or list(ZONE_EIC.keys()),
+                     simular=args.simular, forcar=args.forcar)
+        print("Concluido!")
+        return
 
     today = datetime.now(timezone.utc).date()
     yesterday = today - timedelta(days=1)
