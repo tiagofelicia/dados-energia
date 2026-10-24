@@ -251,13 +251,14 @@ dia,data_iso,produto,entrega_inicio,entrega_fim,spread,ttf_derivado
 | Pasta | Conteúdo | Atualização |
 |---|---|---|
 | `precos_qh/AAAA-MM.json` | Preços day-ahead por zona de mercado europeia (ENTSO-E, 48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: `avg`, `min`, `max` (+ horas) e `values` quarto-horários em €/MWh | 1×/dia |
-| `precos_qh/metadata.json` | `{"ultima_data": "AAAA-MM-DD"}` | 1×/dia |
+| `precos_qh/metadata.json` | `{"ultima_data": "AAAA-MM-DD", "fusos": {"PT": "Europe/Lisbon", …}}`: o fuso de cada zona, que define o seu dia local | 1×/dia |
 | `producao/AAAA-MM.json` | Mix de produção diário por país europeu (GWh/dia por tecnologia + consumo), desde 2026-01 | 2×/dia |
 | `producao/metadata.json` | `{"ultima_data": "AAAA-MM-DD"}` | 2×/dia |
 
 - O campo `resolution` diz sempre `PT15M`, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos, para uniformidade.
 - `values` pode conter `null` em dias parcialmente publicados.
-- ⚠️ **`values` tem sempre 96 posições do dia local de cada zona, também nos dias de mudança de hora.** As fontes (ENTSO-E, Energy-Charts) publicam em UTC, com 92 ou 100 quartos de hora nesses dias, mas aqui cada valor vai para a posição da sua hora local: no último domingo de outubro fica só a 1.ª passagem pela hora que se repete, e no último domingo de março a hora que não existe é preenchida com o valor anterior. O `avg` desses dias segue os 96 valores. Para Portugal, os valores exatos estão em `data/omie/`.
+- ⚠️ **`values` segue o relógio real do dia local de cada zona: 96 posições num dia normal, 92 no último domingo de março e 100 no último domingo de outubro.** A posição `i` é o quarto de hora que começa `i × 15` minutos depois da meia-noite local, no fuso indicado em `metadata.json` → `fusos`. A partir da mudança de hora, a posição deixa de coincidir com a hora do relógio: em outubro a hora que se repete aparece duas vezes seguidas, e em março a hora que não existe não ocupa posição nenhuma. Nesses dias, o `avg` é a média dos 92 ou 100 valores, e `min_hour`/`max_hour` levam « (2.ª)» (ex.: `02:00 (2.ª)`) quando o extremo cai na 2.ª passagem pela hora repetida.
+- ⚠️ **Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições:** só a 1.ª passagem pela hora que se repete, e a hora que não existe preenchida com o valor anterior. Nesse dia, os 17 dias de mudança de hora desde 2018 foram refeitos a partir das fontes. Só os 6 dias da IT-Calabria de 2018 a 2020 ficaram com as 96 posições antigas, porque a ENTSO-E já não os tem.
 
 ### `data/agregados/` — Séries pré-calculadas
 
