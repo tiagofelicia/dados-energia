@@ -36,11 +36,12 @@ O QUE VERIFICA
   chave        a chave natural não tem duplicados (e, se declarada crescente,
                vem sempre a subir pela ordem do ficheiro)
   calendário   96 quartos por dia, 92 e 100 nos dois dias de mudança de hora
+  quartos      nos mapas de preços, cada zona-dia tem os quartos do seu fuso
   resolucao    a resolucao_nativa declarada corresponde aos dados
   cobertura    nenhuma coluna deixou de vir preenchida
 
 As duas primeiras aplicam-se a TODOS os datasets, porque saem do manifesto. As
-outras cinco só aos que estão declarados em REGRAS: exigem conhecer o ficheiro,
+outras seis só aos que estão declarados em REGRAS: exigem conhecer o ficheiro,
 e mais vale não verificar do que verificar mal.
 
 FALSOS ALARMES
@@ -70,6 +71,7 @@ USO
 """
 
 import argparse
+import json
 import os
 import re
 import sys
@@ -115,6 +117,8 @@ RE_DIA = re.compile(r"^\d{2}/\d{2}/\d{4}$")
 # resolucao_coluna  coluna de valores com que se confere a resolucao_nativa
 #             declarada no manifesto (uma qualquer que varie ao longo do dia).
 # tolerante   o ficheiro tem blocos concatenados no fim e precisa do parser lento.
+# quartos_por_fuso  (JSON dos mapas) cada zona-dia tem tantos valores quantos os
+#             quartos do dia local da zona, com o fuso do metadata.json.
 
 REGRAS = {
     # Os dois "atuais" trazem blocos TABELA_* no fim, com outro número de
@@ -186,6 +190,11 @@ REGRAS = {
     "erc-agentes": dict(
         colunas=["codigo", "nome", "unidade_programacao", "tipo_unidade"], chave=["codigo"]),
 
+    # Até 24/10/2026 os mapas tinham sempre 96 valores, também nos dias de mudança
+    # de hora. Um dia escrito outra vez à maneira antiga, ou uma zona com o fuso
+    # errado, volta a dar 96 onde devia dar 92 ou 100.
+    "mapas-precos": dict(quartos_por_fuso=True),
+
     # Padrões cujos ficheiros têm grão diferente: cada um com a sua chave.
     "agregados-omie": dict(
         chave={"omie_diario.csv": ["data_iso"], "omie_mensal.csv": ["mes"],
@@ -205,6 +214,11 @@ REGRAS = {
 # ser verificada sempre — é barata e é a que interessa.
 LENTOS = {"omie-historico", "producao-historico", "producao-entsoe",
           "mapas-precos", "mapas-producao", "erc-brp", "erc-tipo"}
+
+# Zonas-dias que ficaram com os 96 valores antigos quando se refizeram os dias de
+# mudança de hora, a 24/10/2026: a ENTSO-E já não tem estes dias da IT-Calabria.
+MAPA_96_ANTIGOS = {("IT-Calabria", d) for d in (
+    "2018-03-25", "2018-10-28", "2019-03-31", "2019-10-27", "2020-03-29", "2020-10-25")}
 
 
 class Relatorio:
@@ -231,14 +245,15 @@ class Relatorio:
 # Auxiliares
 # ============================================================
 
-def quartos_esperados(d):
+def quartos_esperados(d, tz=TZ_PT):
     """
-    Quartos-de-hora de um dia civil português: 96, ou 92/100 nos dias em que o
-    relógio muda. Calculado com o fuso e não fixado a 96 justamente para que um
-    dia de 100 linhas em Junho continue a contar como erro.
+    Quartos-de-hora de um dia civil (português, se não se der outro fuso): 96,
+    ou 92/100 nos dias em que o relógio muda. Calculado com o fuso e não fixado
+    a 96 justamente para que um dia de 100 linhas em Junho continue a contar
+    como erro.
     """
-    ini = datetime(d.year, d.month, d.day, tzinfo=TZ_PT)
-    fim = datetime(d.year, d.month, d.day, tzinfo=TZ_PT) + timedelta(days=1)
+    ini = datetime(d.year, d.month, d.day, tzinfo=tz)
+    fim = datetime(d.year, d.month, d.day, tzinfo=tz) + timedelta(days=1)
     horas = (fim.astimezone(timezone.utc) - ini.astimezone(timezone.utc)).total_seconds() / 3600
     return int(horas * 4)
 
@@ -522,6 +537,54 @@ def ver_cobertura(regra, ficheiros, rel, janela=30):
                       f"últimas {len(sessoes)} sessões: {', '.join(mortas)}")
 
 
+def ver_quartos_mapa(regra, ficheiros, rel):
+    """
+    Nos mapas de preços, cada zona-dia tem os quartos do seu dia local: 96, ou
+    92/100 nos dias de mudança de hora. O fuso de cada zona é o do metadata.json
+    (fusos), o mesmo que o site usa para pôr os valores no relógio.
+
+    Ao contrário do calendário dos CSV, verifica também o último dia: aqui o
+    número de valores não depende do que já foi publicado, porque um dia a meio
+    tem os quartos todos, com null nos que faltam.
+    """
+    if not regra.get("quartos_por_fuso"):
+        return
+    meses = [f for f in ficheiros if re.search(r"\d{4}-\d{2}\.json$", f)]
+    if not meses:
+        return
+    try:
+        with open(os.path.join(os.path.dirname(meses[0]), "metadata.json"),
+                  encoding="utf-8") as fh:
+            fusos = json.load(fh)["fusos"]
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        rel.erro(f"metadata.json sem fusos ({type(e).__name__}): não há com que "
+                 f"verificar os quartos de cada zona")
+        return
+    errados, sem_fuso = [], set()
+    for f in meses:
+        nome = os.path.basename(f)
+        try:
+            with open(f, encoding="utf-8") as fh:
+                mes = json.load(fh)
+        except (OSError, ValueError) as e:
+            rel.erro(f"{nome}: ilegível ({type(e).__name__})")
+            continue
+        for dia, zonas in mes.items():
+            for zona, s in zonas.items():
+                if zona not in fusos:
+                    sem_fuso.add(zona)
+                    continue
+                n = len(s.get("values") or [])
+                esperado = quartos_esperados(date.fromisoformat(dia), ZoneInfo(fusos[zona]))
+                if n != esperado and (zona, dia) not in MAPA_96_ANTIGOS:
+                    errados.append(f"{zona} {dia} ({n}/{esperado})")
+    if sem_fuso:
+        rel.erro(f"zona(s) sem fuso no metadata.json: {amostra(sorted(sem_fuso))}")
+    if errados:
+        rel.erro(f"{len(errados)} zona-dia(s) com um número de valores diferente dos "
+                 f"quartos do dia local: {amostra(errados)}")
+
+
 # ============================================================
 
 def main():
@@ -569,6 +632,7 @@ def main():
             ver_calendario(regra, ficheiros, ultima, rel)
             ver_resolucao(entrada, regra, ficheiros, ultima, rel)
             ver_cobertura(regra, ficheiros, rel)
+            ver_quartos_mapa(regra, ficheiros, rel)
 
         if len(rel.erros) + len(rel.avisos) == antes:
             n = len(ficheiros)
