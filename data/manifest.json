@@ -417,7 +417,7 @@
     "values segue o relógio real do dia local de cada zona: 96 posições, 92 no último domingo de março e 100 no último domingo de outubro. A posição i é o quarto de hora que começa i×15 minutos depois da meia-noite local, no fuso indicado em metadata.json (fusos). Nesses dias, min_hour e max_hour levam ' (2.ª)' quando o extremo cai na 2.ª passagem pela hora repetida.",
     "Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições (só a 1.ª passagem pela hora repetida; a hora que não existe preenchida com o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não os tem."
    ],
-   "bytes": 101485670,
+   "bytes": 101521095,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/precos_qh/",
    "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e a série quarto-horária do dia local (96 valores; 92 e 100 nos dias de mudança de hora).",
@@ -456,7 +456,7 @@
    ],
    "titulo": "Preços day-ahead europeus",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-25",
+   "ultima_data": "2026-10-26",
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
@@ -1061,7 +1061,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-25T18:06:49+00:00",
+ "gerado_em": "2026-10-25T18:19:07+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1077,7 +1077,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 535250590,
+  "bytes": 535286015,
   "datasets": 39,
   "ficheiros": 1822
  }
