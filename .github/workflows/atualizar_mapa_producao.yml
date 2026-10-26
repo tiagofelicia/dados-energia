@@ -60,8 +60,13 @@ jobs:
       - name: Atualizar mix de produção europeu
         run: python scripts/atualizar_mapa_producao.py
 
+      # Consumo diário por país (real ou previsto), tirado dos ficheiros acabados
+      # de escrever: pesa a média europeia do europe-prices.html
+      - name: Gerar consumo por país
+        run: python scripts/gerar_consumo_paises.py
+
       - name: Fazer commit dos dados atualizados (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualizar dados mapa de producao europeu"
-          file_pattern: "data/mapas/producao/*.json"
+          file_pattern: "data/mapas/producao/*.json data/mapas/consumo_paises.json"
