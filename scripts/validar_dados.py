@@ -36,7 +36,8 @@ O QUE VERIFICA
   chave        a chave natural não tem duplicados (e, se declarada crescente,
                vem sempre a subir pela ordem do ficheiro)
   calendário   96 quartos por dia, 92 e 100 nos dois dias de mudança de hora
-  quartos      nos mapas de preços, cada zona-dia tem os quartos do seu fuso
+  quartos      nos mapas de preços, cada zona-dia tem os quartos do seu fuso e
+               os dias de RO/PL/BG na moeda local estão convertidos para euros
   resolucao    a resolucao_nativa declarada corresponde aos dados
   cobertura    nenhuma coluna deixou de vir preenchida
 
@@ -219,6 +220,12 @@ LENTOS = {"omie-historico", "producao-historico", "producao-entsoe",
 # mudança de hora, a 24/10/2026: a ENTSO-E já não tem estes dias da IT-Calabria.
 MAPA_96_ANTIGOS = {("IT-Calabria", d) for d in (
     "2018-03-25", "2018-10-28", "2019-03-31", "2019-10-27", "2020-03-29", "2020-10-25")}
+
+# Zonas que a ENTSO-E entregava na moeda local até estas datas. O
+# corrigir_moeda_precos_qh.py converteu-as para euros e marcou cada zona-dia com
+# moeda_original e taxa_cambio: sem a marca, o dia ainda está em RON/PLN/BGN.
+MAPA_MOEDA_LOCAL = {"RO": ("RON", "2021-06-17"), "PL": ("PLN", "2019-11-19"),
+                    "BG": ("BGN", "2022-01-21")}
 
 
 class Relatorio:
@@ -546,6 +553,10 @@ def ver_quartos_mapa(regra, ficheiros, rel):
     Ao contrário do calendário dos CSV, verifica também o último dia: aqui o
     número de valores não depende do que já foi publicado, porque um dia a meio
     tem os quartos todos, com null nos que faltam.
+
+    Confere também a moeda: os dias de RO, PL e BG que vinham em RON, PLN e BGN
+    têm de estar convertidos (moeda_original e taxa_cambio), e nenhum outro dia
+    pode ter essa marca.
     """
     if not regra.get("quartos_por_fuso"):
         return
@@ -560,7 +571,7 @@ def ver_quartos_mapa(regra, ficheiros, rel):
         rel.erro(f"metadata.json sem fusos ({type(e).__name__}): não há com que "
                  f"verificar os quartos de cada zona")
         return
-    errados, sem_fuso = [], set()
+    errados, sem_fuso, por_converter, fora = [], set(), [], []
     for f in meses:
         nome = os.path.basename(f)
         try:
@@ -578,11 +589,23 @@ def ver_quartos_mapa(regra, ficheiros, rel):
                 esperado = quartos_esperados(date.fromisoformat(dia), ZoneInfo(fusos[zona]))
                 if n != esperado and (zona, dia) not in MAPA_96_ANTIGOS:
                     errados.append(f"{zona} {dia} ({n}/{esperado})")
+                local = MAPA_MOEDA_LOCAL.get(zona)
+                if local and dia <= local[1]:
+                    if s.get("moeda_original") != local[0] or not s.get("taxa_cambio"):
+                        por_converter.append(f"{zona} {dia}")
+                elif "moeda_original" in s:
+                    fora.append(f"{zona} {dia} ({s['moeda_original']})")
     if sem_fuso:
         rel.erro(f"zona(s) sem fuso no metadata.json: {amostra(sorted(sem_fuso))}")
     if errados:
         rel.erro(f"{len(errados)} zona-dia(s) com um número de valores diferente dos "
                  f"quartos do dia local: {amostra(errados)}")
+    if por_converter:
+        rel.erro(f"{len(por_converter)} zona-dia(s) ainda na moeda local (sem moeda_original): "
+                 f"{amostra(por_converter)}")
+    if fora:
+        rel.erro(f"{len(fora)} zona-dia(s) com moeda_original fora dos períodos conhecidos: "
+                 f"{amostra(fora)}")
 
 
 # ============================================================

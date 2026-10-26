@@ -304,7 +304,13 @@ REGISTO = [
                  "a 1.ª passagem pela hora repetida; a hora que não existe preenchida com "
                  "o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 "
                  "dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não "
-                 "os tem."]),
+                 "os tem.",
+                 "RO até 17/06/2021, PL até 19/11/2019 e BG até 21/01/2022 vinham da ENTSO-E "
+                 "na moeda local (RON, PLN e BGN) e foram convertidos para euros em outubro "
+                 "de 2026: BGN à taxa fixa de 1,95583; RON à taxa do BNR publicada antes do "
+                 "dia do leilão (a que o OPCOM usou); PLN à taxa de referência do BCE do dia. "
+                 "Esses zona-dias têm moeda_original e taxa_cambio (euros = valor original / "
+                 "taxa_cambio)."]),
     dict(id="mapas-producao", grupo="mapas", caminho="data/mapas/producao/*.json",
          titulo="Mix de produção europeu diário",
          descricao="Produção diária por país e tecnologia (GWh) e quota renovável, "
