@@ -22,6 +22,8 @@ Formato:
       "resolution": "PT15M",
       "source": "entsoe",                // ou "energy-charts" (fonte secundaria)
       "values": [25.1, 25.1, 24.8, ...]  // 96 valores; 92 ou 100 nos dias de mudanca de hora
+      // So nos dias de RO, PL e BG convertidos da moeda local (corrigir_moeda_precos_qh.py):
+      // "moeda_original": "RON", "taxa_cambio": 4.8393  (euros = valor original / taxa)
     }
   }
 }
@@ -31,6 +33,10 @@ i x 15 min depois dessa meia-noite. No ultimo domingo de outubro (100 valores)
 a hora que se repete aparece duas vezes, pela ordem, e a 2.a passagem leva
 ' (2.ª)' em min_hour/max_hour; no ultimo domingo de marco (92) a hora que nao
 existe nao tem posicao. O fuso de cada zona esta em metadata.json ('fusos').
+
+Precos sempre em euros: uma serie do ENTSO-E noutra moeda (ou uma resposta do
+Energy-Charts noutra unidade) e posta de parte com aviso, em vez de ficar gravada
+como se fosse em euros, como aconteceu com RO, PL e BG ate 2019-2022.
 
 Nota: dias recolhidos antes de "source" existir nao tem o campo; para esses,
 a ausencia significa "entsoe". Nunca se misturam as duas fontes no mesmo
@@ -313,10 +319,13 @@ def parse_entsoe_xml(xml_text):
             continue
         seq = None
         contract = None
+        currency = None
         for direct_child in list(ts):
             tag = _local(direct_child.tag)
             if tag == "classificationSequence_AttributeInstanceComponent.position":
                 seq = (direct_child.text or "").strip()
+            elif tag == "currency_Unit.name":
+                currency = (direct_child.text or "").strip().upper()
             elif tag == "contract_MarketAgreement.type":
                 contract = (direct_child.text or "").strip()
                 if contract == "A01":
@@ -425,7 +434,7 @@ def parse_entsoe_xml(xml_text):
                     ts_points.append((pt_utc, price, "PT15M" if res_sec == 900 else resolution))
 
         if ts_points:
-            parsed_ts.append({"seq": seq, "contract": contract, "points": ts_points})
+            parsed_ts.append({"seq": seq, "contract": contract, "currency": currency, "points": ts_points})
         elif VERBOSE:
             print(f"  [TS] seq={seq!r} contract={contract!r} -> 0 pontos (descartada)")
 
@@ -453,6 +462,15 @@ def parse_entsoe_xml(xml_text):
     kept = [t for t in kept if (not t["seq"]) or t["seq"] == "1"]
     if VERBOSE and len(kept) != before:
         print(f"  [parse] apos descartar Sequence != 1: {len(kept)} TS (antes {before})")
+
+    # 3) So euros. Ate 2021-2022 o ENTSO-E entregava RO, PL e BG na moeda local
+    #    (RON, PLN, BGN), e este script gravava-os como se fossem euros (ver
+    #    corrigir_moeda_precos_qh.py). Uma serie noutra moeda fica de fora, com
+    #    aviso, em vez de entrar convertida por uma taxa que aqui nao se sabe qual e.
+    outras = sorted({t["currency"] for t in kept if t["currency"] and t["currency"] != "EUR"})
+    if outras:
+        print(f"  AVISO: serie(s) em {', '.join(outras)} e nao em EUR -- postas de parte")
+        kept = [t for t in kept if not t["currency"] or t["currency"] == "EUR"]
 
     flat = []
     for t in kept:
@@ -511,6 +529,11 @@ def parse_energy_charts(data):
     parser do ENTSO-E faz, garantindo sempre 96 valores por dia local.
     """
     if not data:
+        return []
+    # So euros, como no ENTSO-E (o Energy-Charts diz 'EUR / MWh')
+    unidade = (data.get("unit") or "").strip()
+    if unidade and not unidade.upper().startswith("EUR"):
+        print(f"  AVISO: Energy-Charts em '{unidade}' e nao em EUR -- resposta posta de parte")
         return []
     secs = data.get("unix_seconds") or []
     prices = data.get("price") or []
