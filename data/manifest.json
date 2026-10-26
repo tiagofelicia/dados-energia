@@ -8,7 +8,7 @@
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado.",
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 2448890,
+   "bytes": 2448604,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -29,7 +29,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-atuais",
-   "linhas": 35215,
+   "linhas": 35209,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -95,7 +95,7 @@
     "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 10, 11, 16, 19 e 20 campos.",
     "Na tabela quarto-horária, a 2.ª passagem pela hora que se repete em outubro leva ' (2.ª)' no intervalo, e a última coluna, data_utc, é o início do intervalo em UTC."
    ],
-   "bytes": 1724408,
+   "bytes": 1724912,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/precos-horarios.csv",
    "colunas": [
@@ -134,7 +134,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
-   "bytes": 3961,
+   "bytes": 3675,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/futuros_omip.csv",
    "colunas": [
@@ -145,14 +145,14 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-futuros",
-   "linhas": 81,
+   "linhas": 75,
    "titulo": "Futuros OMIP — sessão em curso",
    "tolerancia_dias": 3,
    "ultima_data": "2026-10-27",
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
-   "bytes": 553719,
+   "bytes": 555939,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -169,11 +169,11 @@
    "padrao": "data/omie/historico/omip_historico_*.csv",
    "titulo": "Futuros OMIP — histórico de sessões",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-23",
+   "ultima_data": "2026-10-26",
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
-   "bytes": 7569,
+   "bytes": 7570,
    "cadencia": "diária",
    "caminho": "data/omie/records_omie.json",
    "descricao": "Recordes históricos (dia/hora mais caro e mais barato, etc.) e agregados mensais e anuais.",
@@ -250,7 +250,7 @@
    "avisos": [
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 3683870,
+   "bytes": 3684132,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -358,7 +358,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 11820,
+   "bytes": 11821,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -372,7 +372,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 3050,
+   "bytes": 13187,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -396,7 +396,7 @@
    "avisos": [
     "A resolução varia por país e cada ficheiro declara a sua em interval_minutes: 15 minutos em 20 países, 60 em 13 (entre eles Portugal, que na ENTSO-E é horário apesar de a REN publicar a 15 minutos) e 30 em Chipre e Irlanda."
    ],
-   "bytes": 156175777,
+   "bytes": 156352999,
    "cadencia": "cada 4h (PT/ES) · 2x/dia (todos)",
    "caminho": "data/producao/producao-entsoe/",
    "descricao": "Geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços, para 35 países. Um ficheiro por país e semana ISO.",
@@ -418,7 +418,7 @@
     "Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições (só a 1.ª passagem pela hora repetida; a hora que não existe preenchida com o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não os tem.",
     "RO até 17/06/2021, PL até 19/11/2019 e BG até 21/01/2022 vinham da ENTSO-E na moeda local (RON, PLN e BGN) e foram convertidos para euros em outubro de 2026: BGN à taxa fixa de 1,95583; RON à taxa do BNR publicada antes do dia do leilão (a que o OPCOM usou); PLN à taxa de referência do BCE do dia. Esses zona-dias têm moeda_original e taxa_cambio (euros = valor original / taxa_cambio)."
    ],
-   "bytes": 101464644,
+   "bytes": 101512425,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/precos_qh/",
    "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e a série quarto-horária do dia local (96 valores; 92 e 100 nos dias de mudança de hora).",
@@ -457,11 +457,11 @@
    ],
    "titulo": "Preços day-ahead europeus",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-26",
+   "ultima_data": "2026-10-27",
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
-   "bytes": 4536419,
+   "bytes": 4537853,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/producao/",
    "descricao": "Produção diária por país e tecnologia (GWh) e quota renovável, para 28 países, desde 2026-01.",
@@ -477,11 +477,31 @@
   },
   {
    "avisos": [
+    "A produção é a do país (ENTSO-E, data/producao/producao-entsoe): nas zonas de um mesmo país (Itália, Noruega, Suécia, Dinamarca) usa-se a produção do país com o preço de cada zona.",
+    "Só entram dias com a produção real completa; eólica = onshore + offshore.",
+    "Para somar dias: preço capturado do período = Σ(preço × GWh) / Σ GWh."
+   ],
+   "bytes": 580847,
+   "cadencia": "cada 4h · 2x/dia",
+   "caminho": "data/mapas/captura/",
+   "descricao": "Por zona e dia: o preço day-ahead pesado pela produção solar e pela eólica do país (preço capturado) e essa produção em GWh. Um ficheiro por mês, desde 2026-01.",
+   "ficheiros": 11,
+   "formato": "json",
+   "grupo": "mapas",
+   "id": "mapas-captura",
+   "padrao": "data/mapas/captura/*.json",
+   "titulo": "Preço capturado solar e eólico",
+   "tolerancia_dias": 3,
+   "ultima_data": "2026-10-25",
+   "url": "https://dados.tiagofelicia.pt/data/mapas/captura/"
+  },
+  {
+   "avisos": [
     "Tirado de data/mapas/producao (Energy-Charts): 'dias' tem o consumo real, 'previsao' a previsão day-ahead onde ainda não há real (o dia seguinte e o dia a meio).",
     "quotas é o consumo médio diário real de cada país nos últimos 365 dias, a dividir pela soma dos países: serve os dias sem dados (antes de 2026) e os países sem valor num dia.",
     "AL, MK e XK não têm consumo na fonte."
    ],
-   "bytes": 101806,
+   "bytes": 101821,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/consumo_paises.json",
    "descricao": "Consumo de eletricidade por país europeu (GWh/dia), real e previsto para o dia seguinte, e a quota fixa de cada país. Pesa pelo consumo a média europeia do europe-prices. 28 países, desde 2026-01.",
@@ -821,7 +841,7 @@
     "Filtre por tipo='EUA' para as licenças gerais; 'EUAA' são de aviação e são outro instrumento.",
     "Só há leilões em dias úteis, e nem todos: cerca de 220 por ano."
    ],
-   "bytes": 183818,
+   "bytes": 183945,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/eua_co2.csv",
    "colunas": [
@@ -847,10 +867,10 @@
    "formato": "csv",
    "grupo": "emissoes",
    "id": "emissoes-eua",
-   "linhas": 1509,
+   "linhas": 1510,
    "titulo": "Leilões de licenças de CO2 (EU ETS)",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-23",
+   "ultima_data": "2026-10-26",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/eua_co2.csv"
   },
   {
@@ -859,7 +879,7 @@
     "A chave é (data_iso, periodo). Nos dias de mudança de hora o 'intervalo' repete-se ou salta; o 'data_utc' não.",
     "Em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026) o erc_total_eur publicado pela REN fica abaixo da soma das componentes (241 371 EUR no conjunto). Os valores são guardados como a fonte os dá; nos restantes períodos a diferença é de arredondamento (< 0,01 EUR)."
    ],
-   "bytes": 13225647,
+   "bytes": 13267785,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/isp/",
    "colunas": [
@@ -899,7 +919,7 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por período",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-21",
+   "ultima_data": "2026-10-24",
    "url": "https://dados.tiagofelicia.pt/data/erc/isp/"
   },
   {
@@ -944,7 +964,7 @@
    "avisos": [
     "A unidade da quantidade varia com o código (MWh para energia, MW para banda): ver a coluna 'unidade' do dicionário."
    ],
-   "bytes": 70349737,
+   "bytes": 70574322,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/erc/tipo/",
    "colunas": [
@@ -969,7 +989,7 @@
    ],
    "titulo": "Encargos de regulação (ERC) — por tipo de encargo",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-21",
+   "ultima_data": "2026-10-24",
    "url": "https://dados.tiagofelicia.pt/data/erc/tipo/"
   },
   {
@@ -1081,7 +1101,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-26T17:40:23+00:00",
+ "gerado_em": "2026-10-26T21:34:21+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1097,8 +1117,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 536177178,
-  "datasets": 40,
-  "ficheiros": 1856
+  "bytes": 537263880,
+  "datasets": 41,
+  "ficheiros": 1867
  }
 }
