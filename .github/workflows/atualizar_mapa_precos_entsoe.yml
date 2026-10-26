@@ -17,8 +17,12 @@ on:
         description: "Refazer dias já gravados: vazio = atualização normal; 'mudancas-hora' = os dias de mudança de hora desde 2018; ou datas AAAA-MM-DD separadas por espaços"
         required: false
         default: ""
+      corrigir_moeda:
+        description: "Converter para euros os preços de RO, PL e BG gravados na moeda local (corre uma vez; ver scripts/corrigir_moeda_precos_qh.py)"
+        type: boolean
+        default: false
       simular:
-        description: "No modo refazer: só mostrar o resultado no log, sem gravar"
+        description: "No modo refazer ou corrigir moeda: só mostrar o resultado no log, sem gravar"
         type: boolean
         default: true
 
@@ -82,10 +86,15 @@ jobs:
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
           REFAZER: ${{ inputs.refazer }}
           SIMULAR: ${{ inputs.simular }}
+          CORRIGIR_MOEDA: ${{ inputs.corrigir_moeda }}
         run: |
           # Nas corridas agendadas 'refazer' vem vazio. O que vem do formulário só
           # chega à linha de comandos se for 'mudancas-hora' ou uma lista de datas.
-          if [ -z "$REFAZER" ]; then
+          if [ "$CORRIGIR_MOEDA" = "true" ]; then
+            ARGS=()
+            if [ "$SIMULAR" = "true" ]; then ARGS+=(--simular); fi
+            python scripts/corrigir_moeda_precos_qh.py "${ARGS[@]}"
+          elif [ -z "$REFAZER" ]; then
             python scripts/atualizar_mapa_precos_entsoe.py
           else
             ARGS=()
