@@ -254,6 +254,7 @@ dia,data_iso,produto,entrega_inicio,entrega_fim,spread,ttf_derivado
 | `precos_qh/metadata.json` | `{"ultima_data": "AAAA-MM-DD", "fusos": {"PT": "Europe/Lisbon", …}}`: o fuso de cada zona, que define o seu dia local | 1×/dia |
 | `producao/AAAA-MM.json` | Mix de produção diário por país europeu (GWh/dia por tecnologia + consumo), desde 2026-01 | 2×/dia |
 | `producao/metadata.json` | `{"ultima_data": "AAAA-MM-DD"}` | 2×/dia |
+| `consumo_paises.json` | Consumo de eletricidade por país (GWh/dia), desde 2026-01: `dias` com o real, `previsao` com a previsão day-ahead onde ainda não há real (o dia seguinte e o dia a meio), e `quotas` com o peso fixo de cada país (consumo médio diário real nos últimos 365 dias, a dividir pela soma). Gerado a partir de `producao/` e usado para pesar pelo consumo a média europeia do europe-prices. AL, MK e XK não têm consumo na fonte | 2×/dia |
 
 - O campo `resolution` diz sempre `PT15M`, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos, para uniformidade.
 - `values` pode conter `null` em dias parcialmente publicados.
