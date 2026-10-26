@@ -461,7 +461,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
-   "bytes": 4522734,
+   "bytes": 4536419,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/producao/",
    "descricao": "Produção diária por país e tecnologia (GWh) e quota renovável, para 28 países, desde 2026-01.",
@@ -474,6 +474,25 @@
    "tolerancia_dias": 1,
    "ultima_data": "2026-10-27",
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
+  },
+  {
+   "avisos": [
+    "Tirado de data/mapas/producao (Energy-Charts): 'dias' tem o consumo real, 'previsao' a previsão day-ahead onde ainda não há real (o dia seguinte e o dia a meio).",
+    "quotas é o consumo médio diário real de cada país nos últimos 365 dias, a dividir pela soma dos países: serve os dias sem dados (antes de 2026) e os países sem valor num dia.",
+    "AL, MK e XK não têm consumo na fonte."
+   ],
+   "bytes": 101806,
+   "cadencia": "2x/dia",
+   "caminho": "data/mapas/consumo_paises.json",
+   "descricao": "Consumo de eletricidade por país europeu (GWh/dia), real e previsto para o dia seguinte, e a quota fixa de cada país. Pesa pelo consumo a média europeia do europe-prices. 28 países, desde 2026-01.",
+   "ficheiros": 1,
+   "formato": "json",
+   "grupo": "mapas",
+   "id": "mapas-consumo",
+   "titulo": "Consumo diário por país",
+   "tolerancia_dias": 2,
+   "ultima_data": "2026-10-25",
+   "url": "https://dados.tiagofelicia.pt/data/mapas/consumo_paises.json"
   },
   {
    "bytes": 197875,
@@ -1062,7 +1081,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-26T16:04:30+00:00",
+ "gerado_em": "2026-10-26T16:34:38+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1078,8 +1097,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 536058494,
-  "datasets": 39,
-  "ficheiros": 1855
+  "bytes": 536173985,
+  "datasets": 40,
+  "ficheiros": 1856
  }
 }
