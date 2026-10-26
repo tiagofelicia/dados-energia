@@ -18,7 +18,8 @@ do país: nas zonas de um mesmo país (Itália, Noruega, Suécia, Dinamarca) usa
 produção do país com o preço de cada zona. Os nulos da produção contam como zero
 (o solar vem a null de noite). Eólica = onshore + offshore. Só entram os dias em
 que a produção real (até last_actual_ts) cobre o dia inteiro da zona; até 4 quartos
-de hora sem produção (falhas pontuais da fonte) ficam de fora da conta.
+de hora sem produção ou sem preço (falhas pontuais das fontes) ficam de fora da conta.
+Um dia com mais falhas fica sem valor até as fontes serem completadas.
 
 O QUE ESCREVE
 -------------
@@ -90,13 +91,15 @@ def ler_producao(pais, dias):
     return serie, passo, fim_real
 
 
-# Quartos de hora sem produção que um dia ainda tolera (ficam de fora da conta). Há falhas pontuais
-# na fonte: a Espanha não tem 00:00 e 00:15 UTC de 25/10/2026, na hora que se repete.
+# Quartos de hora sem produção ou sem preço que um dia ainda tolera (ficam de fora da conta). Há
+# falhas pontuais nas fontes: a Espanha não tem a produção de 00:00 e 00:15 UTC de 25/10/2026, na
+# hora que se repete. Um dia só com algumas horas de preço (13/09/2026 na Grécia e na Roménia: 4
+# quartos de 96) daria o preço capturado dessas horas, e não o do dia.
 QUARTOS_EM_FALTA_MAX = 4
 
 
 def captura_dia(valores, inicio_utc, serie, passo, fim_real):
-    """{"s": [...], "w": [...]} de um dia, ou None se a produção não cobrir o dia."""
+    """{"s": [...], "w": [...]} de um dia, ou None se a produção ou o preço não cobrirem o dia."""
     n = len(valores)
     if not passo or inicio_utc + n * 900 > fim_real:
         return None
@@ -106,12 +109,10 @@ def captura_dia(valores, inicio_utc, serie, passo, fim_real):
         t = inicio_utc + i * 900
         # O passo pode mudar de uma semana para outra: o quarto de hora, a meia hora ou a hora
         g = serie.get(t) or serie.get(t - t % 1800) or serie.get(t - t % 3600)
-        if g is None:
+        if g is None or p is None:
             em_falta += 1
             if em_falta > QUARTOS_EM_FALTA_MAX:
                 return None
-            continue
-        if p is None:
             continue
         es += g[0] * 0.25
         ps += p * g[0] * 0.25
