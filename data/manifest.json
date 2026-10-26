@@ -415,7 +415,8 @@
     "O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos. A resolução a que a fonte publicou está em resolucao_nativa, e varia por zona.",
     "values pode conter null em dias parcialmente publicados.",
     "values segue o relógio real do dia local de cada zona: 96 posições, 92 no último domingo de março e 100 no último domingo de outubro. A posição i é o quarto de hora que começa i×15 minutos depois da meia-noite local, no fuso indicado em metadata.json (fusos). Nesses dias, min_hour e max_hour levam ' (2.ª)' quando o extremo cai na 2.ª passagem pela hora repetida.",
-    "Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições (só a 1.ª passagem pela hora repetida; a hora que não existe preenchida com o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não os tem."
+    "Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições (só a 1.ª passagem pela hora repetida; a hora que não existe preenchida com o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não os tem.",
+    "RO até 17/06/2021, PL até 19/11/2019 e BG até 21/01/2022 vinham da ENTSO-E na moeda local (RON, PLN e BGN) e foram convertidos para euros em outubro de 2026: BGN à taxa fixa de 1,95583; RON à taxa do BNR publicada antes do dia do leilão (a que o OPCOM usou); PLN à taxa de referência do BCE do dia. Esses zona-dias têm moeda_original e taxa_cambio (euros = valor original / taxa_cambio)."
    ],
    "bytes": 101464644,
    "cadencia": "1x/dia",
@@ -1061,7 +1062,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-26T15:22:57+00:00",
+ "gerado_em": "2026-10-26T16:04:30+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
