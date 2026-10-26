@@ -14,7 +14,7 @@ on:
   workflow_dispatch: # Permite execução manual
     inputs:
       refazer:
-        description: "Refazer dias já gravados: vazio = atualização normal; 'mudancas-hora' = os dias de mudança de hora desde 2018; ou datas AAAA-MM-DD separadas por espaços"
+        description: "Refazer dias já gravados: vazio = atualização normal; 'mudancas-hora' = os dias de mudança de hora desde 2018; 'lacunas' = voltar a pedir os dias em falta e incompletos de todas as zonas; ou datas AAAA-MM-DD separadas por espaços"
         required: false
         default: ""
       corrigir_moeda:
@@ -22,7 +22,7 @@ on:
         type: boolean
         default: false
       simular:
-        description: "No modo refazer ou corrigir moeda: só mostrar o resultado no log, sem gravar"
+        description: "No modo refazer, lacunas ou corrigir moeda: só mostrar o resultado no log, sem gravar"
         type: boolean
         default: true
 
@@ -100,11 +100,13 @@ jobs:
             ARGS=()
             if [ "$REFAZER" = "mudancas-hora" ]; then
               ARGS+=(--mudancas-hora)
+            elif [ "$REFAZER" = "lacunas" ]; then
+              ARGS+=(--preencher-lacunas)
             elif [[ "$REFAZER" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{4}-[0-9]{2}-[0-9]{2})*$ ]]; then
               read -r -a DIAS <<< "$REFAZER"
               ARGS+=(--refazer-dias "${DIAS[@]}")
             else
-              echo "::error::'refazer' tem de ficar vazio, ser 'mudancas-hora' ou datas AAAA-MM-DD separadas por espaços."
+              echo "::error::'refazer' tem de ficar vazio, ser 'mudancas-hora', 'lacunas' ou datas AAAA-MM-DD separadas por espaços."
               exit 1
             fi
             if [ "$SIMULAR" = "true" ]; then ARGS+=(--simular); fi

@@ -142,8 +142,13 @@ jobs:
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
         run: python scripts/atualizar_producao_entsoe.py ${{ steps.params.outputs.args }}
 
+      # Preço capturado solar e eólico por zona (preço pesado pela produção), a partir
+      # da produção acabada de atualizar e dos preços de data/mapas/precos_qh
+      - name: Gerar preço capturado
+        run: python scripts/gerar_captura_precos.py
+
       - name: Fazer commit dos dados atualizados (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualizar producao ENTSO-E (${{ steps.params.outputs.args }})"
-          file_pattern: "data/producao/producao-entsoe"
+          file_pattern: "data/producao/producao-entsoe data/mapas/captura"
