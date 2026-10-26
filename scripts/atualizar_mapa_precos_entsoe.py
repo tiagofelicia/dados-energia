@@ -9,6 +9,7 @@ Modo diario (default):  python atualizar_mapa_precos_entsoe.py
 Modo backfill:          python atualizar_mapa_precos_entsoe.py --backfill
 Refazer dias:           python atualizar_mapa_precos_entsoe.py --mudancas-hora [--simular]
                         python atualizar_mapa_precos_entsoe.py --refazer-dias 2025-10-26 2026-03-29
+Preencher lacunas:      python atualizar_mapa_precos_entsoe.py --preencher-lacunas [--simular]
 
 Gera ficheiros em data/mapas/precos_qh/.
 
@@ -919,6 +920,150 @@ def refazer_dias(token, dias, zones, simular=False, forcar=False):
     return resultado
 
 
+# ----- Preencher lacunas -----------------------------------------------------
+#
+# A corrida diaria so pede ontem -> depois-de-amanha, e o modo refazer so refaz
+# dias que ja existem: um dia em que o ENTSO-E falhou para uma zona ficava em
+# falta para sempre (13/09 e 10/10/2026 em HR, HU, NL, SK e outras, por exemplo;
+# SI de 06/2018 a 12/2019). '--preencher-lacunas' procura, zona a zona, os dias
+# que faltam depois do 1.o dia gravado da zona e os dias ja fechados com quartos
+# a null, e volta a pedi-los: ENTSO-E primeiro, Energy-Charts se falhar. Um dia
+# incompleto so e trocado por um com menos quartos em falta, e os dias que foram
+# convertidos de moeda (moeda_original) ficam como estao. A corrida diaria faz o
+# mesmo para os ultimos LACUNAS_DIAS_DIARIO dias.
+
+LACUNAS_DIAS_DIARIO = 30
+
+
+def _meses_gravados():
+    return sorted(f[:-5] for f in os.listdir(DATA_DIR) if re.match(r"^\d{4}-\d{2}\.json$", f))
+
+
+def _nulos(stats):
+    """Quartos em falta num dia gravado (um dia que nao existe conta como todos)."""
+    if not stats or not stats.get("values"):
+        return 10 ** 6
+    return sum(1 for v in stats["values"] if v is None)
+
+
+def procurar_lacunas(zonas, desde, ate, meses=None, so_zonas_anteriores=False):
+    """{zona: {"falta": [date], "incompletos": [date]}} entre 'desde' e 'ate'.
+
+    Os dias em falta contam a partir do 1.o dia gravado da zona nos meses lidos
+    (as zonas que so comecaram depois nao tem lacunas antes disso). Com
+    'so_zonas_anteriores', so contam as zonas ja gravadas antes de 'desde': e o
+    que a corrida diaria usa, porque so le os meses mais recentes."""
+    primeiro, presentes, parciais = {}, {}, {}
+    for ym in (meses or _meses_gravados()):
+        for dia, zs in load_monthly_file(ym).items():
+            for z, s in zs.items():
+                if z not in zonas:
+                    continue
+                if z not in primeiro or dia < primeiro[z]:
+                    primeiro[z] = dia
+                presentes.setdefault(z, set()).add(dia)
+                if (desde.isoformat() <= dia <= ate.isoformat() and not s.get("moeda_original")
+                        and any(v is None for v in (s.get("values") or []))):
+                    parciais.setdefault(z, []).append(date.fromisoformat(dia))
+    out = {}
+    for z in zonas:
+        if z not in primeiro:
+            continue
+        p = date.fromisoformat(primeiro[z])
+        if so_zonas_anteriores and p >= desde:
+            continue
+        falta = [d for d in iter_days(max(desde, p), ate) if d.isoformat() not in presentes[z]]
+        inc = sorted(parciais.get(z, []))
+        if falta or inc:
+            out[z] = {"falta": falta, "incompletos": inc}
+    return out
+
+
+def _blocos(dias, max_dias=31):
+    """Dias seguidos agrupados em (inicio, fim), no maximo 'max_dias' por pedido."""
+    out = []
+    for d in sorted(dias):
+        if out and (d - out[-1][1]).days == 1 and (d - out[-1][0]).days < max_dias:
+            out[-1][1] = d
+        else:
+            out.append([d, d])
+    return [(a, b) for a, b in out]
+
+
+def preencher_lacunas(token, lacunas, simular=False):
+    """Volta a pedir os dias de 'lacunas' (ver procurar_lacunas). Grava, salvo em
+    'simular', e devolve {motivo: [(zona, dia, detalhe)]}."""
+    cache, resultado = {}, {}
+
+    def mes(ym):
+        if ym not in cache:
+            cache[ym] = load_monthly_file(ym)
+        return cache[ym]
+
+    def conta(motivo, zona, dia, detalhe=""):
+        resultado.setdefault(motivo, []).append((zona, dia, detalhe))
+
+    for i, zona in enumerate(sorted(lacunas), 1):
+        falta = set(lacunas[zona]["falta"])
+        inc = set(lacunas[zona]["incompletos"])
+        print(f"[{i}/{len(lacunas)}] {zona}: {len(falta)} em falta, {len(inc)} incompletos...", end=" ", flush=True)
+        for ini, fim in _blocos(falta | inc):
+            try:
+                daily = fetch_zone_range(token, zona, ini, fim)
+            except Exception as e:
+                for d in iter_days(ini, fim):
+                    if d in falta or d in inc:
+                        conta("erro", zona, d.isoformat(), short_error(e, token))
+                continue
+            # Os incompletos que o ENTSO-E devolveu outra vez incompletos: tentar o Energy-Charts
+            ainda = [d for d in iter_days(ini, fim) if d in inc and _nulos(daily.get(d.isoformat())) > 0]
+            ec = {}
+            if ainda:
+                try:
+                    ec = fetch_zone_range_energy_charts(zona, min(ainda), max(ainda))
+                except Exception:
+                    ec = {}
+            for d in iter_days(ini, fim):
+                if d not in falta and d not in inc:
+                    continue
+                dia = d.isoformat()
+                novo = daily.get(dia)
+                if d in inc and ec.get(dia) and _nulos(ec[dia]) < _nulos(novo):
+                    novo = ec[dia]
+                antigo = mes(dia[:7]).get(dia, {}).get(zona)
+                if d in falta:
+                    if novo:
+                        mes(dia[:7]).setdefault(dia, {})[zona] = novo
+                        conta("preenchido", zona, dia, novo.get("source", ""))
+                    else:
+                        conta("continua em falta", zona, dia)
+                elif novo and _nulos(novo) < _nulos(antigo):
+                    mes(dia[:7]).setdefault(dia, {})[zona] = novo
+                    conta("completado", zona, dia, f"{_nulos(antigo)} -> {_nulos(novo)} quartos em falta ({novo.get('source', '')})")
+                else:
+                    conta("continua incompleto", zona, dia)
+            time.sleep(0.5)
+        print("ok")
+
+    print("\nLacunas:")
+    for motivo in ("preenchido", "completado", "continua em falta", "continua incompleto", "erro"):
+        linhas = resultado.get(motivo, [])
+        por_zona = {}
+        for zona, dia, _ in linhas:
+            por_zona.setdefault(zona, []).append(dia)
+        print(f"  {motivo:<20} {len(linhas):>5}" + (
+            "  " + "; ".join(f"{z} {len(ds)} ({ds[0]}" + (f" a {ds[-1]})" if len(ds) > 1 else ")")
+                             for z, ds in sorted(por_zona.items())) if linhas else ""))
+    if simular:
+        print("\n[--simular] nada gravado.")
+        return resultado
+    mudados = sorted({dia[:7] for m in ("preenchido", "completado") for _, dia, _ in resultado.get(m, [])})
+    for ym in mudados:
+        save_monthly_file(ym, cache[ym])
+        print(f"  {ym}.json gravado")
+    return resultado
+
+
 # ----- Main ------------------------------------------------------------------
 
 # Nome legivel de cada fonte, para os relatorios impressos.
@@ -1074,6 +1219,10 @@ def main():
                         help="Com --refazer-dias/--mudancas-hora: mostra o resultado sem gravar")
     parser.add_argument("--forcar", action="store_true",
                         help="Com --refazer-dias/--mudancas-hora: grava mesmo os dias incoerentes")
+    parser.add_argument("--preencher-lacunas", action="store_true",
+                        help="Volta a pedir os dias em falta e incompletos de todas as zonas (ver 'Preencher lacunas')")
+    parser.add_argument("--desde", metavar="AAAA-MM-DD", help=f"Com --preencher-lacunas (default: {INICIO_DADOS})")
+    parser.add_argument("--ate", metavar="AAAA-MM-DD", help="Com --preencher-lacunas (default: anteontem)")
     args = parser.parse_args()
 
     global VERBOSE
@@ -1085,6 +1234,22 @@ def main():
         sys.exit(1)
 
     os.makedirs(DATA_DIR, exist_ok=True)
+
+    if args.preencher_lacunas:
+        hoje = datetime.now(timezone.utc).date()
+        try:
+            desde = date.fromisoformat(args.desde) if args.desde else INICIO_DADOS
+            ate = date.fromisoformat(args.ate) if args.ate else hoje - timedelta(days=2)
+        except ValueError:
+            print("ERRO: --desde/--ate querem datas AAAA-MM-DD.", file=sys.stderr)
+            sys.exit(1)
+        lacunas = procurar_lacunas(args.zones or list(ZONE_EIC.keys()), desde, ate)
+        n_f = sum(len(v["falta"]) for v in lacunas.values())
+        n_i = sum(len(v["incompletos"]) for v in lacunas.values())
+        print(f"Modo PREENCHER LACUNAS: {desde} -> {ate}: {n_f} zona-dias em falta e {n_i} incompletos em {len(lacunas)} zonas")
+        preencher_lacunas(token, lacunas, simular=args.simular)
+        print("Concluido!")
+        return
 
     if args.refazer_dias or args.mudancas_hora:
         ontem = datetime.now(timezone.utc).date() - timedelta(days=1)
@@ -1236,6 +1401,21 @@ def main():
         else:
             print(f"\nMetadata: ultima_data mantida em {gravada} "
                   f"(esta corrida so chegou a {latest_date})")
+
+    # Corrida diaria: voltar a tentar os dias dos ultimos LACUNAS_DIAS_DIARIO que
+    # ficaram em falta ou incompletos em corridas anteriores (os de ontem para a
+    # frente acabaram de ser pedidos)
+    if not backfill and not args.zones:
+        ate = yesterday - timedelta(days=1)
+        desde = ate - timedelta(days=LACUNAS_DIAS_DIARIO - 1)
+        meses = sorted({(desde - timedelta(days=31)).isoformat()[:7], desde.isoformat()[:7], ate.isoformat()[:7]})
+        meses = [ym for ym in meses if os.path.exists(os.path.join(DATA_DIR, f"{ym}.json"))]
+        lacunas = procurar_lacunas(list(ZONE_EIC.keys()), desde, ate, meses=meses, so_zonas_anteriores=True)
+        if lacunas:
+            print(f"\nLacunas de {desde} a {ate}: "
+                  f"{sum(len(v['falta']) for v in lacunas.values())} em falta, "
+                  f"{sum(len(v['incompletos']) for v in lacunas.values())} incompletos")
+            preencher_lacunas(token, lacunas)
 
     print("Concluido!")
 

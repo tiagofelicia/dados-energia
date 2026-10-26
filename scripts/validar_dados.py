@@ -120,6 +120,8 @@ RE_DIA = re.compile(r"^\d{2}/\d{2}/\d{4}$")
 # tolerante   o ficheiro tem blocos concatenados no fim e precisa do parser lento.
 # quartos_por_fuso  (JSON dos mapas) cada zona-dia tem tantos valores quantos os
 #             quartos do dia local da zona, com o fuso do metadata.json.
+# lacunas_recentes  (JSON dos mapas) dias em falta nos últimos 60 dias, nas zonas
+#             que já tinham dados antes. Corre sempre, também sem --lentos.
 
 REGRAS = {
     # Os dois "atuais" trazem blocos TABELA_* no fim, com outro número de
@@ -194,7 +196,7 @@ REGRAS = {
     # Até 24/10/2026 os mapas tinham sempre 96 valores, também nos dias de mudança
     # de hora. Um dia escrito outra vez à maneira antiga, ou uma zona com o fuso
     # errado, volta a dar 96 onde devia dar 92 ou 100.
-    "mapas-precos": dict(quartos_por_fuso=True),
+    "mapas-precos": dict(quartos_por_fuso=True, lacunas_recentes=True),
 
     # Padrões cujos ficheiros têm grão diferente: cada um com a sua chave.
     "agregados-omie": dict(
@@ -608,6 +610,45 @@ def ver_quartos_mapa(regra, ficheiros, rel):
                  f"{amostra(fora)}")
 
 
+def ver_lacunas_mapa(regra, ficheiros, ultima, rel, janela=60):
+    """
+    Dias em falta nos últimos 'janela' dias, nas zonas que já tinham dados antes.
+    É o sintoma de uma corrida em que o ENTSO-E falhou numa zona: a recolha diária
+    volta a tentar os últimos 30 dias, e o que sobrar aparece aqui. Aviso, não
+    erro: há zonas em que a fonte falha de vez (XK, por exemplo). Os dois últimos
+    dias ficam de fora, porque ainda podem estar a ser publicados.
+    """
+    if not regra.get("lacunas_recentes") or not ultima:
+        return
+    fim = date.fromisoformat(ultima) - timedelta(days=2)
+    ini = fim - timedelta(days=janela - 1)
+    pasta = os.path.dirname(ficheiros[0])
+    meses = sorted({(ini - timedelta(days=31)).isoformat()[:7], ini.isoformat()[:7],
+                    (ini + timedelta(days=31)).isoformat()[:7], fim.isoformat()[:7]})
+    presentes, antes = {}, set()
+    for ym in meses:
+        f = os.path.join(pasta, f"{ym}.json")
+        if not os.path.exists(f):
+            continue
+        with open(f, encoding="utf-8") as fh:
+            for dia, zonas in json.load(fh).items():
+                for z in zonas:
+                    if dia < ini.isoformat():
+                        antes.add(z)
+                    else:
+                        presentes.setdefault(z, set()).add(dia)
+    falta = []
+    for z in sorted(antes):
+        d = ini
+        while d <= fim:
+            if d.isoformat() not in presentes.get(z, set()):
+                falta.append(f"{z} {d.isoformat()}")
+            d += timedelta(days=1)
+    if falta:
+        rel.aviso(f"{len(falta)} zona-dia(s) em falta entre {ini} e {fim} (a recolha diária "
+                  f"volta a tentar os últimos 30 dias; o resto com refazer=lacunas): {amostra(falta, 6)}")
+
+
 # ============================================================
 
 def main():
@@ -649,6 +690,8 @@ def main():
         ultima = ver_frescura(entrada, ficheiros, hoje, rel)
 
         regra = REGRAS.get(ident)
+        if regra and not args.rapido:
+            ver_lacunas_mapa(regra, ficheiros, ultima, rel)
         if regra and not args.rapido and (args.lentos or ident not in LENTOS):
             ver_colunas(regra, ficheiros, rel)
             ver_chave(regra, ficheiros, rel)

@@ -316,6 +316,18 @@ REGISTO = [
          descricao="Produção diária por país e tecnologia (GWh) e quota renovável, "
                    "para 28 países, desde 2026-01.",
          cadencia="2x/dia", tolerancia_dias=1, deteccao="meta:ultima_data"),
+    dict(id="mapas-captura", grupo="mapas", caminho="data/mapas/captura/*.json",
+         titulo="Preço capturado solar e eólico",
+         descricao="Por zona e dia: o preço day-ahead pesado pela produção solar e "
+                   "pela eólica do país (preço capturado) e essa produção em GWh. Um "
+                   "ficheiro por mês, desde 2026-01.",
+         cadencia="cada 4h · 2x/dia", tolerancia_dias=3, deteccao="meta:ultima_data",
+         avisos=["A produção é a do país (ENTSO-E, data/producao/producao-entsoe): nas "
+                 "zonas de um mesmo país (Itália, Noruega, Suécia, Dinamarca) usa-se a "
+                 "produção do país com o preço de cada zona.",
+                 "Só entram dias com a produção real completa; eólica = onshore + "
+                 "offshore.",
+                 "Para somar dias: preço capturado do período = Σ(preço × GWh) / Σ GWh."]),
     dict(id="mapas-consumo", grupo="mapas", caminho="data/mapas/consumo_paises.json",
          titulo="Consumo diário por país",
          descricao="Consumo de eletricidade por país europeu (GWh/dia), real e "
