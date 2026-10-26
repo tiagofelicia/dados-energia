@@ -316,6 +316,20 @@ REGISTO = [
          descricao="Produção diária por país e tecnologia (GWh) e quota renovável, "
                    "para 28 países, desde 2026-01.",
          cadencia="2x/dia", tolerancia_dias=1, deteccao="meta:ultima_data"),
+    dict(id="mapas-consumo", grupo="mapas", caminho="data/mapas/consumo_paises.json",
+         titulo="Consumo diário por país",
+         descricao="Consumo de eletricidade por país europeu (GWh/dia), real e "
+                   "previsto para o dia seguinte, e a quota fixa de cada país. "
+                   "Pesa pelo consumo a média europeia do europe-prices. 28 países, "
+                   "desde 2026-01.",
+         cadencia="2x/dia", tolerancia_dias=2, deteccao="meta:ultima_data",
+         avisos=["Tirado de data/mapas/producao (Energy-Charts): 'dias' tem o "
+                 "consumo real, 'previsao' a previsão day-ahead onde ainda não "
+                 "há real (o dia seguinte e o dia a meio).",
+                 "quotas é o consumo médio diário real de cada país nos últimos "
+                 "365 dias, a dividir pela soma dos países: serve os dias sem "
+                 "dados (antes de 2026) e os países sem valor num dia.",
+                 "AL, MK e XK não têm consumo na fonte."]),
 
     # ---------- Gás ----------
     dict(id="gas-mibgas", grupo="gas", caminho="data/gas/mibgas_spot.csv",
