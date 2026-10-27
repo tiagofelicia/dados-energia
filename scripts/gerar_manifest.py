@@ -213,6 +213,19 @@ REGISTO = [
          titulo="Futuros OMIP — sessão em curso",
          descricao="Versão leve com as tabelas de metadados e futuros OMIP (~3 KB).",
          cadencia="~5x/dia útil", tolerancia_dias=3, deteccao="omie_real"),
+    dict(id="omie-recentes", grupo="omie", caminho="data/omie/omie_recentes.csv",
+         titulo="Preços OMIE — últimos 100 dias",
+         descricao="Versão leve do ficheiro do ano corrente: os últimos 100 dias reais e as "
+                   "estimativas OMIP até ao fim do mês do último dia real, com as mesmas "
+                   "tabelas no fim (~100 KB comprimidos).",
+         cadencia="~5x/dia útil", tolerancia_dias=1, deteccao="omie_real",
+         resolucao_nativa=RESOLUCAO_MIBEL,
+         avisos=["Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do "
+                 "ficheiro; pd.read_csv traz essas linhas como dados.",
+                 "As datas posteriores a ultima_data_real são estimativas OMIP, "
+                 "não preços de mercado.",
+                 "Não passa de 1 de janeiro: nos primeiros dias do ano tem menos de 100 dias.",
+                 AVISO_DATA_UTC]),
     # Coluna 'Data', não 'dia' como os restantes históricos — daí a deteção própria.
     dict(id="omip-historico", grupo="omie", caminho="data/omie/historico/omip_historico_*.csv",
          titulo="Futuros OMIP — histórico de sessões",

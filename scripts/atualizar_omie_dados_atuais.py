@@ -8,6 +8,7 @@ from datetime import datetime
 import io
 import re
 import os
+import shutil
 
 print("✅ Bibliotecas carregadas para [Atualizar omie dados atuais]")
 
@@ -22,6 +23,12 @@ FICHEIRO_CSV = os.path.join(ROOT_DIR, "data", "omie", "omie_dados_atuais.csv")  
 # Versão leve só com as tabelas de metadados/futuros (~3 KB vs ~1,8 MB): consumida
 # pelo modo anual do simulador de eletricidade e, futuramente, pela página omip.html
 FICHEIRO_FUTUROS_CSV = os.path.join(ROOT_DIR, "data", "omie", "futuros_omip.csv")
+# Versão recente: o mesmo ficheiro, só com os últimos DIAS_RECENTES dias reais e as estimativas
+# até ao fim do mês do último dia real (~100 KB comprimidos contra ~310 KB do ano). Serve o
+# omie-diario e a abertura do omie.html, que só pedem o ano inteiro quando recuam mais. Os 100
+# dias cobrem o «Mês passado» do omie.html com a MA30 (até ~92 dias antes do último dia real).
+FICHEIRO_RECENTES_CSV = os.path.join(ROOT_DIR, "data", "omie", "omie_recentes.csv")
+DIAS_RECENTES = 100
 FICHEIRO_MIBEL_CSV = os.path.join(ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACUM.csv") # input
 # Ano dos dados: o ano civil corrente em Portugal. O ficheiro cobre-o todo (real +
 # estimado com os futuros) e ainda o 1 de janeiro seguinte: a última hora de 31/12 em
@@ -33,6 +40,30 @@ ANO = int(os.environ.get("ANO_DADOS") or pd.Timestamp.now(tz="Europe/Lisbon").ye
 print(f"ℹ️ Fonte de dados: '{FICHEIRO_MIBEL_CSV}'")
 print("⚠️ Dados OMIE e futuros")
 # ===================================================================
+
+# ===================================================================
+# VERSÃO RECENTE DO FICHEIRO (últimos DIAS_RECENTES dias + resto do mês)
+# ===================================================================
+def escrever_versao_recente(df_principal, df_atualizacao, futuros_pt, futuros_es, ultima_data_real,
+                            ficheiro=FICHEIRO_RECENTES_CSV):
+    """Escreve as linhas de df_principal entre ultima_data_real − (DIAS_RECENTES − 1) e o fim do mês
+    de ultima_data_real, seguidas das mesmas tabelas do ficheiro do ano. Devolve o nº de linhas."""
+    ultima = pd.Timestamp(ultima_data_real).normalize()
+    inicio = ultima - pd.Timedelta(days=DIAS_RECENTES - 1)
+    fim = ultima + pd.offsets.MonthEnd(0)
+    datas = pd.to_datetime(df_principal['dia'], format='%d/%m/%Y')
+    df_recente = df_principal[(datas >= inicio) & (datas <= fim)]
+    with open(ficheiro, 'w', encoding='utf-8-sig', newline='') as f:
+        df_recente.to_csv(f, index=False, decimal='.', float_format='%.2f')
+        f.write("\nTABELA_ATUALIZACOES\n")
+        df_atualizacao.to_csv(f, index=False, header=True)
+        if not futuros_pt.empty:
+            f.write("\nTABELA_FUTUROS_PT\n")
+            futuros_pt.to_csv(f, index=False, decimal='.', float_format='%.2f')
+        if not futuros_es.empty:
+            f.write("\nTABELA_FUTUROS_ES\n")
+            futuros_es.to_csv(f, index=False, decimal='.', float_format='%.2f')
+    return len(df_recente)
 
 # ===================================================================
 # FUNÇÃO PARA EXTRAIR E PROCESSAR FUTUROS (OMIP)
@@ -635,6 +666,19 @@ def run_analysis_process():
             print(f"✅ Ficheiro leve '{FICHEIRO_FUTUROS_CSV}' criado com sucesso.")
         except Exception as e:
             print(f"⚠️ Erro ao escrever o ficheiro leve de futuros (não fatal): {e}")
+
+        # --- 5g. Versão recente (últimos DIAS_RECENTES dias + resto do mês) ---
+        # Também não trava o pipeline. Mas um recente antigo deixaria as páginas paradas num dia velho,
+        # por isso, se falhar, fica uma cópia do ficheiro do ano: maior, mas certa.
+        try:
+            n = escrever_versao_recente(df_principal, df_atualizacao, futuros_pt, futuros_es, ultima_data_omie)
+            print(f"✅ Ficheiro recente '{FICHEIRO_RECENTES_CSV}' criado com sucesso ({n} linhas).")
+        except Exception as e:
+            print(f"⚠️ Erro ao escrever o ficheiro recente (não fatal): {e} — fica uma cópia do ficheiro do ano.")
+            try:
+                shutil.copyfile(FICHEIRO_CSV, FICHEIRO_RECENTES_CSV)
+            except Exception as e2:
+                print(f"⚠️ Também falhou a cópia do ficheiro do ano: {e2}")
 
     except Exception as e:
         import traceback
