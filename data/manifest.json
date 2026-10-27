@@ -8,7 +8,7 @@
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado.",
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 2449138,
+   "bytes": 2449082,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -29,7 +29,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-atuais",
-   "linhas": 35209,
+   "linhas": 35207,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -95,7 +95,7 @@
     "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 10, 11, 16, 19 e 20 campos.",
     "Na tabela quarto-horária, a 2.ª passagem pela hora que se repete em outubro leva ' (2.ª)' no intervalo, e a última coluna, data_utc, é o início do intervalo em UTC."
    ],
-   "bytes": 1724912,
+   "bytes": 1724984,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/precos-horarios.csv",
    "colunas": [
@@ -134,7 +134,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
-   "bytes": 3675,
+   "bytes": 3619,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/futuros_omip.csv",
    "colunas": [
@@ -145,14 +145,60 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-futuros",
-   "linhas": 75,
+   "linhas": 73,
    "titulo": "Futuros OMIP — sessão em curso",
    "tolerancia_dias": 3,
    "ultima_data": "2026-10-28",
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
-   "bytes": 555939,
+   "avisos": [
+    "Contém blocos TABELA_ATUALIZACOES / TABELA_FUTUROS_* no fim do ficheiro; pd.read_csv traz essas linhas como dados.",
+    "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado.",
+    "Não passa de 1 de janeiro: nos primeiros dias do ano tem menos de 100 dias.",
+    "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
+   ],
+   "bytes": 706165,
+   "cadencia": "~5x/dia útil",
+   "caminho": "data/omie/omie_recentes.csv",
+   "colunas": [
+    "dia",
+    "hora",
+    "intervalo",
+    "Simples",
+    "BD",
+    "BS",
+    "TD",
+    "TS",
+    "preco_pt",
+    "preco_es",
+    "data_utc"
+   ],
+   "descricao": "Versão leve do ficheiro do ano corrente: os últimos 100 dias reais e as estimativas OMIP até ao fim do mês do último dia real, com as mesmas tabelas no fim (~100 KB comprimidos).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "omie",
+   "id": "omie-recentes",
+   "linhas": 9967,
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
+   "titulo": "Preços OMIE — últimos 100 dias",
+   "tolerancia_dias": 1,
+   "ultima_data": "2026-10-28",
+   "url": "https://dados.tiagofelicia.pt/data/omie/omie_recentes.csv"
+  },
+  {
+   "bytes": 558081,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -169,11 +215,11 @@
    "padrao": "data/omie/historico/omip_historico_*.csv",
    "titulo": "Futuros OMIP — histórico de sessões",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-26",
+   "ultima_data": "2026-10-27",
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
-   "bytes": 7570,
+   "bytes": 7569,
    "cadencia": "diária",
    "caminho": "data/omie/records_omie.json",
    "descricao": "Recordes históricos (dia/hora mais caro e mais barato, etc.) e agregados mensais e anuais.",
@@ -1101,7 +1147,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-27T17:46:21+00:00",
+ "gerado_em": "2026-10-27T17:57:02+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1117,8 +1163,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 538415319,
-  "datasets": 41,
-  "ficheiros": 1867
+  "bytes": 539123585,
+  "datasets": 42,
+  "ficheiros": 1868
  }
 }
