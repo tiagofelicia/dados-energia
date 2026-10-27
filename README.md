@@ -72,6 +72,7 @@ data/
 | `hoje.json` | Instantâneo do dia: preços de hoje e de amanhã, médias por período do ciclo horário (~8 KB); no último dia publicado a última hora (23h–24h PT, ainda por leiloar) vem a `null` e fica fora das médias — ver `intervalos_reais` | A cada atualização |
 | `precos-horarios.csv` | Preço quarto-horário final por tarifário indexado e opção horária | ~5×/dia útil |
 | `futuros_omip.csv` | Versão leve só com as tabelas de metadados e futuros OMIP da sessão em curso (~3 KB) | ~5×/dia útil |
+| `omie_recentes.csv` | Versão leve de `omie_dados_atuais.csv`: os últimos 100 dias reais e as estimativas até ao fim do mês do último dia real, com as mesmas tabelas no fim (~100 KB comprimidos, contra ~310 KB). Não passa de 1 de janeiro | ~5×/dia útil |
 | `historico/omip_historico_AAAA.csv` | Histórico de sessões OMIP: uma linha por sessão × zona × contrato | Diária |
 | `records_omie.json` | Recordes históricos OMIE (dia/hora mais caro e mais barato, etc.) + agregados mensais e anuais | Diária (incremental) |
 | `MIBEL_ano_atual_ACUM.csv` | ⚙️ Intermédio de pipeline — preços horários PT/ES acumulados dos últimos 12 meses. Não recomendado para consumo direto | ~5×/dia útil |
