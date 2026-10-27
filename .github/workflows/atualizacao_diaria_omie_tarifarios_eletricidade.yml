@@ -8,6 +8,7 @@
 # Fase 2B (site): corre DEPOIS da 2A porque precos-horarios lê o xlsx fresco
 #   (constantes) e os ficheiros por ano da OMIE_PERDAS_CICLOS (períodos e perdas)
 #   → atualizar_omie_dados_atuais.py  → data/omie/omie_dados_atuais.csv
+#                                       (+ futuros_omip.csv e omie_recentes.csv, as versões leves)
 #   → atualizar_precos-horarios_csv.py → data/omie/precos-horarios.csv
 #   → gerar_records_omie.py                 → data/omie/records_omie.json (incremental)
 # Deploy: CSVs do simulador para o espaço Hugging Face (transição; o xlsx
@@ -165,7 +166,7 @@ jobs:
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "BOT: Atualização (Fase 2) Ficheiros OMIE processados"
-          file_pattern: "data/omie/omie_dados_atuais.csv data/omie/futuros_omip.csv data/omie/precos-horarios.csv data/omie/records_omie.json data/omie/historico/omip_historico_*.csv"
+          file_pattern: "data/omie/omie_dados_atuais.csv data/omie/futuros_omip.csv data/omie/omie_recentes.csv data/omie/precos-horarios.csv data/omie/records_omie.json data/omie/historico/omip_historico_*.csv"
 
       # Só avisa, não chumba: o gerar_hoje.yml só dispara se esta corrida acabar
       # verde, e os dados do site (2B) não têm culpa de um erro nos tarifários.
