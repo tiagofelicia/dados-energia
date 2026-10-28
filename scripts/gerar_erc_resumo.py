@@ -96,7 +96,7 @@ import pandas as pd
 
 import erc_previsao
 import omie_perdas_ciclos as opc
-from gerar_records_omie import ATUAIS_PATH, HISTORICO_GLOB, cortar_futuros, ler_csv_omie
+from gerar_records_omie import ATUAIS_PATH, HISTORICO_GLOB, cortar_futuros, ler_csv_omie, ultima_data_real_omie
 import gerar_records_producao as producao
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -222,13 +222,19 @@ def ler_omie_pt(primeiro_dia):
     o = o[o["data"] >= pd.Timestamp(primeiro_dia)]
     # Um dia em dois ficheiros fica com o do último lido (o mais recente)
     o = o[o["ordem"] == o.groupby("data")["ordem"].transform("max")]
-    # Com a última hora PT do último dia real (estimada): o erc_omie precisa dos dias
+    # Fica com as linhas da última hora PT do último dia real: o erc_omie precisa dos dias
     # inteiros, e um dia com 92 quartos de hora passaria pelo da mudança de hora
     o = cortar_futuros(o, obrigatorio=False, sem_ultima_hora=False)
     o = o.reset_index(drop=True)
     pos = o.groupby("data").cumcount()
     o["inicio_utc"] = (o["data"].dt.tz_localize(FUSO) + pd.to_timedelta(15 * pos, unit="m")).dt.tz_convert("UTC")
     o["omie"] = pd.to_numeric(o["preco_pt"], errors="coerce")
+    # ...mas o preço dessa hora (00:00-01:00 CET do dia seguinte, ainda por leiloar) é a
+    # estimativa OMIP: fica vazio, como nos Preços Horários e no omie-diario
+    corte = ultima_data_real_omie()
+    if corte is not None:
+        limite = (corte.normalize() + pd.Timedelta(days=1)).tz_localize("Europe/Madrid").tz_convert("UTC")
+        o.loc[o["inicio_utc"] >= limite, "omie"] = np.nan
     return o[["data", "inicio_utc", "omie"]]
 
 
