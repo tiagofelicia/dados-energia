@@ -288,7 +288,7 @@ Cada linha traz `dias` (e `quartos`, no OMIE) com quantos entraram no cálculo �
 
 Os agregados OMIE incluem o **preço médio por período do ciclo horário BTN** (`bd_v`, `bd_f`, `bs_v`, `bs_f`, `td_v`, `td_c`, `td_p`, `ts_v`, `ts_c`, `ts_p`), o que permite comparar tarifários bi e tri-horários sem reprocessar as séries.
 
-**Os dias futuros estimados a partir dos futuros OMIP estão excluídos** — estes ficheiros contêm apenas dias com preço real de mercado.
+**Os dias futuros estimados a partir dos futuros OMIP estão excluídos** — estes ficheiros contêm apenas dias com preço real de mercado. No último desses dias fica também de fora a última hora de Portugal (23:00–24:00, que é 00:00–01:00 CET do dia seguinte, ainda por leiloar): esse dia aparece com menos 4 quartos de hora (92 num dia normal) até sair o leilão seguinte.
 
 ### `data/emissoes/` — Intensidade carbónica e preço do CO₂
 
