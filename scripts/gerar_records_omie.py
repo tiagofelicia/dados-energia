@@ -82,12 +82,17 @@ def ultima_data_real_omie():
     return None
 
 
-def cortar_futuros(df, obrigatorio=True):
+def cortar_futuros(df, obrigatorio=True, sem_ultima_hora=True):
     """Remove de um DataFrame já passado por adicionar_colunas os dias estimados.
 
     Com obrigatorio=True (o que os recordes usam) lança se não conseguir
     determinar a data de corte: é preferível falhar a publicar estimativas de
     mercado como se fossem histórico.
+
+    Com sem_ultima_hora=True tira também a última hora PT do último dia real
+    (ver cortar_ultima_hora). O gerar_erc_resumo.py passa False: o erc_omie
+    precisa dos dias inteiros, e lá um dia com 92 quartos de hora lê-se como o
+    da mudança de hora.
     """
     corte = ultima_data_real_omie()
     if corte is None:
@@ -103,7 +108,38 @@ def cortar_futuros(df, obrigatorio=True):
     if cortados:
         print(f'  [futuros] {cortados} dias estimados de OMIP excluídos '
               f'(reais até {corte.date()})')
+    if sem_ultima_hora:
+        df = cortar_ultima_hora(df, corte)
     return df
+
+
+def cortar_ultima_hora(df, corte):
+    """No último dia real, a última hora PT (23:00-24:00) é 00:00-01:00 CET do
+    dia seguinte, que ainda não foi leiloado: no omie_dados_atuais.csv vem com a
+    estimativa OMIP (e sem preço de Espanha). Sai das médias e dos recordes, como
+    no omie-diario e no hoje.json.
+
+    Corta pelo data_utc, que dá o instante certo também nos dias da mudança de
+    hora. Sem ele, tira os últimos 4 quartos de hora desse dia (o ficheiro está
+    por ordem cronológica).
+    """
+    do_dia = df['data'] == corte
+    if not do_dia.any():
+        return df
+    estimados = None
+    if 'data_utc' in df.columns:
+        utc = pd.to_datetime(df['data_utc'], format='%Y-%m-%d %H:%M', errors='coerce')
+        if utc[do_dia].notna().all():
+            limite = ((corte.normalize() + pd.Timedelta(days=1))
+                      .tz_localize('Europe/Madrid').tz_convert('UTC').tz_localize(None))
+            estimados = do_dia & (utc >= limite)
+    if estimados is None:
+        estimados = do_dia & (do_dia.cumsum() > do_dia.sum() - 4)
+    n = int(estimados.sum())
+    if n:
+        print(f'  [futuros] {n} quartos de hora da última hora PT de {corte.date()} '
+              f'excluídos (00:00-01:00 CET do dia seguinte, ainda por leiloar)')
+    return df[~estimados]
 
 # ============================================================
 # Leitura de CSVs

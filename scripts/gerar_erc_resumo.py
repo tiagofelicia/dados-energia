@@ -222,7 +222,9 @@ def ler_omie_pt(primeiro_dia):
     o = o[o["data"] >= pd.Timestamp(primeiro_dia)]
     # Um dia em dois ficheiros fica com o do último lido (o mais recente)
     o = o[o["ordem"] == o.groupby("data")["ordem"].transform("max")]
-    o = cortar_futuros(o, obrigatorio=False)
+    # Com a última hora PT do último dia real (estimada): o erc_omie precisa dos dias
+    # inteiros, e um dia com 92 quartos de hora passaria pelo da mudança de hora
+    o = cortar_futuros(o, obrigatorio=False, sem_ultima_hora=False)
     o = o.reset_index(drop=True)
     pos = o.groupby("data").cumcount()
     o["inicio_utc"] = (o["data"].dt.tz_localize(FUSO) + pd.to_timedelta(15 * pos, unit="m")).dt.tz_convert("UTC")
