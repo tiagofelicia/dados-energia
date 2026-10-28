@@ -665,7 +665,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_ttf_spread.csv"
   },
   {
-   "bytes": 759548,
+   "bytes": 1640400,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -688,10 +688,14 @@
     "td_p",
     "ts_v",
     "ts_c",
-    "ts_p"
+    "ts_p",
+    "pt_min_utc",
+    "pt_min_n",
+    "pt_max_utc",
+    "pt_max_n"
    ],
    "descricao": "Médias, mínimos, máximos e preço médio por período do ciclo horário BTN. Derivado de data/omie/, com os dias futuros excluídos.",
-   "ficheiros": 3,
+   "ficheiros": 6,
    "formato": "csv",
    "grupo": "agregados",
    "id": "agregados-omie",
@@ -702,7 +706,7 @@
    "url": "https://dados.tiagofelicia.pt/data/agregados/"
   },
   {
-   "bytes": 721733,
+   "bytes": 721737,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/",
    "colunas": [
@@ -853,7 +857,7 @@
     "São emissões de CICLO DE VIDA, não diretas: não comparáveis com o Inventário Nacional da APA nem com o indicador da EEA.",
     "Cobre a produção nacional, não o consumo: as importações de Espanha (25% do consumo em 2024) não estão incluídas."
    ],
-   "bytes": 479804,
+   "bytes": 479805,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/",
    "colunas": [
@@ -1147,7 +1151,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-28T15:55:36+00:00",
+ "gerado_em": "2026-10-28T16:55:24+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1163,8 +1167,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 539747578,
+  "bytes": 540628435,
   "datasets": 42,
-  "ficheiros": 1870
+  "ficheiros": 1873
  }
 }
