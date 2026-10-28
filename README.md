@@ -271,9 +271,12 @@ Derivados de `data/omie/`, `data/producao/` e `data/erc/`, para quem quer média
 
 | Ficheiro | Conteúdo | Tamanho |
 |---|---|---|
-| `omie_anual.csv` | Preços OMIE por ano, 2010–presente | 2 KB |
-| `omie_mensal.csv` | Por mês | 22 KB |
-| `omie_diario.csv` | Por dia | 712 KB |
+| `omie_anual.csv` | Preços OMIE por ano, 2010–presente (dia português) | 3 KB |
+| `omie_mensal.csv` | Por mês | 30 KB |
+| `omie_diario.csv` | Por dia | 950 KB |
+| `omie_es_anual.csv` | Preços OMIE de Espanha por ano, 2010–presente (dia espanhol) | 2 KB |
+| `omie_es_mensal.csv` | Por mês | 18 KB |
+| `omie_es_diario.csv` | Por dia | 600 KB |
 | `producao_anual.csv` | Produção, consumo e quota renovável por ano | 2 KB |
 | `producao_mensal.csv` | Por mês | 24 KB |
 | `producao_diario.csv` | Por dia | 672 KB |
@@ -288,7 +291,11 @@ Cada linha traz `dias` (e `quartos`, no OMIE) com quantos entraram no cálculo �
 
 Os agregados OMIE incluem o **preço médio por período do ciclo horário BTN** (`bd_v`, `bd_f`, `bs_v`, `bs_f`, `td_v`, `td_c`, `td_p`, `ts_v`, `ts_c`, `ts_p`), o que permite comparar tarifários bi e tri-horários sem reprocessar as séries.
 
-**Os dias futuros estimados a partir dos futuros OMIP estão excluídos** — estes ficheiros contêm apenas dias com preço real de mercado. No último desses dias fica também de fora a última hora de Portugal (23:00–24:00, que é 00:00–01:00 CET do dia seguinte, ainda por leiloar): esse dia aparece com menos 4 quartos de hora (92 num dia normal) até sair o leilão seguinte.
+Cada linha traz também **quando aconteceram o mínimo e o máximo**: `pt_min_utc` e `pt_max_utc` são o primeiro quarto de hora com esse preço (em UTC, como o `data_utc`), e `pt_min_n` e `pt_max_n` dizem em quantos quartos de hora esse preço se repetiu. Até 30/09/2025 o mercado diário era horário, por isso aí cada hora conta 4 quartos de hora.
+
+Os `omie_es_*.csv` são os mesmos preços agrupados pelo **dia espanhol** (CET/CEST, o dia de mercado do OMIE, que começa às 23:00 do dia anterior em Portugal), como o OMIE publica as médias de Espanha. Têm `es_medio`, `es_min`, `es_max`, `es_desvio`, `horas_negativas` (contadas nas horas de Espanha), `es_min_utc`, `es_min_n`, `es_max_utc` e `es_max_n`, mais o preço de Portugal nas mesmas horas (`pt_medio`) e a diferença média `spread_es_pt`. Não têm os períodos BTN, que são da tarifa portuguesa. O 1.º dia, 01/01/2010, tem 23 horas: a hora 00:00–01:00 CET é 31/12/2009 em Portugal, antes do início da série. Nos `omie_*.csv` (dia português), o `es_medio` é Espanha nas horas do dia português.
+
+**Os dias futuros estimados a partir dos futuros OMIP estão excluídos** — estes ficheiros contêm apenas dias com preço real de mercado. No último desses dias fica também de fora a última hora de Portugal (23:00–24:00, que é 00:00–01:00 CET do dia seguinte, ainda por leiloar): esse dia aparece com menos 4 quartos de hora (92 num dia normal) até sair o leilão seguinte. Nos `omie_es_*.csv` esse dia fica completo, porque essa hora já é do dia seguinte em Espanha.
 
 ### `data/emissoes/` — Intensidade carbónica e preço do CO₂
 
