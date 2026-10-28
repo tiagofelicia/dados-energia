@@ -12,11 +12,21 @@ diária completa 2010-2026 são 17 ficheiros e ~32 MB. Estes agregados respondem
 à maioria das perguntas com uma fracção disso:
 
     omie_anual.csv       ~2 KB     17 linhas
-    omie_mensal.csv      ~25 KB    ~200 linhas
-    omie_diario.csv      ~700 KB   ~6100 linhas   (45x menos que os 32 MB)
+    omie_mensal.csv      ~30 KB    ~200 linhas
+    omie_diario.csv      ~1 MB     ~6100 linhas   (30x menos que os 32 MB)
 
 O mesmo para produção. Nenhum destes ficheiros contém informação nova — são
 derivados dos CSV que já estão publicados. O que dão é acesso barato.
+
+Os omie_es_{diario,mensal,anual}.csv são os mesmos quartos de hora agrupados
+pelo dia espanhol (CET/CEST, o dia de mercado do OMIE), com as estatísticas de
+Espanha e o preço de Portugal nas mesmas horas. Não têm os períodos BTN, que são
+da tarifa portuguesa (ERSE).
+
+Em cada linha, o instante do mínimo e do máximo (*_min_utc, *_max_utc: o primeiro
+quarto de hora com esse preço, em UTC como o data_utc) e em quantos quartos de
+hora o preço se repetiu (*_min_n, *_max_n). Até 30/09/2025 o mercado era horário,
+por isso aí cada hora conta 4 quartos.
 
 CONSISTÊNCIA COM OS RECORDES
 ----------------------------
@@ -30,7 +40,8 @@ Daí decorrem, entre outras:
   • MW → MWh com QH = 0,25 (os dados são potência média por quarto de hora)
   • hídrica renovável = hídrica − bombagem turbinada, quando há dado de bombagem
   • produção nacional inclui injeção de baterias, exclui importação
-  • "horas negativas" conta HORAS com média horária < 0, não quartos
+  • "horas negativas" conta HORAS com média horária < 0, não quartos (nos de
+    Espanha, as horas de Espanha)
 
 FUTUROS: A ARMADILHA PRINCIPAL
 ------------------------------
@@ -52,6 +63,7 @@ USO
 SAÍDA
 -----
   data/agregados/omie_{diario,mensal,anual}.csv
+  data/agregados/omie_es_{diario,mensal,anual}.csv
   data/agregados/producao_{diario,mensal,anual}.csv
   data/agregados/metadata.json
 
@@ -161,40 +173,98 @@ def carregar_producao():
 # Agregação OMIE
 # ============================================================
 
-def _horas_negativas(g):
+def _horas_negativas(g, col="preco_pt"):
     """Horas com média horária < 0 — mesma definição do gerar_records_omie."""
-    return int((g.groupby("dia_hora")["preco_pt"].mean() < 0).sum())
+    return int((g.groupby("dia_hora")[col].mean() < 0).sum())
 
 
-def agregar_omie(df, chave, rotulo):
-    """Agrega por 'chave' (série de grupo). Devolve DataFrame ordenado."""
+def _quando(g, col, valor):
+    """Primeiro quarto de hora (data_utc) com este preço e em quantos quartos de hora se repete."""
+    if "data_utc" not in g.columns or pd.isna(valor):
+        return None, None
+    iguais = g.loc[g[col] == valor, "data_utc"].dropna()
+    return (iguais.min() if len(iguais) else None), int(len(iguais))
+
+
+def preparar_es(df):
+    """Os mesmos quartos de hora, com dia, mês e ano de Espanha (CET/CEST).
+
+    O dia espanhol (o dia de mercado do OMIE) começa uma hora antes do português:
+    00:00 CET é 23:00 do dia anterior em Portugal. Por isso o 1.º dia (01/01/2010)
+    fica com 23 horas, e o último dia real fica completo — a hora que o
+    cortar_futuros tira a Portugal já é do dia seguinte em Espanha.
+    """
+    utc = pd.to_datetime(df["data_utc"], format="%Y-%m-%d %H:%M", errors="coerce")
+    sem = int(utc.isna().sum())
+    if sem:
+        print(f"  [es] {sem} quartos sem data_utc ficam de fora (sem ela não se sabe o dia espanhol)")
+    es = df.loc[utc.notna()].copy()
+    utc = utc[utc.notna()]
+    local = utc.dt.tz_localize("UTC").dt.tz_convert("Europe/Madrid")
+    es["data"] = local.dt.tz_localize(None).dt.normalize()
+    es["dia"] = local.dt.strftime("%d/%m/%Y")
+    es["mes"] = local.dt.strftime("%m/%Y")
+    es["ano"] = local.dt.year
+    # Hora de mercado pela hora UTC (Espanha está sempre a horas inteiras de UTC):
+    # assim a hora que se repete em outubro não junta duas horas numa.
+    es["dia_hora"] = utc.dt.strftime("%Y-%m-%d %H")
+    return es
+
+
+def agregar_omie(df, chave, rotulo, pais="pt"):
+    """Agrega por 'chave' (série de grupo). Devolve DataFrame ordenado.
+
+    pais="pt": estatísticas de Portugal, Espanha nas mesmas horas e períodos BTN.
+    pais="es": estatísticas de Espanha e Portugal nas mesmas horas, sem períodos BTN.
+    """
+    a, b = ("pt", "es") if pais == "pt" else ("es", "pt")
     linhas = []
     for valor, g in df.groupby(chave, sort=False):
+        preco = g[f"preco_{a}"]
         linha = {
             rotulo: valor,
             "dias": int(g["data"].dt.date.nunique()),
             "quartos": int(len(g)),
-            "pt_medio": g["preco_pt"].mean(),
-            "pt_min": g["preco_pt"].min(),
-            "pt_max": g["preco_pt"].max(),
-            "pt_desvio": g["preco_pt"].std(),
-            "es_medio": g["preco_es"].mean(),
-            "spread_pt_es": (g["preco_pt"] - g["preco_es"]).mean(),
-            "horas_negativas": _horas_negativas(g),
+            f"{a}_medio": preco.mean(),
+            f"{a}_min": preco.min(),
+            f"{a}_max": preco.max(),
+            f"{a}_desvio": preco.std(),
+            f"{b}_medio": g[f"preco_{b}"].mean(),
+            f"spread_{a}_{b}": (preco - g[f"preco_{b}"]).mean(),
+            "horas_negativas": _horas_negativas(g, f"preco_{a}"),
         }
-        for col_ciclo, mapa in CICLOS.items():
-            if col_ciclo not in g.columns:
-                continue
-            medias = g.groupby(col_ciclo)["preco_pt"].mean()
-            for codigo, destino in mapa.items():
-                linha[destino] = medias.get(codigo)
+        if pais == "pt":
+            for col_ciclo, mapa in CICLOS.items():
+                if col_ciclo not in g.columns:
+                    continue
+                medias = g.groupby(col_ciclo)["preco_pt"].mean()
+                for codigo, destino in mapa.items():
+                    linha[destino] = medias.get(codigo)
+        # No fim, para não mudar a posição das colunas que já existiam
+        for extremo in ("min", "max"):
+            linha[f"{a}_{extremo}_utc"], linha[f"{a}_{extremo}_n"] = _quando(g, f"preco_{a}", linha[f"{a}_{extremo}"])
         linhas.append(linha)
 
     out = pd.DataFrame(linhas)
     for c in out.columns:
-        if c not in (rotulo, "dias", "quartos", "horas_negativas"):
+        if c.endswith("_n"):
+            out[c] = out[c].astype("Int64")
+        elif c not in (rotulo, "dias", "quartos", "horas_negativas") and not c.endswith("_utc"):
             out[c] = pd.to_numeric(out[c], errors="coerce").round(2)
     return out
+
+
+def agregar_omie_periodos(df, pais="pt"):
+    """Diário, mensal e anual, ordenados."""
+    diario = agregar_omie(df, df["dia"], "dia", pais)
+    diario.insert(1, "data_iso",
+                  pd.to_datetime(diario["dia"], format="%d/%m/%Y").dt.strftime("%Y-%m-%d"))
+    diario = diario.sort_values("data_iso").reset_index(drop=True)
+
+    mensal = agregar_omie(df, df["mes"], "mes", pais).sort_values(
+        "mes", key=lambda s: pd.to_datetime(s, format="%m/%Y")).reset_index(drop=True)
+    anual = agregar_omie(df, df["ano"], "ano", pais).sort_values("ano").reset_index(drop=True)
+    return diario, mensal, anual
 
 
 # ============================================================
@@ -283,15 +353,7 @@ def main():
         print(f"  {len(df):,} quartos · {df['data'].dt.date.nunique():,} dias · "
               f"{df['data'].min().date()} → {df['data'].max().date()}")
 
-        diario = agregar_omie(df, df["dia"], "dia")
-        diario.insert(1, "data_iso",
-                      pd.to_datetime(diario["dia"], format="%d/%m/%Y").dt.strftime("%Y-%m-%d"))
-        diario = diario.sort_values("data_iso").reset_index(drop=True)
-
-        mensal = agregar_omie(df, df["mes"], "mes").sort_values(
-            "mes", key=lambda s: pd.to_datetime(s, format="%m/%Y")).reset_index(drop=True)
-        anual = agregar_omie(df, df["ano"], "ano").sort_values("ano").reset_index(drop=True)
-
+        diario, mensal, anual = agregar_omie_periodos(df, "pt")
         mudou = any([
             gravar(diario, "omie_diario.csv"),
             gravar(mensal, "omie_mensal.csv"),
@@ -301,6 +363,23 @@ def main():
             "primeira_data": str(df["data"].min().date()),
             "ultima_data": str(df["data"].max().date()),
             "dias": int(df["data"].dt.date.nunique()),
+        }
+
+        print("\n📊 OMIE Espanha (dia espanhol)")
+        es = preparar_es(df)
+        print(f"  {len(es):,} quartos · {es['data'].dt.date.nunique():,} dias · "
+              f"{es['data'].min().date()} → {es['data'].max().date()}")
+        diario, mensal, anual = agregar_omie_periodos(es, "es")
+        mudou = any([
+            gravar(diario, "omie_es_diario.csv"),
+            gravar(mensal, "omie_es_mensal.csv"),
+            gravar(anual, "omie_es_anual.csv"),
+        ]) or mudou
+        meta["omie_es"] = {
+            "primeira_data": str(es["data"].min().date()),
+            "ultima_data": str(es["data"].max().date()),
+            "dias": int(es["data"].dt.date.nunique()),
+            "dia": "espanhol (CET/CEST)",
         }
 
     if fazer_prod:
