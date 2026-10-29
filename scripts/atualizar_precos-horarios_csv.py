@@ -73,9 +73,8 @@ CHAVES_CONSTANTES_UTILIZADAS = {
 # Valor por tarifário (CGS/CS/CG = ERC, em €/kWh):
 #   Alfa, Coopérnico, EZU, Meo, Plenitude → substitui a constante *_CGS/_CS/_CG,
 #       que nas fórmulas é somada ao OMIE antes das perdas;
-#   G9 → substitui o G9_K2, que a G9 soma DEPOIS das perdas: o K2 publicado
-#       (0,0185) já traz as perdas (0,0185 ÷ 1,16 ≈ 0,0159), por isso o dinâmico é
-#       ERC × perdas.
+#   G9 → ERS × (1 + Perdas), somado depois do resto da fórmula (a G9 cobra-o numa
+#       linha à parte da fatura); a constante G9_K2, recurso sem ERC, já traz as perdas.
 TARIFARIOS_COM_ERC = {
     "Alfa Power Index BTN", "Coopérnico Único", "EZU Tarifa Indexada",
     "G9 Smart Dynamic SPOT 8!", "MeoEnergia Tarifa Dinâmica", "Plenitude - Tendência",
@@ -529,14 +528,14 @@ def calcular_preco_comercializador(nome_tarifario, omie_kwh, perdas, constantes_
         return (omie_kwh + constantes_dict.get('Galp_Ci', 0.0)) * perdas    
     
     elif "G9 Smart Dynamic SPOT 8!" in nome_tarifario:
+        # Fórmula da G9: (OMIE + K) × (1 + Perdas) × Fadeq + ERS × (1 + Perdas), com Fadeq = G9_K1 e K = G9_K3.
         # REGRA G9: Se o valor OMIE for negativo, considera-se 0.
         omie_kwh_g9 = max(0, omie_kwh)
-        # K2 entra depois das perdas e o valor publicado pela G9 já as traz: o
-        # dinâmico é ERC × perdas (a constante G9_K2 fica como recurso)
-        k2 = erc_kwh * perdas if erc_kwh is not None else constantes_dict.get('G9_K2', 0.0)
+        # ERS = ERC (a G9 cobra-o numa linha à parte da fatura); sem ERC, a constante G9_K2, que já traz as perdas
+        ers = erc_kwh * perdas if erc_kwh is not None else constantes_dict.get('G9_K2', 0.0)
         # TSE à parte, como no simulador (financiamento_tse_incluido = False na BD)
-        return (omie_kwh_g9 * perdas * constantes_dict.get('G9_K1', 0.0) + k2 + constantes_dict.get('G9_K3', 0.0)
-                + constantes_dict.get('Financiamento_TSE', 0.0))
+        return ((omie_kwh_g9 + constantes_dict.get('G9_K3', 0.0)) * perdas * constantes_dict.get('G9_K1', 0.0)
+                + ers + constantes_dict.get('Financiamento_TSE', 0.0))
     
     elif "MeoEnergia Tarifa Dinâmica" in nome_tarifario:
         # Fórmula: (OMIE + Meo_CG) * (1 + FP) + Meo_K

@@ -162,7 +162,8 @@ BOOLEANAS = ["tar_incluida_energia", "tar_incluida_potencia", "financiamento_tse
 #   custo_regulacao_kwh preenchido = o tarifário cobra-os à parte; os simuladores usam o ERS do período (ERC da REN ×
 #     perdas, pesado pelo consumo) e este valor só onde falta o ERC; com regulacao_fixo = TRUE, usam este valor;
 #   regulacao_discriminada = TRUE (indexados quarto-horários) mostra a parte ERS da fórmula como custos de regulação,
-#     fora do comercializador, sem mudar o preço — só nas fórmulas com esse termo:
+#     fora do comercializador, sem mudar o preço — só nas fórmulas com esse termo (com regulacao_iva_23 = TRUE, essa
+#     parte leva IVA a 23% em todo o consumo, como na G9):
 FORMULAS_COM_ERS = ["Coopérnico | Único", "Alfa Energia | ALFA POWER", "Plenitude | Tendência", "EZU | Indexada",
                     "G9 | Smart Dynamic", "BTN SPOTDEF"]
 
@@ -547,8 +548,10 @@ def ver_linhas(aba, regs, rel):
         # Custos de regulação (ver FORMULAS_COM_ERS): as marcas que não fazem nada
         tipo = str(r.get("tipo") or "").strip()
         sem_reg = vazio(r.get("custo_regulacao_kwh")) or (numero(r.get("custo_regulacao_kwh")) or 0) <= 0
+        discriminada = booleano(r.get("regulacao_discriminada")) is True
         for c in ("regulacao_fixo", "regulacao_iva_23"):
-            if sem_reg and booleano(r.get(c)) is True:
+            # o regulacao_iva_23 também serve à parte discriminada da fórmula (G9)
+            if sem_reg and booleano(r.get(c)) is True and not (c == "regulacao_iva_23" and discriminada):
                 problemas[("aviso", f"{c} sem custo_regulacao_kwh: não faz nada")].append(ln)
         if booleano(r.get("regulacao_discriminada")) is True:
             nome = str(r.get("nome") or "")
