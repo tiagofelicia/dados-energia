@@ -233,7 +233,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 8129,
+   "bytes": 6972,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -255,7 +255,7 @@
    ],
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-28",
+   "ultima_data": "2026-10-29",
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
@@ -418,7 +418,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 13617,
+   "bytes": 13618,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -588,7 +588,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1836,
+   "bytes": 1837,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -819,7 +819,7 @@
     "Quantidades em MWh, exceto nas bandas (soma dos MW dos quartos de hora da hora); valor em EUR, positivo = custo, negativo = receita.",
     "Os indicadores (códigos da vista Tipo) e o OMIE PT médio de cada dia estão em metadata.json."
    ],
-   "bytes": 3361231,
+   "bytes": 3364845,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/servicos_sistema/",
    "descricao": "Por dia e hora, em hora de Portugal: OMIE PT médio e, por indicador (redução de geração, desvios em excesso e em falta, energia de reserva aFRR/mFRR/RR a subir e a descer, restrições técnicas e bandas de reserva), a quantidade e o valor, desde 14/03/2024. Derivado de data/erc/tipo/, data/erc/isp/ e data/omie/.",
@@ -830,7 +830,7 @@
    "padrao": "data/agregados/servicos_sistema/*.json",
    "titulo": "Serviços de sistema por hora (um ficheiro por mês)",
    "tolerancia_dias": 6,
-   "ultima_data": "2026-10-25",
+   "ultima_data": "2026-10-26",
    "url": "https://dados.tiagofelicia.pt/data/agregados/servicos_sistema/"
   },
   {
@@ -838,7 +838,7 @@
     "Lista plana por dia: [quartos de hora, i, EUR, quantidade, …], com i = posição do código em 'codigos'; nomes, unidades e grupos em erc_resumo.json → tipos.",
     "EUR positivo = custo, negativo = receita. A soma dos códigos de um dia dá a soma das componentes; o total publicado fica abaixo dela nalguns quartos de hora, na fonte."
    ],
-   "bytes": 564308,
+   "bytes": 564796,
    "cadencia": "1x/dia",
    "caminho": "data/agregados/erc_tipo/",
    "descricao": "Por dia de mercado, o valor (EUR) e a quantidade (MWh ou MW) de cada código da vista Tipo da REN: restrições técnicas, bandas e energia de reserva, desvios, incumprimentos e outros serviços, desde 14/03/2024. Derivado de data/erc/tipo/.",
@@ -849,7 +849,7 @@
    "padrao": "data/agregados/erc_tipo/*.json",
    "titulo": "ERC por tipo de encargo (um ficheiro por ano)",
    "tolerancia_dias": 6,
-   "ultima_data": "2026-10-25",
+   "ultima_data": "2026-10-26",
    "url": "https://dados.tiagofelicia.pt/data/agregados/erc_tipo/"
   },
   {
@@ -1151,7 +1151,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-28T23:30:29+00:00",
+ "gerado_em": "2026-10-29T01:08:24+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1167,7 +1167,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 541271522,
+  "bytes": 541274469,
   "datasets": 42,
   "ficheiros": 1873
  }
