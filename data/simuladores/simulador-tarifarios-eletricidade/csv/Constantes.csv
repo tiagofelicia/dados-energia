@@ -30,7 +30,7 @@ Iberdrola_Dinamico_Q,0.03,,,
 Iberdrola_mFRR,0.00194,,,
 Galp_Ci,0.0191,,01.01.2026,
 Alfa_CGS,0.01944,,,
-Alfa_K,0.01,,,
+Alfa_K,0.02,,,
 GE_Q_Tarifa,0.02425,,,
 GE_CG,0.005,,,
 Meo_K,0.015,,01.08.2026,
@@ -42,7 +42,7 @@ Endesa_A_S,0.109409,,,
 Endesa_A_V,0.072035,,,
 Endesa_A_FV,0.127166,,,
 G9_K1,1.02,,,Fadeq
-G9_K2,0.0225504,,,ERC/ERS
+G9_K2,0.0225504,,,ERS*Perdas_Medias
 G9_K3,0.008,,,K
 ERS_Fixos,0.0225504,,,ERS*Perdas_Medias
 TAR_Energia_Simples,0.0607,,,
