@@ -36,20 +36,20 @@ on:
       - "Atualizar Mapa de Producao"
       - "Atualizar Producao (ENTSO-E)"
       - "Atualizar Albufeiras (ENTSO-E)"
-      - "Atualizar Albufeiras (SNIRH)"
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
       - "Atualizar CO2 (EU ETS)"
     types: [completed]
 
-  # Os ERC da REN não vêm de um workflow: o servidor da REN não aceita
-  # ligações dos runners do GitHub (EUA), por isso são recolhidos num PC em
-  # Portugal e chegam por push. É esse push que tem de atualizar o manifesto.
-  # Não há ciclo: o commit deste workflow não toca em data/erc, e os pushes
+  # Os ERC da REN e as albufeiras do SNIRH não vêm de um workflow: os dois
+  # servidores não aceitam ligações dos runners do GitHub (EUA; o SNIRH só aceita
+  # ligações de Portugal), por isso são recolhidos num PC em Portugal e chegam
+  # por push. É esse push que tem de atualizar o manifesto.
+  # Não há ciclo: o commit deste workflow não toca nesses ficheiros, e os pushes
   # feitos com o GITHUB_TOKEN não disparam workflows.
   push:
     branches: [main]
-    paths: ['data/erc/**']
+    paths: ['data/erc/**', 'data/producao/albufeiras_snirh*.csv']
 
   schedule:
     - cron: '50 */6 * * *'
