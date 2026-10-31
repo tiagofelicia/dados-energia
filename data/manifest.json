@@ -404,6 +404,28 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
+   "bytes": 27008,
+   "cadencia": "3x/semana",
+   "caminho": "data/producao/albufeiras_semanal.csv",
+   "colunas": [
+    "semana_inicio",
+    "ano_iso",
+    "semana_iso",
+    "energia_gwh",
+    "data_utc"
+   ],
+   "descricao": "Energia que a água das albufeiras e das centrais de bombagem portuguesas pode produzir (GWh), semana a semana, desde 2015. Fonte: ENTSO-E (art. 16.1.D).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "producao",
+   "id": "producao-albufeiras",
+   "linhas": 617,
+   "titulo": "Albufeiras — energia guardada por semana",
+   "tolerancia_dias": 14,
+   "ultima_data": "2026-10-19",
+   "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal.csv"
+  },
+  {
    "bytes": 11821,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
@@ -1151,7 +1173,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-31T19:19:42+00:00",
+ "gerado_em": "2026-10-31T19:59:01+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1167,8 +1189,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 543178679,
-  "datasets": 42,
-  "ficheiros": 1876
+  "bytes": 543205687,
+  "datasets": 43,
+  "ficheiros": 1877
  }
 }
