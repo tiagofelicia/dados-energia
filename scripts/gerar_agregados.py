@@ -54,6 +54,21 @@ cauda TABELA_ATUALIZACOES do próprio omie_dados_atuais.csv). Sem essa data, o
 script ABORTA em vez de adivinhar: é preferível não publicar agregados a
 publicar futuros disfarçados de histórico.
 
+DEPENDÊNCIA DE ESPANHA
+----------------------
+Os producao_*.csv acabam com quatro colunas sobre as horas em que a importação
+líquida de Espanha (importação − exportação, média dos quartos de hora) chegou a
+30% do consumo dessa hora:
+
+  horas_consumo           horas com consumo publicado (as que entram na conta)
+  horas_dep_es30          dessas, as horas com importação líquida ≥ 30% do consumo
+  preco_pt_dep_es30       OMIE PT médio dessas horas (€/MWh, média simples das horas)
+  preco_pt_outras_horas   OMIE PT médio das restantes
+
+O critério é o da página balanco-historico. As horas contam-se pelo data_utc (as
+duas 01h do último domingo de outubro são duas horas). A quota passa de 100%
+quando a importação também alimenta a bombagem e as baterias; conta como 100%.
+
 USO
 ---
   python gerar_agregados.py            # tudo
@@ -147,8 +162,8 @@ def carregar_omie():
     return df.dropna(subset=["preco_pt"])
 
 
-def carregar_producao():
-    """Históricos + ano corrente, já agregados em diário pela lógica dos records."""
+def carregar_producao_15min():
+    """Históricos + ano corrente, em quartos de hora, sem o dia em curso se ainda estiver incompleto."""
     partes = []
     hist = os.path.join(PASTA_PROD, "historico")
     if os.path.isdir(hist):
@@ -165,8 +180,12 @@ def carregar_producao():
 
     # O dia em curso vem com as fontes despacháveis a zero a partir da hora da
     # recolha; incluí-lo inflaciona a quota renovável e subestima as emissões.
-    bruto = cortar_dia_incompleto(pd.concat(partes, ignore_index=True))
-    return agregar_diario(bruto, ler_bombagem())
+    return cortar_dia_incompleto(pd.concat(partes, ignore_index=True))
+
+
+def carregar_producao():
+    """Históricos + ano corrente, já agregados em diário pela lógica dos records."""
+    return agregar_diario(carregar_producao_15min(), ler_bombagem())
 
 
 # ============================================================
@@ -289,6 +308,46 @@ MAPA_PROD = {
 }
 
 
+# ============================================================
+# Dependência de Espanha (ver o cabeçalho)
+# ============================================================
+
+LIMIAR_DEP_ES = 0.30
+
+
+def dependencia_espanha(bruto, omie):
+    """Por dia (índice 'dia', DD/MM/AAAA): horas com consumo, horas com importação líquida ≥ 30% do
+    consumo e as somas e contagens dos preços OMIE PT médios dessas horas e das restantes — a média de
+    qualquer período é soma ÷ n, o que agregar_producao faz por mês e por ano."""
+    p = bruto[["dia", "intervalo", "Importação", "Exportação", "Consumo"]].copy()
+    for c in ("Importação", "Exportação", "Consumo"):
+        p[c] = pd.to_numeric(p[c], errors="coerce").fillna(0)
+    utc = (bruto["data_utc"].astype(str).str.strip() if "data_utc" in bruto.columns
+           else pd.Series("", index=bruto.index))
+    tem_utc = utc.str.len() >= 13
+    # Hora pelo data_utc; sem ele (ficheiros antigos), pela hora de início do intervalo
+    p["hora"] = utc.str[:13].where(tem_utc, p["dia"].astype(str) + " " + p["intervalo"].astype(str).str[1:3])
+    precos = (omie.dropna(subset=["data_utc"]).drop_duplicates("data_utc", keep="last")
+              .set_index("data_utc")["preco_pt"])
+    p["preco"] = utc.where(tem_utc).map(precos)
+
+    h = (p.groupby(["dia", "hora"], sort=False)
+          .agg(imp=("Importação", "sum"), exp=("Exportação", "sum"), cons=("Consumo", "sum"),
+               preco=("preco", "mean"))
+          .reset_index())
+    h = h[h["cons"] > 0]
+    quota = ((h["imp"] - h["exp"]).clip(lower=0) / h["cons"]).clip(upper=1)
+    dep = quota >= LIMIAR_DEP_ES
+    tem_p = h["preco"].notna()
+    h = h.assign(dep=dep.astype(int),
+                 p_dep=h["preco"].where(dep & tem_p, 0.0), n_dep=(dep & tem_p).astype(int),
+                 p_out=h["preco"].where(~dep & tem_p, 0.0), n_out=(~dep & tem_p).astype(int))
+    return h.groupby("dia", sort=False).agg(
+        horas_consumo=("cons", "size"), horas_dep_es30=("dep", "sum"),
+        _p_dep=("p_dep", "sum"), _n_dep=("n_dep", "sum"),
+        _p_out=("p_out", "sum"), _n_out=("n_out", "sum"))
+
+
 def agregar_producao(daily, chave, rotulo):
     """Soma energias e tira o pico máximo. % renovável é recalculada do total.
 
@@ -305,6 +364,13 @@ def agregar_producao(daily, chave, rotulo):
 
         nac, ren = linha["producao_nac_gwh"], linha["renovavel_gwh"]
         linha["perc_renovavel"] = (100 * ren / nac) if nac else None
+        # Dependência de Espanha: as horas somam-se; os preços são a média das horas do período
+        if "horas_dep_es30" in g.columns:
+            linha["horas_consumo"] = int(g["horas_consumo"].sum())
+            linha["horas_dep_es30"] = int(g["horas_dep_es30"].sum())
+            n_dep, n_out = g["_n_dep"].sum(), g["_n_out"].sum()
+            linha["preco_pt_dep_es30"] = float(g["_p_dep"].sum() / n_dep) if n_dep else None
+            linha["preco_pt_outras_horas"] = float(g["_p_out"].sum() / n_out) if n_out else None
         linhas.append(linha)
 
     out = pd.DataFrame(linhas)
@@ -344,12 +410,13 @@ def main():
 
     fazer_omie = not args.so_producao
     fazer_prod = not args.so_omie
+    df_omie = None   # o OMIE PT também entra nos agregados de produção (dependência de Espanha)
     meta = {}
     mudou = False
 
     if fazer_omie:
         print("📊 OMIE")
-        df = carregar_omie()
+        df = df_omie = carregar_omie()
         print(f"  {len(df):,} quartos · {df['data'].dt.date.nunique():,} dias · "
               f"{df['data'].min().date()} → {df['data'].max().date()}")
 
@@ -384,7 +451,11 @@ def main():
 
     if fazer_prod:
         print("\n⚡ Produção")
-        daily = carregar_producao()
+        bruto = carregar_producao_15min()
+        daily = agregar_diario(bruto, ler_bombagem())
+        dep = dependencia_espanha(bruto, df_omie if df_omie is not None else carregar_omie())
+        daily = daily.join(dep, on="dia")
+        daily[list(dep.columns)] = daily[list(dep.columns)].fillna(0)
         daily["mes"] = daily["dt"].dt.strftime("%m/%Y")
         daily["ano"] = daily["dt"].dt.year
         print(f"  {len(daily):,} dias · {daily['dt'].min().date()} → {daily['dt'].max().date()}")

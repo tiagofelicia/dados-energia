@@ -279,6 +279,9 @@ def _parse_period_points(period_elem):
                     resolution_min = 60
             elif res == 'PT1H':
                 resolution_min = 60
+            elif res.startswith('P') and res.endswith('D') and res[1:-1].isdigit():
+                # P7D: um valor por semana (albufeiras, A72); P1D: um por dia
+                resolution_min = int(res[1:-1]) * 24 * 60
     if not time_interval_start:
         return []
     try:
@@ -590,6 +593,23 @@ def fetch_total_generation_forecast(eic, start_dt, end_dt, token):
     params = {
         'documentType': 'A71',
         'processType': 'A01',
+        'in_Domain': eic,
+        'periodStart': _fmt_period(start_dt),
+        'periodEnd': _fmt_period(end_dt),
+    }
+    xml = _get(params, token)
+    return parse_timeseries_points(xml)
+
+
+def fetch_reservoir_filling(eic, start_dt, end_dt, token):
+    """A72 / A16 — Energia guardada nas albufeiras e centrais de bombagem (art. 16.1.D), semanal.
+
+    Uma série por zona, com resolução P7D: um valor (MWh) por semana, carimbado com o início da
+    semana. Devolve [(unix_ts, MWh)].
+    """
+    params = {
+        'documentType': 'A72',
+        'processType': 'A16',
         'in_Domain': eic,
         'periodStart': _fmt_period(start_dt),
         'periodEnd': _fmt_period(end_dt),

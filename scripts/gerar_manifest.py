@@ -269,6 +269,14 @@ REGISTO = [
          descricao="Produção por bombagem (turbinagem de reversíveis), em GWh/dia, "
                    "desde 2010. Permite separar a parcela não renovável da hídrica.",
          cadencia="cada 4h", tolerancia_dias=2, deteccao="csv_col:dia"),
+    dict(id="producao-albufeiras", grupo="producao",
+         caminho="data/producao/albufeiras_semanal.csv",
+         titulo="Albufeiras — energia guardada por semana",
+         descricao="Energia que a água das albufeiras e das centrais de bombagem "
+                   "portuguesas pode produzir (GWh), semana a semana, desde 2015. "
+                   "Fonte: ENTSO-E (art. 16.1.D).",
+         # A ENTSO-E publica cada semana com alguns dias de atraso
+         cadencia="3x/semana", tolerancia_dias=14, deteccao="csv_col_iso:semana_inicio"),
     dict(id="producao-records", grupo="producao", caminho="data/producao/records_producao.json",
          titulo="Recordes de produção",
          descricao="Recordes do balanço energético e agregados mensais e anuais.",
