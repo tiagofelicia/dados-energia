@@ -13,6 +13,13 @@ As albufeiras são as das centrais hidroelétricas com dados diários no SNIRH, 
 Alqueva e o Pedrógão e as que não entram no boletim mensal do SNIRH (Baixo Sabor, Foz Tua, as
 três do Tâmega, a cadeia do Douro, Ribeiradio, Alto Ceira, Belver e Fratel).
 
+ONDE CORRE
+----------
+Num PC em Portugal, por tarefa agendada, e não no GitHub Actions: o SNIRH só aceita ligações de
+Portugal (verificado a 31/10/2026 com o check-host.net: responde de PT; de Espanha, França,
+Alemanha, Reino Unido e EUA dá Forbidden ou timeout). Os dados chegam ao GitHub por push.
+Se os 3 primeiros pedidos ficarem sem resposta, o script desiste logo (PC fora de Portugal).
+
 USO
 ---
   python atualizar_albufeiras_snirh.py              # últimos 30 dias de cada albufeira (revisões incluídas)
@@ -279,6 +286,10 @@ def main():
         if v is None:
             falhas += 1
             print(f"  ✗ {nome} ({cod}): sem resposta")
+            if falhas == 3 and not recolhidos:
+                # Fora de Portugal o SNIRH recusa ou deixa pendurado: não vale a pena tentar as outras 37
+                print("ERRO: o SNIRH não respondeu aos 3 primeiros pedidos (só aceita ligações de Portugal).")
+                sys.exit(1)
         else:
             print(f"  {nome} ({cod}): {len(v)} dia(s), último {max(v) if v else '—'}")
             # Os valores novos substituem os guardados (revisões); os que não vieram ficam como estavam
