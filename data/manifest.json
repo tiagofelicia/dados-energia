@@ -296,7 +296,7 @@
    "avisos": [
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 3732132,
+   "bytes": 3743457,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -325,7 +325,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-atuais",
-   "linhas": 29088,
+   "linhas": 29184,
    "resolucao_nativa": [
     {
      "ate": null,
@@ -335,7 +335,7 @@
    ],
    "titulo": "Produção elétrica do ano corrente",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-30",
+   "ultima_data": "2026-10-31",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_dados_atuais.csv"
   },
   {
@@ -385,7 +385,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/historico/"
   },
   {
-   "bytes": 105499,
+   "bytes": 105516,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_bombagem_diaria.csv",
    "colunas": [
@@ -397,14 +397,14 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-bombagem",
-   "linhas": 6147,
+   "linhas": 6148,
    "titulo": "Bombagem hidroelétrica diária",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-30",
+   "ultima_data": "2026-10-31",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 11821,
+   "bytes": 11820,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -414,11 +414,11 @@
    "id": "producao-records",
    "titulo": "Recordes de produção",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-10-30",
+   "ultima_data": "2026-10-31",
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 13470,
+   "bytes": 4378,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -435,7 +435,7 @@
    ],
    "titulo": "Instantâneo de produção do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-10-30",
+   "ultima_data": "2026-10-31",
    "url": "https://dados.tiagofelicia.pt/data/producao/hoje.json"
   },
   {
@@ -1151,7 +1151,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-10-31T04:59:17+00:00",
+ "gerado_em": "2026-10-31T05:49:10+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1167,7 +1167,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 542911248,
+  "bytes": 542913497,
   "datasets": 42,
   "ficheiros": 1876
  }
