@@ -167,6 +167,12 @@ const recordes = await r.json();</code></pre>
     <tr><td><a href="data/producao/albufeiras_semanal.csv">albufeiras_semanal.csv</a></td>
         <td>Energia guardada nas albufeiras e centrais de bombagem (GWh), semana a semana, desde 2015. Fonte: ENTSO-E.</td>
         <td>3×/semana</td></tr>
+    <tr><td><a href="data/producao/albufeiras_snirh_diario.csv">albufeiras_snirh_diario.csv</a></td>
+        <td>Água guardada em cada uma das 40 albufeiras hidroelétricas (hm³), dia a dia, desde 2001. Fonte: SNIRH (APA).</td>
+        <td>2×/dia</td></tr>
+    <tr><td><a href="data/producao/albufeiras_snirh.csv">albufeiras_snirh.csv</a></td>
+        <td>As 40 albufeiras: código SNIRH, bacia, capacidade total, máximo registado e o volume que conta como 100%.</td>
+        <td>2×/dia</td></tr>
     <tr><td><a href="data/producao/hoje.json">hoje.json</a></td>
         <td>Instantâneo do dia: mix quarto-horário, resumo diário e estado no último intervalo (~15 KB).</td>
         <td>A cada atualização</td></tr>
@@ -341,6 +347,7 @@ const recordes = await r.json();</code></pre>
      <a href="https://www.omip.pt" rel="noopener">OMIP</a>,
      <a href="https://www.mibgas.es" rel="noopener">MIBGAS</a>,
      <a href="https://datahub.ren.pt" rel="noopener">REN</a>,
+     <a href="https://snirh.apambiente.pt" rel="noopener">SNIRH</a> (APA),
      <a href="https://transparency.entsoe.eu" rel="noopener">ENTSO-E</a>,
      <a href="https://www.energy-charts.info" rel="noopener">Energy-Charts</a> (Fraunhofer ISE),
      <a href="https://www.erse.pt" rel="noopener">ERSE</a> e

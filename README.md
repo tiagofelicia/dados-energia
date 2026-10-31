@@ -106,6 +106,8 @@ Além disso, `omie_dados_atuais.csv` contém **datas futuras estimadas a partir 
 | `hoje.json` | Instantâneo do dia: mix quarto-horário, resumo diário e estado no último intervalo (~15 KB) | A cada atualização |
 | `producao_bombagem_diaria.csv` | Consumo diário em bombagem hidroelétrica (GWh), desde 2010 | A cada 4 h |
 | `albufeiras_semanal.csv` | **Energia guardada nas albufeiras** e centrais de bombagem portuguesas (GWh), semana a semana, desde 2015: `semana_inicio` (segunda-feira, data de Lisboa), `ano_iso`, `semana_iso`, `energia_gwh`, `data_utc`. Fonte: ENTSO-E, art. 16.1.D | 3×/semana |
+| `albufeiras_snirh_diario.csv` | **Água guardada em cada albufeira hidroelétrica** (hm³), dia a dia, desde 2001: `data` e uma coluna por albufeira — as 40 das centrais hidroelétricas com dados diários no SNIRH, incluindo o Alqueva, o Pedrógão e as que não entram no boletim mensal (Baixo Sabor, Foz Tua, Tâmega, a cadeia do Douro). Os volumes impossíveis do SNIRH (erros de leitura: zeros, algarismos a mais, os picos de junho de 2018 no Douro) são retirados. Fonte: SNIRH (Agência Portuguesa do Ambiente) | 2×/dia |
+| `albufeiras_snirh.csv` | As 40 albufeiras: `coluna`, `codigo_snirh`, `nome`, `bacia`, `capacidade_hm3` (capacidade total do SNIRH; vazio nas que não a têm), `maximo_registado_hm3` e `data_maximo`, `referencia_hm3` e `referencia` (o volume que conta como 100%: a capacidade ou, sem ela, o máximo registado), `inicio_serie` e `ultimo_dia` | 2×/dia |
 | `records_producao.json` | Recordes (dia mais renovável, maior consumo, pico, etc.) + agregados mensais pré-calculados | A cada 4 h (incremental) |
 | `producao-entsoe/{cc}/AAAA-WSS.json` | **Produção europeia intra-diária** para 35 países: geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços. Um ficheiro por país e semana ISO | A cada 4 h (PT/ES) · 2×/dia (todos) |
 | `producao-entsoe/metadata.json` | Última atualização e código EIC por país | idem |
@@ -461,6 +463,7 @@ Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
 - **[OMIP](https://www.omip.pt)** — mercado a prazo / futuros
 - **[MIBGAS](https://www.mibgas.es)** — mercado ibérico de gás natural
 - **[REN](https://datahub.ren.pt)** — produção, consumo e bombagem em Portugal
+- **[SNIRH](https://snirh.apambiente.pt)** (Agência Portuguesa do Ambiente) — água guardada em cada albufeira
 - **[REN — SIME](https://mercado.ren.pt/PT/Electr/InfoMercado/InfSistema/ERC/Paginas/default.aspx)** — encargos de regulação imputados ao consumo (ERC)
 - **[ENTSO-E Transparency Platform](https://transparency.entsoe.eu)** — preços day-ahead e produção europeia
 - **[Energy-Charts](https://www.energy-charts.info)** (Fraunhofer ISE) — mix de produção europeu
