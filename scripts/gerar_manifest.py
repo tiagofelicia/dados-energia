@@ -277,6 +277,19 @@ REGISTO = [
                    "Fonte: ENTSO-E (art. 16.1.D).",
          # A ENTSO-E publica cada semana com alguns dias de atraso
          cadencia="3x/semana", tolerancia_dias=14, deteccao="csv_col_iso:semana_inicio"),
+    dict(id="producao-albufeiras-snirh", grupo="producao",
+         caminho="data/producao/albufeiras_snirh_diario.csv",
+         titulo="Albufeiras — água guardada em cada uma, por dia",
+         descricao="Volume armazenado (hm3) em cada uma das 40 albufeiras de centrais "
+                   "hidroelétricas com dados diários no SNIRH (incluindo o Alqueva e o Pedrógão), dia a "
+                   "dia, desde 2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
+         cadencia="2x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data"),
+    dict(id="producao-albufeiras-snirh-lista", grupo="producao",
+         caminho="data/producao/albufeiras_snirh.csv",
+         titulo="Albufeiras — lista, capacidades e referência",
+         descricao="As 40 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, "
+                   "capacidade total, máximo registado e o volume usado como 100%.",
+         cadencia="2x/dia", tolerancia_dias=400, deteccao="estatico"),
     dict(id="producao-records", grupo="producao", caminho="data/producao/records_producao.json",
          titulo="Recordes de produção",
          descricao="Recordes do balanço energético e agregados mensais e anuais.",
