@@ -1,0 +1,86 @@
+# Energia guardada nas albufeiras portuguesas, semana a semana (ENTSO-E Transparency
+# Platform, art. 16.1.D: documento A72).
+#
+# scripts/atualizar_albufeiras_entsoe.py
+#   -> data/producao/albufeiras_semanal.csv
+#
+# Requer o secret ENTSOE_TOKEN (o mesmo do Atualizar Producao (ENTSO-E)).
+#
+# A ENTSO-E publica cada semana com alguns dias de atraso e pode rever as
+# anteriores: cada corrida pede as últimas 12 semanas e junta-as ao ficheiro.
+# Três corridas por semana chegam (terça, quinta e sábado, 07:15 UTC).
+#
+# A primeira vez: correr à mão com backfill=true, que traz a série desde 2015
+# (um pedido por ano, ~1 min).
+#
+# O nome não pode ter * ? + [ ] ! : é alvo do workflow_run do gerar_hoje.yml,
+# que refaz o manifesto depois de cada corrida.
+
+name: Atualizar Albufeiras (ENTSO-E)
+
+on:
+  schedule:
+    - cron: '15 7 * * 2,4,6'
+
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'Reconstruir tudo desde 2015'
+        type: boolean
+        required: false
+        default: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Grupo próprio: só impede que este workflow se sobreponha a si mesmo; as corridas
+# contra os outros bots resolvem-se no retry+rebase da commit-with-retry.
+concurrency:
+  group: commits-albufeiras
+  cancel-in-progress: false
+
+jobs:
+  atualizar-albufeiras:
+    name: Recolher a energia guardada nas albufeiras
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        # entsoe_client.py usa requests; tzdata garante o zoneinfo em qualquer runner.
+        run: python -m pip install --upgrade pip requests tzdata
+
+      - name: Verificar secret ENTSOE_TOKEN
+        env:
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+        run: |
+          if [ -z "$ENTSOE_TOKEN" ]; then
+            echo "::error::Secret ENTSOE_TOKEN não configurado em Settings → Secrets and variables → Actions deste repositório."
+            exit 1
+          fi
+
+      - name: Atualizar albufeiras
+        env:
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+        run: |
+          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            python scripts/atualizar_albufeiras_entsoe.py --backfill
+          else
+            python scripts/atualizar_albufeiras_entsoe.py
+          fi
+
+      - name: Fazer commit dos dados atualizados (com retry)
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "BOT: Atualizar albufeiras (ENTSO-E)"
+          file_pattern: "data/producao/albufeiras_semanal.csv"

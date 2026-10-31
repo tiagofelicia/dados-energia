@@ -35,6 +35,7 @@ on:
       - "Atualizar Mapa de Precos (ENTSO-E)"
       - "Atualizar Mapa de Producao"
       - "Atualizar Producao (ENTSO-E)"
+      - "Atualizar Albufeiras (ENTSO-E)"
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
       - "Atualizar CO2 (EU ETS)"
