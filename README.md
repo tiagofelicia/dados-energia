@@ -105,6 +105,7 @@ Além disso, `omie_dados_atuais.csv` contém **datas futuras estimadas a partir 
 | `historico/producao_historico_AAAA.csv` | Séries históricas anuais (2010–presente), mesmo schema | Fecho de ano |
 | `hoje.json` | Instantâneo do dia: mix quarto-horário, resumo diário e estado no último intervalo (~15 KB) | A cada atualização |
 | `producao_bombagem_diaria.csv` | Consumo diário em bombagem hidroelétrica (GWh), desde 2010 | A cada 4 h |
+| `albufeiras_semanal.csv` | **Energia guardada nas albufeiras** e centrais de bombagem portuguesas (GWh), semana a semana, desde 2015: `semana_inicio` (segunda-feira, data de Lisboa), `ano_iso`, `semana_iso`, `energia_gwh`, `data_utc`. Fonte: ENTSO-E, art. 16.1.D | 3×/semana |
 | `records_producao.json` | Recordes (dia mais renovável, maior consumo, pico, etc.) + agregados mensais pré-calculados | A cada 4 h (incremental) |
 | `producao-entsoe/{cc}/AAAA-WSS.json` | **Produção europeia intra-diária** para 35 países: geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços. Um ficheiro por país e semana ISO | A cada 4 h (PT/ES) · 2×/dia (todos) |
 | `producao-entsoe/metadata.json` | Última atualização e código EIC por país | idem |
@@ -277,9 +278,9 @@ Derivados de `data/omie/`, `data/producao/` e `data/erc/`, para quem quer média
 | `omie_es_anual.csv` | Preços OMIE de Espanha por ano, 2010–presente (dia espanhol) | 2 KB |
 | `omie_es_mensal.csv` | Por mês | 18 KB |
 | `omie_es_diario.csv` | Por dia | 600 KB |
-| `producao_anual.csv` | Produção, consumo e quota renovável por ano | 2 KB |
-| `producao_mensal.csv` | Por mês | 24 KB |
-| `producao_diario.csv` | Por dia | 672 KB |
+| `producao_anual.csv` | Produção, consumo, quota renovável e dependência de Espanha por ano | 3 KB |
+| `producao_mensal.csv` | Por mês | 28 KB |
+| `producao_diario.csv` | Por dia | 768 KB |
 | `erc_resumo.json` | Encargos de regulação (ERC) da REN: intervalo publicado, componentes, intervalos dos ficheiros abaixo, os grupos e os nomes dos tipos de encargo (`tipos`) e a **previsão própria** para os 14 dias seguintes ao último publicado (o cálculo dos simuladores), com o erro dessa previsão em cada antecedência, medido no último ano — o único bloco que não é real. Em `solar`, por mês e classe de quota solar no quarto de hora, os quartos de hora, os MWh, os € e os € de cada componente. Alimenta a página [/erc](https://www.tiagofelicia.pt/erc) | 30 KB |
 | `erc_diario/AAAA.json` | Um ficheiro por ano. `mercado`: por dia de mercado, `[MWh, €, € de cada componente]` (os totais da REN; Σ€ ÷ ΣMWh de um mês bate com o resumo mensal dela). `dias`: por dia em hora de Portugal, o ERC (`e`, €/MWh) e o consumo (`m`, MWh) de cada hora, o OMIE PT médio de cada hora (`o`), os quartos de hora no dia (`n`), o mais caro e o mais barato (`max`, `min`), o fator de perdas médio (`p`) e, por ciclo e período horário pela ordem de `ordem_c`, o ERC pesado pelo perfil ERSE BTN C e a soma dos pesos × 1000 (`c`), e a quota solar de cada hora (`s`, %: produção solar ÷ consumo, dos dados de produção da REN). `p` e `c` só desde 2025 | 170–260 KB/ano |
 | `erc_omie/AAAA-MM.json` | Um ficheiro por mês, desde 03/2024: por dia e quarto de hora (hora de Portugal), o OMIE PT (vazio na última hora do último dia, que ainda não foi leiloada), o ERC (o real ou, nos dias ainda sem valor publicado, a previsão própria, com `erc_previsto` = quantos quartos de hora o são) e o fator de perdas BT da ERSE (desde 2025). `slots` só aparece nos dias de mudança de hora (92 ou 100 quartos de hora) | ~50 KB/mês |
@@ -288,6 +289,8 @@ Derivados de `data/omie/`, `data/producao/` e `data/erc/`, para quem quer média
 | `servicos_sistema/AAAA-MM.json` | Um ficheiro por mês, para a página [/servicos-sistema](https://www.tiagofelicia.pt/servicos-sistema): por dia e hora (hora de Portugal), o OMIE PT médio (`o`) e, por indicador (redução de geração, desvios em excesso e em falta, energia de reserva aFRR/mFRR/RR a subir e a descer, restrições técnicas, bandas), a quantidade (`q`, MWh ou soma dos MW) e o valor (`e`, €; positivo = custo). `n` (quartos de hora de cada hora) só nos dias de mudança de hora. Os indicadores (códigos da vista Tipo e unidade) e o OMIE PT médio de cada dia estão em `servicos_sistema/metadata.json` | ~100 KB/mês |
 
 Cada linha traz `dias` (e `quartos`, no OMIE) com quantos entraram no cálculo — é assim que se vê que o mês ou ano corrente ainda está incompleto.
+
+Os agregados de produção acabam com a **dependência de Espanha**: `horas_consumo` (horas com consumo publicado), `horas_dep_es30` (dessas, as horas em que a importação líquida de Espanha — importação − exportação — chegou a 30% do consumo da hora), `preco_pt_dep_es30` e `preco_pt_outras_horas` (OMIE PT médio dessas horas e das restantes, média simples das horas). As horas contam-se pelo `data_utc`.
 
 Os agregados OMIE incluem o **preço médio por período do ciclo horário BTN** (`bd_v`, `bd_f`, `bs_v`, `bs_f`, `td_v`, `td_c`, `td_p`, `ts_v`, `ts_c`, `ts_p`), o que permite comparar tarifários bi e tri-horários sem reprocessar as séries.
 

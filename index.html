@@ -164,6 +164,9 @@ const recordes = await r.json();</code></pre>
     <tr><td><a href="data/producao/producao_bombagem_diaria.csv">producao_bombagem_diaria.csv</a></td>
         <td>Consumo diário em bombagem hidroelétrica (GWh), desde 2010.</td>
         <td>A cada 4 h</td></tr>
+    <tr><td><a href="data/producao/albufeiras_semanal.csv">albufeiras_semanal.csv</a></td>
+        <td>Energia guardada nas albufeiras e centrais de bombagem (GWh), semana a semana, desde 2015. Fonte: ENTSO-E.</td>
+        <td>3×/semana</td></tr>
     <tr><td><a href="data/producao/hoje.json">hoje.json</a></td>
         <td>Instantâneo do dia: mix quarto-horário, resumo diário e estado no último intervalo (~15 KB).</td>
         <td>A cada atualização</td></tr>
@@ -241,9 +244,9 @@ const recordes = await r.json();</code></pre>
     <tr><td><a href="data/agregados/omie_es_mensal.csv">omie_es_mensal.csv</a></td><td>Idem, por mês.</td><td>18 KB</td></tr>
     <tr><td><a href="data/agregados/omie_es_diario.csv">omie_es_diario.csv</a></td><td>Idem, por dia.</td><td>600 KB</td></tr>
     <tr><td><a href="data/agregados/producao_anual.csv">producao_anual.csv</a></td>
-        <td>Produção, consumo, quota renovável e saldo importador por ano.</td><td>2 KB</td></tr>
-    <tr><td><a href="data/agregados/producao_mensal.csv">producao_mensal.csv</a></td><td>Idem, por mês.</td><td>24 KB</td></tr>
-    <tr><td><a href="data/agregados/producao_diario.csv">producao_diario.csv</a></td><td>Idem, por dia.</td><td>672 KB</td></tr>
+        <td>Produção, consumo, quota renovável, saldo importador e horas com 30% ou mais do consumo vindo de Espanha, por ano.</td><td>3 KB</td></tr>
+    <tr><td><a href="data/agregados/producao_mensal.csv">producao_mensal.csv</a></td><td>Idem, por mês.</td><td>28 KB</td></tr>
+    <tr><td><a href="data/agregados/producao_diario.csv">producao_diario.csv</a></td><td>Idem, por dia.</td><td>768 KB</td></tr>
     <tr><td><a href="data/agregados/erc_resumo.json">erc_resumo.json</a></td>
         <td>Encargos de regulação (ERC) da REN: intervalos publicados, componentes e previsão própria a 14 dias com o erro medido.</td><td>30 KB</td></tr>
     <tr><td><a href="data/agregados/erc_diario/">erc_diario/AAAA.json</a></td>
