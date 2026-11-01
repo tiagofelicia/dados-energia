@@ -35,7 +35,8 @@ SAÍDA
 
   data/producao/albufeiras_snirh.csv — as albufeiras
     coluna, codigo_snirh, nome, bacia
-    capacidade_hm3            capacidade total, do boletim semanal de albufeiras da APA (vazio nas que lá não estão)
+    capacidade_hm3            capacidade total, do boletim semanal de albufeiras da APA (nas que lá não estão, da
+                              CNPGB; vazio no Alto Ceira, sem capacidade publicada)
     maximo_registado_hm3      o maior volume da série, e data_maximo
     referencia_hm3, referencia o volume que conta como 100% (a capacidade ou o máximo registado)
     inicio_serie, ultimo_dia  primeiro e último dia com valor
@@ -78,7 +79,8 @@ DIAS_INCREMENTAL = 30
 PAUSA = 0.5   # segundos entre pedidos
 
 # coluna, código SNIRH, site (id interno do SNIRH), nome, bacia, capacidade total (dam3, do boletim semanal
-# de albufeiras da APA de 19/10/2026; None = não está no boletim). Por bacia, de norte para sul, e por tamanho.
+# de albufeiras da APA de 19/10/2026; nas que lá não estão, a da CNPGB, assinalada; None = sem capacidade
+# publicada). Por bacia, de norte para sul, e por tamanho.
 ALBUFEIRAS = [
     ("alto_lindoso", "02H/01A", 1627743428, "Alto Lindoso", "Lima", 379000),
     ("touvedo", "03G/01A", 1627759476, "Touvedo", "Lima", 15500),
@@ -91,7 +93,7 @@ ALBUFEIRAS = [
     ("guilhofrei", "04I/01A", 1627758686, "Guilhofrei", "Ave", 21200),
     ("baixo_sabor", "06O/09A", 7554777518, "Baixo Sabor", "Douro", 1095000),
     ("carrapatelo", "07I/01A", 1627743682, "Carrapatelo", "Douro", 150200),
-    ("alto_tamega", "04K/04A", 11508860178, "Alto Tâmega", "Douro", None),
+    ("alto_tamega", "04K/04A", 11508860178, "Alto Tâmega", "Douro", 131700),   # CNPGB
     ("bemposta", "06S/01A", 1627743548, "Bemposta", "Douro", 128800),
     ("torrao", "07H/01A", 1627759468, "Torrão", "Douro", 123900),
     ("crestuma_lever", "07G/01A", 1627751912, "Crestuma-Lever", "Douro", 110000),
@@ -101,9 +103,9 @@ ALBUFEIRAS = [
     ("regua", "07K/01A", 1627759340, "Régua", "Douro", 95000),
     ("pocinho", "07O/02A", 1627758976, "Pocinho", "Douro", 82900),
     ("picote", "05S/01A", 1627758968, "Picote", "Douro", 62700),
-    ("daivoes", "04J/08A", 9978398426, "Daivões", "Douro", None),
+    ("daivoes", "04J/08A", 9978398426, "Daivões", "Douro", 55480),   # CNPGB
     ("miranda", "05T/01A", 1627758786, "Miranda", "Douro", 28000),
-    ("gouvaes", "05K/02A", 10908513554, "Gouvães", "Douro", None),
+    ("gouvaes", "05K/02A", 10908513554, "Gouvães", "Douro", 14100),   # CNPGB
     ("varosa", "07K/02A", 1627759512, "Varosa", "Douro", 12943),
     ("serra_serrada", "02Q/01A", 1627759434, "Serra Serrada", "Douro", 1680),
     ("ribeiradio", "09H/06A", 7554777512, "Ribeiradio", "Vouga", 136400),
@@ -133,7 +135,7 @@ ALBUFEIRAS = [
     ("vale_do_gaio", "24H/01A", 1627759492, "Vale do Gaio", "Sado", 63000),
     ("alqueva", "24M/07A", 1627743416, "Alqueva", "Guadiana", 4150000),
     ("caia", "20O/01A", 1627743648, "Caia", "Guadiana", 203000),
-    ("pedrogao", "25L/01A", 1627758944, "Pedrógão", "Guadiana", None),
+    ("pedrogao", "25L/01A", 1627758944, "Pedrógão", "Guadiana", 106000),   # CNPGB
     ("arade", "30G/02A", 1627743460, "Arade", "Arade", 28380),
     ("bravura", "30E/01A", 1627743568, "Bravura", "Ribeiras do Algarve", 34825),
 ]
@@ -333,9 +335,9 @@ def texto_meta(dias):
     for col, cod, _site, nome, bacia, cap in ALBUFEIRAS:
         serie = [(d, float(v[col])) for d, v in sorted(dias.items()) if col in v]
         mx = max(serie, key=lambda x: x[1]) if serie else (None, None)
-        # Percentagem: face à capacidade do boletim da APA; sem ela, ou se no último ano andou mais de 10% acima
-        # dela, face ao máximo registado. Um máximo isolado acima da capacidade (cheias, erros que escaparam à
-        # limpeza) não conta.
+        # Percentagem: face à capacidade (do boletim da APA ou da CNPGB); sem ela, ou se no último ano andou mais
+        # de 10% acima dela, face ao máximo registado. Um máximo isolado acima da capacidade (cheias, erros que
+        # escaparam à limpeza) não conta.
         ultimo_ano = sorted(x for d, x in serie[-365:])
         p90 = ultimo_ano[int(len(ultimo_ano) * 0.9)] if ultimo_ano else None
         usa_cap = bool(cap) and (p90 is None or p90 <= 1.10 * cap / 1000)
