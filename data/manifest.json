@@ -519,7 +519,7 @@
     "latitude",
     "longitude"
    ],
-   "descricao": "As 56 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, capacidade total (boletim semanal da APA), máximo registado, o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
+   "descricao": "As 56 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, capacidade total (boletim semanal da APA; CNPGB nas que lá não estão), máximo registado, o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
    "ficheiros": 1,
    "formato": "csv",
    "grupo": "producao",
@@ -531,7 +531,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_snirh.csv"
   },
   {
-   "bytes": 3697,
+   "bytes": 3846,
    "cadencia": "anual (anuário da APREN)",
    "caminho": "data/producao/centrais_hidricas.csv",
    "colunas": [
@@ -550,7 +550,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-centrais-hidricas",
-   "linhas": 49,
+   "linhas": 51,
    "titulo": "Centrais hídricas de cada albufeira",
    "tolerancia_dias": 400,
    "ultima_data": null,
@@ -1308,7 +1308,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-01T15:57:24+00:00",
+ "gerado_em": "2026-11-01T17:07:10+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1324,7 +1324,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 546367363,
+  "bytes": 546367512,
   "datasets": 46,
   "ficheiros": 1881
  }
