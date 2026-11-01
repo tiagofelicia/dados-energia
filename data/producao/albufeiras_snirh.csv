@@ -1,41 +1,41 @@
 ﻿coluna,codigo_snirh,nome,bacia,capacidade_hm3,maximo_registado_hm3,data_maximo,referencia_hm3,referencia,inicio_serie,ultimo_dia
-alto_lindoso,02H/01A,Alto Lindoso,Lima,390.00,378.69,2001-03-21,390.00,capacidade,2001-01-01,2026-10-30
-touvedo,03G/01A,Touvedo,Lima,15.50,15.77,2009-01-31,15.50,capacidade,2001-01-01,2026-10-30
-alto_rabagao,03J/03A,Alto Rabagão,Cávado,568.69,568.00,2026-04-06,568.69,capacidade,2001-01-01,2026-10-30
-paradela,03J/01A,Paradela,Cávado,164.39,169.13,2001-03-21,164.39,capacidade,2001-01-01,2026-10-30
-canicada,04H/01A,Caniçada,Cávado,159.30,162.44,2010-12-05,159.30,capacidade,2001-01-01,2026-10-30
-vilarinho_das_furnas,03H/01A,Vilarinho das Furnas,Cávado,117.69,117.17,2026-02-19,117.69,capacidade,2001-01-01,2026-10-30
-venda_nova,03J/04A,Venda Nova,Cávado,94.50,95.06,2003-08-12,94.50,capacidade,2001-01-01,2026-10-30
-salamonde,03I/01A,Salamonde,Cávado,65.00,65.31,2001-03-20,65.00,capacidade,2001-01-01,2026-10-30
-guilhofrei,04I/01A,Guilhofrei,Ave,21.15,21.65,2018-03-14,21.15,capacidade,2001-01-31,2026-10-30
-carrapatelo,07I/01A,Carrapatelo,Douro,148.40,150.88,2016-03-15,148.40,capacidade,2001-01-01,2026-10-30
-bemposta,06S/01A,Bemposta,Douro,128.80,129.27,2007-05-24,128.80,capacidade,2001-01-01,2026-10-30
-torrao,07H/01A,Torrão,Douro,123.99,105.81,2001-01-01,123.99,capacidade,2001-01-01,2026-10-30
-crestuma_lever,07G/01A,Crestuma-Lever,Douro,110.00,113.18,2018-08-15,110.00,capacidade,2001-01-01,2026-10-30
-vilar_tabuaco,08L/01A,Vilar-Tabuaço,Douro,99.75,100.71,2003-01-02,99.75,capacidade,2001-01-31,2026-10-30
-valeira,07M/02A,Valeira,Douro,98.54,98.63,2025-04-04,98.54,capacidade,2001-01-01,2026-10-30
-regua,07K/01A,Régua,Douro,95.00,95.52,2012-12-28,95.00,capacidade,2001-01-01,2026-10-30
-pocinho,07O/02A,Pocinho,Douro,83.07,83.29,2011-03-29,83.07,capacidade,2001-01-01,2026-10-30
-picote,05S/01A,Picote,Douro,62.70,62.97,2004-04-01,62.70,capacidade,2001-01-01,2026-10-30
-miranda,05T/01A,Miranda,Douro,28.10,28.07,2010-04-28,28.10,capacidade,2001-01-01,2026-10-30
-varosa,07K/02A,Varosa,Douro,12.94,14.52,2009-12-30,12.94,capacidade,2001-01-31,2026-10-30
-alto_tamega,04K/04A,Alto Tâmega,Douro,,131.20,2024-02-25,131.20,maximo_registado,2024-01-28,2026-10-30
-baixo_sabor,06O/09A,Baixo Sabor,Douro,,1093.30,2025-05-15,1093.30,maximo_registado,2016-09-13,2026-10-30
-daivoes,04J/08A,Daivões,Douro,,54.40,2026-02-07,54.40,maximo_registado,2022-12-04,2026-10-30
+alto_lindoso,02H/01A,Alto Lindoso,Lima,390.00,378.69,2001-03-21,390.00,capacidade,2001-01-01,2026-10-31
+touvedo,03G/01A,Touvedo,Lima,15.50,15.77,2009-01-31,15.50,capacidade,2001-01-01,2026-10-31
+alto_rabagao,03J/03A,Alto Rabagão,Cávado,568.69,568.00,2026-04-06,568.69,capacidade,2001-01-01,2026-10-31
+paradela,03J/01A,Paradela,Cávado,164.39,169.13,2001-03-21,164.39,capacidade,2001-01-01,2026-10-31
+canicada,04H/01A,Caniçada,Cávado,159.30,162.44,2010-12-05,159.30,capacidade,2001-01-01,2026-10-31
+vilarinho_das_furnas,03H/01A,Vilarinho das Furnas,Cávado,117.69,117.17,2026-02-19,117.69,capacidade,2001-01-01,2026-10-31
+venda_nova,03J/04A,Venda Nova,Cávado,94.50,95.06,2003-08-12,94.50,capacidade,2001-01-01,2026-10-31
+salamonde,03I/01A,Salamonde,Cávado,65.00,65.31,2001-03-20,65.00,capacidade,2001-01-01,2026-10-31
+guilhofrei,04I/01A,Guilhofrei,Ave,21.15,21.65,2018-03-14,21.15,capacidade,2001-01-31,2026-10-31
+carrapatelo,07I/01A,Carrapatelo,Douro,148.40,150.88,2016-03-15,148.40,capacidade,2001-01-01,2026-10-31
+bemposta,06S/01A,Bemposta,Douro,128.80,129.27,2007-05-24,128.80,capacidade,2001-01-01,2026-10-31
+torrao,07H/01A,Torrão,Douro,123.99,105.81,2001-01-01,123.99,capacidade,2001-01-01,2026-10-31
+crestuma_lever,07G/01A,Crestuma-Lever,Douro,110.00,113.18,2018-08-15,110.00,capacidade,2001-01-01,2026-10-31
+vilar_tabuaco,08L/01A,Vilar-Tabuaço,Douro,99.75,100.71,2003-01-02,99.75,capacidade,2001-01-31,2026-10-31
+valeira,07M/02A,Valeira,Douro,98.54,98.63,2025-04-04,98.54,capacidade,2001-01-01,2026-10-31
+regua,07K/01A,Régua,Douro,95.00,95.52,2012-12-28,95.00,capacidade,2001-01-01,2026-10-31
+pocinho,07O/02A,Pocinho,Douro,83.07,83.29,2011-03-29,83.07,capacidade,2001-01-01,2026-10-31
+picote,05S/01A,Picote,Douro,62.70,62.97,2004-04-01,62.70,capacidade,2001-01-01,2026-10-31
+miranda,05T/01A,Miranda,Douro,28.10,28.07,2010-04-28,28.10,capacidade,2001-01-01,2026-10-31
+varosa,07K/02A,Varosa,Douro,12.94,14.52,2009-12-30,12.94,capacidade,2001-01-31,2026-10-31
+alto_tamega,04K/04A,Alto Tâmega,Douro,,131.20,2024-02-25,131.20,maximo_registado,2024-01-28,2026-10-31
+baixo_sabor,06O/09A,Baixo Sabor,Douro,,1093.30,2025-05-15,1093.30,maximo_registado,2016-09-13,2026-10-31
+daivoes,04J/08A,Daivões,Douro,,54.40,2026-02-07,54.40,maximo_registado,2022-12-04,2026-10-31
 foz_tua,06M/06A,Foz Tua,Douro,,106.00,2021-02-12,106.00,maximo_registado,2019-12-19,2026-10-26
-gouvaes,05K/02A,Gouvães,Douro,,14.56,2024-02-19,14.56,maximo_registado,2022-11-29,2026-10-30
-ribeiradio,09H/06A,Ribeiradio,Vouga,,136.12,2026-02-18,136.12,maximo_registado,2016-09-13,2026-10-30
-aguieira,11H/01A,Aguieira,Mondego,423.03,428.00,2024-05-27,423.03,capacidade,2001-01-01,2026-10-30
-fronhas,12I/01A,Fronhas,Mondego,62.10,68.58,2019-12-21,62.10,capacidade,2001-01-01,2026-10-30
-lagoa_comprida,11L/03A,Lagoa Comprida,Mondego,14.00,14.07,2019-12-20,14.00,capacidade,2001-01-31,2026-10-30
-caldeirao,10M/01A,Caldeirão,Mondego,5.52,5.86,2016-05-08,5.52,capacidade,2001-01-31,2026-10-30
-vale_do_rossim,11L/02A,Vale do Rossim,Mondego,3.50,4.02,2009-05-29,3.50,capacidade,2001-01-31,2026-10-30
-alto_ceira,12J/01A,Alto Ceira,Mondego,,1.40,2019-12-20,1.40,maximo_registado,2016-09-13,2026-10-30
-castelo_de_bode,16H/01A,Castelo de Bode,Tejo,1095.00,1099.06,2016-05-11,1095.00,capacidade,2001-01-01,2026-10-30
-cabril,14I/01A,Cabril,Tejo,720.00,719.00,2016-05-18,720.00,capacidade,2001-01-01,2026-10-30
-pracana,16K/01A,Pracana,Tejo,111.90,111.48,2006-11-24,111.90,capacidade,2001-01-01,2026-10-30
-fratel,16K/02A,Fratel,Tejo,92.50,91.89,2009-12-30,92.50,capacidade,2001-01-01,2026-10-30
+gouvaes,05K/02A,Gouvães,Douro,,14.56,2024-02-19,14.56,maximo_registado,2022-11-29,2026-10-31
+ribeiradio,09H/06A,Ribeiradio,Vouga,,136.12,2026-02-18,136.12,maximo_registado,2016-09-13,2026-10-31
+aguieira,11H/01A,Aguieira,Mondego,423.03,428.00,2024-05-27,423.03,capacidade,2001-01-01,2026-10-31
+fronhas,12I/01A,Fronhas,Mondego,62.10,68.58,2019-12-21,62.10,capacidade,2001-01-01,2026-10-31
+lagoa_comprida,11L/03A,Lagoa Comprida,Mondego,14.00,14.07,2019-12-20,14.00,capacidade,2001-01-31,2026-10-31
+caldeirao,10M/01A,Caldeirão,Mondego,5.52,5.86,2016-05-08,5.52,capacidade,2001-01-31,2026-10-31
+vale_do_rossim,11L/02A,Vale do Rossim,Mondego,3.50,4.02,2009-05-29,3.50,capacidade,2001-01-31,2026-10-31
+alto_ceira,12J/01A,Alto Ceira,Mondego,,1.40,2019-12-20,1.40,maximo_registado,2016-09-13,2026-10-31
+castelo_de_bode,16H/01A,Castelo de Bode,Tejo,1095.00,1099.06,2016-05-11,1095.00,capacidade,2001-01-01,2026-10-31
+cabril,14I/01A,Cabril,Tejo,720.00,719.00,2016-05-18,720.00,capacidade,2001-01-01,2026-10-31
+pracana,16K/01A,Pracana,Tejo,111.90,111.48,2006-11-24,111.90,capacidade,2001-01-01,2026-10-31
+fratel,16K/02A,Fratel,Tejo,92.50,91.89,2009-12-30,92.50,capacidade,2001-01-01,2026-10-31
 povoa,17L/01A,Póvoa,Tejo,19.30,22.00,2026-02-09,19.30,capacidade,2001-01-31,2026-10-25
-belver,17J/01A,Belver,Tejo,12.50,20.37,2026-02-04,20.37,maximo_registado,2001-01-31,2026-10-30
-alqueva,24M/07A,Alqueva,Guadiana,4150.00,4256.80,2013-05-31,4150.00,capacidade,2002-12-30,2026-10-30
-pedrogao,25L/01A,Pedrógão,Guadiana,,141.39,2026-02-05,141.39,maximo_registado,2006-05-08,2026-10-30
+belver,17J/01A,Belver,Tejo,12.50,20.37,2026-02-04,20.37,maximo_registado,2001-01-31,2026-10-31
+alqueva,24M/07A,Alqueva,Guadiana,4150.00,4256.80,2013-05-31,4150.00,capacidade,2002-12-30,2026-10-31
+pedrogao,25L/01A,Pedrógão,Guadiana,,141.39,2026-02-05,141.39,maximo_registado,2006-05-08,2026-10-31
