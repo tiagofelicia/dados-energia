@@ -282,16 +282,24 @@ REGISTO = [
     dict(id="producao-albufeiras-snirh", grupo="producao",
          caminho="data/producao/albufeiras_snirh_diario.csv",
          titulo="Albufeiras — água guardada em cada uma, por dia",
-         descricao="Volume armazenado (hm3) em cada uma das 40 albufeiras de centrais "
-                   "hidroelétricas com dados diários no SNIRH (incluindo o Alqueva e o Pedrógão), dia a "
-                   "dia, desde 2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
+         descricao="Volume armazenado (hm3) em cada uma das 56 albufeiras com uso para energia "
+                   "(as das centrais hidroelétricas, diárias, e as de rega com central, semanais), desde "
+                   "2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data"),
     dict(id="producao-albufeiras-snirh-lista", grupo="producao",
          caminho="data/producao/albufeiras_snirh.csv",
          titulo="Albufeiras — lista, capacidades e referência",
-         descricao="As 40 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, "
-                   "capacidade total, máximo registado e o volume usado como 100%.",
+         descricao="As 56 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, "
+                   "capacidade total (boletim semanal da APA), máximo registado, o volume usado como 100% "
+                   "e se os valores são diários ou semanais.",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico"),
+    dict(id="producao-centrais-hidricas", grupo="producao",
+         caminho="data/producao/centrais_hidricas.csv",
+         titulo="Centrais hídricas de cada albufeira",
+         descricao="As centrais que tiram água de cada albufeira do producao-albufeiras-snirh: "
+                   "turbinas, potência e bombagem (MW) e produção de 2024 e 2025 (GWh). Fonte: APREN, "
+                   "Anuário 2026; nas que lá não estão, CNPGB.",
+         cadencia="anual (anuário da APREN)", tolerancia_dias=400, deteccao="estatico"),
     dict(id="producao-records", grupo="producao", caminho="data/producao/records_producao.json",
          titulo="Recordes de produção",
          descricao="Recordes do balanço energético e agregados mensais e anuais.",
