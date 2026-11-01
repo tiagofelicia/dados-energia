@@ -40,6 +40,7 @@ SAÍDA
     referencia_hm3, referencia o volume que conta como 100% (a capacidade ou o máximo registado)
     inicio_serie, ultimo_dia  primeiro e último dia com valor
     frequencia                diária ou semanal (o intervalo mediano entre os últimos 9 valores)
+    latitude, longitude       a barragem (graus decimais, WGS84)
 
   As centrais de cada albufeira (potência e produção) estão em data/producao/centrais_hidricas.csv,
   um ficheiro estático, revisto à mão quando sai um anuário novo da APREN.
@@ -136,8 +137,69 @@ ALBUFEIRAS = [
     ("arade", "30G/02A", 1627743460, "Arade", "Arade", 28380),
     ("bravura", "30E/01A", 1627743568, "Bravura", "Ribeiras do Algarve", 34825),
 ]
+# Localização da barragem (latitude, longitude, WGS84): a lista de características de albufeiras do SNIRH, pelo
+# código da estação; as que lá não estão com este código, o mapa de barragens da CNPGB.
+COORDENADAS = {
+    "alto_lindoso": (41.8722, -8.2027),
+    "touvedo": (41.8122, -8.3538),
+    "alto_rabagao": (41.7379, -7.854),
+    "paradela": (41.7669, -7.9501),
+    "canicada": (41.6525, -8.2313),
+    "vilarinho_das_furnas": (41.7634, -8.2098),
+    "venda_nova": (41.6812, -7.9848),
+    "salamonde": (41.6915, -8.0915),
+    "guilhofrei": (41.5856, -8.1377),
+    "baixo_sabor": (41.2236, -7.0219),   # CNPGB
+    "carrapatelo": (41.0856, -8.131),
+    "alto_tamega": (41.5743, -7.7312),   # CNPGB
+    "bemposta": (41.3012, -6.4699),
+    "torrao": (41.0971, -8.2614),
+    "crestuma_lever": (41.0729, -8.4868),
+    "foz_tua": (41.2189, -7.4222),   # CNPGB
+    "vilar_tabuaco": (40.9872, -7.5348),
+    "valeira": (41.1603, -7.3751),
+    "regua": (41.1462, -7.7399),
+    "pocinho": (41.1352, -7.1143),
+    "picote": (41.3802, -6.3518),
+    "daivoes": (41.5256, -7.8634),   # CNPGB
+    "miranda": (41.489, -6.2639),
+    "gouvaes": (41.4942, -7.7271),   # CNPGB
+    "varosa": (41.1204, -7.7756),
+    "serra_serrada": (41.9613, -6.7722),
+    "ribeiradio": (40.7437, -8.3197),   # CNPGB
+    "aguieira": (40.3407, -8.1967),
+    "fronhas": (40.2463, -8.1638),
+    "raiva": (40.3097, -8.249),
+    "lagoa_comprida": (40.364, -7.6492),
+    "caldeirao": (40.5317, -7.3302),
+    "vale_do_rossim": (40.3996, -7.5885),
+    "alto_ceira": (40.1892, -7.8473),   # CNPGB
+    "lagoacho": (40.3861, -7.6203),   # CNPGB
+    "castelo_de_bode": (39.543, -8.3189),
+    "cabril": (39.9178, -8.1328),
+    "maranhao": (39.015, -7.9759),
+    "montargil": (39.0532, -8.1753),
+    "pracana": (39.565, -7.812),
+    "fratel": (39.5434, -7.8027),
+    "idanha": (39.9451, -7.2014),
+    "santa_luzia": (40.0897, -7.8582),
+    "bouca": (39.8537, -8.2198),
+    "povoa": (39.4769, -7.5554),
+    "belver": (39.4797, -7.9985),
+    "alvito": (38.279, -7.9106),
+    "roxo": (37.9296, -8.0819),
+    "odivelas": (38.1848, -8.1153),
+    "pego_do_altar": (38.4187, -8.392),
+    "vale_do_gaio": (38.2481, -8.2955),
+    "alqueva": (38.1973, -7.4953),
+    "caia": (38.9978, -7.1493),
+    "pedrogao": (38.1107, -7.6304),   # CNPGB
+    "arade": (37.2395, -8.3763),
+    "bravura": (37.2017, -8.6978),
+}
 COLUNAS_META = ["coluna", "codigo_snirh", "nome", "bacia", "capacidade_hm3", "maximo_registado_hm3",
-                "data_maximo", "referencia_hm3", "referencia", "inicio_serie", "ultimo_dia", "frequencia"]
+                "data_maximo", "referencia_hm3", "referencia", "inicio_serie", "ultimo_dia", "frequencia",
+                "latitude", "longitude"]
 
 
 def pedir(url):
@@ -287,7 +349,8 @@ def texto_meta(dias):
                     "referencia_hm3": f"{ref:.2f}" if ref else "",
                     "referencia": ("capacidade" if usa_cap else "maximo_registado") if ref else "",
                     "inicio_serie": serie[0][0] if serie else "", "ultimo_dia": serie[-1][0] if serie else "",
-                    "frequencia": freq})
+                    "frequencia": freq,
+                    "latitude": COORDENADAS.get(col, ("", ""))[0], "longitude": COORDENADAS.get(col, ("", ""))[1]})
     return buf.getvalue()
 
 

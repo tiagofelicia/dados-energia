@@ -290,8 +290,8 @@ REGISTO = [
          caminho="data/producao/albufeiras_snirh.csv",
          titulo="Albufeiras — lista, capacidades e referência",
          descricao="As 56 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, "
-                   "capacidade total (boletim semanal da APA), máximo registado, o volume usado como 100% "
-                   "e se os valores são diários ou semanais.",
+                   "capacidade total (boletim semanal da APA), máximo registado, o volume usado como 100%, "
+                   "se os valores são diários ou semanais e a localização da barragem.",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico"),
     dict(id="producao-centrais-hidricas", grupo="producao",
          caminho="data/producao/centrais_hidricas.csv",
