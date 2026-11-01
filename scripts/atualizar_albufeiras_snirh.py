@@ -138,7 +138,9 @@ ALBUFEIRAS = [
     ("bravura", "30E/01A", 1627743568, "Bravura", "Ribeiras do Algarve", 34825),
 ]
 # Localização da barragem (latitude, longitude, WGS84): a lista de características de albufeiras do SNIRH, pelo
-# código da estação; as que lá não estão com este código, o mapa de barragens da CNPGB.
+# código da estação; as que lá não estão com este código, o mapa de barragens da CNPGB; o Baixo Sabor, o paredão
+# do escalão de montante no OpenStreetMap (igual ao Wikidata; a da CNPGB ficava 0,8 km a jusante). Conferidas a
+# 01/11/2026 com os paredões desenhados no OpenStreetMap: todas a menos de 200 m (mediana de 7 m).
 COORDENADAS = {
     "alto_lindoso": (41.8722, -8.2027),
     "touvedo": (41.8122, -8.3538),
@@ -149,7 +151,7 @@ COORDENADAS = {
     "venda_nova": (41.6812, -7.9848),
     "salamonde": (41.6915, -8.0915),
     "guilhofrei": (41.5856, -8.1377),
-    "baixo_sabor": (41.2236, -7.0219),   # CNPGB
+    "baixo_sabor": (41.2283, -7.0128),   # OpenStreetMap
     "carrapatelo": (41.0856, -8.131),
     "alto_tamega": (41.5743, -7.7312),   # CNPGB
     "bemposta": (41.3012, -6.4699),
