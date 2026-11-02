@@ -10,8 +10,8 @@ name: Atualizar Dados de Produção (REN)
 
 on:
   schedule:
-    # minuto 15, a cada 4 horas
-    - cron: '15 */4 * * *'
+    # minuto 15, a cada 3 horas
+    - cron: '15 */3 * * *'
 
   workflow_dispatch: # Permite execução manual
 

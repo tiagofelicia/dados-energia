@@ -19,7 +19,7 @@ on:
     # escolhe os argumentos e na expressão do timeout-minutes. Ao mudar um
     # cron, mudar nos três; um literal que deixe de bater não dá erro, apenas
     # cai silenciosamente no ramo por omissão.
-    - cron: '0 */4 * * *'    # PT+ES, ontem+hoje — de 4 em 4 horas
+    - cron: '0 */3 * * *'    # PT+ES, ontem+hoje — de 3 em 3 horas
     - cron: '0 14,22 * * *'  # todos, 1 semana — 2x/dia (14:00 e 22:00 UTC)
     - cron: '0 6 * * 1'      # todos, 3 semanas — segunda-feira 06:00 UTC
 
