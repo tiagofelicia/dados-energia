@@ -8,7 +8,7 @@
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado.",
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 2452063,
+   "bytes": 2452344,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -29,7 +29,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-atuais",
-   "linhas": 35215,
+   "linhas": 35209,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -44,7 +44,7 @@
    ],
    "titulo": "Preços OMIE do ano corrente",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-02",
+   "ultima_data": "2026-11-03",
    "url": "https://dados.tiagofelicia.pt/data/omie/omie_dados_atuais.csv"
   },
   {
@@ -95,7 +95,7 @@
     "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 10, 11, 16, 19 e 20 campos.",
     "Na tabela quarto-horária, a 2.ª passagem pela hora que se repete em outubro leva ' (2.ª)' no intervalo, e a última coluna, data_utc, é o início do intervalo em UTC."
    ],
-   "bytes": 1725136,
+   "bytes": 1722782,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/precos-horarios.csv",
    "colunas": [
@@ -130,11 +130,11 @@
    ],
    "titulo": "Preços finais por tarifário indexado",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-02",
+   "ultima_data": "2026-11-03",
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
-   "bytes": 3954,
+   "bytes": 3725,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/futuros_omip.csv",
    "colunas": [
@@ -145,10 +145,10 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-futuros",
-   "linhas": 81,
+   "linhas": 75,
    "titulo": "Futuros OMIP — sessão em curso",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-11-02",
+   "ultima_data": "2026-11-03",
    "url": "https://dados.tiagofelicia.pt/data/omie/futuros_omip.csv"
   },
   {
@@ -158,7 +158,7 @@
     "Não passa de 1 de janeiro: nos primeiros dias do ano tem menos de 100 dias.",
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 865085,
+   "bytes": 858568,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_recentes.csv",
    "colunas": [
@@ -179,7 +179,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-recentes",
-   "linhas": 12375,
+   "linhas": 12273,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -194,11 +194,11 @@
    ],
    "titulo": "Preços OMIE — últimos 100 dias",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-02",
+   "ultima_data": "2026-11-03",
    "url": "https://dados.tiagofelicia.pt/data/omie/omie_recentes.csv"
   },
   {
-   "bytes": 564585,
+   "bytes": 566803,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -215,7 +215,7 @@
    "padrao": "data/omie/historico/omip_historico_*.csv",
    "titulo": "Futuros OMIP — histórico de sessões",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-10-30",
+   "ultima_data": "2026-11-02",
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
@@ -229,11 +229,11 @@
    "id": "omie-records",
    "titulo": "Recordes OMIE",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-01",
+   "ultima_data": "2026-11-02",
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 6885,
+   "bytes": 8019,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -259,7 +259,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
-   "bytes": 923526,
+   "bytes": 923678,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/MIBEL_ano_atual_ACUM.csv",
    "colunas": [
@@ -289,7 +289,7 @@
    ],
    "titulo": "MIBEL acumulado (intermédio de pipeline)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-02",
+   "ultima_data": "2026-11-03",
    "url": "https://dados.tiagofelicia.pt/data/omie/MIBEL_ano_atual_ACUM.csv"
   },
   {
@@ -1309,7 +1309,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-02T17:40:39+00:00",
+ "gerado_em": "2026-11-02T19:15:47+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1325,7 +1325,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 547322469,
+  "bytes": 547317154,
   "datasets": 46,
   "ficheiros": 1913
  }
