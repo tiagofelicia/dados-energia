@@ -426,7 +426,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal.csv"
   },
   {
-   "bytes": 2572666,
+   "bytes": 2594470,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/producao/albufeiras_snirh_diario.csv",
    "colunas": [
@@ -453,6 +453,7 @@
     "pocinho",
     "picote",
     "daivoes",
+    "feiticeiro",
     "miranda",
     "gouvaes",
     "varosa",
@@ -488,19 +489,19 @@
     "arade",
     "bravura"
    ],
-   "descricao": "Volume armazenado (hm3) em cada uma das 56 albufeiras com uso para energia (as das centrais hidroelétricas, diárias, e as de rega com central, semanais), desde 2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
+   "descricao": "Volume armazenado (hm3) em cada uma das 57 albufeiras com uso para energia (as das centrais hidroelétricas, diárias, e as de rega com central, semanais), desde 2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
    "ficheiros": 1,
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-snirh",
-   "linhas": 9416,
+   "linhas": 9417,
    "titulo": "Albufeiras — água guardada em cada uma, por dia",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-10-31",
+   "ultima_data": "2026-11-01",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_snirh_diario.csv"
   },
   {
-   "bytes": 6946,
+   "bytes": 7068,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/producao/albufeiras_snirh.csv",
    "colunas": [
@@ -519,19 +520,19 @@
     "latitude",
     "longitude"
    ],
-   "descricao": "As 56 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, capacidade total (boletim semanal da APA; CNPGB nas que lá não estão), máximo registado, o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
+   "descricao": "As 57 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, capacidade total (boletim semanal da APA; CNPGB nas que lá não estão), máximo registado, o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
    "ficheiros": 1,
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-snirh-lista",
-   "linhas": 56,
+   "linhas": 57,
    "titulo": "Albufeiras — lista, capacidades e referência",
    "tolerancia_dias": 400,
    "ultima_data": null,
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_snirh.csv"
   },
   {
-   "bytes": 3846,
+   "bytes": 4279,
    "cadencia": "anual (anuário da APREN)",
    "caminho": "data/producao/centrais_hidricas.csv",
    "colunas": [
@@ -545,12 +546,12 @@
     "producao_2025_gwh",
     "fonte"
    ],
-   "descricao": "As centrais que tiram água de cada albufeira do producao-albufeiras-snirh: turbinas, potência e bombagem (MW) e produção de 2024 e 2025 (GWh). Fonte: APREN, Anuário 2026; nas que lá não estão, CNPGB.",
+   "descricao": "As centrais que tiram água de cada albufeira do producao-albufeiras-snirh: turbinas, potência e bombagem (MW) e produção de 2024 e 2025 (GWh). Fonte: APREN, Anuário 2026; nas que lá não estão, CNPGB. Com albufeira vazia, as outras grandes centrais hídricas do anuário (no rio Alva e na Madeira).",
    "ficheiros": 1,
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-centrais-hidricas",
-   "linhas": 51,
+   "linhas": 57,
    "titulo": "Centrais hídricas de cada albufeira",
    "tolerancia_dias": 400,
    "ultima_data": null,
@@ -1308,7 +1309,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-02T06:12:42+00:00",
+ "gerado_em": "2026-11-02T10:51:37+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1324,7 +1325,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 546982649,
+  "bytes": 547005008,
   "datasets": 46,
   "ficheiros": 1913
  }
