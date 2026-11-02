@@ -9,9 +9,10 @@ Ambiente (snirh.apambiente.pt), «Dados de base» da rede hidrométrica: o parâ
 armazenado na última hora» (dam3), um valor por dia, das 23:00. Não precisa de chave; o SNIRH
 pede que se refira a origem dos dados.
 
-As albufeiras são as 56 com uso para energia: as do boletim semanal de albufeiras da APA que têm
+As albufeiras são as 57 com uso para energia: as do boletim semanal de albufeiras da APA que têm
 «energia» no uso (as das centrais hidroelétricas e as de rega ou abastecimento que também têm
-central) e as de centrais que não entram nesse boletim (as três do Tâmega, Alto Ceira e Pedrógão).
+central) e as de centrais que não entram nesse boletim (as três do Tâmega, Feiticeiro, Alto Ceira e
+Pedrógão).
 As das centrais hidroelétricas têm um valor por dia; as de rega, um por semana, à segunda-feira.
 
 ONDE CORRE
@@ -104,6 +105,7 @@ ALBUFEIRAS = [
     ("pocinho", "07O/02A", 1627758976, "Pocinho", "Douro", 82900),
     ("picote", "05S/01A", 1627758968, "Picote", "Douro", 62700),
     ("daivoes", "04J/08A", 9978398426, "Daivões", "Douro", 55480),   # CNPGB
+    ("feiticeiro", "06O/10A", 7554829602, "Feiticeiro", "Douro", 31000),   # CNPGB (contra-embalse do Baixo Sabor)
     ("miranda", "05T/01A", 1627758786, "Miranda", "Douro", 28000),
     ("gouvaes", "05K/02A", 10908513554, "Gouvães", "Douro", 14100),   # CNPGB
     ("varosa", "07K/02A", 1627759512, "Varosa", "Douro", 12943),
@@ -166,6 +168,7 @@ COORDENADAS = {
     "pocinho": (41.1352, -7.1143),
     "picote": (41.3802, -6.3518),
     "daivoes": (41.5256, -7.8634),   # CNPGB
+    "feiticeiro": (41.2022, -7.0931),   # CNPGB
     "miranda": (41.489, -6.2639),
     "gouvaes": (41.4942, -7.7271),   # CNPGB
     "varosa": (41.1204, -7.7756),

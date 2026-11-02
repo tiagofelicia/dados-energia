@@ -282,14 +282,14 @@ REGISTO = [
     dict(id="producao-albufeiras-snirh", grupo="producao",
          caminho="data/producao/albufeiras_snirh_diario.csv",
          titulo="Albufeiras — água guardada em cada uma, por dia",
-         descricao="Volume armazenado (hm3) em cada uma das 56 albufeiras com uso para energia "
+         descricao="Volume armazenado (hm3) em cada uma das 57 albufeiras com uso para energia "
                    "(as das centrais hidroelétricas, diárias, e as de rega com central, semanais), desde "
                    "2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data"),
     dict(id="producao-albufeiras-snirh-lista", grupo="producao",
          caminho="data/producao/albufeiras_snirh.csv",
          titulo="Albufeiras — lista, capacidades e referência",
-         descricao="As 56 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, "
+         descricao="As 57 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, "
                    "capacidade total (boletim semanal da APA; CNPGB nas que lá não estão), máximo registado, "
                    "o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico"),
@@ -298,7 +298,8 @@ REGISTO = [
          titulo="Centrais hídricas de cada albufeira",
          descricao="As centrais que tiram água de cada albufeira do producao-albufeiras-snirh: "
                    "turbinas, potência e bombagem (MW) e produção de 2024 e 2025 (GWh). Fonte: APREN, "
-                   "Anuário 2026; nas que lá não estão, CNPGB.",
+                   "Anuário 2026; nas que lá não estão, CNPGB. Com albufeira vazia, as outras grandes centrais "
+                   "hídricas do anuário (no rio Alva e na Madeira).",
          cadencia="anual (anuário da APREN)", tolerancia_dias=400, deteccao="estatico"),
     dict(id="producao-records", grupo="producao", caminho="data/producao/records_producao.json",
          titulo="Recordes de produção",
