@@ -219,7 +219,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
-   "bytes": 7617,
+   "bytes": 7610,
    "cadencia": "diária",
    "caminho": "data/omie/records_omie.json",
    "descricao": "Recordes históricos (dia/hora mais caro e mais barato, etc.) e agregados mensais e anuais.",
@@ -421,7 +421,7 @@
    "id": "producao-albufeiras",
    "linhas": 617,
    "titulo": "Albufeiras — energia guardada por semana",
-   "tolerancia_dias": 14,
+   "tolerancia_dias": 21,
    "ultima_data": "2026-10-19",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal.csv"
   },
@@ -558,7 +558,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/centrais_hidricas.csv"
   },
   {
-   "bytes": 11870,
+   "bytes": 11863,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -1309,7 +1309,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-03T14:50:33+00:00",
+ "gerado_em": "2026-11-03T14:55:14+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1325,7 +1325,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 548153702,
+  "bytes": 548153688,
   "datasets": 46,
   "ficheiros": 1914
  }
