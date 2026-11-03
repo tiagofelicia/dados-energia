@@ -23,7 +23,8 @@ SAÍDA
     ano_iso         ano ISO da semana
     semana_iso      número ISO da semana (1–53)
     energia_gwh     energia guardada (GWh; a ENTSO-E publica MWh)
-    data_utc        início da semana em UTC (AAAA-MM-DD HH:MM), como o data_utc dos outros CSV
+    data_utc        início da semana em UTC (AAAA-MM-DD HH:MM), como o data_utc dos outros CSV:
+                    segunda-feira 00:00 de Lisboa, ou seja, domingo 23:00 no horário de verão
 
 As semanas novas juntam-se às que já estão no ficheiro; um valor revisto pela
 ENTSO-E substitui o anterior. Só se reescreve o ficheiro se alguma coisa mudou.
@@ -33,7 +34,7 @@ import csv
 import io
 import os
 import sys
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -55,6 +56,13 @@ SEMANAS_INCREMENTAL = 12
 TZ = ZoneInfo("Europe/Lisbon")
 
 
+def utc_da_segunda(segunda):
+    """Segunda-feira 00:00 de Lisboa em UTC. Não se usa o carimbo da ENTSO-E: o cliente soma 7 dias por
+    posição ao início do período, sem a mudança de hora, e a hora de cada semana dependia da estação em
+    que o pedido começava (o backfill deixou as semanas de verão com uma hora a mais)."""
+    return datetime.combine(segunda, time(0), tzinfo=TZ).astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M")
+
+
 def semanas_da_resposta(pontos):
     """[(unix_ts, MWh)] → {semana_inicio: linha}. O início do período vem em UTC e, para a semana de
     Portugal, pode cair no domingo à noite (a ENTSO-E conta as semanas em hora da Europa Central):
@@ -70,7 +78,7 @@ def semanas_da_resposta(pontos):
             "ano_iso": iso[0],
             "semana_iso": iso[1],
             "energia_gwh": round(mwh / 1000, 2),
-            "data_utc": inicio_utc.strftime("%Y-%m-%d %H:%M"),
+            "data_utc": utc_da_segunda(segunda),
         }
     return linhas
 
@@ -128,6 +136,10 @@ def main():
     existentes = ler_existente()
     antigo = texto_csv(existentes) if existentes else None
     existentes.update({k: {c: str(v) for c, v in r.items()} for k, r in novas.items()})
+    # A data_utc refaz-se em todas as semanas, não só nas que vieram agora: corrige as gravadas antes
+    # de 03/11/2026, que vinham do carimbo da ENTSO-E
+    for r in existentes.values():
+        r["data_utc"] = utc_da_segunda(date.fromisoformat(r["semana_inicio"]))
     novo = texto_csv(existentes)
     if novo == antigo:
         print(f"= {os.path.relpath(CAMINHO, ROOT_DIR)} sem alterações ({len(existentes)} semanas)")
