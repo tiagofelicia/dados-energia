@@ -235,8 +235,9 @@ def taxonomia_ren():
     if not os.path.exists(p):
         return set()
     with open(p, encoding="utf-8-sig") as f:
-        # as 3 primeiras colunas são dia/hora/intervalo
-        return set(f.readline().strip().split(",")[3:])
+        # as 3 primeiras colunas são dia/hora/intervalo; a data_utc (no fim, desde
+        # 23/10/2026) é o instante em UTC, não uma tecnologia
+        return set(f.readline().strip().split(",")[3:]) - {"data_utc"}
 
 
 def taxonomia_energy_charts():

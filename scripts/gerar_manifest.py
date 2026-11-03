@@ -275,8 +275,13 @@ REGISTO = [
          descricao="Energia que a água das albufeiras e das centrais de bombagem "
                    "portuguesas pode produzir (GWh), semana a semana, desde 2015. "
                    "Fonte: ENTSO-E (art. 16.1.D).",
-         # A ENTSO-E publica cada semana com alguns dias de atraso
-         cadencia="3x/semana", tolerancia_dias=14, deteccao="csv_col_iso:semana_inicio"),
+         # tolerancia_dias=21: a última data é a SEGUNDA-FEIRA da semana, e a ENTSO-E só a
+         # publica depois de ela acabar (até ao 3.º dia útil seguinte, art. 16.1.D); a corrida
+         # que a apanha é a de quinta ou a de sábado, e o GitHub atrasa as agendadas várias
+         # horas. Em funcionamento normal o atraso chega a 17 dias na véspera dessa corrida
+         # (19 se a semana só sair na quinta); com 14 o validador chumbava todas as semanas
+         # de terça a quinta.
+         cadencia="3x/semana", tolerancia_dias=21, deteccao="csv_col_iso:semana_inicio"),
     # Recolhidas num PC em Portugal (tarefa agendada), não por um workflow: o SNIRH
     # só aceita ligações de Portugal. O valor de cada dia chega na manhã seguinte.
     dict(id="producao-albufeiras-snirh", grupo="producao",
