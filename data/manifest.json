@@ -426,6 +426,52 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal.csv"
   },
   {
+   "bytes": 27314,
+   "cadencia": "3x/semana",
+   "caminho": "data/producao/albufeiras_semanal_es.csv",
+   "colunas": [
+    "semana_inicio",
+    "ano_iso",
+    "semana_iso",
+    "energia_gwh",
+    "data_utc"
+   ],
+   "descricao": "Energia que a água das albufeiras e das centrais de bombagem espanholas pode produzir (GWh), semana a semana, desde 2015. Fonte: ENTSO-E (art. 16.1.D).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "producao",
+   "id": "producao-albufeiras-es",
+   "linhas": 618,
+   "titulo": "Albufeiras de Espanha — energia guardada por semana",
+   "tolerancia_dias": 21,
+   "ultima_data": "2026-10-26",
+   "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal_es.csv"
+  },
+  {
+   "bytes": 19646,
+   "cadencia": "3x/semana (valor mensal)",
+   "caminho": "data/producao/albufeiras_mensal_es.csv",
+   "colunas": [
+    "mes",
+    "total_gwh",
+    "total_pct",
+    "anuais_gwh",
+    "anuais_pct",
+    "hiperanuais_gwh",
+    "hiperanuais_pct"
+   ],
+   "descricao": "Reservas hidroelétricas de Espanha peninsular (GWh) e enchimento (% da capacidade), mês a mês, desde 1990: o total, as albufeiras anuais e as hiperanuais. Fonte: Red Eléctrica (REData).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "producao",
+   "id": "producao-albufeiras-es-mensal",
+   "linhas": 441,
+   "titulo": "Albufeiras de Espanha — reservas e enchimento por mês",
+   "tolerancia_dias": 100,
+   "ultima_data": "2026-09-01",
+   "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_mensal_es.csv"
+  },
+  {
    "bytes": 2595759,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/producao/albufeiras_snirh_diario.csv",
@@ -1309,7 +1355,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-06T14:46:31+00:00",
+ "gerado_em": "2026-11-06T15:13:52+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1325,8 +1371,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 550630134,
-  "datasets": 46,
-  "ficheiros": 1920
+  "bytes": 550677094,
+  "datasets": 48,
+  "ficheiros": 1922
  }
 }
