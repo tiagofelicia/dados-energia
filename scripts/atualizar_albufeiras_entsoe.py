@@ -155,6 +155,11 @@ def main():
     # de 03/11/2026, que vinham do carimbo da ENTSO-E
     for r in existentes.values():
         r["data_utc"] = utc_da_segunda(date.fromisoformat(r["semana_inicio"]), cfg["tz"])
+    # Uma lacuna que fique (a ENTSO-E sem a semana) não impede a escrita, mas fica no log
+    semanas = [date.fromisoformat(k) for k in sorted(existentes)]
+    falta = [(a + timedelta(weeks=1)).isoformat() for a, b in zip(semanas, semanas[1:]) if b - a != timedelta(weeks=1)]
+    if falta:
+        print(f"  Aviso: semanas em falta pelo meio (a 1.ª de cada lacuna): {', '.join(falta[:10])}")
     novo = texto_csv(existentes)
     if novo == antigo:
         print(f"= {os.path.relpath(caminho, ROOT_DIR)} sem alterações ({len(existentes)} semanas)")

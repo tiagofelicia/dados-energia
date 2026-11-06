@@ -260,8 +260,15 @@ PSR_TYPES = {
 }
 
 
-def _parse_period_points(period_elem):
-    """Itera Points de um <Period>. Retorna lista (unix_ts, value)."""
+def _parse_period_points(period_elem, repor_omitidos=False):
+    """Itera Points de um <Period>. Retorna lista (unix_ts, value).
+
+    repor_omitidos: para a curva A03 ("variable sized block"), em que a ENTSO-E não envia o
+    ponto cujo valor é igual ao do anterior. Cada posição em falta ENTRE o primeiro e o último
+    ponto recebidos fica com o valor da anterior. As do fim não se repõem (o timeInterval pode ir
+    além do que já foi publicado): uma semana omitida no fim aparece na corrida seguinte, quando
+    já houver outra depois dela.
+    """
     time_interval_start = None
     resolution_min = 60
     for child in period_elem:
@@ -291,7 +298,7 @@ def _parse_period_points(period_elem):
             start_dt = datetime.strptime(time_interval_start, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
         except ValueError:
             return []
-    out = []
+    pontos = []
     for pt in period_elem:
         if _strip_ns(pt.tag) != 'Point':
             continue
@@ -312,12 +319,18 @@ def _parse_period_points(period_elem):
                     pass
         if pos is None or qty is None:
             continue
-        ts_dt = start_dt + timedelta(minutes=(pos - 1) * resolution_min)
-        out.append((int(ts_dt.timestamp()), qty))
-    return out
+        pontos.append((pos, qty))
+    if repor_omitidos and pontos:
+        por_pos = dict(pontos)
+        pontos, ultimo = [], None
+        for pos in range(min(por_pos), max(por_pos) + 1):
+            ultimo = por_pos.get(pos, ultimo)
+            pontos.append((pos, ultimo))
+    return [(int((start_dt + timedelta(minutes=(pos - 1) * resolution_min)).timestamp()), qty)
+            for pos, qty in pontos]
 
 
-def parse_timeseries_points(xml_text):
+def parse_timeseries_points(xml_text, repor_a03=False):
     """Devolve lista de (unix_ts_utc, value), um valor por timestamp.
 
     Usado para grandezas ESCALARES por timestamp (A44 preço, A65 load, A71 total
@@ -327,6 +340,9 @@ def parse_timeseries_points(xml_text):
     com o ÚLTIMO valor por timestamp (ordem do documento ≈ revisão mais recente).
     Para séries não-sobrepostas (ex.: 1 TimeSeries/dia) o resultado é idêntico ao de
     antes — cada timestamp aparece uma só vez.
+
+    repor_a03: nas TimeSeries de curva A03, repõe os pontos omitidos por repetirem o valor
+    anterior (ver _parse_period_points). Nas outras curvas não muda nada.
     """
     if not xml_text:
         return []
@@ -340,10 +356,11 @@ def parse_timeseries_points(xml_text):
     for ts_elem in root.iter():
         if _strip_ns(ts_elem.tag) != 'TimeSeries':
             continue
+        curva = next(((c.text or '').strip() for c in ts_elem if _strip_ns(c.tag) == 'curveType'), '')
         for period in ts_elem:
             if _strip_ns(period.tag) != 'Period':
                 continue
-            for k, v in _parse_period_points(period):
+            for k, v in _parse_period_points(period, repor_omitidos=repor_a03 and curva == 'A03'):
                 by_ts[k] = v  # último valor por timestamp (não somar sobreposições)
     return sorted(by_ts.items())
 
@@ -606,6 +623,9 @@ def fetch_reservoir_filling(eic, start_dt, end_dt, token):
 
     Uma série por zona, com resolução P7D: um valor (MWh) por semana, carimbado com o início da
     semana. Devolve [(unix_ts, MWh)].
+
+    Vem em curva A03: a semana com o mesmo valor da anterior não vem no XML, e repõe-se aqui (sem
+    isso faltavam as semanas 4, 7 e 10 de 2021 de Espanha).
     """
     params = {
         'documentType': 'A72',
@@ -615,7 +635,7 @@ def fetch_reservoir_filling(eic, start_dt, end_dt, token):
         'periodEnd': _fmt_period(end_dt),
     }
     xml = _get(params, token)
-    return parse_timeseries_points(xml)
+    return parse_timeseries_points(xml, repor_a03=True)
 
 
 def fetch_wind_solar_forecast(eic, start_dt, end_dt, token):

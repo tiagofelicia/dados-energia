@@ -282,6 +282,23 @@ REGISTO = [
          # (19 se a semana só sair na quinta); com 14 o validador chumbava todas as semanas
          # de terça a quinta.
          cadencia="3x/semana", tolerancia_dias=21, deteccao="csv_col_iso:semana_inicio"),
+    dict(id="producao-albufeiras-es", grupo="producao",
+         caminho="data/producao/albufeiras_semanal_es.csv",
+         titulo="Albufeiras de Espanha — energia guardada por semana",
+         descricao="Energia que a água das albufeiras e das centrais de bombagem "
+                   "espanholas pode produzir (GWh), semana a semana, desde 2015. "
+                   "Fonte: ENTSO-E (art. 16.1.D).",
+         # tolerancia_dias=21: a mesma conta do producao-albufeiras (o mesmo workflow)
+         cadencia="3x/semana", tolerancia_dias=21, deteccao="csv_col_iso:semana_inicio"),
+    dict(id="producao-albufeiras-es-mensal", grupo="producao",
+         caminho="data/producao/albufeiras_mensal_es.csv",
+         titulo="Albufeiras de Espanha — reservas e enchimento por mês",
+         descricao="Reservas hidroelétricas de Espanha peninsular (GWh) e enchimento "
+                   "(% da capacidade), mês a mês, desde 1990: o total, as albufeiras anuais "
+                   "e as hiperanuais. Fonte: Red Eléctrica (REData).",
+         # tolerancia_dias=100: a última data é o dia 1 do mês, e a REE só publica o mês
+         # semanas depois de ele acabar (a 06/11/2026 o último era setembro: 66 dias).
+         cadencia="3x/semana (valor mensal)", tolerancia_dias=100, deteccao="csv_col_iso:mes"),
     # Recolhidas num PC em Portugal (tarefa agendada), não por um workflow: o SNIRH
     # só aceita ligações de Portugal. O valor de cada dia chega na manhã seguinte.
     dict(id="producao-albufeiras-snirh", grupo="producao",

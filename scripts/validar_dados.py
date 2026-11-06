@@ -138,6 +138,13 @@ REGRAS = {
         calendario="dia", resolucao_coluna="Consumo", tolerante=True),
     "producao-bombagem": dict(
         colunas=["dia", "producao_bombagem_gwh"], chave=["dia"]),
+    "producao-albufeiras": dict(
+        colunas=["semana_inicio", "energia_gwh", "data_utc"], chave=["semana_inicio"], crescente=True),
+    "producao-albufeiras-es": dict(
+        colunas=["semana_inicio", "energia_gwh", "data_utc"], chave=["semana_inicio"], crescente=True),
+    "producao-albufeiras-es-mensal": dict(
+        colunas=["mes", "total_gwh", "total_pct", "anuais_gwh", "anuais_pct",
+                 "hiperanuais_gwh", "hiperanuais_pct"], chave=["mes"], crescente=True),
 
     # Os históricos são ficheiros fechados: já não mudam, e por isso não vale a
     # pena relê-los a cada corrida do CI. Mas é neles que a verificação de
