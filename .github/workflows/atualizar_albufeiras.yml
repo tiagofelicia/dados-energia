@@ -1,17 +1,30 @@
-# Energia guardada nas albufeiras portuguesas, semana a semana (ENTSO-E Transparency
-# Platform, art. 16.1.D: documento A72).
+# Energia guardada nas albufeiras de Portugal e de Espanha, semana a semana (ENTSO-E
+# Transparency Platform, art. 16.1.D: documento A72), e as reservas de Espanha, mês a
+# mês, com o enchimento em % (Red Eléctrica, REData).
 #
-# scripts/atualizar_albufeiras_entsoe.py
+# scripts/atualizar_albufeiras_entsoe.py --pais pt
 #   -> data/producao/albufeiras_semanal.csv
+# scripts/atualizar_albufeiras_entsoe.py --pais es
+#   -> data/producao/albufeiras_semanal_es.csv
+# scripts/atualizar_albufeiras_ree.py
+#   -> data/producao/albufeiras_mensal_es.csv
 #
-# Requer o secret ENTSOE_TOKEN (o mesmo do Atualizar Producao (ENTSO-E)).
+# Requer o secret ENTSOE_TOKEN (o mesmo do Atualizar Producao (ENTSO-E)). A REE
+# não pede chave.
 #
 # A ENTSO-E publica cada semana com alguns dias de atraso e pode rever as
 # anteriores: cada corrida pede as últimas 12 semanas e junta-as ao ficheiro.
-# Três corridas por semana chegam (terça, quinta e sábado, 07:15 UTC).
+# Três corridas por semana chegam (terça, quinta e sábado, 07:15 UTC). A REE
+# só tem o mês depois de ele acabar: cada corrida pede o ano corrente e o
+# anterior.
 #
-# A primeira vez: correr à mão com backfill=true, que traz a série desde 2015
-# (um pedido por ano, ~1 min).
+# Sem ficheiro, cada script traz a série inteira sozinho (a ENTSO-E desde
+# 2015, um pedido por ano, ~1 min; a REE desde 1990, ~1 min). backfill=true
+# força isso nos três.
+#
+# Espanha e a REE não podem deitar abaixo Portugal: os dois passos têm
+# continue-on-error, e o commit apanha o que tiver saído. Se um deles deixar
+# de atualizar, quem dá por isso é o validador (tolerância do manifesto).
 #
 # O nome não pode ter * ? + [ ] ! : é alvo do workflow_run do gerar_hoje.yml,
 # que refaz o manifesto depois de cada corrida.
@@ -25,7 +38,7 @@ on:
   workflow_dispatch:
     inputs:
       backfill:
-        description: 'Reconstruir tudo desde 2015'
+        description: 'Reconstruir tudo (ENTSO-E desde 2015, REE desde 1990)'
         type: boolean
         required: false
         default: false
@@ -74,13 +87,36 @@ jobs:
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
         run: |
           if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
-            python scripts/atualizar_albufeiras_entsoe.py --backfill
+            python scripts/atualizar_albufeiras_entsoe.py --pais pt --backfill
           else
-            python scripts/atualizar_albufeiras_entsoe.py
+            python scripts/atualizar_albufeiras_entsoe.py --pais pt
+          fi
+
+      - name: Atualizar albufeiras de Espanha (ENTSO-E)
+        continue-on-error: true
+        env:
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+        run: |
+          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            python scripts/atualizar_albufeiras_entsoe.py --pais es --backfill
+          else
+            python scripts/atualizar_albufeiras_entsoe.py --pais es
+          fi
+
+      - name: Atualizar reservas de Espanha (REE)
+        continue-on-error: true
+        run: |
+          if [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            python scripts/atualizar_albufeiras_ree.py --backfill
+          else
+            python scripts/atualizar_albufeiras_ree.py
           fi
 
       - name: Fazer commit dos dados atualizados (com retry)
         uses: ./.github/actions/commit-with-retry
         with:
-          commit_message: "BOT: Atualizar albufeiras (ENTSO-E)"
-          file_pattern: "data/producao/albufeiras_semanal.csv"
+          commit_message: "BOT: Atualizar albufeiras (ENTSO-E e REE)"
+          # Os três ficheiros das albufeiras (os do SNIRH também casam com o padrão, mas
+          # este workflow não lhes toca: chegam da tarefa num PC em Portugal). Com os
+          # nomes um a um, o git add falhava enquanto um deles ainda não existisse.
+          file_pattern: "data/producao/albufeiras_*.csv"
