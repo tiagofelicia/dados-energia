@@ -233,7 +233,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 8082,
+   "bytes": 6927,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -255,7 +255,7 @@
    ],
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-07",
+   "ultima_data": "2026-11-08",
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
@@ -296,7 +296,7 @@
    "avisos": [
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 3828704,
+   "bytes": 3839963,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -325,7 +325,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-atuais",
-   "linhas": 29856,
+   "linhas": 29952,
    "resolucao_nativa": [
     {
      "ate": null,
@@ -335,7 +335,7 @@
    ],
    "titulo": "Produção elétrica do ano corrente",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-07",
+   "ultima_data": "2026-11-08",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_dados_atuais.csv"
   },
   {
@@ -385,7 +385,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/historico/"
   },
   {
-   "bytes": 105642,
+   "bytes": 105659,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_bombagem_diaria.csv",
    "colunas": [
@@ -397,10 +397,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-bombagem",
-   "linhas": 6155,
+   "linhas": 6156,
    "titulo": "Bombagem hidroelétrica diária",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-07",
+   "ultima_data": "2026-11-08",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
@@ -604,7 +604,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/centrais_hidricas.csv"
   },
   {
-   "bytes": 11869,
+   "bytes": 11870,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -614,11 +614,11 @@
    "id": "producao-records",
    "titulo": "Recordes de produção",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-07",
+   "ultima_data": "2026-11-08",
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 12722,
+   "bytes": 1750,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -635,7 +635,7 @@
    ],
    "titulo": "Instantâneo de produção do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-07",
+   "ultima_data": "2026-11-08",
    "url": "https://dados.tiagofelicia.pt/data/producao/hoje.json"
   },
   {
@@ -788,7 +788,7 @@
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1844,
+   "bytes": 1845,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -1355,7 +1355,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-07T23:57:27+00:00",
+ "gerado_em": "2026-11-08T00:38:07+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1371,7 +1371,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 551624438,
+  "bytes": 551623589,
   "datasets": 48,
   "ficheiros": 1922
  }
