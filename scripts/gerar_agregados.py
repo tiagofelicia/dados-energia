@@ -69,6 +69,28 @@ O critério é o da página balanco-historico. As horas contam-se pelo data_utc 
 duas 01h do último domingo de outubro são duas horas). A quota passa de 100%
 quando a importação também alimenta a bombagem e as baterias; conta como 100%.
 
+DO MEIO-DIA AO FIM DA TARDE
+---------------------------
+Os omie_*.csv (e os omie_es_*.csv) acabam com a diferença entre o preço mais alto
+do fim da tarde e o mais baixo do meio-dia, que mede quanto vale guardar a
+eletricidade barata das horas de sol para quando o sol se põe:
+
+  rampa_meio_dia        o preço mais baixo das horas que começam entre as 10h e
+                        as 16h (das 10h às 17h)
+  rampa_fim_tarde       o preço mais alto das horas que começam entre as 17h e
+                        as 21h (das 17h às 22h)
+  rampa_dif             rampa_fim_tarde − rampa_meio_dia
+  rampa_bateria         a margem de uma bateria com 85% de rendimento de ida e
+                        volta: rampa_fim_tarde − rampa_meio_dia ÷ 0,85
+
+O preço de cada hora é a média dos seus quartos de hora, para os anos do mercado
+horário e os do quarto-horário se medirem pela mesma régua; as horas são as do
+dia de cada ficheiro (Portugal nos omie_*, Espanha nos omie_es_*). No diário vêm
+também a hora do mínimo e a do máximo (rampa_meio_dia_hora, rampa_fim_tarde_hora);
+no mensal e no anual, as médias dos dias, quantos dias entraram (rampa_dias: só os
+que têm todas as horas das duas janelas) e em quantos a margem da bateria foi
+positiva (rampa_dias_bateria).
+
 USO
 ---
   python gerar_agregados.py            # tudo
@@ -227,6 +249,7 @@ def preparar_es(df):
     # Hora de mercado pela hora UTC (Espanha está sempre a horas inteiras de UTC):
     # assim a hora que se repete em outubro não junta duas horas numa.
     es["dia_hora"] = utc.dt.strftime("%Y-%m-%d %H")
+    es["hora_h"] = local.dt.strftime("%H")   # hora de Espanha (a do dia_hora é a de Portugal)
     return es
 
 
@@ -283,6 +306,77 @@ def agregar_omie_periodos(df, pais="pt"):
     mensal = agregar_omie(df, df["mes"], "mes", pais).sort_values(
         "mes", key=lambda s: pd.to_datetime(s, format="%m/%Y")).reset_index(drop=True)
     anual = agregar_omie(df, df["ano"], "ano", pais).sort_values("ano").reset_index(drop=True)
+    return diario, mensal, anual
+
+
+# ============================================================
+# Do meio-dia ao fim da tarde
+# ============================================================
+
+# As duas janelas, pela hora a que cada hora começa (hora local do dia do ficheiro)
+HORAS_MEIO_DIA = tuple(range(10, 17))    # das 10h às 17h: as horas em que o sol mais produz
+HORAS_FIM_TARDE = tuple(range(17, 22))   # das 17h às 22h: o sol já não chega e o consumo sobe
+RENDIMENTO_BATERIA = 0.85                # de cada MWh guardado voltam 0,85 MWh
+COLS_RAMPA_DIA = ["rampa_meio_dia", "rampa_meio_dia_hora", "rampa_fim_tarde", "rampa_fim_tarde_hora",
+                  "rampa_dif", "rampa_bateria"]
+
+
+def rampa_diaria(df, pais):
+    """Por dia ('dia' do df): o preço mais baixo do meio-dia e o mais alto do fim da tarde, e a que horas.
+
+    O preço de cada hora é a média dos seus quartos de hora. Só entram os dias com todas as horas das duas
+    janelas; num empate, conta a primeira hora.
+    """
+    h = (df.groupby(["dia", "dia_hora"], sort=False)
+           .agg(preco=(f"preco_{pais}", "mean"), hora=("hora_h", "first"))
+           .reset_index())
+    h["hora"] = pd.to_numeric(h["hora"], errors="coerce")
+    h = h.dropna(subset=["preco", "hora"])
+    md = h[h["hora"].isin(HORAS_MEIO_DIA)]
+    ft = h[h["hora"].isin(HORAS_FIM_TARDE)]
+    completos = (md.groupby("dia")["hora"].nunique().eq(len(HORAS_MEIO_DIA))
+                 & ft.groupby("dia")["hora"].nunique().eq(len(HORAS_FIM_TARDE))).reindex(h["dia"].unique(), fill_value=False)
+    dias = completos.index[completos]
+    md = md[md["dia"].isin(dias)]
+    ft = ft[ft["dia"].isin(dias)]
+    mn = md.loc[md.groupby("dia", sort=False)["preco"].idxmin()].set_index("dia")
+    mx = ft.loc[ft.groupby("dia", sort=False)["preco"].idxmax()].set_index("dia")
+    out = pd.DataFrame({
+        "rampa_meio_dia": mn["preco"],
+        "rampa_meio_dia_hora": mn["hora"].astype("Int64"),
+        "rampa_fim_tarde": mx["preco"],
+        "rampa_fim_tarde_hora": mx["hora"].astype("Int64"),
+    })
+    out["rampa_dif"] = out["rampa_fim_tarde"] - out["rampa_meio_dia"]
+    out["rampa_bateria"] = out["rampa_fim_tarde"] - out["rampa_meio_dia"] / RENDIMENTO_BATERIA
+    return out
+
+
+def juntar_rampa(diario, mensal, anual, rampa):
+    """As colunas da rampa no fim dos três agregados (as que já existiam ficam no mesmo sítio)."""
+    r = rampa.copy()
+    datas = pd.to_datetime(r.index.to_series(), format="%d/%m/%Y")
+    r["mes"] = datas.dt.strftime("%m/%Y").values
+    r["ano"] = datas.dt.year.values
+    precos = ["rampa_meio_dia", "rampa_fim_tarde", "rampa_dif", "rampa_bateria"]
+
+    def resumo(chave):
+        g = r.groupby(chave)
+        out = g[precos].mean().round(2)
+        out["rampa_dias"] = g["rampa_dif"].count().astype("Int64")
+        out["rampa_dias_bateria"] = (r["rampa_bateria"] > 0).groupby(r[chave]).sum().astype("Int64")
+        return out
+
+    dia = r[COLS_RAMPA_DIA].copy()
+    for c in precos:
+        dia[c] = dia[c].round(2)
+    diario = diario.join(dia, on="dia")
+    mensal = mensal.join(resumo("mes"), on="mes")
+    anual = anual.join(resumo("ano"), on="ano")
+    for t in (diario, mensal, anual):
+        for c in t.columns:
+            if c.endswith("_hora") or c in ("rampa_dias", "rampa_dias_bateria"):
+                t[c] = t[c].astype("Int64")
     return diario, mensal, anual
 
 
@@ -421,6 +515,7 @@ def main():
               f"{df['data'].min().date()} → {df['data'].max().date()}")
 
         diario, mensal, anual = agregar_omie_periodos(df, "pt")
+        diario, mensal, anual = juntar_rampa(diario, mensal, anual, rampa_diaria(df, "pt"))
         mudou = any([
             gravar(diario, "omie_diario.csv"),
             gravar(mensal, "omie_mensal.csv"),
@@ -437,6 +532,7 @@ def main():
         print(f"  {len(es):,} quartos · {es['data'].dt.date.nunique():,} dias · "
               f"{es['data'].min().date()} → {es['data'].max().date()}")
         diario, mensal, anual = agregar_omie_periodos(es, "es")
+        diario, mensal, anual = juntar_rampa(diario, mensal, anual, rampa_diaria(es, "es"))
         mudou = any([
             gravar(diario, "omie_es_diario.csv"),
             gravar(mensal, "omie_es_mensal.csv"),
