@@ -148,9 +148,11 @@ PAGAMENTO = {"Débito Direto", "Multibanco", "Numerário/Payshop/CTT"}
 NUMERICAS = ["potencia_kva", "preco_potencia_dia", *PRECOS_ENERGIA, "custo_regulacao_kwh",
              "desconto_fatura_mes", "desconto_amigo_inicial", "desconto_amigo_mes",
              "custo_pack_mes", "desconto_mes_inicio", "desconto_meses_limite",
-             "desconto_amigo_meses", "meses_promo", "fidelizacao_meses"]
+             "desconto_amigo_meses", "meses_promo", "fidelizacao_meses", "fatura_gratis_n"]
 MESES = ["desconto_mes_inicio", "desconto_meses_limite", "desconto_amigo_meses", "meses_promo",
-         "fidelizacao_meses"]
+         "fidelizacao_meses", "fatura_gratis_n"]
+# Fatura grátis (coluna opcional; vazio = sem): o n.º da fatura oferecida em cada ano (ex.: 12 = a 12.ª, Endesa
+# Tarifa Aniversário). Os simuladores contam-na só quando o período chega a essa fatura (uma fatura média)
 # Fidelização (colunas opcionais; vazio = sem fidelização). Os simuladores mostram-na com um selo e
 # a nota (contrapartida e o que se paga ao sair antes), sem mexer no custo nem na ordenação.
 # Nos contratos com consumidores a fidelização tem limite de duração: acima disto, só avisa
@@ -188,7 +190,7 @@ CONSTANTES_NO_TARIFARIO = [
     "desconto_amigo_inicial", "desconto_amigo_mes", "desconto_amigo_meses", "custo_pack_mes"]
 # Estas também costumam ser iguais, mas não mudam o preço: só avisam
 QUASE_CONSTANTES_NO_TARIFARIO = ["tipo", "segmento", "100_Verde", "site_adesao",
-                                 "fidelizacao_meses", "fidelizacao_nota", "condicao_adesao",
+                                 "fidelizacao_meses", "fidelizacao_nota", "condicao_adesao", "fatura_gratis_n",
                                  "so_novos_clientes", "ficha_padronizada"]
 # Datas de adesão (colunas opcionais; vazio = sem limite). Os simuladores comparam-nas com o dia de HOJE:
 #   oferta_desde / oferta_ate — fora delas a linha sai da lista (com oferta_desde preparam-se preços novos);
@@ -506,6 +508,14 @@ def ver_linhas(aba, regs, rel):
                 and "Não Doméstico" != str(r.get("segmento") or "").strip():
             problemas[("aviso", f"fidelização de {fmt(fid)} meses num tarifário doméstico (o limite para consumidores "
                                 f"é de {FIDELIZACAO_MAX_DOMESTICO} meses) — confirme")].append(ln)
+
+        # Fatura grátis: 1 seria todas as faturas (os simuladores ignoram valores abaixo de 2); e as notas
+        # antigas diziam que a oferta não estava nas contas
+        fg = numero(r.get("fatura_gratis_n")) if not vazio(r.get("fatura_gratis_n")) else None
+        if fg is not None and fg == int(fg) and fg < 2:
+            problemas[("erro", f"fatura_gratis_n = {fmt(fg)} (é o n.º da fatura oferecida em cada ano, ex.: 12; 1 seria todas)")].append(ln)
+        if fg and "não refletida" in str(r.get("notas") if not vazio(r.get("notas")) else ""):
+            problemas[("aviso", "fatura_gratis_n preenchida, mas as notas ainda dizem «não refletida nos valores»")].append(ln)
 
         # vazio() e não `or ""`: a célula vazia vem do pandas como NaN, que é verdadeiro e dava "nan"
         cond = "" if vazio(r.get("condicao_adesao")) else str(r.get("condicao_adesao")).strip()
