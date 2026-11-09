@@ -229,7 +229,7 @@
    "id": "omie-records",
    "titulo": "Recordes OMIE",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-08",
+   "ultima_data": "2026-11-09",
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
@@ -1355,7 +1355,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-09T06:30:06+00:00",
+ "gerado_em": "2026-11-09T10:48:17+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
