@@ -3,12 +3,17 @@
 # atualizar_tarifarios_gas.py:
 #   → MIBGAS spot (mibgas.es) + futuros de gás OMIP (via Selenium/Chrome)
 #   → substitui as abas 'MIBGAS' e 'Info' do xlsx do simulador
-# Deploy: copia o xlsx para o espaço Hugging Face (transição — o simulador
-#   publicado lê o xlsx de lá; o nome no HF mantém o emoji por
-#   compatibilidade com os URLs já publicados).
+# exportar_tarifarios_gas_csv.py:
+#   → exporta as cinco folhas do xlsx (já com o MIBGAS do dia) como CSVs + manifest.json
+#     em data/simuladores/simulador-tarifarios-gas/csv/ — como os do simulador de
+#     eletricidade; é deles que os simuladores (gás e Dual) leem a BD
+# Deploy: os CSVs + manifest para o espaço Hugging Face (reserva, em data/csv/) e, na
+#   transição, também o xlsx (com o nome antigo, com emoji: é o URL que as versões
+#   publicadas antes dos CSVs ainda usam). Quando o gás v31 e o Dual v28 estiverem
+#   online, o xlsx deixa de ir.
 #
-# O xlsx atualizado NÃO é committed: no git, o xlsx é a base de tarifários
-# mantida manualmente; o bot usa-o em runtime e envia o fresco para o HF.
+# O xlsx atualizado NÃO é committed: no git, o xlsx é a base de tarifários mantida
+# manualmente; o bot usa-o em runtime. Só os CSVs exportados vão para o git.
 
 name: Atualizar Tarifários Gás Natural (MIBGAS)
 
@@ -17,19 +22,28 @@ on:
     # 18:55 UTC -> 19:55 Lisboa (verão) / 18:55 (inverno)
     - cron: '55 18 * * *'
 
+  # Quando chega uma base nova (ou um script novo), os CSVs saem logo, sem esperar pela corrida da noite
+  push:
+    branches: [main]
+    paths:
+      - 'data/simuladores/simulador-tarifarios-gas/tarifarios_gas_natural_Tiago_Felicia.xlsx'
+      - 'scripts/atualizar_tarifarios_gas.py'
+      - 'scripts/exportar_tarifarios_gas_csv.py'
+      - '.github/workflows/atualizar_tarifarios_gas.yml'
+
   workflow_dispatch: # Permite execução manual
 
 # Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-# Sem o prefixo 'commits-' dos outros workflows de propósito: este não faz
-# commit a ESTE repositório. O que protege é outra coisa — duas instâncias
-# suas em paralelo escreveriam no mesmo xlsx e fariam dois 'git push'
-# concorrentes ao espaço Hugging Face, onde não há retry+rebase que os
-# reconcilie. Só se pode sobrepor a si mesmo, e é isso que aqui se impede.
+# Grupo PRÓPRIO, com o prefixo 'commits-' dos outros workflows que fazem commit: impede
+# só que ele se sobreponha a si mesmo — duas instâncias em paralelo escreveriam no mesmo
+# xlsx e fariam dois 'git push' concorrentes ao espaço Hugging Face, onde não há
+# retry+rebase que os reconcilie. As corridas de push contra os outros bots neste
+# repositório são resolvidas pelo retry+rebase da commit-with-retry (pastas disjuntas).
 concurrency:
-  group: tarifarios-gas
+  group: commits-tarifarios-gas
   cancel-in-progress: false
 
 jobs:
@@ -102,6 +116,15 @@ jobs:
           python scripts/atualizar_tarifarios_gas.py >> logs/tarifarios_gas.log 2>&1
           echo "=== MIBGAS TERMINADO: $(date) ===" >> logs/tarifarios_gas.log
 
+      # Tudo ou nada: se faltar uma folha, uma coluna obrigatória ou o MIBGAS, sai com erro,
+      # ficam os CSVs anteriores e os passos seguintes não correm (nem o Hugging Face recebe
+      # um xlsx que os simuladores não conseguiriam ler). O erro fica no fim do log.
+      - name: Exportar os CSVs do simulador
+        run: |
+          echo "=== CSVs INICIADO: $(date) ===" >> logs/tarifarios_gas.log
+          python scripts/exportar_tarifarios_gas_csv.py >> logs/tarifarios_gas.log 2>&1 || { tail -20 logs/tarifarios_gas.log; exit 1; }
+          echo "=== CSVs TERMINADO: $(date) ===" >> logs/tarifarios_gas.log
+
       # O log NÃO é committed — vai só como artefacto.
       - name: Fazer upload do log como artefacto
         if: always()
@@ -111,10 +134,17 @@ jobs:
           path: logs/tarifarios_gas.log
           retention-days: 30
 
+      # O xlsx atualizado NÃO é committed — só os CSVs exportados.
+      - name: Fazer commit dos CSVs do simulador (com retry)
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "🔥 BOT: Atualização Tarifários Gás Natural (CSVs)"
+          file_pattern: "data/simuladores/simulador-tarifarios-gas/csv/*"
+
       # =========================================================
-      # DEPLOY — Hugging Face (transição)
+      # DEPLOY — Hugging Face (reserva)
       # =========================================================
-      - name: Enviar ficheiro para o Hugging Face
+      - name: Enviar ficheiros para o Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
@@ -125,7 +155,8 @@ jobs:
           fi
 
           FICHEIRO_LOCAL="data/simuladores/simulador-tarifarios-gas/tarifarios_gas_natural_Tiago_Felicia.xlsx"
-          # No HF mantém o nome antigo (com emoji) — é o URL que o simulador publicado usa
+          PASTA_CSV_LOCAL="data/simuladores/simulador-tarifarios-gas/csv"
+          # No HF o xlsx mantém o nome antigo (com emoji) — é o URL que as versões publicadas antes dos CSVs usam
           FICHEIRO_HF="Tarifarios_🔥_Gas_Natural_Tiago_Felicia.xlsx"
           REPO_HF="tiagofelicia/simulador-tarifarios-gas-natural"
 
@@ -137,6 +168,9 @@ jobs:
           GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
 
           cp -f "$FICHEIRO_LOCAL" "hf_repo/$FICHEIRO_HF"
+          mkdir -p hf_repo/data/csv
+          cp -f "$PASTA_CSV_LOCAL"/*.csv hf_repo/data/csv/
+          cp -f "$PASTA_CSV_LOCAL"/manifest.json hf_repo/data/csv/
 
           cd hf_repo
           git config user.name "github-actions[bot]"
@@ -144,7 +178,7 @@ jobs:
 
           git lfs track "*.xlsx"
           git add .gitattributes
-          git add "$FICHEIRO_HF"
+          git add "$FICHEIRO_HF" data/csv/
 
           git commit -m "🔥 HF: Atualização automática MIBGAS via GitHub Actions" || echo "Sem alterações para enviar"
           git push
