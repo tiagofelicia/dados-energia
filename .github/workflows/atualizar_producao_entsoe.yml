@@ -6,7 +6,7 @@
 # Requer o secret ENTSOE_TOKEN (token da API da Transparency Platform).
 #
 # Horários (UTC):
-#   - 0 */4 * * *   -> só PT+ES, ontem+hoje (--days 2), de 4 em 4 horas
+#   - 0 */3 * * *   -> só PT+ES, ontem+hoje (--days 2), de 3 em 3 horas
 #   - 0 14,22 * * * -> todos os países, semana ISO atual (--weeks 1), 2x/dia
 #   - 0 6 * * 1     -> todos os países, 3 semanas ISO (--weeks 3), 1x/semana (segunda)
 # A execução manual (workflow_dispatch) usa os inputs abaixo.
@@ -68,9 +68,9 @@ jobs:
 
     # Timeout por MODO, e não um valor único. Este workflow faz três trabalhos
     # de dimensão muito diferente com o mesmo job, e um timeout único ou mata o
-    # trabalho semanal ou não protege as corridas de 4 em 4 horas:
+    # trabalho semanal ou não protege as corridas de 3 em 3 horas:
     #
-    #   0 */4      PT+ES, 2 dias       2 países     p50 ~5 min      60% das corridas
+    #   0 */3      PT+ES, 2 dias       2 países     p50 ~5 min      80% das corridas
     #   0 14,22    todos, 1 semana     35 países    ~2-3 h          20%
     #   0 6 * * 1  todos, 3 semanas    35 países    327 min medido   1 vez/semana
     #
@@ -82,7 +82,7 @@ jobs:
     # A expressão: 'cond && valor || próximo' encadeado funciona como ternário
     # porque nenhum dos valores é 0 (que seria falsy). Sem schedule
     # (workflow_dispatch, incluindo backfill) cai no ramo mais generoso.
-    timeout-minutes: ${{ github.event.schedule == '0 */4 * * *' && 40 || github.event.schedule == '0 14,22 * * *' && 240 || 350 }}
+    timeout-minutes: ${{ github.event.schedule == '0 */3 * * *' && 40 || github.event.schedule == '0 14,22 * * *' && 240 || 350 }}
     permissions:
       contents: write
 
@@ -120,7 +120,7 @@ jobs:
 
           # Quando disparado por agendamento, o horário define o âmbito
           case "$SCHED" in
-            "0 */4 * * *")   COUNTRIES="pt,es"; SCOPE="--days 2";  BACKFILL="false" ;;  # PT+ES, ontem+hoje, 4 em 4h
+            "0 */3 * * *")   COUNTRIES="pt,es"; SCOPE="--days 2";  BACKFILL="false" ;;  # PT+ES, ontem+hoje, 3 em 3h
             "0 14,22 * * *") COUNTRIES="";      SCOPE="--weeks 1"; BACKFILL="false" ;;  # todos, semana atual, 2x/dia
             "0 6 * * 1")     COUNTRIES="";      SCOPE="--weeks 3"; BACKFILL="false" ;;  # todos, 3 semanas, segunda
           esac
@@ -141,6 +141,12 @@ jobs:
         env:
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
         run: python scripts/atualizar_producao_entsoe.py ${{ steps.params.outputs.args }}
+
+      # Portugal: o saldo importador da REN ao lado dos fluxos da ENTSO-E (campo cross_border_ren dos
+      # ficheiros de PT), porque desde julho de 2026 os fluxos físicos PT–ES da ENTSO-E ficam abaixo do
+      # saldo da REN. Só lê os CSV da REN do repositório; sem eles, avisa e não mexe em nada.
+      - name: Acrescentar o saldo da REN (Portugal)
+        run: python scripts/acrescentar_saldo_ren_pt.py
 
       # Preço capturado solar e eólico por zona (preço pesado pela produção), a partir
       # da produção acabada de atualizar e dos preços de data/mapas/precos_qh
