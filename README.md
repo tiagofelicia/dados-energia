@@ -112,7 +112,7 @@ Além disso, `omie_dados_atuais.csv` contém **datas futuras estimadas a partir 
 | `albufeiras_snirh.csv` | As 57 albufeiras: `coluna`, `codigo_snirh`, `nome`, `bacia`, `capacidade_hm3` (capacidade total do boletim semanal de albufeiras da APA; nas que lá não estão, da CNPGB; vazio no Alto Ceira), `maximo_registado_hm3` e `data_maximo`, `referencia_hm3` e `referencia` (o volume que conta como 100%: a capacidade ou, sem ela, o máximo registado), `inicio_serie`, `ultimo_dia`, `frequencia` (`diária` ou `semanal`), `latitude` e `longitude` (a barragem, WGS84: SNIRH; CNPGB nas que lá não estão; o Baixo Sabor, OpenStreetMap) | 2×/dia |
 | `centrais_hidricas.csv` | **As centrais de cada albufeira**: `albufeira` (a coluna do `albufeiras_snirh_diario.csv`; vazio nas grandes centrais do anuário que não tiram água de nenhuma destas albufeiras: Desterro, Ponte de Jugais e Vila Cova, no rio Alva, e Calheta III e Socorridos, na Madeira), `central`, `inicio`, `turbinas`, `potencia_mw`, `bombagem_mw` (0 sem bombagem; vazio sem dado), `producao_2024_gwh`, `producao_2025_gwh` e `fonte`. Uma albufeira pode ter várias centrais (a Venda Nova alimenta a Vila Nova, Frades e Venda Nova III, e a do Guilhofrei a central do Guilhofrei e a do Ermal). A Sabugueiro II, que também recebe água do Lagoacho, fica no Vale do Rossim, como na CNPGB. Fonte: APREN, Anuário 2026 (fichas técnicas das grandes e pequenas centrais hídricas); Serra Serrada, Póvoa e Caia, CNPGB | Estático (anual) |
 | `records_producao.json` | Recordes (dia mais renovável, maior consumo, pico, etc.) + agregados mensais pré-calculados | A cada 4 h (incremental) |
-| `producao-entsoe/{cc}/AAAA-WSS.json` | **Produção europeia intra-diária** para 35 países: geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços. Um ficheiro por país e semana ISO | A cada 4 h (PT/ES) · 2×/dia (todos) |
+| `producao-entsoe/{cc}/AAAA-WSS.json` | **Produção europeia intra-diária** para 35 países: geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços (em Portugal, também o saldo da REN: `cross_border_ren`). Um ficheiro por país e semana ISO | A cada 4 h (PT/ES) · 2×/dia (todos) |
 | `producao-entsoe/metadata.json` | Última atualização e código EIC por país | idem |
 
 Schema dos CSV de produção:
@@ -134,6 +134,12 @@ Os ficheiros de `producao-entsoe/` têm um schema próprio e mais rico, com `tim
   "production_types": [ { "name": "Wind onshore", "data": [ … ] } ],
   "forecast": { … }, "price": { … }, "exchanges_forecast": { … }
 }
+```
+
+**Portugal: as trocas com Espanha.** Desde julho de 2026, os fluxos físicos Portugal–Espanha da ENTSO-E (12.1.G, A11), na série `Cross border electricity trading`, ficam abaixo do saldo da REN — em outubro de 2026, 1 682 GWh contra 1 778 GWh (−5,4 %), até 7,5 GWh num dia; até junho batiam certo. Tudo indica que não contam a linha de 400 kV Ponte de Lima–Fontefría, em serviço desde julho de 2026. Por isso, os ficheiros de `pt/` trazem também `cross_border_ren`: o saldo importador da REN (Importação − Exportação, MW médios; + = importação líquida), alinhado com `unix_seconds`, com `null` nos intervalos que a REN ainda não publicou. A série da ENTSO-E fica tal e qual.
+
+```json
+"cross_border_ren": { "source": "REN (Data Hub): Importação − Exportação, …", "data": [ 2662.17, …, null ] }
 ```
 
 ### `data/gas/` — Mercado de gás natural (MIBGAS)
@@ -300,6 +306,8 @@ Os agregados de produção acabam com a **dependência de Espanha**: `horas_cons
 Os agregados OMIE incluem o **preço médio por período do ciclo horário BTN** (`bd_v`, `bd_f`, `bs_v`, `bs_f`, `td_v`, `td_c`, `td_p`, `ts_v`, `ts_c`, `ts_p`), o que permite comparar tarifários bi e tri-horários sem reprocessar as séries.
 
 Cada linha traz também **quando aconteceram o mínimo e o máximo**: `pt_min_utc` e `pt_max_utc` são o primeiro quarto de hora com esse preço (em UTC, como o `data_utc`), e `pt_min_n` e `pt_max_n` dizem em quantos quartos de hora esse preço se repetiu. Até 30/09/2025 o mercado diário era horário, por isso aí cada hora conta 4 quartos de hora.
+
+Os agregados OMIE acabam com a **diferença entre o meio-dia e o fim da tarde**: `rampa_meio_dia` (o preço mais baixo das horas que começam entre as 10h e as 16h), `rampa_fim_tarde` (o mais alto das que começam entre as 17h e as 21h), `rampa_dif` (fim da tarde − meio-dia) e `rampa_bateria` (a margem de uma bateria com 85% de rendimento de ida e volta: fim da tarde − meio-dia ÷ 0,85). O preço de cada hora é a média dos seus quartos de hora, e as horas são as do dia de cada ficheiro (Portugal nos `omie_*`, Espanha nos `omie_es_*`). No diário vêm também `rampa_meio_dia_hora` e `rampa_fim_tarde_hora` (a hora a que começa o mínimo e o máximo); no mensal e no anual, as médias dos dias, `rampa_dias` (os dias que entraram: só os que têm todas as horas das duas janelas) e `rampa_dias_bateria` (em quantos a margem da bateria foi positiva).
 
 Os `omie_es_*.csv` são os mesmos preços agrupados pelo **dia espanhol** (CET/CEST, o dia de mercado do OMIE, que começa às 23:00 do dia anterior em Portugal), como o OMIE publica as médias de Espanha. Têm `es_medio`, `es_min`, `es_max`, `es_desvio`, `horas_negativas` (contadas nas horas de Espanha), `es_min_utc`, `es_min_n`, `es_max_utc` e `es_max_n`, mais o preço de Portugal nas mesmas horas (`pt_medio`) e a diferença média `spread_es_pt`. Não têm os períodos BTN, que são da tarifa portuguesa. O 1.º dia, 01/01/2010, tem 23 horas: a hora 00:00–01:00 CET é 31/12/2009 em Portugal, antes do início da série. Nos `omie_*.csv` (dia português), o `es_medio` é Espanha nas horas do dia português.
 
