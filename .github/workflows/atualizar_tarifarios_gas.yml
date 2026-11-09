@@ -7,10 +7,7 @@
 #   → exporta as cinco folhas do xlsx (já com o MIBGAS do dia) como CSVs + manifest.json
 #     em data/simuladores/simulador-tarifarios-gas/csv/ — como os do simulador de
 #     eletricidade; é deles que os simuladores (gás e Dual) leem a BD
-# Deploy: os CSVs + manifest para o espaço Hugging Face (reserva, em data/csv/) e, na
-#   transição, também o xlsx (com o nome antigo, com emoji: é o URL que as versões
-#   publicadas antes dos CSVs ainda usam). Quando o gás v31 e o Dual v28 estiverem
-#   online, o xlsx deixa de ir.
+# Deploy: os CSVs + manifest para o espaço Hugging Face (reserva, em data/csv/).
 #
 # O xlsx atualizado NÃO é committed: no git, o xlsx é a base de tarifários mantida
 # manualmente; o bot usa-o em runtime. Só os CSVs exportados vão para o git.
@@ -117,8 +114,8 @@ jobs:
           echo "=== MIBGAS TERMINADO: $(date) ===" >> logs/tarifarios_gas.log
 
       # Tudo ou nada: se faltar uma folha, uma coluna obrigatória ou o MIBGAS, sai com erro,
-      # ficam os CSVs anteriores e os passos seguintes não correm (nem o Hugging Face recebe
-      # um xlsx que os simuladores não conseguiriam ler). O erro fica no fim do log.
+      # ficam os CSVs anteriores e os passos seguintes não correm (o Hugging Face fica com os
+      # CSVs da última versão boa). O erro fica no fim do log.
       - name: Exportar os CSVs do simulador
         run: |
           echo "=== CSVs INICIADO: $(date) ===" >> logs/tarifarios_gas.log
@@ -144,6 +141,9 @@ jobs:
       # =========================================================
       # DEPLOY — Hugging Face (reserva)
       # =========================================================
+      # Só os CSVs + manifest, sem o xlsx (desde 2026-11-09, como na eletricidade): o gás
+      # e o Dual leem os CSVs e já não usam o xlsx; cada versão dele era um ficheiro LFS a
+      # contar para a quota do espaço. Os CSVs são git normal e não contam.
       - name: Enviar ficheiros para o Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -154,20 +154,16 @@ jobs:
             exit 1
           fi
 
-          FICHEIRO_LOCAL="data/simuladores/simulador-tarifarios-gas/tarifarios_gas_natural_Tiago_Felicia.xlsx"
           PASTA_CSV_LOCAL="data/simuladores/simulador-tarifarios-gas/csv"
-          # No HF o xlsx mantém o nome antigo (com emoji) — é o URL que as versões publicadas antes dos CSVs usam
-          FICHEIRO_HF="Tarifarios_🔥_Gas_Natural_Tiago_Felicia.xlsx"
           REPO_HF="tiagofelicia/simulador-tarifarios-gas-natural"
 
           echo "Clonando o repositório $REPO_HF..."
           git lfs install
 
-          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS existentes
-          # (vamos substituir o xlsx de qualquer forma).
+          # GIT_LFS_SKIP_SMUDGE=1: não descarrega os binários LFS que ainda lá
+          # estejam (poupa tempo e evita falhas de smudge no checkout).
           GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 https://user:$HF_TOKEN@huggingface.co/spaces/$REPO_HF hf_repo
 
-          cp -f "$FICHEIRO_LOCAL" "hf_repo/$FICHEIRO_HF"
           mkdir -p hf_repo/data/csv
           cp -f "$PASTA_CSV_LOCAL"/*.csv hf_repo/data/csv/
           cp -f "$PASTA_CSV_LOCAL"/manifest.json hf_repo/data/csv/
@@ -176,9 +172,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git lfs track "*.xlsx"
-          git add .gitattributes
-          git add "$FICHEIRO_HF" data/csv/
+          git add data/csv/
 
-          git commit -m "🔥 HF: Atualização automática MIBGAS via GitHub Actions" || echo "Sem alterações para enviar"
+          git commit -m "🔥 HF: Atualização automática CSVs via GitHub Actions" || echo "Sem alterações para enviar"
           git push
