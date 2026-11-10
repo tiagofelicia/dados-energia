@@ -472,6 +472,55 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_mensal_es.csv"
   },
   {
+   "avisos": [
+    "A ENTSO-E põe em Hydro Pumped Storage (bombagem_producao_gwh) toda a produção das centrais reversíveis, também a da água que lhes chegou pelo rio; a REN só conta como produção por bombagem a da água antes bombeada. A hídrica que a ENTSO-E dá como renovável é a de fio de água mais a de albufeira.",
+    "Desde julho de 2026, os fluxos físicos Portugal–Espanha da ENTSO-E (12.1.G) ficam abaixo dos da REN.",
+    "Um tipo que não veio num dia fica vazio, e não a zero; horas_producao, horas_consumo e horas_trocas dizem se o dia está completo."
+   ],
+   "bytes": 580310,
+   "cadencia": "diária",
+   "caminho": "data/producao/entsoe-pt-diario/",
+   "colunas": [
+    "dia",
+    "data_iso",
+    "biomassa_gwh",
+    "gas_gwh",
+    "carvao_gwh",
+    "petroleo_gwh",
+    "residuos_gwh",
+    "outras_gwh",
+    "outras_renov_gwh",
+    "hidrica_fio_gwh",
+    "hidrica_albufeira_gwh",
+    "bombagem_producao_gwh",
+    "bombagem_consumo_gwh",
+    "eolica_terra_gwh",
+    "eolica_mar_gwh",
+    "solar_gwh",
+    "ondas_gwh",
+    "baterias_descarga_gwh",
+    "baterias_carga_gwh",
+    "consumo_centrais_gwh",
+    "outros_tipos_gwh",
+    "consumo_gwh",
+    "importacao_gwh",
+    "exportacao_gwh",
+    "horas_producao",
+    "horas_consumo",
+    "horas_trocas"
+   ],
+   "descricao": "Produção por tipo, consumo das bombas e das baterias, consumo (Total Load) e fluxos físicos com Espanha (GWh), dia a dia (hora de Lisboa), desde 2015, com as horas com dados de cada grupo. Um ficheiro por ano. Fonte: ENTSO-E (A75, A65, A11).",
+   "ficheiros": 12,
+   "formato": "csv",
+   "grupo": "producao",
+   "id": "producao-entsoe-pt-diario",
+   "padrao": "data/producao/entsoe-pt-diario/entsoe_pt_diario_*.csv",
+   "titulo": "Portugal segundo a ENTSO-E — totais diários",
+   "tolerancia_dias": 3,
+   "ultima_data": "2026-11-09",
+   "url": "https://dados.tiagofelicia.pt/data/producao/entsoe-pt-diario/"
+  },
+  {
    "bytes": 2596901,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/producao/albufeiras_snirh_diario.csv",
@@ -1361,7 +1410,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-10T21:20:42+00:00",
+ "gerado_em": "2026-11-10T21:53:46+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1377,8 +1426,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 554194116,
-  "datasets": 48,
-  "ficheiros": 1954
+  "bytes": 554774426,
+  "datasets": 49,
+  "ficheiros": 1966
  }
 }
