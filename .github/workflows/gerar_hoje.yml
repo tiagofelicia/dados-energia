@@ -36,6 +36,7 @@ on:
       - "Atualizar Mapa de Producao"
       - "Atualizar Producao (ENTSO-E)"
       - "Atualizar Albufeiras (ENTSO-E)"
+      - "Atualizar Portugal dia a dia (ENTSO-E)"
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
       - "Atualizar CO2 (EU ETS)"
