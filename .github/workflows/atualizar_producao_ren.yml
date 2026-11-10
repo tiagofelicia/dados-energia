@@ -2,9 +2,9 @@
 #
 # atualizar_producao_REN.py       → data/producao/producao_dados_atuais.csv
 # atualizar_producao_bombagem.py  → data/producao/producao_bombagem_diaria.csv
-#                                   (incremental: últimos 7 dias)
+#                                   (últimos 14 dias; ao domingo, os últimos 365)
 # gerar_records_producao.py       → data/producao/records_producao.json
-#                                   (incremental; --full para recalcular)
+#                                   (incremental; do zero na revisão de domingo)
 
 name: Atualizar Dados de Produção (REN)
 
@@ -12,8 +12,15 @@ on:
   schedule:
     # minuto 15, a cada 3 horas
     - cron: '15 */3 * * *'
+    # domingo, 04:45 UTC: revisão da bombagem dos últimos 365 dias (ver o passo da bombagem)
+    - cron: '45 4 * * 0'
 
   workflow_dispatch: # Permite execução manual
+    inputs:
+      revisao:
+        description: 'Revisão: voltar a pedir à REN a bombagem dos últimos 365 dias e recalcular os recordes do zero'
+        type: boolean
+        default: false
 
 # Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
 env:
@@ -70,11 +77,25 @@ jobs:
       - name: Atualizar produção (REN)
         run: python scripts/atualizar_producao_REN.py
 
+      # A REN revê a «Produção por Bombagem» diária semanas depois de a publicar (em ago–out/2026, +6 % a
+      # +18 % por mês face ao provisório), e as corridas normais só voltam a pedir os últimos 14 dias. Na
+      # corrida de domingo (ou à mão, com «revisao»), pedem-se os últimos 365 e os recordes são recalculados
+      # do zero, porque o modo incremental não desfaz um recorde que a revisão tenha baixado.
       - name: Atualizar produção por bombagem (diária)
-        run: python scripts/atualizar_producao_bombagem.py
+        run: |
+          if [ "${{ github.event.schedule }}" = "45 4 * * 0" ] || [ "${{ inputs.revisao }}" = "true" ]; then
+            python scripts/atualizar_producao_bombagem.py --dias 365
+          else
+            python scripts/atualizar_producao_bombagem.py
+          fi
 
-      - name: Atualizar recordes de produção (incremental)
-        run: python scripts/gerar_records_producao.py
+      - name: Atualizar recordes de produção (incremental; do zero na revisão)
+        run: |
+          if [ "${{ github.event.schedule }}" = "45 4 * * 0" ] || [ "${{ inputs.revisao }}" = "true" ]; then
+            python scripts/gerar_records_producao.py --full
+          else
+            python scripts/gerar_records_producao.py
+          fi
 
       - name: Fazer commit dos dados atualizados (com retry)
         uses: ./.github/actions/commit-with-retry
