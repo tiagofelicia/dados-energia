@@ -299,6 +299,26 @@ REGISTO = [
          # tolerancia_dias=100: a última data é o dia 1 do mês, e a REE só publica o mês
          # semanas depois de ele acabar (a 06/11/2026 o último era setembro: 66 dias).
          cadencia="3x/semana (valor mensal)", tolerancia_dias=100, deteccao="csv_col_iso:mes"),
+    # Para comparar com a REN (página /ren-vs-entsoe do site); os ficheiros semanais do
+    # producao-entsoe só começam em 2026.
+    dict(id="producao-entsoe-pt-diario", grupo="producao",
+         caminho="data/producao/entsoe-pt-diario/entsoe_pt_diario_*.csv",
+         titulo="Portugal segundo a ENTSO-E — totais diários",
+         descricao="Produção por tipo, consumo das bombas e das baterias, consumo (Total Load) "
+                   "e fluxos físicos com Espanha (GWh), dia a dia (hora de Lisboa), desde 2015, "
+                   "com as horas com dados de cada grupo. Um ficheiro por ano. "
+                   "Fonte: ENTSO-E (A75, A65, A11).",
+         # tolerancia_dias=3: corre todos os dias às 06:40 UTC e o último dia é ontem; os crons
+         # do GitHub chegam a atrasar horas
+         cadencia="diária", tolerancia_dias=3, deteccao="csv_col_iso:data_iso",
+         avisos=["A ENTSO-E põe em Hydro Pumped Storage (bombagem_producao_gwh) toda a produção "
+                 "das centrais reversíveis, também a da água que lhes chegou pelo rio; a REN só "
+                 "conta como produção por bombagem a da água antes bombeada. A hídrica que a "
+                 "ENTSO-E dá como renovável é a de fio de água mais a de albufeira.",
+                 "Desde julho de 2026, os fluxos físicos Portugal–Espanha da ENTSO-E (12.1.G) "
+                 "ficam abaixo dos da REN.",
+                 "Um tipo que não veio num dia fica vazio, e não a zero; horas_producao, "
+                 "horas_consumo e horas_trocas dizem se o dia está completo."]),
     # Recolhidas num PC em Portugal (tarefa agendada), não por um workflow: o SNIRH
     # só aceita ligações de Portugal. O valor de cada dia chega na manhã seguinte.
     dict(id="producao-albufeiras-snirh", grupo="producao",

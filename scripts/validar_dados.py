@@ -145,6 +145,11 @@ REGRAS = {
     "producao-albufeiras-es-mensal": dict(
         colunas=["mes", "total_gwh", "total_pct", "anuais_gwh", "anuais_pct",
                  "hiperanuais_gwh", "hiperanuais_pct"], chave=["mes"], crescente=True),
+    "producao-entsoe-pt-diario": dict(
+        colunas=["dia", "data_iso", "hidrica_fio_gwh", "hidrica_albufeira_gwh", "bombagem_producao_gwh",
+                 "bombagem_consumo_gwh", "eolica_terra_gwh", "solar_gwh", "gas_gwh", "consumo_gwh",
+                 "importacao_gwh", "exportacao_gwh", "horas_producao", "horas_consumo", "horas_trocas"],
+        chave=["data_iso"], crescente=True),
 
     # Os históricos são ficheiros fechados: já não mudam, e por isso não vale a
     # pena relê-los a cada corrida do CI. Mas é neles que a verificação de
