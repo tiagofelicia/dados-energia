@@ -14,6 +14,7 @@ coluna "Hídrica" do serviço 15-min (1354).
 Uso:
   python atualizar_producao_bombagem.py                 # últimos 14 dias (re-pedidos sempre)
   python atualizar_producao_bombagem.py --dias 30       # últimos 30 dias
+  python atualizar_producao_bombagem.py --dias 365      # revisão (no workflow, ao domingo)
   python atualizar_producao_bombagem.py --from 2010-01-01 --to 2025-12-31  # backfill grande
   python atualizar_producao_bombagem.py --from 2026-01-01 --to 2026-06-03  # backfill recente
   python atualizar_producao_bombagem.py --from 2026-01-01 --to 2026-06-03 --force  # re-pedir tudo
@@ -21,6 +22,10 @@ Uso:
 Comportamento:
   • Modo "últimos N dias" (default, sem --from/--to): SEMPRE re-pede os N dias
     recentes (a REN pode publicar correções retroativas em dias provisórios).
+  • A REN revê os valores diários semanas depois de os publicar (em ago–out/2026,
+    +6 % a +18 % por mês face ao provisório), muito depois dos 14 dias: por isso o
+    workflow pede, ao domingo, os últimos 365 dias. Os dias cujo valor mudou
+    aparecem com "(era X)" e são contados no resumo final.
   • Modo backfill (--from/--to): SALTA dias já presentes no CSV — torna re-corridas
     quase instantâneas, apenas re-pede dias em falta ou que falharam. Usar --force
     para re-pedir todos.
@@ -159,6 +164,7 @@ def main():
         print("  (modo: re-pedir todos os dias do intervalo)")
     dados = carregar_existente()
     novos = 0
+    alterados = 0
     saltados = 0
     falhados = 0
     d = d0
@@ -172,9 +178,14 @@ def main():
             continue
         val = buscar_bombagem(iso)
         if val is not None:
+            antigo = dados.get(dia_csv)
             dados[dia_csv] = f"{val:.2f}"
             novos += 1
-            print(f"  [OK] {dia_csv}: {val:.2f} GWh")
+            if antigo not in (None, '') and abs(float(antigo) - val) > 0.005:
+                alterados += 1
+                print(f"  [OK] {dia_csv}: {val:.2f} GWh (era {float(antigo):.2f})")
+            else:
+                print(f"  [OK] {dia_csv}: {val:.2f} GWh")
         else:
             falhados += 1
             print(f"  [--] {dia_csv}: sem dados")
@@ -183,7 +194,7 @@ def main():
 
     gravar(dados)
     print(f"\n[OK] {OUT_PATH}")
-    print(f"  {novos} novos · {saltados} saltados · {falhados} falhados · {len(dados)} no total.")
+    print(f"  {novos} novos · {alterados} alterados · {saltados} saltados · {falhados} falhados · {len(dados)} no total.")
     if falhados:
         print(f"  Volta a correr o script (sem --force) para re-tentar apenas os {falhados} dias falhados.")
 
