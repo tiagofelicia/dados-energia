@@ -1,0 +1,96 @@
+# Produção, consumo e trocas de Portugal segundo a ENTSO-E, dia a dia, desde 2015
+# (para comparar com a REN na página /ren-vs-entsoe do site).
+#
+# scripts/atualizar_entsoe_pt_diario.py
+#   -> data/producao/entsoe-pt-diario/entsoe_pt_diario_AAAA.csv
+#
+# Requer o secret ENTSOE_TOKEN (o mesmo do Atualizar Producao (ENTSO-E)).
+#
+# Horários (UTC):
+#   - 40 6 * * *   -> últimos 14 dias (o último é ontem), todos os dias
+#   - 50 5 * * 0   -> últimos 400 dias, ao domingo: a ENTSO-E completa e revê dias antigos
+#                     (em 2026, agosto ficou semanas com horas de consumo em falta)
+# A execução manual (workflow_dispatch) usa os inputs abaixo. Sem ficheiros na pasta, o
+# script faz sozinho o backfill desde 2015 (um pedido de cada tipo por mês, ~4 x 140).
+#
+# O nome não pode ter * ? + [ ] ! : é para entrar no workflow_run do gerar_hoje.yml,
+# que refaz o manifesto depois de cada corrida.
+
+name: Atualizar Portugal dia a dia (ENTSO-E)
+
+on:
+  schedule:
+    # ATENÇÃO: estes literais aparecem também no passo que escolhe os argumentos e no
+    # timeout-minutes. Um literal que deixe de bater não dá erro: cai no ramo por omissão.
+    - cron: '40 6 * * *'
+    - cron: '50 5 * * 0'
+
+  workflow_dispatch:
+    inputs:
+      dias:
+        description: 'Nº de dias até ontem (ignorado se backfill=true)'
+        required: false
+        default: '14'
+      backfill:
+        description: 'Reconstruir tudo desde 2015'
+        type: boolean
+        required: false
+        default: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Grupo próprio: só impede que este workflow se sobreponha a si mesmo; as corridas
+# contra os outros bots resolvem-se no retry+rebase da commit-with-retry.
+concurrency:
+  group: commits-entsoe-pt-diario
+  cancel-in-progress: false
+
+jobs:
+  atualizar-entsoe-pt-diario:
+    name: Recolher Portugal dia a dia (ENTSO-E)
+    runs-on: ubuntu-26.04
+    # Diária ~2 min, domingo ~15 min, backfill (manual) ~1 h
+    timeout-minutes: ${{ github.event.schedule == '40 6 * * *' && 20 || github.event.schedule == '50 5 * * 0' && 60 || 180 }}
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        # entsoe_client.py usa requests; tzdata garante o zoneinfo em qualquer runner.
+        run: python -m pip install --upgrade pip requests tzdata
+
+      - name: Verificar secret ENTSOE_TOKEN
+        env:
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+        run: |
+          if [ -z "$ENTSOE_TOKEN" ]; then
+            echo "::error::Secret ENTSOE_TOKEN não configurado em Settings → Secrets and variables → Actions deste repositório."
+            exit 1
+          fi
+
+      - name: Atualizar Portugal dia a dia
+        env:
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+        run: |
+          if [ "${{ github.event.schedule }}" = "50 5 * * 0" ]; then
+            python scripts/atualizar_entsoe_pt_diario.py --dias 400
+          elif [ "${{ github.event.inputs.backfill }}" = "true" ]; then
+            python scripts/atualizar_entsoe_pt_diario.py --backfill
+          else
+            python scripts/atualizar_entsoe_pt_diario.py --dias "${{ github.event.inputs.dias || '14' }}"
+          fi
+
+      - name: Fazer commit dos dados atualizados (com retry)
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "BOT: Atualizar Portugal dia a dia (ENTSO-E)"
+          file_pattern: "data/producao/entsoe-pt-diario"
