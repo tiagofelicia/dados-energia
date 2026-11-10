@@ -1101,7 +1101,7 @@
     "Filtre por tipo='EUA' para as licenças gerais; 'EUAA' são de aviação e são outro instrumento.",
     "Só há leilões em dias úteis, e nem todos: cerca de 220 por ano."
    ],
-   "bytes": 185069,
+   "bytes": 185197,
    "cadencia": "1x/dia",
    "caminho": "data/emissoes/eua_co2.csv",
    "colunas": [
@@ -1127,10 +1127,10 @@
    "formato": "csv",
    "grupo": "emissoes",
    "id": "emissoes-eua",
-   "linhas": 1519,
+   "linhas": 1520,
    "titulo": "Leilões de licenças de CO2 (EU ETS)",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-11-09",
+   "ultima_data": "2026-11-10",
    "url": "https://dados.tiagofelicia.pt/data/emissoes/eua_co2.csv"
   },
   {
@@ -1361,7 +1361,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-10T19:29:08+00:00",
+ "gerado_em": "2026-11-10T20:47:30+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1377,7 +1377,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 554176229,
+  "bytes": 554176357,
   "datasets": 48,
   "ficheiros": 1954
  }
