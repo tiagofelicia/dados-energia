@@ -1,0 +1,96 @@
+# Publica os preços da eletricidade e do gás natural pagos pelas famílias e pelas
+# empresas em cada país europeu, como os publica o Eurostat.
+#
+# atualizar_precos_consumidor.py
+#   → data/precos-consumidor/{eletricidade,gas}_precos_{familias,empresas}.csv
+#       por semestre, desde 2007: sem impostos, sem IVA e com todos os impostos, em € e em PPS
+#   → data/precos-consumidor/{eletricidade,gas}_componentes_{familias,empresas}.csv
+#       por ano, desde 2017: energia e fornecimento, redes, impostos e taxas
+#   → data/precos-consumidor/metadata.json
+#
+# O Eurostat publica o 1.º semestre em outubro e o 2.º em abril ou maio do ano
+# seguinte, e os componentes de um ano em outubro do ano seguinte; pelo meio, só
+# revisões. Por isso chegam duas corridas por semana: o script só reescreve um
+# ficheiro quando os valores mudam, e quase sempre não há commit.
+#
+# Não precisa de secrets: a API do Eurostat é pública.
+
+name: Atualizar preços ao consumidor (Eurostat)
+
+on:
+  schedule:
+    # 07:25 UTC às segundas e quintas. O Eurostat publica às 11:00 ou às 23:00 de
+    # Luxemburgo; a hora não importa, porque a tolerância declarada no manifesto
+    # é de meses.
+    - cron: '25 7 * * 1,4'
+
+  workflow_dispatch:
+
+# Antecipar o default Node24 (silencia o aviso de deprecação Node 20)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Grupo próprio: as corridas contra os outros bots são resolvidas pelo
+# retry+rebase da commit-with-retry. Este grupo só serve para o workflow não se
+# sobrepor a si mesmo.
+concurrency:
+  group: commits-precos-consumidor
+  cancel-in-progress: false
+
+jobs:
+  atualizar-precos-consumidor:
+    name: Recolher preços do Eurostat
+    # A mesma label explícita dos outros workflows (ver o atualizar_eua_co2.yml);
+    # marcha-atrás: 'ubuntu-24.04'.
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache das dependências Python
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Atualizar preços ao consumidor
+        run: |
+          # set -o pipefail: sem isto o exit code passa a ser o do tee e uma
+          # falha do script daria um step verde.
+          set -o pipefail
+          mkdir -p logs
+          python scripts/atualizar_precos_consumidor.py 2>&1 | tee logs/precos_consumidor.log
+
+      # Corre mesmo que o script tenha saído com erro: um ficheiro com problemas
+      # fica como estava, mas os outros podem ter sido escritos (o job fica
+      # vermelho na mesma, pelo passo de cima).
+      - name: Fazer commit dos datasets (com retry)
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "💶 BOT: Atualizar preços ao consumidor (Eurostat)"
+          file_pattern: "data/precos-consumidor/*.csv data/precos-consumidor/metadata.json"
+
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-precos-consumidor
+          path: logs/precos_consumidor.log
+          retention-days: 30
