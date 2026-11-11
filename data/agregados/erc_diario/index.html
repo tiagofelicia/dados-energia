@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data/agregados/erc_diario/ — Dados Abertos de Energia | Tiago Felícia</title>
+<meta name="description" content="Ficheiros de ERC por dia e por hora (um ficheiro por ano). Licença CC BY 4.0.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --borda: #dde4ea;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --borda: #334155;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+main { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 1.35rem; margin: 6px 0 4px; overflow-wrap: anywhere; }
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+h2 { font-size: 1.1rem; margin: 0 0 8px; }
+h3 { font-size: .95rem; margin: 14px 0 2px; color: var(--texto-2); }
+p, li { font-size: .92rem; }
+.nota { color: var(--texto-2); }
+code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+ul.ficheiros { list-style: none; padding: 0; margin: 6px 0 0; }
+ul.ficheiros.em-linha { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Catálogo dos dados</a></p>
+<h1><code>data/agregados/erc_diario/</code></h1>
+<p class="nota">Os ficheiros desta pasta, sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt">CC BY 4.0</a> (atribuição: Tiago Felícia — www.tiagofelicia.pt). A última data de cada dataset está no <a href="/data/manifest.json">manifest.json</a> e no <a href="/status.html">estado dos dados</a>.</p>
+<section id="agregados-erc-diario">
+<h2>ERC por dia e por hora (um ficheiro por ano)</h2>
+<p>Totais por dia de mercado (MWh, EUR e EUR por componente) e, por dia em hora de Portugal, ERC, consumo e OMIE PT de cada hora, extremos, fator de perdas e ERC por período horário BTN pesado pelo perfil ERSE BTN C e quota solar de cada hora, desde 14/03/2024. Derivado de data/erc/isp/, data/omie/, data/producao/ e da tabela OMIE_PERDAS_CICLOS do simulador.</p>
+<ul><li>Os totais em &#x27;mercado&#x27; são por dia de MERCADO (das 23:00 da véspera às 23:00, hora de Portugal); os de &#x27;dias&#x27; são por dia em hora de Portugal.</li><li>&#x27;p&#x27; e &#x27;c&#x27; só existem desde 2025; &#x27;c&#x27; segue a ordem de &#x27;ordem_c&#x27;.</li></ul>
+<p class="nota">4 ficheiros · <code>data/agregados/erc_diario/*.json</code> · 1x/dia</p>
+<ul class="ficheiros"><li><a href="2024.json">2024.json</a></li><li><a href="2025.json">2025.json</a></li><li><a href="2026.json">2026.json</a></li><li><a href="metadata.json">metadata.json</a></li></ul>
+</section>
+</main>
+</body>
+</html>

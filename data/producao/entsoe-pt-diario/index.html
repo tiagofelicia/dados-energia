@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data/producao/entsoe-pt-diario/ — Dados Abertos de Energia | Tiago Felícia</title>
+<meta name="description" content="Ficheiros de Portugal segundo a ENTSO-E — totais diários. Licença CC BY 4.0.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --borda: #dde4ea;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --borda: #334155;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+main { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 1.35rem; margin: 6px 0 4px; overflow-wrap: anywhere; }
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+h2 { font-size: 1.1rem; margin: 0 0 8px; }
+h3 { font-size: .95rem; margin: 14px 0 2px; color: var(--texto-2); }
+p, li { font-size: .92rem; }
+.nota { color: var(--texto-2); }
+code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+ul.ficheiros { list-style: none; padding: 0; margin: 6px 0 0; }
+ul.ficheiros.em-linha { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Catálogo dos dados</a></p>
+<h1><code>data/producao/entsoe-pt-diario/</code></h1>
+<p class="nota">Os ficheiros desta pasta, sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt">CC BY 4.0</a> (atribuição: Tiago Felícia — www.tiagofelicia.pt). A última data de cada dataset está no <a href="/data/manifest.json">manifest.json</a> e no <a href="/status.html">estado dos dados</a>.</p>
+<section id="producao-entsoe-pt-diario">
+<h2>Portugal segundo a ENTSO-E — totais diários</h2>
+<p>Produção por tipo, consumo das bombas e das baterias, consumo (Total Load) e fluxos físicos com Espanha (GWh), dia a dia (hora de Lisboa), desde 2015, com as horas com dados de cada grupo. Um ficheiro por ano. Fonte: ENTSO-E (A75, A65, A11).</p>
+<ul><li>A ENTSO-E põe em Hydro Pumped Storage (bombagem_producao_gwh) toda a produção das centrais reversíveis, também a da água que lhes chegou pelo rio; a REN só conta como produção por bombagem a da água antes bombeada. A hídrica que a ENTSO-E dá como renovável é a de fio de água mais a de albufeira.</li><li>Desde julho de 2026, os fluxos físicos Portugal–Espanha da ENTSO-E (12.1.G) ficam abaixo dos da REN.</li><li>Um tipo que não veio num dia fica vazio, e não a zero; horas_producao, horas_consumo e horas_trocas dizem se o dia está completo.</li></ul>
+<p class="nota">12 ficheiros · <code>data/producao/entsoe-pt-diario/entsoe_pt_diario_*.csv</code> · diária</p>
+<ul class="ficheiros"><li><a href="entsoe_pt_diario_2015.csv">entsoe_pt_diario_2015.csv</a></li><li><a href="entsoe_pt_diario_2016.csv">entsoe_pt_diario_2016.csv</a></li><li><a href="entsoe_pt_diario_2017.csv">entsoe_pt_diario_2017.csv</a></li><li><a href="entsoe_pt_diario_2018.csv">entsoe_pt_diario_2018.csv</a></li><li><a href="entsoe_pt_diario_2019.csv">entsoe_pt_diario_2019.csv</a></li><li><a href="entsoe_pt_diario_2020.csv">entsoe_pt_diario_2020.csv</a></li><li><a href="entsoe_pt_diario_2021.csv">entsoe_pt_diario_2021.csv</a></li><li><a href="entsoe_pt_diario_2022.csv">entsoe_pt_diario_2022.csv</a></li><li><a href="entsoe_pt_diario_2023.csv">entsoe_pt_diario_2023.csv</a></li><li><a href="entsoe_pt_diario_2024.csv">entsoe_pt_diario_2024.csv</a></li><li><a href="entsoe_pt_diario_2025.csv">entsoe_pt_diario_2025.csv</a></li><li><a href="entsoe_pt_diario_2026.csv">entsoe_pt_diario_2026.csv</a></li></ul>
+</section>
+</main>
+</body>
+</html>

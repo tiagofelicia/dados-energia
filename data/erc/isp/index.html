@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data/erc/isp/ — Dados Abertos de Energia | Tiago Felícia</title>
+<meta name="description" content="Ficheiros de Encargos de regulação (ERC) — por período. Licença CC BY 4.0.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --borda: #dde4ea;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --borda: #334155;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+main { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 1.35rem; margin: 6px 0 4px; overflow-wrap: anywhere; }
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+h2 { font-size: 1.1rem; margin: 0 0 8px; }
+h3 { font-size: .95rem; margin: 14px 0 2px; color: var(--texto-2); }
+p, li { font-size: .92rem; }
+.nota { color: var(--texto-2); }
+code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+ul.ficheiros { list-style: none; padding: 0; margin: 6px 0 0; }
+ul.ficheiros.em-linha { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Catálogo dos dados</a></p>
+<h1><code>data/erc/isp/</code></h1>
+<p class="nota">Os ficheiros desta pasta, sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt">CC BY 4.0</a> (atribuição: Tiago Felícia — www.tiagofelicia.pt). A última data de cada dataset está no <a href="/data/manifest.json">manifest.json</a> e no <a href="/status.html">estado dos dados</a>.</p>
+<section id="erc-isp">
+<h2>Encargos de regulação (ERC) — por período</h2>
+<p>Encargos de Regulação Imputados ao Consumo, por período de 15 minutos, desde 14/03/2024: total em EUR e em EUR/MWh, as componentes (restrições técnicas, banda de aFRR e mFRR, outros) e o consumo de mercado. Um ficheiro por mês. Fonte: REN (SIME).</p>
+<ul><li>Os dias são dias de MERCADO (hora de Espanha): o período 1 começa às 23:00 do dia anterior em hora de Portugal.</li><li>A chave é (data_iso, periodo). Nos dias de mudança de hora o &#x27;intervalo&#x27; repete-se ou salta; o &#x27;data_utc&#x27; não.</li><li>Em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026) o erc_total_eur publicado pela REN fica abaixo da soma das componentes (241 371 EUR no conjunto). Os valores são guardados como a fonte os dá; nos restantes períodos a diferença é de arredondamento (&lt; 0,01 EUR).</li></ul>
+<p class="nota">33 ficheiros · <code>data/erc/isp/erc_isp_*.csv</code> · 2x/dia (num PC em Portugal)</p>
+<ul class="ficheiros em-linha"><li><a href="erc_isp_2024-03.csv">erc_isp_2024-03.csv</a></li><li><a href="erc_isp_2024-04.csv">erc_isp_2024-04.csv</a></li><li><a href="erc_isp_2024-05.csv">erc_isp_2024-05.csv</a></li><li><a href="erc_isp_2024-06.csv">erc_isp_2024-06.csv</a></li><li><a href="erc_isp_2024-07.csv">erc_isp_2024-07.csv</a></li><li><a href="erc_isp_2024-08.csv">erc_isp_2024-08.csv</a></li><li><a href="erc_isp_2024-09.csv">erc_isp_2024-09.csv</a></li><li><a href="erc_isp_2024-10.csv">erc_isp_2024-10.csv</a></li><li><a href="erc_isp_2024-11.csv">erc_isp_2024-11.csv</a></li><li><a href="erc_isp_2024-12.csv">erc_isp_2024-12.csv</a></li><li><a href="erc_isp_2025-01.csv">erc_isp_2025-01.csv</a></li><li><a href="erc_isp_2025-02.csv">erc_isp_2025-02.csv</a></li><li><a href="erc_isp_2025-03.csv">erc_isp_2025-03.csv</a></li><li><a href="erc_isp_2025-04.csv">erc_isp_2025-04.csv</a></li><li><a href="erc_isp_2025-05.csv">erc_isp_2025-05.csv</a></li><li><a href="erc_isp_2025-06.csv">erc_isp_2025-06.csv</a></li><li><a href="erc_isp_2025-07.csv">erc_isp_2025-07.csv</a></li><li><a href="erc_isp_2025-08.csv">erc_isp_2025-08.csv</a></li><li><a href="erc_isp_2025-09.csv">erc_isp_2025-09.csv</a></li><li><a href="erc_isp_2025-10.csv">erc_isp_2025-10.csv</a></li><li><a href="erc_isp_2025-11.csv">erc_isp_2025-11.csv</a></li><li><a href="erc_isp_2025-12.csv">erc_isp_2025-12.csv</a></li><li><a href="erc_isp_2026-01.csv">erc_isp_2026-01.csv</a></li><li><a href="erc_isp_2026-02.csv">erc_isp_2026-02.csv</a></li><li><a href="erc_isp_2026-03.csv">erc_isp_2026-03.csv</a></li><li><a href="erc_isp_2026-04.csv">erc_isp_2026-04.csv</a></li><li><a href="erc_isp_2026-05.csv">erc_isp_2026-05.csv</a></li><li><a href="erc_isp_2026-06.csv">erc_isp_2026-06.csv</a></li><li><a href="erc_isp_2026-07.csv">erc_isp_2026-07.csv</a></li><li><a href="erc_isp_2026-08.csv">erc_isp_2026-08.csv</a></li><li><a href="erc_isp_2026-09.csv">erc_isp_2026-09.csv</a></li><li><a href="erc_isp_2026-10.csv">erc_isp_2026-10.csv</a></li><li><a href="erc_isp_2026-11.csv">erc_isp_2026-11.csv</a></li></ul>
+</section>
+</main>
+</body>
+</html>

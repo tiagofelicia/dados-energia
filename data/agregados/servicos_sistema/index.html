@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data/agregados/servicos_sistema/ — Dados Abertos de Energia | Tiago Felícia</title>
+<meta name="description" content="Ficheiros de Serviços de sistema por hora (um ficheiro por mês). Licença CC BY 4.0.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --borda: #dde4ea;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --borda: #334155;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+main { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 1.35rem; margin: 6px 0 4px; overflow-wrap: anywhere; }
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+h2 { font-size: 1.1rem; margin: 0 0 8px; }
+h3 { font-size: .95rem; margin: 14px 0 2px; color: var(--texto-2); }
+p, li { font-size: .92rem; }
+.nota { color: var(--texto-2); }
+code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+ul.ficheiros { list-style: none; padding: 0; margin: 6px 0 0; }
+ul.ficheiros.em-linha { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Catálogo dos dados</a></p>
+<h1><code>data/agregados/servicos_sistema/</code></h1>
+<p class="nota">Os ficheiros desta pasta, sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt">CC BY 4.0</a> (atribuição: Tiago Felícia — www.tiagofelicia.pt). A última data de cada dataset está no <a href="/data/manifest.json">manifest.json</a> e no <a href="/status.html">estado dos dados</a>.</p>
+<section id="agregados-servicos-sistema">
+<h2>Serviços de sistema por hora (um ficheiro por mês)</h2>
+<p>Por dia e hora, em hora de Portugal: OMIE PT médio e, por indicador (redução de geração, desvios em excesso e em falta, energia de reserva aFRR/mFRR/RR a subir e a descer, restrições técnicas e bandas de reserva), a quantidade e o valor, desde 14/03/2024. Derivado de data/erc/tipo/, data/erc/isp/ e data/omie/.</p>
+<ul><li>Quantidades em MWh, exceto nas bandas (soma dos MW dos quartos de hora da hora); valor em EUR, positivo = custo, negativo = receita.</li><li>Os indicadores (códigos da vista Tipo) e o OMIE PT médio de cada dia estão em metadata.json.</li></ul>
+<p class="nota">34 ficheiros · <code>data/agregados/servicos_sistema/*.json</code> · 1x/dia</p>
+<ul class="ficheiros em-linha"><li><a href="2024-03.json">2024-03.json</a></li><li><a href="2024-04.json">2024-04.json</a></li><li><a href="2024-05.json">2024-05.json</a></li><li><a href="2024-06.json">2024-06.json</a></li><li><a href="2024-07.json">2024-07.json</a></li><li><a href="2024-08.json">2024-08.json</a></li><li><a href="2024-09.json">2024-09.json</a></li><li><a href="2024-10.json">2024-10.json</a></li><li><a href="2024-11.json">2024-11.json</a></li><li><a href="2024-12.json">2024-12.json</a></li><li><a href="2025-01.json">2025-01.json</a></li><li><a href="2025-02.json">2025-02.json</a></li><li><a href="2025-03.json">2025-03.json</a></li><li><a href="2025-04.json">2025-04.json</a></li><li><a href="2025-05.json">2025-05.json</a></li><li><a href="2025-06.json">2025-06.json</a></li><li><a href="2025-07.json">2025-07.json</a></li><li><a href="2025-08.json">2025-08.json</a></li><li><a href="2025-09.json">2025-09.json</a></li><li><a href="2025-10.json">2025-10.json</a></li><li><a href="2025-11.json">2025-11.json</a></li><li><a href="2025-12.json">2025-12.json</a></li><li><a href="2026-01.json">2026-01.json</a></li><li><a href="2026-02.json">2026-02.json</a></li><li><a href="2026-03.json">2026-03.json</a></li><li><a href="2026-04.json">2026-04.json</a></li><li><a href="2026-05.json">2026-05.json</a></li><li><a href="2026-06.json">2026-06.json</a></li><li><a href="2026-07.json">2026-07.json</a></li><li><a href="2026-08.json">2026-08.json</a></li><li><a href="2026-09.json">2026-09.json</a></li><li><a href="2026-10.json">2026-10.json</a></li><li><a href="2026-11.json">2026-11.json</a></li><li><a href="metadata.json">metadata.json</a></li></ul>
+</section>
+</main>
+</body>
+</html>

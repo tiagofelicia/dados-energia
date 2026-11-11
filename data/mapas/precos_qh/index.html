@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data/mapas/precos_qh/ — Dados Abertos de Energia | Tiago Felícia</title>
+<meta name="description" content="Ficheiros de Preços day-ahead europeus. Licença CC BY 4.0.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --borda: #dde4ea;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --borda: #334155;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+main { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 1.35rem; margin: 6px 0 4px; overflow-wrap: anywhere; }
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+h2 { font-size: 1.1rem; margin: 0 0 8px; }
+h3 { font-size: .95rem; margin: 14px 0 2px; color: var(--texto-2); }
+p, li { font-size: .92rem; }
+.nota { color: var(--texto-2); }
+code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+ul.ficheiros { list-style: none; padding: 0; margin: 6px 0 0; }
+ul.ficheiros.em-linha { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Catálogo dos dados</a></p>
+<h1><code>data/mapas/precos_qh/</code></h1>
+<p class="nota">Os ficheiros desta pasta, sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt">CC BY 4.0</a> (atribuição: Tiago Felícia — www.tiagofelicia.pt). A última data de cada dataset está no <a href="/data/manifest.json">manifest.json</a> e no <a href="/status.html">estado dos dados</a>.</p>
+<section id="mapas-precos">
+<h2>Preços day-ahead europeus</h2>
+<p>Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e a série quarto-horária do dia local (96 valores; 92 e 100 nos dias de mudança de hora).</p>
+<ul><li>O campo resolution diz sempre PT15M, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos. A resolução a que a fonte publicou está em resolucao_nativa, e varia por zona.</li><li>values pode conter null em dias parcialmente publicados.</li><li>values segue o relógio real do dia local de cada zona: 96 posições, 92 no último domingo de março e 100 no último domingo de outubro. A posição i é o quarto de hora que começa i×15 minutos depois da meia-noite local, no fuso indicado em metadata.json (fusos). Nesses dias, min_hour e max_hour levam &#x27; (2.ª)&#x27; quando o extremo cai na 2.ª passagem pela hora repetida.</li><li>Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições (só a 1.ª passagem pela hora repetida; a hora que não existe preenchida com o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não os tem.</li><li>RO até 17/06/2021, PL até 19/11/2019 e BG até 21/01/2022 vinham da ENTSO-E na moeda local (RON, PLN e BGN) e foram convertidos para euros em outubro de 2026: BGN à taxa fixa de 1,95583; RON à taxa do BNR publicada antes do dia do leilão (a que o OPCOM usou); PLN à taxa de referência do BCE do dia. Esses zona-dias têm moeda_original e taxa_cambio (euros = valor original / taxa_cambio).</li></ul>
+<p class="nota">108 ficheiros · <code>data/mapas/precos_qh/*.json</code> · 1x/dia</p>
+<ul class="ficheiros em-linha"><li><a href="2018-01.json">2018-01.json</a></li><li><a href="2018-02.json">2018-02.json</a></li><li><a href="2018-03.json">2018-03.json</a></li><li><a href="2018-04.json">2018-04.json</a></li><li><a href="2018-05.json">2018-05.json</a></li><li><a href="2018-06.json">2018-06.json</a></li><li><a href="2018-07.json">2018-07.json</a></li><li><a href="2018-08.json">2018-08.json</a></li><li><a href="2018-09.json">2018-09.json</a></li><li><a href="2018-10.json">2018-10.json</a></li><li><a href="2018-11.json">2018-11.json</a></li><li><a href="2018-12.json">2018-12.json</a></li><li><a href="2019-01.json">2019-01.json</a></li><li><a href="2019-02.json">2019-02.json</a></li><li><a href="2019-03.json">2019-03.json</a></li><li><a href="2019-04.json">2019-04.json</a></li><li><a href="2019-05.json">2019-05.json</a></li><li><a href="2019-06.json">2019-06.json</a></li><li><a href="2019-07.json">2019-07.json</a></li><li><a href="2019-08.json">2019-08.json</a></li><li><a href="2019-09.json">2019-09.json</a></li><li><a href="2019-10.json">2019-10.json</a></li><li><a href="2019-11.json">2019-11.json</a></li><li><a href="2019-12.json">2019-12.json</a></li><li><a href="2020-01.json">2020-01.json</a></li><li><a href="2020-02.json">2020-02.json</a></li><li><a href="2020-03.json">2020-03.json</a></li><li><a href="2020-04.json">2020-04.json</a></li><li><a href="2020-05.json">2020-05.json</a></li><li><a href="2020-06.json">2020-06.json</a></li><li><a href="2020-07.json">2020-07.json</a></li><li><a href="2020-08.json">2020-08.json</a></li><li><a href="2020-09.json">2020-09.json</a></li><li><a href="2020-10.json">2020-10.json</a></li><li><a href="2020-11.json">2020-11.json</a></li><li><a href="2020-12.json">2020-12.json</a></li><li><a href="2021-01.json">2021-01.json</a></li><li><a href="2021-02.json">2021-02.json</a></li><li><a href="2021-03.json">2021-03.json</a></li><li><a href="2021-04.json">2021-04.json</a></li><li><a href="2021-05.json">2021-05.json</a></li><li><a href="2021-06.json">2021-06.json</a></li><li><a href="2021-07.json">2021-07.json</a></li><li><a href="2021-08.json">2021-08.json</a></li><li><a href="2021-09.json">2021-09.json</a></li><li><a href="2021-10.json">2021-10.json</a></li><li><a href="2021-11.json">2021-11.json</a></li><li><a href="2021-12.json">2021-12.json</a></li><li><a href="2022-01.json">2022-01.json</a></li><li><a href="2022-02.json">2022-02.json</a></li><li><a href="2022-03.json">2022-03.json</a></li><li><a href="2022-04.json">2022-04.json</a></li><li><a href="2022-05.json">2022-05.json</a></li><li><a href="2022-06.json">2022-06.json</a></li><li><a href="2022-07.json">2022-07.json</a></li><li><a href="2022-08.json">2022-08.json</a></li><li><a href="2022-09.json">2022-09.json</a></li><li><a href="2022-10.json">2022-10.json</a></li><li><a href="2022-11.json">2022-11.json</a></li><li><a href="2022-12.json">2022-12.json</a></li><li><a href="2023-01.json">2023-01.json</a></li><li><a href="2023-02.json">2023-02.json</a></li><li><a href="2023-03.json">2023-03.json</a></li><li><a href="2023-04.json">2023-04.json</a></li><li><a href="2023-05.json">2023-05.json</a></li><li><a href="2023-06.json">2023-06.json</a></li><li><a href="2023-07.json">2023-07.json</a></li><li><a href="2023-08.json">2023-08.json</a></li><li><a href="2023-09.json">2023-09.json</a></li><li><a href="2023-10.json">2023-10.json</a></li><li><a href="2023-11.json">2023-11.json</a></li><li><a href="2023-12.json">2023-12.json</a></li><li><a href="2024-01.json">2024-01.json</a></li><li><a href="2024-02.json">2024-02.json</a></li><li><a href="2024-03.json">2024-03.json</a></li><li><a href="2024-04.json">2024-04.json</a></li><li><a href="2024-05.json">2024-05.json</a></li><li><a href="2024-06.json">2024-06.json</a></li><li><a href="2024-07.json">2024-07.json</a></li><li><a href="2024-08.json">2024-08.json</a></li><li><a href="2024-09.json">2024-09.json</a></li><li><a href="2024-10.json">2024-10.json</a></li><li><a href="2024-11.json">2024-11.json</a></li><li><a href="2024-12.json">2024-12.json</a></li><li><a href="2025-01.json">2025-01.json</a></li><li><a href="2025-02.json">2025-02.json</a></li><li><a href="2025-03.json">2025-03.json</a></li><li><a href="2025-04.json">2025-04.json</a></li><li><a href="2025-05.json">2025-05.json</a></li><li><a href="2025-06.json">2025-06.json</a></li><li><a href="2025-07.json">2025-07.json</a></li><li><a href="2025-08.json">2025-08.json</a></li><li><a href="2025-09.json">2025-09.json</a></li><li><a href="2025-10.json">2025-10.json</a></li><li><a href="2025-11.json">2025-11.json</a></li><li><a href="2025-12.json">2025-12.json</a></li><li><a href="2026-01.json">2026-01.json</a></li><li><a href="2026-02.json">2026-02.json</a></li><li><a href="2026-03.json">2026-03.json</a></li><li><a href="2026-04.json">2026-04.json</a></li><li><a href="2026-05.json">2026-05.json</a></li><li><a href="2026-06.json">2026-06.json</a></li><li><a href="2026-07.json">2026-07.json</a></li><li><a href="2026-08.json">2026-08.json</a></li><li><a href="2026-09.json">2026-09.json</a></li><li><a href="2026-10.json">2026-10.json</a></li><li><a href="2026-11.json">2026-11.json</a></li><li><a href="metadata.json">metadata.json</a></li></ul>
+</section>
+</main>
+</body>
+</html>
