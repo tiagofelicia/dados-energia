@@ -756,7 +756,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
-   "bytes": 4798688,
+   "bytes": 4801403,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/producao/",
    "descricao": "Produção diária por país e tecnologia (GWh) e quota renovável, para 28 países, desde 2026-01.",
@@ -767,7 +767,7 @@
    "padrao": "data/mapas/producao/*.json",
    "titulo": "Mix de produção europeu diário",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-11",
+   "ultima_data": "2026-11-12",
    "url": "https://dados.tiagofelicia.pt/data/mapas/producao/"
   },
   {
@@ -796,7 +796,7 @@
     "quotas é o consumo médio diário real de cada país nos últimos 365 dias, a dividir pela soma dos países: serve os dias sem dados (antes de 2026) e os países sem valor num dia.",
     "AL, MK e XK não têm consumo na fonte."
    ],
-   "bytes": 107098,
+   "bytes": 107162,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/consumo_paises.json",
    "descricao": "Consumo de eletricidade por país europeu (GWh/dia), real e previsto para o dia seguinte, e a quota fixa de cada país. Pesa pelo consumo a média europeia do europe-prices. 28 países, desde 2026-01.",
@@ -806,7 +806,7 @@
    "id": "mapas-consumo",
    "titulo": "Consumo diário por país",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-09",
+   "ultima_data": "2026-11-10",
    "url": "https://dados.tiagofelicia.pt/data/mapas/consumo_paises.json"
   },
   {
@@ -1410,7 +1410,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-11T02:44:04+00:00",
+ "gerado_em": "2026-11-11T02:52:32+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1426,7 +1426,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 555294913,
+  "bytes": 555297692,
   "datasets": 49,
   "ficheiros": 1968
  }
