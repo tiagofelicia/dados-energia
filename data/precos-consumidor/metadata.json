@@ -1,0 +1,104 @@
+{
+ "fonte": "Eurostat (Regulamento (UE) 2016/1952)",
+ "nota": "Preços em €/kWh e em PPS/kWh. Ver o README.",
+ "grupos": {
+  "eletricidade_componentes": {
+   "ultimo_periodo": "2025",
+   "data_fim": "2025-12-31"
+  },
+  "eletricidade_precos": {
+   "ultimo_periodo": "2026-S1",
+   "data_fim": "2026-06-30"
+  },
+  "gas_componentes": {
+   "ultimo_periodo": "2025",
+   "data_fim": "2025-12-31"
+  },
+  "gas_precos": {
+   "ultimo_periodo": "2026-S1",
+   "data_fim": "2026-06-30"
+  }
+ },
+ "ficheiros": {
+  "eletricidade_precos_familias.csv": {
+   "codigo_eurostat": "nrg_pc_204",
+   "titulo_eurostat": "Electricity prices for household consumers - bi-annual data",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_204/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-19T23:00:00+0200",
+   "primeiro_periodo": "2007-S1",
+   "ultimo_periodo": "2026-S1",
+   "linhas": 7864,
+   "paises": 43
+  },
+  "eletricidade_precos_empresas.csv": {
+   "codigo_eurostat": "nrg_pc_205",
+   "titulo_eurostat": "Electricity prices for non-household consumers - bi-annual data",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_205/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-19T11:00:00+0200",
+   "primeiro_periodo": "2007-S1",
+   "ultimo_periodo": "2026-S1",
+   "linhas": 9505,
+   "paises": 43
+  },
+  "gas_precos_familias.csv": {
+   "codigo_eurostat": "nrg_pc_202",
+   "titulo_eurostat": "Gas prices for household consumers - bi-annual data",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_202/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-19T11:00:00+0200",
+   "primeiro_periodo": "2007-S1",
+   "ultimo_periodo": "2026-S1",
+   "linhas": 3609,
+   "paises": 36
+  },
+  "gas_precos_empresas.csv": {
+   "codigo_eurostat": "nrg_pc_203",
+   "titulo_eurostat": "Gas prices for non-household consumers - bi-annual data",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_203/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-19T11:00:00+0200",
+   "primeiro_periodo": "2007-S1",
+   "ultimo_periodo": "2026-S1",
+   "linhas": 6494,
+   "paises": 37
+  },
+  "eletricidade_componentes_familias.csv": {
+   "codigo_eurostat": "nrg_pc_204_c",
+   "titulo_eurostat": "Electricity prices components for household consumers",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_204_c/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-19T23:00:00+0200",
+   "primeiro_periodo": "2017",
+   "ultimo_periodo": "2025",
+   "linhas": 2198,
+   "paises": 43
+  },
+  "eletricidade_componentes_empresas.csv": {
+   "codigo_eurostat": "nrg_pc_205_c",
+   "titulo_eurostat": "Electricity prices components for non-household consumers",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_205_c/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-16T11:00:00+0200",
+   "primeiro_periodo": "2017",
+   "ultimo_periodo": "2025",
+   "linhas": 2685,
+   "paises": 43
+  },
+  "gas_componentes_familias.csv": {
+   "codigo_eurostat": "nrg_pc_202_c",
+   "titulo_eurostat": "Gas prices components for household consumers",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_202_c/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-05T23:00:00+0200",
+   "primeiro_periodo": "2017",
+   "ultimo_periodo": "2025",
+   "linhas": 1167,
+   "paises": 36
+  },
+  "gas_componentes_empresas.csv": {
+   "codigo_eurostat": "nrg_pc_203_c",
+   "titulo_eurostat": "Gas prices components for non-household consumers",
+   "url_eurostat": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_203_c/default/table?lang=en",
+   "atualizado_eurostat": "2026-10-06T11:00:00+0200",
+   "primeiro_periodo": "2017",
+   "ultimo_periodo": "2025",
+   "linhas": 1883,
+   "paises": 37
+  }
+ }
+}
