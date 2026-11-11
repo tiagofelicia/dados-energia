@@ -1184,6 +1184,154 @@
   },
   {
    "avisos": [
+    "EU27_2020 (União Europeia a 27) e EA (zona euro) são médias calculadas pelo Eurostat, pesadas pelo consumo de cada país; EL é a Grécia.",
+    "estado junta as marcas do Eurostat dos valores da linha: e estimado, p provisório, d definição diferente, b quebra de série, n pouco significativo, u pouco fiável.",
+    "Uma faixa que um país não publica (confidencial ou sem consumidores) não tem linha; TOT é a média de todas as faixas.",
+    "O sem_iva das empresas exclui também os outros impostos recuperáveis."
+   ],
+   "bytes": 958505,
+   "cadencia": "semestral (verificada 2x/semana)",
+   "caminho": "data/precos-consumidor/",
+   "colunas": [
+    "periodo",
+    "pais",
+    "banda",
+    "sem_impostos",
+    "sem_iva",
+    "com_impostos",
+    "pps_sem_impostos",
+    "pps_sem_iva",
+    "pps_com_impostos",
+    "estado"
+   ],
+   "descricao": "Preço médio da eletricidade pago pelas famílias e pelas empresas em cada país europeu, por semestre desde 2007 e por faixa de consumo anual: sem impostos, sem IVA e com todos os impostos, em €/kWh e em paridade de poder de compra (PPS/kWh). Fonte: Eurostat (nrg_pc_204, nrg_pc_205).",
+   "ficheiros": 2,
+   "formato": "csv",
+   "grupo": "precos-consumidor",
+   "id": "precos-consumidor-eletricidade",
+   "padrao": "data/precos-consumidor/eletricidade_precos_*.csv",
+   "titulo": "Preços da eletricidade nas famílias e nas empresas, por país",
+   "tolerancia_dias": 340,
+   "ultima_data": "2026-06-30",
+   "url": "https://dados.tiagofelicia.pt/data/precos-consumidor/"
+  },
+  {
+   "avisos": [
+    "EU27_2020 (União Europeia a 27) e EA (zona euro) são médias calculadas pelo Eurostat, pesadas pelo consumo de cada país; EL é a Grécia.",
+    "estado junta as marcas do Eurostat dos valores da linha: e estimado, p provisório, d definição diferente, b quebra de série, n pouco significativo, u pouco fiável.",
+    "As faixas do gás estão em GJ por ano no Eurostat: D1 < 20 GJ (~5 600 kWh), D2 20–199 GJ, D3 ≥ 200 GJ; I1 < 1 000 GJ … I6 ≥ 4 000 000 GJ."
+   ],
+   "bytes": 556160,
+   "cadencia": "semestral (verificada 2x/semana)",
+   "caminho": "data/precos-consumidor/",
+   "colunas": [
+    "periodo",
+    "pais",
+    "banda",
+    "sem_impostos",
+    "sem_iva",
+    "com_impostos",
+    "pps_sem_impostos",
+    "pps_sem_iva",
+    "pps_com_impostos",
+    "estado"
+   ],
+   "descricao": "Preço médio do gás natural pago pelas famílias e pelas empresas em cada país europeu, por semestre desde 2007 e por faixa de consumo anual: sem impostos, sem IVA e com todos os impostos, em €/kWh (poder calorífico superior) e em PPS/kWh. Fonte: Eurostat (nrg_pc_202, nrg_pc_203).",
+   "ficheiros": 2,
+   "formato": "csv",
+   "grupo": "precos-consumidor",
+   "id": "precos-consumidor-gas",
+   "padrao": "data/precos-consumidor/gas_precos_*.csv",
+   "titulo": "Preços do gás natural nas famílias e nas empresas, por país",
+   "tolerancia_dias": 340,
+   "ultima_data": "2026-06-30",
+   "url": "https://dados.tiagofelicia.pt/data/precos-consumidor/"
+  },
+  {
+   "avisos": [
+    "EU27_2020 (União Europeia a 27) e EA (zona euro) são médias calculadas pelo Eurostat, pesadas pelo consumo de cada país; EL é a Grécia.",
+    "estado junta as marcas do Eurostat dos valores da linha: e estimado, p provisório, d definição diferente, b quebra de série, n pouco significativo, u pouco fiável.",
+    "impostos_taxas inclui o IVA: o preço sem IVA é energia_fornecimento + redes + impostos_taxas − iva.",
+    "As colunas reducoes_* são as reduções e isenções declaradas à parte, já descontadas nos impostos; o sinal varia de país para país."
+   ],
+   "bytes": 330274,
+   "cadencia": "anual (verificada 2x/semana)",
+   "caminho": "data/precos-consumidor/",
+   "colunas": [
+    "ano",
+    "pais",
+    "banda",
+    "energia_fornecimento",
+    "redes",
+    "impostos_taxas",
+    "iva",
+    "impostos_renovaveis",
+    "impostos_capacidade",
+    "impostos_ambientais",
+    "impostos_nuclear",
+    "impostos_outros",
+    "reducoes_total",
+    "reducoes_renovaveis",
+    "reducoes_capacidade",
+    "reducoes_ambientais",
+    "reducoes_nuclear",
+    "reducoes_outras",
+    "estado"
+   ],
+   "descricao": "O preço médio anual da eletricidade das famílias e das empresas em cada país europeu, desde 2017, dividido em energia e fornecimento, redes e impostos e taxas (renováveis, capacidade, ambientais, nuclear, outros e IVA), em €/kWh. Fonte: Eurostat (nrg_pc_204_c, nrg_pc_205_c).",
+   "ficheiros": 2,
+   "formato": "csv",
+   "grupo": "precos-consumidor",
+   "id": "precos-consumidor-eletricidade-componentes",
+   "padrao": "data/precos-consumidor/eletricidade_componentes_*.csv",
+   "titulo": "De que é feito o preço da eletricidade, por país",
+   "tolerancia_dias": 700,
+   "ultima_data": "2025-12-31",
+   "url": "https://dados.tiagofelicia.pt/data/precos-consumidor/"
+  },
+  {
+   "avisos": [
+    "EU27_2020 (União Europeia a 27) e EA (zona euro) são médias calculadas pelo Eurostat, pesadas pelo consumo de cada país; EL é a Grécia.",
+    "estado junta as marcas do Eurostat dos valores da linha: e estimado, p provisório, d definição diferente, b quebra de série, n pouco significativo, u pouco fiável.",
+    "impostos_taxas inclui o IVA: o preço sem IVA é energia_fornecimento + redes + impostos_taxas − iva."
+   ],
+   "bytes": 185215,
+   "cadencia": "anual (verificada 2x/semana)",
+   "caminho": "data/precos-consumidor/",
+   "colunas": [
+    "ano",
+    "pais",
+    "banda",
+    "energia_fornecimento",
+    "redes",
+    "impostos_taxas",
+    "iva",
+    "impostos_renovaveis",
+    "impostos_capacidade",
+    "impostos_ambientais",
+    "impostos_nuclear",
+    "impostos_outros",
+    "reducoes_total",
+    "reducoes_renovaveis",
+    "reducoes_capacidade",
+    "reducoes_ambientais",
+    "reducoes_nuclear",
+    "reducoes_outras",
+    "estado"
+   ],
+   "descricao": "O preço médio anual do gás natural das famílias e das empresas em cada país europeu, desde 2017, dividido em energia e fornecimento, redes e impostos e taxas, em €/kWh. Fonte: Eurostat (nrg_pc_202_c, nrg_pc_203_c).",
+   "ficheiros": 2,
+   "formato": "csv",
+   "grupo": "precos-consumidor",
+   "id": "precos-consumidor-gas-componentes",
+   "padrao": "data/precos-consumidor/gas_componentes_*.csv",
+   "titulo": "De que é feito o preço do gás natural, por país",
+   "tolerancia_dias": 700,
+   "ultima_data": "2025-12-31",
+   "url": "https://dados.tiagofelicia.pt/data/precos-consumidor/"
+  },
+  {
+   "avisos": [
     "Os dias são dias de MERCADO (hora de Espanha): o período 1 começa às 23:00 do dia anterior em hora de Portugal.",
     "A chave é (data_iso, periodo). Nos dias de mudança de hora o 'intervalo' repete-se ou salta; o 'data_utc' não.",
     "Em 137 períodos de 18 dias (fevereiro de 2026 e 09/05/2026) o erc_total_eur publicado pela REN fica abaixo da soma das componentes (241 371 EUR no conjunto). Os valores são guardados como a fonte os dá; nos restantes períodos a diferença é de arredondamento (< 0,01 EUR)."
@@ -1410,7 +1558,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-11T15:36:36+00:00",
+ "gerado_em": "2026-11-11T17:05:16+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1418,6 +1566,7 @@
   "gas": "Mercado de gás natural",
   "mapas": "Europa",
   "omie": "Preços de mercado (OMIE / OMIP)",
+  "precos-consumidor": "Preços ao consumidor na Europa (Eurostat)",
   "producao": "Produção elétrica",
   "referencia": "Tabelas de referência",
   "regulado": "Dados regulados (ERSE / E-Redes)"
@@ -1426,8 +1575,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 555310631,
-  "datasets": 49,
-  "ficheiros": 1968
+  "bytes": 557340785,
+  "datasets": 53,
+  "ficheiros": 1976
  }
 }
