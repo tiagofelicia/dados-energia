@@ -48,6 +48,12 @@ Todos os ficheiros OMIE têm 96 linhas por dia desde 2010, mas o MIBEL só casa
 por quartos de hora desde 01/10/2025 — antes disso são 24 preços repetidos
 quatro vezes. Nada no ficheiro o diz. Ver a secção 'Resolução nativa' abaixo.
 
+OS ÍNDICES DAS PASTAS
+---------------------
+Escreve também um index.html em cada pasta de um dataset de vários ficheiros
+(data/agregados/erc_omie/, data/erc/isp/, ...): o 'url' do manifesto aponta para
+lá, e o GitHub Pages não lista pastas. Ver 'Índices das pastas' abaixo.
+
 USO
 ---
   python gerar_manifest.py
@@ -57,6 +63,7 @@ USO
 import argparse
 import csv
 import glob
+import html
 import json
 import os
 import sys
@@ -828,6 +835,148 @@ def inspecionar(entrada):
     return out
 
 
+# ============================================================
+# Índices das pastas
+# ============================================================
+# Num dataset de vários ficheiros, o 'url' aponta à pasta (ver inspecionar), e o
+# GitHub Pages não lista pastas: sem um index.html lá dentro, esse URL dava 404
+# — no manifesto, nas ligações do index.html e nos dados estruturados (JSON-LD)
+# das páginas do site. Cada pasta ganha uma página com os ficheiros dos datasets
+# que lá vivem e as ligações para as pastas de baixo que também têm índice.
+#
+# A página não leva tamanhos nem datas: só muda quando aparece ou desaparece um
+# ficheiro, e não em cada corrida. O estado de cada dataset fica no manifesto.
+#
+# noindex: são listas de ficheiros, sem texto próprio; o 'follow' deixa os
+# motores de busca chegar aos ficheiros a partir delas.
+
+INDICE = "index.html"
+# Um dataset com mais ficheiros do que isto tem os nomes em linha (os 108 meses
+# do precos_qh, as semanas do producao-entsoe), e não um por linha
+LISTA_EM_LINHA = 24
+
+_INDICE_CSS = """:root {
+  --bg: #f4f6f8; --card: #ffffff; --texto: #2c3e50; --texto-2: #5a6a7a;
+  --acento: #2563eb; --borda: #dde4ea;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a; --card: #1e293b; --texto: #e2e8f0; --texto-2: #94a3b8;
+    --acento: #60a5fa; --borda: #334155;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--texto); line-height: 1.6; }
+a { color: var(--acento); }
+main { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 1.35rem; margin: 6px 0 4px; overflow-wrap: anywhere; }
+section { background: var(--card); border: 1px solid var(--borda); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+h2 { font-size: 1.1rem; margin: 0 0 8px; }
+h3 { font-size: .95rem; margin: 14px 0 2px; color: var(--texto-2); }
+p, li { font-size: .92rem; }
+.nota { color: var(--texto-2); }
+code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+ul.ficheiros { list-style: none; padding: 0; margin: 6px 0 0; }
+ul.ficheiros.em-linha { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+"""
+
+
+def _lista_ficheiros(nomes, em_linha):
+    classe = "ficheiros em-linha" if em_linha else "ficheiros"
+    itens = "".join(f'<li><a href="{html.escape(rel)}">{html.escape(nome)}</a></li>'
+                    for rel, nome in nomes)
+    return f'<ul class="{classe}">{itens}</ul>'
+
+
+def _indice_html(pasta, conteudo, subpastas):
+    """pasta: 'data/erc/isp/'; conteudo: [(entrada do REGISTO, ficheiros)];
+    subpastas: [(caminho relativo, [títulos])]."""
+    e = html.escape
+    titulos = [ent["titulo"] for ent, _ in conteudo]
+    seccoes = []
+    for ent, ficheiros in conteudo:
+        base = os.path.join(ROOT_DIR, pasta.replace("/", os.sep))
+        rels = [os.path.relpath(f, base).replace(os.sep, "/") for f in ficheiros]
+        # Ficheiros em subpastas (o producao-entsoe tem uma por país): um
+        # bloco por subpasta, com o nome curto
+        grupos = {}
+        for r in rels:
+            sub, _, nome = r.rpartition("/")
+            grupos.setdefault(sub, []).append((r, nome))
+        em_linha = len(rels) > LISTA_EM_LINHA
+        if list(grupos) == [""]:
+            lista = _lista_ficheiros(grupos[""], em_linha)
+        else:
+            lista = "".join(f"<h3>{e(sub + '/' if sub else pasta)}</h3>" + _lista_ficheiros(g, em_linha)
+                            for sub, g in grupos.items())
+        avisos = "".join(f"<li>{e(a)}</li>" for a in ent.get("avisos", []))
+        seccoes.append(
+            f'<section id="{e(ent["id"])}">\n'
+            f'<h2>{e(ent["titulo"])}</h2>\n'
+            f'<p>{e(ent["descricao"])}</p>\n'
+            + (f'<ul>{avisos}</ul>\n' if avisos else "")
+            + f'<p class="nota">{len(ficheiros)} ficheiros · <code>{e(ent["caminho"])}</code> · '
+              f'{e(ent["cadencia"])}</p>\n'
+            f'{lista}\n'
+            f'</section>')
+    if subpastas:
+        itens = "".join(f'<li><a href="{e(rel)}">{e(rel)}</a> — {e("; ".join(t))}</li>'
+                        for rel, t in subpastas)
+        seccoes.append(f'<section>\n<h2>Pastas dentro desta</h2>\n<ul>{itens}</ul>\n</section>')
+    descricao = "Ficheiros de " + "; ".join(titulos) + ". Licença CC BY 4.0."
+    return f"""<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{e(pasta)} — Dados Abertos de Energia | Tiago Felícia</title>
+<meta name="description" content="{e(descricao)}">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="https://www.tiagofelicia.pt/images/favicon.svg">
+<style>
+{_INDICE_CSS}</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Catálogo dos dados</a></p>
+<h1><code>{e(pasta)}</code></h1>
+<p class="nota">Os ficheiros desta pasta, sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt">CC BY 4.0</a> (atribuição: Tiago Felícia — www.tiagofelicia.pt). A última data de cada dataset está no <a href="/data/manifest.json">manifest.json</a> e no <a href="/status.html">estado dos dados</a>.</p>
+{chr(10).join(seccoes)}
+</main>
+</body>
+</html>
+"""
+
+
+def escrever_indices():
+    """Escreve (ou deixa como está) o index.html de cada pasta de um dataset de
+    vários ficheiros. Devolve (pastas, escritas)."""
+    pastas = {}
+    for ent in REGISTO:
+        if "*" not in ent["caminho"]:
+            continue
+        ficheiros = ficheiros_de(ent["caminho"])
+        if not ficheiros:
+            continue
+        pasta = ent["caminho"].split("*", 1)[0].rsplit("/", 1)[0] + "/"
+        pastas.setdefault(pasta, []).append((ent, ficheiros))
+    escritas = 0
+    for pasta, conteudo in sorted(pastas.items()):
+        subpastas = [(p[len(pasta):], [ent["titulo"] for ent, _ in c])
+                     for p, c in sorted(pastas.items()) if p != pasta and p.startswith(pasta)]
+        novo = _indice_html(pasta, conteudo, subpastas)
+        alvo = os.path.join(ROOT_DIR, pasta.replace("/", os.sep), INDICE)
+        try:
+            igual = open(alvo, encoding="utf-8", newline="").read() == novo
+        except OSError:
+            igual = False
+        if not igual:
+            with open(alvo, "w", encoding="utf-8", newline="") as f:
+                f.write(novo)
+            escritas += 1
+    return len(pastas), escritas
+
+
 def main():
     p = argparse.ArgumentParser(description="Gera data/manifest.json.")
     p.add_argument("--verificar", action="store_true",
@@ -896,6 +1045,10 @@ def main():
         t = manifesto["totais"]
         print(f"\n✓ data/manifest.json — {t['datasets']} datasets · "
               f"{t['ficheiros']} ficheiros · {t['bytes'] / 1e6:.0f} MB")
+
+    n, escritas = escrever_indices()
+    print(f"✓ {n} índices de pastas ({INDICE}): "
+          + (f"{escritas} reescrito(s)" if escritas else "sem alterações"))
 
     if problemas:
         sys.exit(1)
