@@ -55,6 +55,7 @@ data/
 ├── mapas/        Preços e mix de produção por país/zona europeia
 ├── agregados/    Médias e totais pré-calculados (diário, mensal, anual)
 ├── emissoes/     Intensidade carbónica e preço do CO2 (leilões EU ETS)
+├── precos-consumidor/  Preços da eletricidade e do gás nas famílias e nas empresas, por país (Eurostat)
 ├── erc/          Encargos de regulação imputados ao consumo (REN)
 ├── referencia/   Tabelas de referência (tecnologias, vocabulários)
 ├── regulado/     Dados regulados ERSE/E-Redes (atualização anual)
@@ -364,6 +365,29 @@ onde 0,2016 tCO₂/MWh térmico é o valor por omissão do regulamento de monito
 
 ⚠️ **Não reutilize os fatores de `fatores_emissao.csv` nesta conta.** Esses são de ciclo de vida (IPCC AR5); aqui é preciso o fator de **combustão apenas**, que é o único que o ETS cobra.
 
+### `data/precos-consumidor/` — Preços ao consumidor na Europa (Eurostat)
+
+O preço médio da eletricidade e do gás natural pago pelas famílias e pelas empresas em cada país europeu (os 27 da UE, a média da UE e da zona euro, e os países da EFTA e candidatos que publicam), como o Eurostat o recolhe ao abrigo do Regulamento (UE) 2016/1952. É a página [/europe-consumer-prices](https://www.tiagofelicia.pt/europe-consumer-prices) do site.
+
+| Ficheiro | Conteúdo | Atualização |
+|---|---|---|
+| `eletricidade_precos_familias.csv` | **Eletricidade, famílias**, por semestre desde 2007-S1, nas faixas de consumo anual DA (< 1 000 kWh), DB (1 000–2 499), DC (2 500–4 999), DD (5 000–14 999) e DE (≥ 15 000), e TOT (todas). Fonte: Eurostat, `nrg_pc_204` | Semestral (verificada 2×/semana) |
+| `eletricidade_precos_empresas.csv` | **Eletricidade, empresas** (não domésticos), nas faixas IA (< 20 MWh), IB (20–499), IC (500–1 999), ID (2 000–19 999), IE (20 000–69 999), IF (70 000–149 999) e IG (≥ 150 000 MWh), e TOT. Fonte: `nrg_pc_205` | Semestral |
+| `gas_precos_familias.csv` | **Gás natural, famílias**, nas faixas D1 (< 20 GJ, cerca de 5 600 kWh), D2 (20–199 GJ) e D3 (≥ 200 GJ), e TOT. Fonte: `nrg_pc_202` | Semestral |
+| `gas_precos_empresas.csv` | **Gás natural, empresas**, nas faixas I1 (< 1 000 GJ) a I6 (≥ 4 000 000 GJ), e TOT. Fonte: `nrg_pc_203` | Semestral |
+| `eletricidade_componentes_familias.csv`, `eletricidade_componentes_empresas.csv` | **De que é feito o preço da eletricidade**, por ano desde 2017, nas mesmas faixas (nas empresas também IA-IF, todas menos a IG). Fonte: `nrg_pc_204_c`, `nrg_pc_205_c` | Anual |
+| `gas_componentes_familias.csv`, `gas_componentes_empresas.csv` | O mesmo para o gás (nas empresas também I1-I5). Fonte: `nrg_pc_202_c`, `nrg_pc_203_c` | Anual |
+| `metadata.json` | Por ficheiro: o código e o título do Eurostat, a data da última atualização lá, o primeiro e o último período, as linhas e os países. Em `grupos`, o último período de cada grupo e o dia em que acaba | Quando os dados mudam |
+
+Colunas dos preços: `periodo` (`AAAA-S1` = janeiro a junho, `AAAA-S2` = julho a dezembro), `pais` (código do Eurostat: `EL` = Grécia, `UK` = Reino Unido, `XK` = Kosovo, `EU27_2020` = média da UE a 27, `EA` = média da zona euro), `banda`, `sem_impostos`, `sem_iva` (sem o IVA e os outros impostos recuperáveis), `com_impostos` (em €/kWh; no gás, poder calorífico superior), `pps_sem_impostos`, `pps_sem_iva`, `pps_com_impostos` (o mesmo em paridade de poder de compra: PPS por kWh) e `estado` (as marcas do Eurostat nos valores da linha, juntas: `e` estimado, `p` provisório, `d` definição diferente, `b` quebra de série, `n` pouco significativo, `u` pouco fiável).
+
+Colunas dos componentes (€/kWh, por `ano`, `pais` e `banda`): `energia_fornecimento`, `redes`, `impostos_taxas` (todos os impostos e taxas, **com** o IVA), `iva`, e as parcelas dos impostos `impostos_renovaveis`, `impostos_capacidade`, `impostos_ambientais`, `impostos_nuclear` e `impostos_outros` (somadas ao `iva` dão o `impostos_taxas`, a menos de arredondamentos), as reduções e isenções declaradas à parte, já descontadas nas parcelas (`reducoes_total`, `reducoes_renovaveis`, `reducoes_capacidade`, `reducoes_ambientais`, `reducoes_nuclear`, `reducoes_outras`; o sinal varia de país para país) e `estado`. `energia_fornecimento + redes + impostos_taxas` dá o preço com todos os impostos; sem o `iva`, o preço sem IVA.
+
+- O Eurostat publica o 1.º semestre em outubro e o 2.º em abril ou maio do ano seguinte; os componentes de um ano, em outubro do ano seguinte.
+- As médias da UE e da zona euro são do Eurostat, pesadas pelo consumo de cada país (não são a média simples dos países).
+- Uma faixa que um país não publica (confidencial ou sem consumidores) não tem linha. Um preço pode ser negativo: nos Países Baixos, as famílias da faixa DA pagaram −0,92 €/kWh em 2022, porque a devolução fixa do imposto sobre a energia é maior do que a conta.
+- Os valores são os do Eurostat, sem alterações; a moeda nacional (NAC) não entra.
+
 ### `data/erc/` — Encargos de regulação imputados ao consumo (REN)
 
 O custo dos serviços de sistema (restrições técnicas, reserva de aFRR e mFRR, desvios…) que a REN, como gestor do sistema, imputa ao consumo, a cada **15 minutos**, desde **14/03/2024** (antes disso a REN não publica). Fonte: **[REN — SIME](https://mercado.ren.pt/PT/Electr/InfoMercado/InfSistema/ERC/Paginas/default.aspx)**, as três páginas ERC-ISP, ERC-BRP e ERC-Tipo. Um ficheiro por mês, atualizado 2×/dia; a REN publica com cerca de 2 dias de atraso.
@@ -482,6 +506,7 @@ Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
 - **[Energy-Charts](https://www.energy-charts.info)** (Fraunhofer ISE) — mix de produção europeu
 - **[ERSE](https://www.erse.pt)** e **[E-Redes](https://www.e-redes.pt)** — perfis, perdas e tarifas reguladas
 - **[IPCC AR5](https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_annex-iii.pdf)** (WG3, Annex III) — fatores de emissão de ciclo de vida
+- **[Eurostat](https://ec.europa.eu/eurostat/web/energy/database)** — preços da eletricidade e do gás nas famílias e nas empresas, por país (reutilização livre com indicação da fonte)
 
 Os dados originais pertencem às respetivas entidades e podem estar sujeitos aos seus próprios termos de utilização. Este repositório disponibiliza **compilações e séries derivadas** desses dados, organizadas para consumo direto.
 

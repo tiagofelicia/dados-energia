@@ -317,6 +317,45 @@ const recordes = await r.json();</code></pre>
 </section>
 
 <section>
+  <h2>💶 Preços ao consumidor na Europa — <code>data/precos-consumidor/</code></h2>
+  <p>O preço médio da eletricidade e do gás natural pago pelas famílias e pelas empresas em cada país
+     europeu, por faixa de consumo anual, como o publica o Eurostat: sem impostos, sem IVA e com todos
+     os impostos, em €/kWh e em paridade de poder de compra (PPS/kWh). Na página
+     <a href="https://www.tiagofelicia.pt/europe-consumer-prices" rel="noopener">Preços ao Consumidor na Europa</a>.</p>
+  <table>
+    <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
+    <tr><td><a href="data/precos-consumidor/eletricidade_precos_familias.csv">eletricidade_precos_familias.csv</a></td>
+        <td>Eletricidade, famílias, por semestre desde 2007, nas faixas DA a DE (de menos de 1 000 a mais de 15 000 kWh por ano). Fonte: Eurostat (nrg_pc_204).</td>
+        <td>Semestral</td></tr>
+    <tr><td><a href="data/precos-consumidor/eletricidade_precos_empresas.csv">eletricidade_precos_empresas.csv</a></td>
+        <td>Eletricidade, empresas, nas faixas IA a IG (de menos de 20 MWh a mais de 150 000 MWh por ano). Fonte: Eurostat (nrg_pc_205).</td>
+        <td>Semestral</td></tr>
+    <tr><td><a href="data/precos-consumidor/gas_precos_familias.csv">gas_precos_familias.csv</a></td>
+        <td>Gás natural, famílias, nas faixas D1 a D3. Fonte: Eurostat (nrg_pc_202).</td>
+        <td>Semestral</td></tr>
+    <tr><td><a href="data/precos-consumidor/gas_precos_empresas.csv">gas_precos_empresas.csv</a></td>
+        <td>Gás natural, empresas, nas faixas I1 a I6. Fonte: Eurostat (nrg_pc_203).</td>
+        <td>Semestral</td></tr>
+    <tr><td><a href="data/precos-consumidor/eletricidade_componentes_familias.csv">eletricidade_componentes_familias.csv</a>,
+            <a href="data/precos-consumidor/eletricidade_componentes_empresas.csv">eletricidade_componentes_empresas.csv</a></td>
+        <td>De que é feito o preço da eletricidade, por ano desde 2017: energia e fornecimento, redes, impostos e taxas (renováveis, capacidade, ambientais, nuclear, outros e IVA). Fonte: Eurostat (nrg_pc_204_c, nrg_pc_205_c).</td>
+        <td>Anual</td></tr>
+    <tr><td><a href="data/precos-consumidor/gas_componentes_familias.csv">gas_componentes_familias.csv</a>,
+            <a href="data/precos-consumidor/gas_componentes_empresas.csv">gas_componentes_empresas.csv</a></td>
+        <td>O mesmo para o gás natural. Fonte: Eurostat (nrg_pc_202_c, nrg_pc_203_c).</td>
+        <td>Anual</td></tr>
+    <tr><td><a href="data/precos-consumidor/metadata.json">metadata.json</a></td>
+        <td>A data da última atualização do Eurostat e o primeiro e o último período de cada ficheiro.</td>
+        <td>Quando os dados mudam</td></tr>
+  </table>
+  <p class="nota">O Eurostat publica o 1.º semestre em outubro e o 2.º em abril ou maio do ano seguinte.
+     As médias da UE (<code>EU27_2020</code>) e da zona euro (<code>EA</code>) são pesadas pelo consumo de
+     cada país. O <code>estado</code> traz as marcas do Eurostat: <code>e</code> estimado, <code>p</code>
+     provisório, <code>d</code> definição diferente, <code>b</code> quebra de série. Nos componentes, o
+     <code>impostos_taxas</code> inclui o IVA.</p>
+</section>
+
+<section>
   <h2>🔤 Referência — <code>data/referencia/</code></h2>
   <table>
     <tr><th>Ficheiro</th><th>Conteúdo</th><th>Atualização</th></tr>
@@ -364,7 +403,9 @@ const recordes = await r.json();</code></pre>
      <a href="https://transparency.entsoe.eu" rel="noopener">ENTSO-E</a>,
      <a href="https://www.energy-charts.info" rel="noopener">Energy-Charts</a> (Fraunhofer ISE),
      <a href="https://www.erse.pt" rel="noopener">ERSE</a> e
-     <a href="https://www.e-redes.pt" rel="noopener">E-Redes</a> e
+     <a href="https://www.e-redes.pt" rel="noopener">E-Redes</a>,
+     <a href="https://ec.europa.eu/eurostat/web/energy/database" rel="noopener">Eurostat</a>
+     (preços ao consumidor) e
      <a href="https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_annex-iii.pdf" rel="noopener">IPCC AR5</a>
      (fatores de emissão).
      Os dados originais pertencem às respetivas entidades; este serviço disponibiliza compilações e séries derivadas, organizadas para consumo direto.</p>
