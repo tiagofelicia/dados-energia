@@ -296,7 +296,7 @@
    "avisos": [
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 3876520,
+   "bytes": 3876867,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -385,7 +385,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/historico/"
   },
   {
-   "bytes": 105715,
+   "bytes": 105716,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_bombagem_diaria.csv",
    "colunas": [
@@ -653,7 +653,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/centrais_hidricas.csv"
   },
   {
-   "bytes": 11871,
+   "bytes": 11870,
    "cadencia": "cada 4h",
    "caminho": "data/producao/records_producao.json",
    "descricao": "Recordes do balanço energético e agregados mensais e anuais.",
@@ -667,7 +667,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 4710,
+   "bytes": 10056,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -1410,7 +1410,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-11T14:54:42+00:00",
+ "gerado_em": "2026-11-11T15:36:36+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1426,7 +1426,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 555304938,
+  "bytes": 555310631,
   "datasets": 49,
   "ficheiros": 1968
  }
