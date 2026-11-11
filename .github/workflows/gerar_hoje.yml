@@ -42,6 +42,7 @@ on:
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
       - "Atualizar CO2 (EU ETS)"
+      - "Atualizar preços ao consumidor (Eurostat)"
     types: [completed]
 
   # Os ERC da REN e as albufeiras do SNIRH não vêm de um workflow: os dois
