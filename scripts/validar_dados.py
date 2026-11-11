@@ -185,6 +185,25 @@ REGRAS = {
         # Há dias com dois leilões e preços diferentes: a chave tem de os separar.
         chave=["data_iso", "leilao", "contrato"], cobertura="data_iso"),
 
+    # Os preços do Eurostat: as colunas que a página /europe-consumer-prices lê. Sem
+    # 'cobertura': um país pode deixar de publicar uma faixa (fica confidencial).
+    "precos-consumidor-eletricidade": dict(
+        colunas=["periodo", "pais", "banda", "sem_impostos", "sem_iva", "pps_sem_impostos", "pps_sem_iva", "estado"],
+        chave=["periodo", "pais", "banda"]),
+    "precos-consumidor-gas": dict(
+        colunas=["periodo", "pais", "banda", "sem_impostos", "sem_iva", "pps_sem_impostos", "pps_sem_iva", "estado"],
+        chave=["periodo", "pais", "banda"]),
+    "precos-consumidor-eletricidade-componentes": dict(
+        colunas=["ano", "pais", "banda", "energia_fornecimento", "redes", "impostos_taxas", "iva",
+                 "impostos_renovaveis", "impostos_capacidade", "impostos_ambientais",
+                 "impostos_nuclear", "impostos_outros", "estado"],
+        chave=["ano", "pais", "banda"]),
+    "precos-consumidor-gas-componentes": dict(
+        colunas=["ano", "pais", "banda", "energia_fornecimento", "redes", "impostos_taxas", "iva",
+                 "impostos_renovaveis", "impostos_capacidade", "impostos_ambientais",
+                 "impostos_nuclear", "impostos_outros", "estado"],
+        chave=["ano", "pais", "banda"]),
+
     # Sem 'cobertura' de propósito: as componentes do isp (rt_phf_eur, por
     # exemplo) passam semanas vazias por razões legítimas, e o alarme de
     # "coluna morta" dispararia sem haver defeito.

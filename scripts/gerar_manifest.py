@@ -185,6 +185,13 @@ AVISO_DATA_UTC = ("A última coluna, data_utc, é o início do intervalo em UTC 
                   "Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta "
                   "(março); o data_utc não.")
 
+# Preços ao consumidor (Eurostat): os avisos comuns às quatro entradas
+AVISO_EUROSTAT_MEDIAS = ("EU27_2020 (União Europeia a 27) e EA (zona euro) são médias calculadas "
+                         "pelo Eurostat, pesadas pelo consumo de cada país; EL é a Grécia.")
+AVISO_EUROSTAT_ESTADO = ("estado junta as marcas do Eurostat dos valores da linha: e estimado, "
+                         "p provisório, d definição diferente, b quebra de série, n pouco "
+                         "significativo, u pouco fiável.")
+
 REGISTO = [
     # ---------- OMIE ----------
     dict(id="omie-atuais", grupo="omie", caminho="data/omie/omie_dados_atuais.csv",
@@ -587,6 +594,63 @@ REGISTO = [
                  "aviação e são outro instrumento.",
                  "Só há leilões em dias úteis, e nem todos: cerca de 220 por ano."]),
 
+    # ---------- Preços ao consumidor (Eurostat) ----------
+    # A última data é o último dia do último período publicado (30/06 ou 31/12), lida
+    # do metadata.json da pasta. O Eurostat publica o 1.º semestre em outubro e o 2.º em
+    # abril ou maio do ano seguinte: a 2026-S2 sai 300 a 330 dias depois de 30/06/2026, e
+    # daí a tolerância de 340. Os componentes de um ano saem em outubro do ano seguinte:
+    # os de 2026 sairão ~660 dias depois de 31/12/2025.
+    dict(id="precos-consumidor-eletricidade", grupo="precos-consumidor",
+         caminho="data/precos-consumidor/eletricidade_precos_*.csv",
+         titulo="Preços da eletricidade nas famílias e nas empresas, por país",
+         descricao="Preço médio da eletricidade pago pelas famílias e pelas empresas em cada "
+                   "país europeu, por semestre desde 2007 e por faixa de consumo anual: sem "
+                   "impostos, sem IVA e com todos os impostos, em €/kWh e em paridade de poder "
+                   "de compra (PPS/kWh). Fonte: Eurostat (nrg_pc_204, nrg_pc_205).",
+         cadencia="semestral (verificada 2x/semana)", tolerancia_dias=340,
+         deteccao="meta:grupos.eletricidade_precos.data_fim",
+         avisos=[AVISO_EUROSTAT_MEDIAS, AVISO_EUROSTAT_ESTADO,
+                 "Uma faixa que um país não publica (confidencial ou sem consumidores) não "
+                 "tem linha; TOT é a média de todas as faixas.",
+                 "O sem_iva das empresas exclui também os outros impostos recuperáveis."]),
+    dict(id="precos-consumidor-gas", grupo="precos-consumidor",
+         caminho="data/precos-consumidor/gas_precos_*.csv",
+         titulo="Preços do gás natural nas famílias e nas empresas, por país",
+         descricao="Preço médio do gás natural pago pelas famílias e pelas empresas em cada "
+                   "país europeu, por semestre desde 2007 e por faixa de consumo anual: sem "
+                   "impostos, sem IVA e com todos os impostos, em €/kWh (poder calorífico "
+                   "superior) e em PPS/kWh. Fonte: Eurostat (nrg_pc_202, nrg_pc_203).",
+         cadencia="semestral (verificada 2x/semana)", tolerancia_dias=340,
+         deteccao="meta:grupos.gas_precos.data_fim",
+         avisos=[AVISO_EUROSTAT_MEDIAS, AVISO_EUROSTAT_ESTADO,
+                 "As faixas do gás estão em GJ por ano no Eurostat: D1 < 20 GJ (~5 600 kWh), "
+                 "D2 20–199 GJ, D3 ≥ 200 GJ; I1 < 1 000 GJ … I6 ≥ 4 000 000 GJ."]),
+    dict(id="precos-consumidor-eletricidade-componentes", grupo="precos-consumidor",
+         caminho="data/precos-consumidor/eletricidade_componentes_*.csv",
+         titulo="De que é feito o preço da eletricidade, por país",
+         descricao="O preço médio anual da eletricidade das famílias e das empresas em cada país "
+                   "europeu, desde 2017, dividido em energia e fornecimento, redes e impostos e "
+                   "taxas (renováveis, capacidade, ambientais, nuclear, outros e IVA), em €/kWh. "
+                   "Fonte: Eurostat (nrg_pc_204_c, nrg_pc_205_c).",
+         cadencia="anual (verificada 2x/semana)", tolerancia_dias=700,
+         deteccao="meta:grupos.eletricidade_componentes.data_fim",
+         avisos=[AVISO_EUROSTAT_MEDIAS, AVISO_EUROSTAT_ESTADO,
+                 "impostos_taxas inclui o IVA: o preço sem IVA é energia_fornecimento + redes + "
+                 "impostos_taxas − iva.",
+                 "As colunas reducoes_* são as reduções e isenções declaradas à parte, já "
+                 "descontadas nos impostos; o sinal varia de país para país."]),
+    dict(id="precos-consumidor-gas-componentes", grupo="precos-consumidor",
+         caminho="data/precos-consumidor/gas_componentes_*.csv",
+         titulo="De que é feito o preço do gás natural, por país",
+         descricao="O preço médio anual do gás natural das famílias e das empresas em cada país "
+                   "europeu, desde 2017, dividido em energia e fornecimento, redes e impostos e "
+                   "taxas, em €/kWh. Fonte: Eurostat (nrg_pc_202_c, nrg_pc_203_c).",
+         cadencia="anual (verificada 2x/semana)", tolerancia_dias=700,
+         deteccao="meta:grupos.gas_componentes.data_fim",
+         avisos=[AVISO_EUROSTAT_MEDIAS, AVISO_EUROSTAT_ESTADO,
+                 "impostos_taxas inclui o IVA: o preço sem IVA é energia_fornecimento + redes + "
+                 "impostos_taxas − iva."]),
+
     # ---------- ERC (REN) ----------
     # Em cada período, Σ brp = erc_total_eur do isp, e Σ tipo = soma das
     # componentes do isp. As duas coincidem em todos os períodos menos 137 (ver
@@ -680,6 +744,7 @@ GRUPOS = {
     "gas": "Mercado de gás natural",
     "agregados": "Séries pré-calculadas",
     "emissoes": "Emissões",
+    "precos-consumidor": "Preços ao consumidor na Europa (Eurostat)",
     "erc": "Encargos de regulação (REN)",
     "referencia": "Tabelas de referência",
     "regulado": "Dados regulados (ERSE / E-Redes)",
