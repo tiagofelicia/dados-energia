@@ -810,7 +810,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/consumo_paises.json"
   },
   {
-   "bytes": 199086,
+   "bytes": 199106,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_spot.csv",
    "colunas": [
@@ -833,11 +833,11 @@
    "linhas": 3984,
    "titulo": "Índices MIBGAS",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-10",
+   "ultima_data": "2026-11-11",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1847,
+   "bytes": 1843,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -847,7 +847,7 @@
    "id": "gas-hoje",
    "titulo": "Instantâneo MIBGAS do dia",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-10",
+   "ultima_data": "2026-11-11",
    "url": "https://dados.tiagofelicia.pt/data/gas/hoje.json"
   },
   {
@@ -856,7 +856,7 @@
     "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
     "horizonte 'intradiario' entrega no próprio dia da sessão e 'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."
    ],
-   "bytes": 3394991,
+   "bytes": 3395015,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_futuros.csv",
    "colunas": [
@@ -1558,7 +1558,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-12T00:45:41+00:00",
+ "gerado_em": "2026-11-12T01:40:22+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1575,7 +1575,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 557994167,
+  "bytes": 557994207,
   "datasets": 53,
   "ficheiros": 1976
  }
