@@ -404,7 +404,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 27051,
+   "bytes": 27095,
    "cadencia": "3x/semana",
    "caminho": "data/producao/albufeiras_semanal.csv",
    "colunas": [
@@ -419,10 +419,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras",
-   "linhas": 618,
+   "linhas": 619,
    "titulo": "Albufeiras — energia guardada por semana",
    "tolerancia_dias": 21,
-   "ultima_data": "2026-10-26",
+   "ultima_data": "2026-11-02",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal.csv"
   },
   {
@@ -1558,7 +1558,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-12T15:45:16+00:00",
+ "gerado_em": "2026-11-12T16:00:07+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1575,7 +1575,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 558103576,
+  "bytes": 558103620,
   "datasets": 53,
   "ficheiros": 1976
  }
