@@ -521,7 +521,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/entsoe-pt-diario/"
   },
   {
-   "bytes": 2597255,
+   "bytes": 2597540,
    "cadencia": "2x/dia (num PC em Portugal)",
    "caminho": "data/producao/albufeiras_snirh_diario.csv",
    "colunas": [
@@ -589,10 +589,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-snirh",
-   "linhas": 9426,
+   "linhas": 9427,
    "titulo": "Albufeiras — água guardada em cada uma, por dia",
    "tolerancia_dias": 5,
-   "ultima_data": "2026-11-10",
+   "ultima_data": "2026-11-11",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_snirh_diario.csv"
   },
   {
@@ -1558,7 +1558,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-12T10:33:41+00:00",
+ "gerado_em": "2026-11-12T10:51:37+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1575,7 +1575,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 558097756,
+  "bytes": 558098041,
   "datasets": 53,
   "ficheiros": 1976
  }
