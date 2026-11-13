@@ -473,6 +473,50 @@
   },
   {
    "avisos": [
+    "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não.",
+    "GWh inteiros e % com uma casa, como a REN os publica. A energia afluente das albufeiras sai do balanço (variação = afluente − produção − descarregamento + bombagem) e pode ser negativa; nos fios de água e nas mini-hídricas é igual à produção do dia. A produção inclui a da água antes bombeada.",
+    "A capacidade que conta como 100% foi subindo com as albufeiras novas (cerca de 3 080 GWh em 2015 e 3 250 GWh em 2026). A REN revê valores semanas depois de os publicar: o workflow volta a pedir os últimos 14 dias em cada corrida e os últimos 365 ao domingo."
+   ],
+   "bytes": 502474,
+   "cadencia": "3x/dia",
+   "caminho": "data/producao/balanco_hidraulico_ren.csv",
+   "colunas": [
+    "data",
+    "afluente_albufeiras_gwh",
+    "afluente_fios_agua_gwh",
+    "afluente_mini_hidricas_gwh",
+    "afluente_total_gwh",
+    "afluente_util_albufeiras_gwh",
+    "afluente_util_fios_agua_gwh",
+    "afluente_util_mini_hidricas_gwh",
+    "afluente_util_total_gwh",
+    "producao_albufeiras_gwh",
+    "producao_fios_agua_gwh",
+    "producao_mini_hidricas_gwh",
+    "producao_total_gwh",
+    "bombagem_gwh",
+    "armazenamento_gwh",
+    "armazenamento_pct",
+    "variacao_gwh",
+    "descarregamento_albufeiras_gwh",
+    "descarregamento_fios_agua_gwh",
+    "descarregamento_total_gwh",
+    "descarregamento_turbinavel_gwh",
+    "data_utc"
+   ],
+   "descricao": "Energia afluente às albufeiras, aos fios de água e às mini-hídricas, a produção de cada um, a bombagem, a energia guardada nas albufeiras (GWh e % da capacidade), a variação do dia e os descarregamentos (GWh), dia a dia, desde 2010. Fonte: REN (Data Hub, Balanço Hidráulico).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "producao",
+   "id": "producao-balanco-hidraulico",
+   "linhas": 6160,
+   "titulo": "Balanço hidráulico — afluências, energia guardada e descarregamentos por dia",
+   "tolerancia_dias": 4,
+   "ultima_data": "2026-11-12",
+   "url": "https://dados.tiagofelicia.pt/data/producao/balanco_hidraulico_ren.csv"
+  },
+  {
+   "avisos": [
     "A ENTSO-E põe em Hydro Pumped Storage (bombagem_producao_gwh) toda a produção das centrais reversíveis, também a da água que lhes chegou pelo rio; a REN só conta como produção por bombagem a da água antes bombeada. A hídrica que a ENTSO-E dá como renovável é a de fio de água mais a de albufeira.",
     "Desde julho de 2026, os fluxos físicos Portugal–Espanha da ENTSO-E (12.1.G) ficam abaixo dos da REN.",
     "Um tipo que não veio num dia fica vazio, e não a zero; horas_producao, horas_consumo e horas_trocas dizem se o dia está completo."
@@ -1558,7 +1602,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-13T19:43:33+00:00",
+ "gerado_em": "2026-11-13T20:43:59+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1575,8 +1619,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 559130817,
-  "datasets": 53,
-  "ficheiros": 1976
+  "bytes": 559633291,
+  "datasets": 54,
+  "ficheiros": 1977
  }
 }
