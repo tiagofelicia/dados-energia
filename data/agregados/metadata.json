@@ -12,9 +12,9 @@
   },
   "producao": {
     "primeira_data": "2010-01-01",
-    "ultima_data": "2026-11-11",
-    "dias": 6159
+    "ultima_data": "2026-11-12",
+    "dias": 6160
   },
-  "gerado_em": "2026-11-12T13:55:35+00:00",
+  "gerado_em": "2026-11-13T02:00:18+00:00",
   "nota": "Derivados de data/omie/ e data/producao/. Os dias futuros estimados a partir dos futuros OMIP estão excluídos."
 }
