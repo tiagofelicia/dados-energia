@@ -38,6 +38,7 @@ on:
       - "Atualizar Mapa de Producao"
       - "Atualizar Producao (ENTSO-E)"
       - "Atualizar Albufeiras (ENTSO-E)"
+      - "Atualizar Balanço Hidráulico (REN)"
       - "Atualizar Portugal dia a dia (ENTSO-E)"
       - "Atualizar MIBGAS"
       - "Gerar Agregados e Emissões"
