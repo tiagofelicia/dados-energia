@@ -142,6 +142,13 @@ REGRAS = {
         colunas=["semana_inicio", "energia_gwh", "data_utc"], chave=["semana_inicio"], crescente=True),
     "producao-albufeiras-es": dict(
         colunas=["semana_inicio", "energia_gwh", "data_utc"], chave=["semana_inicio"], crescente=True),
+    "producao-balanco-hidraulico": dict(
+        colunas=["data", "afluente_albufeiras_gwh", "afluente_total_gwh", "afluente_util_albufeiras_gwh",
+                 "producao_albufeiras_gwh", "producao_total_gwh", "bombagem_gwh", "armazenamento_gwh",
+                 "armazenamento_pct", "variacao_gwh", "descarregamento_albufeiras_gwh",
+                 "descarregamento_fios_agua_gwh", "descarregamento_total_gwh",
+                 "descarregamento_turbinavel_gwh", "data_utc"],
+        chave=["data"], crescente=True),
     "producao-albufeiras-es-mensal": dict(
         colunas=["mes", "total_gwh", "total_pct", "anuais_gwh", "anuais_pct",
                  "hiperanuais_gwh", "hiperanuais_pct"], chave=["mes"], crescente=True),

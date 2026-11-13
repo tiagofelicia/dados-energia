@@ -313,6 +313,27 @@ REGISTO = [
          # tolerancia_dias=100: a última data é o dia 1 do mês, e a REE só publica o mês
          # semanas depois de ele acabar (a 06/11/2026 o último era setembro: 66 dias).
          cadencia="3x/semana (valor mensal)", tolerancia_dias=100, deteccao="csv_col_iso:mes"),
+    # O balanço hidráulico diário da REN: a energia que chega às barragens, a que se produz, a que fica
+    # guardada e a que se descarrega. O dia anterior sai de manhã; o workflow corre 3 vezes por dia.
+    dict(id="producao-balanco-hidraulico", grupo="producao",
+         caminho="data/producao/balanco_hidraulico_ren.csv",
+         titulo="Balanço hidráulico — afluências, energia guardada e descarregamentos por dia",
+         descricao="Energia afluente às albufeiras, aos fios de água e às mini-hídricas, a produção de "
+                   "cada um, a bombagem, a energia guardada nas albufeiras (GWh e % da capacidade), a "
+                   "variação do dia e os descarregamentos (GWh), dia a dia, desde 2010. "
+                   "Fonte: REN (Data Hub, Balanço Hidráulico).",
+         # tolerancia_dias=4: o último dia é ontem depois da corrida da manhã, anteontem antes dela;
+         # os crons do GitHub chegam a atrasar horas e a REN, de vez em quando, um dia
+         cadencia="3x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data",
+         avisos=[AVISO_DATA_UTC,
+                 "GWh inteiros e % com uma casa, como a REN os publica. A energia afluente das "
+                 "albufeiras sai do balanço (variação = afluente − produção − descarregamento + "
+                 "bombagem) e pode ser negativa; nos fios de água e nas mini-hídricas é igual à "
+                 "produção do dia. A produção inclui a da água antes bombeada.",
+                 "A capacidade que conta como 100% foi subindo com as albufeiras novas (cerca de "
+                 "3 080 GWh em 2015 e 3 250 GWh em 2026). A REN revê valores semanas depois de os "
+                 "publicar: o workflow volta a pedir os últimos 14 dias em cada corrida e os últimos "
+                 "365 ao domingo."]),
     # Para comparar com a REN (página /ren-vs-entsoe do site); os ficheiros semanais do
     # producao-entsoe só começam em 2026.
     dict(id="producao-entsoe-pt-diario", grupo="producao",
