@@ -854,7 +854,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/consumo_paises.json"
   },
   {
-   "bytes": 199346,
+   "bytes": 199366,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_spot.csv",
    "colunas": [
@@ -877,11 +877,11 @@
    "linhas": 3988,
    "titulo": "Índices MIBGAS",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-13",
+   "ultima_data": "2026-11-14",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_spot.csv"
   },
   {
-   "bytes": 1843,
+   "bytes": 1841,
    "cadencia": "a cada actualização",
    "caminho": "data/gas/hoje.json",
    "descricao": "Último índice diário PT e ES, variação face ao dia anterior, médias e extremos de 30 dias e a série desses 30 dias, para dashboards e widgets (~2 KB).",
@@ -891,7 +891,7 @@
    "id": "gas-hoje",
    "titulo": "Instantâneo MIBGAS do dia",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-13",
+   "ultima_data": "2026-11-14",
    "url": "https://dados.tiagofelicia.pt/data/gas/hoje.json"
   },
   {
@@ -900,7 +900,7 @@
     "Só há linhas em dias de sessão; nem todos os produtos negoceiam todos os dias.",
     "horizonte 'intradiario' entrega no próprio dia da sessão e 'dia' entrega de D+1 a D+3: ambos têm dias_entrega=1."
    ],
-   "bytes": 3399494,
+   "bytes": 3400233,
    "cadencia": "2x/dia",
    "caminho": "data/gas/mibgas_futuros.csv",
    "colunas": [
@@ -922,10 +922,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-futuros",
-   "linhas": 36076,
+   "linhas": 36084,
    "titulo": "Curva forward do gás ibérico",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-13",
+   "ultima_data": "2026-11-14",
    "url": "https://dados.tiagofelicia.pt/data/gas/mibgas_futuros.csv"
   },
   {
@@ -1602,7 +1602,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-14T22:25:59+00:00",
+ "gerado_em": "2026-11-14T23:20:52+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1619,7 +1619,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 560648908,
+  "bytes": 560649665,
   "datasets": 54,
   "ficheiros": 1977
  }
