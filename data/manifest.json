@@ -95,7 +95,7 @@
     "Não abre com pd.read_csv sem argumentos: tem tabelas concatenadas horizontalmente (TABELA_HORARIA na coluna 11, TABELA_CONSTANTES na 19), o que dá linhas de 10, 11, 16, 19 e 20 campos.",
     "Na tabela quarto-horária, a 2.ª passagem pela hora que se repete em outubro leva ' (2.ª)' no intervalo, e a última coluna, data_utc, é o início do intervalo em UTC."
    ],
-   "bytes": 1722260,
+   "bytes": 1722258,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/precos-horarios.csv",
    "colunas": [
@@ -1602,7 +1602,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-16T19:38:50+00:00",
+ "gerado_em": "2026-11-16T20:13:38+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1626,7 +1626,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 561839583,
+  "bytes": 561839581,
   "datasets": 54,
   "ficheiros": 2008
  }
