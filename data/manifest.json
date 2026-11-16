@@ -1602,7 +1602,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-16T16:27:53+00:00",
+ "gerado_em": "2026-11-16T17:14:11+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1616,6 +1616,13 @@
   "regulado": "Dados regulados (ERSE / E-Redes)"
  },
  "licenca": "CC BY 4.0",
+ "licenca_excecoes": [
+  {
+   "caminho": "data/simuladores/",
+   "licenca": "Todos os direitos reservados (© Tiago Felícia)",
+   "url": "https://dados.tiagofelicia.pt/data/simuladores/LICENSE.md"
+  }
+ ],
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
