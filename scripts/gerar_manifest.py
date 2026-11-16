@@ -1094,6 +1094,12 @@ def main():
         "atribuicao": "Dados: Tiago Felícia — www.tiagofelicia.pt "
                       "(fontes originais: OMIE, REN, ENTSO-E, MIBGAS), "
                       "via dados.tiagofelicia.pt",
+        # data/simuladores/ fica de fora da CC BY 4.0 e do catálogo (ver a NOTA no topo)
+        "licenca_excecoes": [{
+            "caminho": "data/simuladores/",
+            "licenca": "Todos os direitos reservados (© Tiago Felícia)",
+            "url": BASE_URL + "/data/simuladores/LICENSE.md",
+        }],
         "grupos": GRUPOS,
         "datasets": datasets,
         "totais": {

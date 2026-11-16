@@ -33,6 +33,10 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PASTA_GAS = os.path.join(RAIZ, "data", "simuladores", "simulador-tarifarios-gas")
 FICHEIRO_EXCEL = os.path.join(PASTA_GAS, "tarifarios_gas_natural_Tiago_Felicia.xlsx")
 PASTA_CSV = os.path.join(PASTA_GAS, "csv")
+# Os ficheiros de data/simuladores/ não são CC BY 4.0 (todos os direitos reservados): fica escrito no próprio
+# manifest.json, que é o que quem reutiliza os dados lê (os simuladores só leem as chaves dos ficheiros e "anos")
+LICENCA_SIMULADORES = ("© Tiago Felícia — todos os direitos reservados; não é CC BY 4.0: "
+                       "https://dados.tiagofelicia.pt/data/simuladores/LICENSE.md")
 
 # Folha → colunas que os simuladores (gás e Dual) não dispensam
 FOLHAS = {
@@ -129,6 +133,7 @@ def exportar(caminho_xlsx, pasta_csv):
                 w.writerows([texto(v) for v in r] for r in dados)
             manifest[folha] = md5(final + ".tmp")
             print(f"   ✅ {folha}.csv ({len(dados)} registos) [{manifest[folha]}]")
+        manifest["licenca"] = LICENCA_SIMULADORES
         final = os.path.join(pasta_csv, "manifest.json")
         trocas.append((final + ".tmp", final))
         with open(final + ".tmp", "w", encoding="utf-8") as f:

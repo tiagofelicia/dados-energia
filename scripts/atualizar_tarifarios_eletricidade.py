@@ -41,6 +41,10 @@ FICHEIRO_MIBEL_CSV = os.path.join(ROOT_DIR, "data", "omie", "MIBEL_ano_atual_ACU
 # CSVs individuais: as três abas do xlsx e a OMIE_PERDAS_CICLOS, que já não vem do
 # xlsx — um ficheiro por ano (csv/OMIE_PERDAS_CICLOS_AAAA.csv), montado a partir da
 # base do ano (base/OMIE_PERDAS_CICLOS_base_AAAA.csv). Ver omie_perdas_ciclos.py.
+# Os ficheiros de data/simuladores/ não são CC BY 4.0 (todos os direitos reservados): fica escrito no próprio
+# manifest.json, que é o que quem reutiliza os dados lê (os simuladores só leem as chaves dos ficheiros e "anos")
+LICENCA_SIMULADORES = ("© Tiago Felícia — todos os direitos reservados; não é CC BY 4.0: "
+                       "https://dados.tiagofelicia.pt/data/simuladores/LICENSE.md")
 PASTA_CSV = opc.PASTA_CSV
 ABAS_PARA_CSV = ["Constantes", "Tarifarios_fixos", "Indexados"]
 # Transição: o v64 e o Dual v18 publicados leem um ficheiro único com o ano anterior
@@ -325,6 +329,7 @@ def validar_e_exportar_csvs(anos_novos, estado, fechar):
         manifest["anos"] = {str(ano): (opc.FECHADO if (ano in estado["fechados"] or ano in fechar) else opc.ABERTO)
                             for ano in tabelas}
 
+        manifest["licenca"] = LICENCA_SIMULADORES
         final = os.path.join(PASTA_CSV, "manifest.json")
         trocas.append((final + ".tmp", final))
         with open(final + ".tmp", 'w', encoding='utf-8') as f:
