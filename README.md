@@ -521,7 +521,7 @@ Os ficheiros em `data/simuladores/` — comparativos de tarifários de eletricid
 
 Ao contrário do resto do repositório, não são recolha automática de uma fonte pública: resultam de pesquisa, verificação e agregação manual, oferta a oferta, a partir das condições publicadas por cada comercializador. Estão acessíveis porque alimentam os simuladores de [tiagofelicia.pt](https://www.tiagofelicia.pt), não como dado aberto.
 
-Para reutilizar estes ficheiros, [contacte o autor](https://www.tiagofelicia.pt/contacto).
+Os termos estão em [`data/simuladores/LICENSE.md`](data/simuladores/LICENSE.md), e o `data/manifest.json` e os `manifest.json` dos simuladores dizem o mesmo (campos `licenca_excecoes` e `licenca`). Para reutilizar estes ficheiros, [contacte o autor](https://www.tiagofelicia.pt/contacto).
 
 Pode copiar, redistribuir e adaptar os dados, inclusive para fins comerciais, desde que dê o devido crédito. Forma de citação sugerida:
 
