@@ -1,0 +1,104 @@
+# Que tecnologias estão ao preço do mercado diário do MIBEL, período a período, desde 2018
+# (página /quem-marca-o-preco do site).
+#
+# scripts/atualizar_tecnologia_marginal.py
+#   -> data/omie/tecnologia-marginal/tecnologia_marginal_AAAA-MM.csv (um por mês), unidades.csv,
+#      resumo.json e metadata.json
+#
+# A OMIE só publica as curvas com o código de cada unidade (curva_pbc_uof) 90 dias
+# depois, um dia de cada vez: o zip do mês vai crescendo. Cada corrida volta a ler o
+# mês do último dia que já temos e os seguintes, e os dias que tenham falhado no
+# último mês de dados (a 12/08/2026 o ficheiro da OMIE veio sem o preço). O script só
+# reescreve os ficheiros que mudam.
+# Sem ficheiros (a 1.ª corrida), traz tudo desde janeiro de 2018: cerca de 2,4 GB de
+# zips, descarregados, lidos e apagados um a um.
+#
+# Não precisa de secrets; a OMIE aceita ligações dos runners do GitHub (como no
+# atualizacao_diaria_omie_tarifarios_eletricidade.yml).
+#
+# O nome não pode ter * ? + [ ] ! : é alvo do workflow_run do gerar_hoje.yml,
+# que refaz o manifesto depois de cada corrida.
+
+name: Atualizar tecnologias ao preço (OMIE)
+
+on:
+  schedule:
+    # 2 vezes por dia: a hora a que a OMIE acrescenta o dia de há 90 dias varia
+    - cron: '35 7,16 * * *'
+
+  workflow_dispatch:
+    inputs:
+      desde:
+        description: 'Refazer desde este mês (AAAA-MM; vazio = só os meses em falta)'
+        type: string
+        required: false
+        default: ''
+      reagregar:
+        description: 'Só recalcular os grupos e o resumo, sem descarregar'
+        type: boolean
+        default: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Grupo próprio: só impede que este workflow se sobreponha a si mesmo; as corridas
+# contra os outros bots resolvem-se no retry+rebase da commit-with-retry.
+concurrency:
+  group: commits-tecnologia-marginal
+  cancel-in-progress: false
+
+jobs:
+  atualizar-tecnologia-marginal:
+    name: Recolher as tecnologias ao preço
+    runs-on: ubuntu-26.04
+    # A 1.ª corrida (desde 2018) é a mais longa; as outras levam um ou dois minutos
+    timeout-minutes: 150
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        # xlrd lê a LISTA_UNIDADES.XLS (formato Excel antigo); tzdata garante o zoneinfo
+        run: python -m pip install --upgrade pip xlrd tzdata
+
+      - name: Atualizar as tecnologias ao preço
+        # As entradas passam por env (e não por ${{ }} dentro do script) para não
+        # poderem injetar comandos; o script valida o mês.
+        env:
+          DESDE: ${{ github.event.inputs.desde }}
+          REAGREGAR: ${{ github.event.inputs.reagregar }}
+        run: |
+          set -o pipefail
+          mkdir -p logs
+          if [ "$REAGREGAR" = "true" ]; then
+            python scripts/atualizar_tecnologia_marginal.py --reagregar 2>&1 | tee logs/tecnologia_marginal.log
+          elif [ -n "$DESDE" ]; then
+            python scripts/atualizar_tecnologia_marginal.py --desde "$DESDE" 2>&1 | tee logs/tecnologia_marginal.log
+          else
+            python scripts/atualizar_tecnologia_marginal.py 2>&1 | tee logs/tecnologia_marginal.log
+          fi
+
+      # Corre mesmo que o script tenha saído com erro: se a verificação falhou os
+      # ficheiros ficaram como estavam e não há nada para comitar.
+      - name: Fazer commit dos dados (com retry)
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "⚖️ BOT: Atualizar tecnologias ao preço (OMIE)"
+          file_pattern: "data/omie/tecnologia-marginal/*"
+
+      - name: Fazer upload do log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-tecnologia-marginal
+          path: logs/tecnologia_marginal.log
+          retention-days: 30
