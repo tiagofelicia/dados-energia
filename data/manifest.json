@@ -294,6 +294,95 @@
   },
   {
    "avisos": [
+    "Estar ao preço não é o mesmo que marcar o preço: num período podem estar várias tecnologias ao preço, e com o acoplamento europeu o preço pode vir de fora do MIBEL. tecnologias_pt/tecnologias_es vazias = nenhuma oferta casada exatamente ao preço.",
+    "Em unidades_pt/unidades_es, /C no fim do código = a oferta ao preço era de compra; o grupo de cada oferta depende do lado (BOMC, ARMC, PRO, INTC e OUTC são de compra).",
+    "dia_mercado e periodo são os da OMIE (hora de Espanha): o período 1 começa às 23:00 da véspera em Portugal. data_utc é o início do período.",
+    "Os grupos de cada período são recalculados a partir de unidades.csv sempre que uma classificação muda. Faltam os dias em que o ficheiro da OMIE veio incompleto: metadata.json → dias_em_falta."
+   ],
+   "bytes": 17351252,
+   "cadencia": "2x/dia (90 dias depois do dia de mercado)",
+   "caminho": "data/omie/tecnologia-marginal/",
+   "colunas": [
+    "dia_mercado",
+    "periodo",
+    "minutos",
+    "preco_pt",
+    "preco_es",
+    "tecnologias_pt",
+    "tecnologias_es",
+    "unidades_pt",
+    "unidades_es",
+    "data_utc"
+   ],
+   "descricao": "Em cada período do mercado diário, desde 2018, as unidades com ofertas casadas (de venda e de compra) exatamente ao preço de Portugal e ao de Espanha, e os grupos de tecnologia a que pertencem, separados por lado: hídrica, bombagem, gás natural, carvão, nuclear, solar, eólica, cogeração, baterias, comercializadores e consumidores, interligações… Um ficheiro por mês. Fonte: OMIE (curvas do mercado diário com as unidades, nomes das unidades nas ofertas e lista de unidades).",
+   "ficheiros": 104,
+   "formato": "csv",
+   "grupo": "omie",
+   "id": "omie-tecnologia-marginal",
+   "padrao": "data/omie/tecnologia-marginal/tecnologia_marginal_*.csv",
+   "resolucao_nativa": [
+    {
+     "ate": "2025-09-30",
+     "de": null,
+     "intervalo_minutos": 60
+    },
+    {
+     "ate": null,
+     "de": "2025-10-01",
+     "intervalo_minutos": 15
+    }
+   ],
+   "titulo": "Tecnologias ao preço do mercado diário (MIBEL)",
+   "tolerancia_dias": 100,
+   "ultima_data": "2026-08-19",
+   "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/"
+  },
+  {
+   "avisos": [
+    "origem: lista (lista de unidades da OMIE), nome (o nome nas ofertas: C.T. = carvão, C.C. = ciclo combinado…), codigo (padrão do código: …VDnn e …REnn = vendas de representantes do regime especial, …RMnn e …Cnn = compras de comercializadores), lado (só compra = comercializadores e consumidores), interligacao (ligações entre zonas) ou sem. grupo é o da unidade; nos ficheiros mensais, o de cada oferta depende também do lado (uma bateria a carregar é ARMC, uma interligação a exportar é INTC)."
+   ],
+   "bytes": 397451,
+   "cadencia": "2x/dia",
+   "caminho": "data/omie/tecnologia-marginal/unidades.csv",
+   "colunas": [
+    "codigo",
+    "nome",
+    "lado",
+    "tipo_unidade",
+    "tecnologia_omie",
+    "zona",
+    "grupo",
+    "origem",
+    "primeira",
+    "ultima"
+   ],
+   "descricao": "As unidades de oferta que já estiveram ao preço do mercado diário desde 2018: código e nome da OMIE, lado (venda/compra), tipo e tecnologia da lista da OMIE, grupo de tecnologia, origem da classificação e o primeiro e o último dia ao preço.",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "omie",
+   "id": "omie-tecnologia-marginal-unidades",
+   "linhas": 4097,
+   "titulo": "Tecnologias ao preço — classificação das unidades",
+   "tolerancia_dias": 100,
+   "ultima_data": "2026-08-19",
+   "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/unidades.csv"
+  },
+  {
+   "bytes": 363070,
+   "cadencia": "2x/dia",
+   "caminho": "data/omie/tecnologia-marginal/resumo.json",
+   "descricao": "Para Portugal e Espanha, por ano, por mês e nos últimos 12 meses: horas com cada grupo ao preço (presença), horas com alguma oferta de venda e de compra ao preço, horas repartidas por igual pelos grupos de cada período, o preço médio quando cada grupo está ao preço, o mesmo nos 25 % de horas mais baratas e mais caras e, por ano, por hora do dia (hora de Portugal). É o que a página /quem-marca-o-preco lê.",
+   "ficheiros": 1,
+   "formato": "json",
+   "grupo": "omie",
+   "id": "omie-tecnologia-marginal-resumo",
+   "titulo": "Tecnologias ao preço — totais por ano e por mês",
+   "tolerancia_dias": 100,
+   "ultima_data": "2026-08-19",
+   "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/resumo.json"
+  },
+  {
+   "avisos": [
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
    "bytes": 3964276,
@@ -1602,7 +1691,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-18T11:44:25+00:00",
+ "gerado_em": "2026-11-18T12:43:49+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1626,8 +1715,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 563241949,
-  "datasets": 54,
-  "ficheiros": 2011
+  "bytes": 581353722,
+  "datasets": 57,
+  "ficheiros": 2117
  }
 }
