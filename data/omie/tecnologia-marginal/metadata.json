@@ -1,0 +1,172 @@
+{
+ "ultima_data": "2026-08-19",
+ "primeira_data": "2018-01-01",
+ "dias_em_falta": [
+  "2026-08-12"
+ ],
+ "grupos": [
+  {
+   "id": "HID",
+   "nome": "Hídrica",
+   "lado": "V",
+   "descricao": "Albufeiras e fios de água (inclui as reversíveis quando oferecem como hídricas)"
+  },
+  {
+   "id": "BOMP",
+   "nome": "Bombagem a produzir",
+   "lado": "V",
+   "descricao": "Centrais de bombagem pura a turbinar"
+  },
+  {
+   "id": "GAS",
+   "nome": "Gás natural",
+   "lado": "V",
+   "descricao": "Centrais de ciclo combinado"
+  },
+  {
+   "id": "CAR",
+   "nome": "Carvão",
+   "lado": "V",
+   "descricao": "Centrais térmicas convencionais (carvão)"
+  },
+  {
+   "id": "NUC",
+   "nome": "Nuclear",
+   "lado": "V",
+   "descricao": "Centrais nucleares (só em Espanha)"
+  },
+  {
+   "id": "SOL",
+   "nome": "Solar",
+   "lado": "V",
+   "descricao": "Fotovoltaica e solar térmica"
+  },
+  {
+   "id": "EOL",
+   "nome": "Eólica",
+   "lado": "V",
+   "descricao": "Eólica em terra e no mar"
+  },
+  {
+   "id": "TER",
+   "nome": "Cogeração e outras térmicas",
+   "lado": "V",
+   "descricao": "Cogeração e outras térmicas não renováveis"
+  },
+  {
+   "id": "REN",
+   "nome": "Biomassa e outras renováveis",
+   "lado": "V",
+   "descricao": "Biomassa, resíduos renováveis, geotérmica e híbridas renováveis"
+  },
+  {
+   "id": "ARM",
+   "nome": "Baterias a descarregar",
+   "lado": "V",
+   "descricao": "Armazenamento e híbridas com armazenamento, a vender"
+  },
+  {
+   "id": "REP",
+   "nome": "Produção sem tecnologia identificada",
+   "lado": "V",
+   "descricao": "Vendas de representantes do regime especial e de carteiras de produção"
+  },
+  {
+   "id": "INT",
+   "nome": "Interligações (venda)",
+   "lado": "V",
+   "descricao": "Importação de agentes externos e ligações entre zonas, do lado da venda"
+  },
+  {
+   "id": "OUT",
+   "nome": "Outras ofertas de venda",
+   "lado": "V",
+   "descricao": "Vendas de comercializadores, unidades genéricas e unidades por classificar"
+  },
+  {
+   "id": "BOMC",
+   "nome": "Bombagem a consumir",
+   "lado": "C",
+   "descricao": "Ofertas de compra para bombear água"
+  },
+  {
+   "id": "ARMC",
+   "nome": "Baterias a carregar",
+   "lado": "C",
+   "descricao": "Armazenamento a comprar"
+  },
+  {
+   "id": "PRO",
+   "nome": "Comercializadores e consumidores",
+   "lado": "C",
+   "descricao": "Ofertas de compra de comercializadores e consumidores"
+  },
+  {
+   "id": "INTC",
+   "nome": "Interligações (compra)",
+   "lado": "C",
+   "descricao": "Exportação de agentes externos e ligações entre zonas, do lado da compra"
+  },
+  {
+   "id": "OUTC",
+   "nome": "Outras ofertas de compra",
+   "lado": "C",
+   "descricao": "Compras de outras unidades e de unidades por classificar"
+  },
+  {
+   "id": "SEM",
+   "nome": "Nenhuma oferta ao preço exato",
+   "lado": "",
+   "descricao": "Nenhuma oferta casada com o preço do período"
+  }
+ ],
+ "unidades": 4097,
+ "unidades_por_origem": {
+  "codigo": 1000,
+  "interligacao": 2,
+  "lado": 6,
+  "lista": 2859,
+  "nome": 212,
+  "sem": 18
+ },
+ "por_classificar_pct": {
+  "2018": {
+   "ES": 0.0,
+   "PT": 0.0
+  },
+  "2019": {
+   "ES": 0.7,
+   "PT": 0.7
+  },
+  "2020": {
+   "ES": 0.0,
+   "PT": 0.0
+  },
+  "2021": {
+   "ES": 0.0,
+   "PT": 0.0
+  },
+  "2022": {
+   "ES": 0.0,
+   "PT": 0.0
+  },
+  "2023": {
+   "ES": 1.2,
+   "PT": 0.8
+  },
+  "2024": {
+   "ES": 3.3,
+   "PT": 2.8
+  },
+  "2025": {
+   "ES": 0.9,
+   "PT": 0.5
+  },
+  "2026": {
+   "ES": 1.1,
+   "PT": 1.0
+  }
+ },
+ "fonte": "OMIE: curva_pbc_uof (curvas do mercado diário com as unidades, publicadas 90 dias depois), cab (nomes das unidades nas ofertas) e LISTA_UNIDADES.XLS; preços dos ficheiros data/omie/ deste repositório",
+ "metodo": "Ofertas casadas (venda e compra) com preço igual ao preço marginal de Portugal ou de Espanha (±0,005 €/MWh), período a período. Estar ao preço não é o mesmo que marcar o preço."
+}
