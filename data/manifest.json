@@ -368,18 +368,22 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/unidades.csv"
   },
   {
-   "bytes": 363070,
+   "avisos": [
+    "Em hora de Portugal (resumo.json) o último dia é a véspera do último dia de mercado (metadata.json → ultima_data_pt): a última hora do dia português, 23h–24h, pertence ao dia de mercado seguinte."
+   ],
+   "bytes": 726005,
    "cadencia": "2x/dia",
-   "caminho": "data/omie/tecnologia-marginal/resumo.json",
-   "descricao": "Para Portugal e Espanha, por ano, por mês e nos últimos 12 meses: horas com cada grupo ao preço (presença), horas com alguma oferta de venda e de compra ao preço, horas repartidas por igual pelos grupos de cada período, o preço médio quando cada grupo está ao preço, o mesmo nos 25 % de horas mais baratas e mais caras e, por ano, por hora do dia (hora de Portugal). É o que a página /quem-marca-o-preco lê.",
-   "ficheiros": 1,
+   "caminho": "data/omie/tecnologia-marginal/",
+   "descricao": "Para Portugal e Espanha, por ano, por mês e nos últimos 12 meses: horas com cada grupo ao preço (presença), horas com alguma oferta de venda e de compra ao preço, horas repartidas por igual pelos grupos de cada período, o preço médio quando cada grupo está ao preço, o mesmo nos 25 % de horas mais baratas e mais caras e, por ano, por hora do dia. É o que a página /quem-marca-o-preco lê. resumo.json conta Portugal pelo dia e pela hora de Portugal; resumo_cet.json, pelo dia de mercado (hora CET). Espanha conta sempre pelo dia e pela hora de Espanha.",
+   "ficheiros": 2,
    "formato": "json",
    "grupo": "omie",
    "id": "omie-tecnologia-marginal-resumo",
-   "titulo": "Tecnologias ao preço — totais por ano e por mês",
+   "padrao": "data/omie/tecnologia-marginal/resumo*.json",
+   "titulo": "Tecnologias ao preço — totais por ano e por mês (hora de Portugal e hora CET)",
    "tolerancia_dias": 100,
    "ultima_data": "2026-08-19",
-   "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/resumo.json"
+   "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/"
   },
   {
    "avisos": [
@@ -1691,7 +1695,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-18T12:43:49+00:00",
+ "gerado_em": "2026-11-18T13:30:17+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1715,8 +1719,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 581353722,
+  "bytes": 581716657,
   "datasets": 57,
-  "ficheiros": 2117
+  "ficheiros": 2118
  }
 }
