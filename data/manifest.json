@@ -735,7 +735,7 @@
    "avisos": [
     "A resolução varia por país e cada ficheiro declara a sua em interval_minutes: 15 minutos em 20 países, 60 em 13 (entre eles Portugal, que na ENTSO-E é horário apesar de a REN publicar a 15 minutos) e 30 em Chipre e Irlanda."
    ],
-   "bytes": 168123243,
+   "bytes": 168181929,
    "cadencia": "cada 4h (PT/ES) · 2x/dia (todos)",
    "caminho": "data/producao/producao-entsoe/",
    "descricao": "Geração por tecnologia, consumo, previsões day-ahead e intradiárias, preços e fluxos transfronteiriços, para 35 países. Um ficheiro por país e semana ISO.",
@@ -746,7 +746,7 @@
    "padrao": "data/producao/producao-entsoe/*/*.json",
    "titulo": "Produção europeia intra-diária (ENTSO-E)",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-17",
+   "ultima_data": "2026-11-18",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao-entsoe/"
   },
   {
@@ -820,7 +820,7 @@
     "Só entram dias com a produção real completa; eólica = onshore + offshore.",
     "Para somar dias: preço capturado do período = Σ(preço × GWh) / Σ GWh."
    ],
-   "bytes": 621860,
+   "bytes": 623222,
    "cadencia": "cada 4h · 2x/dia",
    "caminho": "data/mapas/captura/",
    "descricao": "Por zona e dia: o preço day-ahead pesado pela produção solar e pela eólica do país (preço capturado) e essa produção em GWh. Um ficheiro por mês, desde 2026-01.",
@@ -1602,7 +1602,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-18T04:23:13+00:00",
+ "gerado_em": "2026-11-18T04:53:25+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1626,7 +1626,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 563165947,
+  "bytes": 563225995,
   "datasets": 54,
   "ficheiros": 2011
  }
