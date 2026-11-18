@@ -1,9 +1,14 @@
 {
  "ultima_data": "2026-08-19",
+ "ultima_data_pt": "2026-08-18",
  "primeira_data": "2018-01-01",
  "dias_em_falta": [
   "2026-08-12"
  ],
+ "resumos": {
+  "resumo.json": "Portugal pelo dia e pela hora de Portugal (até ultima_data_pt); Espanha pelo dia e pela hora de Espanha",
+  "resumo_cet.json": "Portugal e Espanha pelo dia de mercado, em hora CET (até ultima_data)"
+ },
  "grupos": [
   {
    "id": "HID",
