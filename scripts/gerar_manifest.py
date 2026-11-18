@@ -300,14 +300,19 @@ REGISTO = [
                  "ou sem. grupo é o da unidade; nos ficheiros mensais, o de cada oferta depende também do "
                  "lado (uma bateria a carregar é ARMC, uma interligação a exportar é INTC)."]),
     dict(id="omie-tecnologia-marginal-resumo", grupo="omie",
-         caminho="data/omie/tecnologia-marginal/resumo.json",
-         titulo="Tecnologias ao preço — totais por ano e por mês",
+         caminho="data/omie/tecnologia-marginal/resumo*.json",
+         titulo="Tecnologias ao preço — totais por ano e por mês (hora de Portugal e hora CET)",
          descricao="Para Portugal e Espanha, por ano, por mês e nos últimos 12 meses: horas com cada grupo "
                    "ao preço (presença), horas com alguma oferta de venda e de compra ao preço, horas "
                    "repartidas por igual pelos grupos de cada período, o preço médio "
                    "quando cada grupo está ao preço, o mesmo nos 25 % de horas mais baratas e mais caras "
-                   "e, por ano, por hora do dia (hora de Portugal). É o que a página /quem-marca-o-preco lê.",
-         cadencia="2x/dia", tolerancia_dias=100, deteccao="meta:ultima_data"),
+                   "e, por ano, por hora do dia. É o que a página /quem-marca-o-preco lê. resumo.json conta "
+                   "Portugal pelo dia e pela hora de Portugal; resumo_cet.json, pelo dia de mercado (hora CET). "
+                   "Espanha conta sempre pelo dia e pela hora de Espanha.",
+         cadencia="2x/dia", tolerancia_dias=100, deteccao="meta:ultima_data",
+         avisos=["Em hora de Portugal (resumo.json) o último dia é a véspera do último dia de mercado "
+                 "(metadata.json → ultima_data_pt): a última hora do dia português, 23h–24h, pertence ao "
+                 "dia de mercado seguinte."]),
 
     # ---------- Produção ----------
     dict(id="producao-atuais", grupo="producao", caminho="data/producao/producao_dados_atuais.csv",

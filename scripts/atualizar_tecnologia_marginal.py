@@ -41,7 +41,12 @@ SAÍDAS (data/omie/tecnologia-marginal/)
                                 período).
   unidades.csv                  As unidades que já estiveram ao preço, com o grupo e a origem da
                                 classificação.
-  resumo.json                   Os totais por ano e por mês que a página /quem-marca-o-preco lê.
+  resumo.json                   Os totais por ano, por mês e nos últimos 12 meses que a página
+                                /quem-marca-o-preco lê, com Portugal pelo dia e pela hora de Portugal
+                                (até à véspera do último dia de mercado: a última hora do dia português,
+                                23h–24h, pertence ao dia de mercado seguinte).
+  resumo_cet.json               O mesmo com Portugal pelo dia de mercado, em hora CET.
+                                Nos dois, Espanha conta sempre pelo dia e pela hora de Espanha (CET).
   metadata.json                 O primeiro e o último dia, os grupos e a parte por classificar.
 
 Os grupos dos CSV são recalculados em cada corrida a partir das unidades: uma classificação nova
@@ -494,6 +499,8 @@ def _r(x, c=2):
 
 def fechar_bloco(b, horas=None):
     lst = sorted(b["lst"], key=lambda x: x[0])
+    if not lst:
+        return dict(h=0.0, preco=None, pv=0.0, pc=0.0, pres={}, rep={}, pm={}, q=dict(lim=[None, None]))
     total = sum(w for _, w, _ in lst) or 1.0
     # Limites dos 25 % mais baratos e mais caros, pesados pela duração dos períodos
     acc, q25, q75 = 0.0, None, None
@@ -526,8 +533,10 @@ def fechar_bloco(b, horas=None):
     return out
 
 
-def resumo(linhas, ultimo_dia):
-    """Por ano, por mês e nos últimos 12 meses (os 365 dias até ao último dia, chave «u12»)."""
+def resumo(linhas, primeiro_dia, ultimo_dia, fuso):
+    """Por ano, por mês e nos últimos 12 meses (os 365 dias até ao último dia, chave «u12»).
+    fuso «pt»: Portugal pelo dia e pela hora de Portugal; «cet»: pelo dia de mercado e pela hora CET. Espanha
+    conta sempre pelo dia e pela hora de Espanha (o dia de mercado), como nas outras páginas do site."""
     desde_u12 = (date.fromisoformat(ultimo_dia) - timedelta(days=364)).isoformat()
     anos = defaultdict(lambda: {"PT": novo_bloco(), "ES": novo_bloco()})
     meses = defaultdict(lambda: {"PT": novo_bloco(), "ES": novo_bloco()})
@@ -535,10 +544,15 @@ def resumo(linhas, ultimo_dia):
                                          rep=defaultdict(lambda: [0.0] * 24)) for c in ("PT", "ES")})
     for r in linhas:
         w = r["minutos"] / 60
-        ano, mes = r["dia_mercado"][:4], r["dia_mercado"][:7]
-        chaves_ano = (ano, "u12") if r["dia_mercado"] >= desde_u12 else (ano,)
-        hl = datetime.strptime(r["data_utc"], "%Y-%m-%d %H:%M").replace(tzinfo=UTC).astimezone(LIS).hour
-        for c, campo, pc in (("PT", "tecnologias_pt", "preco_pt"), ("ES", "tecnologias_es", "preco_es")):
+        t = datetime.strptime(r["data_utc"], "%Y-%m-%d %H:%M").replace(tzinfo=UTC)
+        t_es = t.astimezone(MAD)                       # o dia de Madrid é o dia de mercado
+        t_pt = t.astimezone(LIS) if fuso == "pt" else t_es
+        for c, campo, pc, tl in (("PT", "tecnologias_pt", "preco_pt", t_pt), ("ES", "tecnologias_es", "preco_es", t_es)):
+            dia = tl.strftime("%Y-%m-%d")
+            if dia < primeiro_dia or dia > ultimo_dia:
+                continue
+            ano, mes, hl = dia[:4], dia[:7], tl.hour
+            chaves_ano = (ano, "u12") if dia >= desde_u12 else (ano,)
             gs = r[campo].split("+") if r[campo] else ["SEM"]
             acumular(meses[mes][c], w, r[pc], gs)
             for k in chaves_ano:
@@ -725,12 +739,15 @@ def main():
         mudou.append("unidades.csv")
 
     dias_todos = sorted({k[0] for k in linhas})
-    anos, meses_r, u12 = resumo(linhas.values(), dias_todos[-1])
-    res = dict(primeiro_dia=dias_todos[0], ultimo_dia=dias_todos[-1], grupos=ORDEM, nomes=NOMES, lados=LADO,
-               u12=u12, anos=anos, meses=meses_r)
-    txt = json.dumps(res, ensure_ascii=False, separators=(",", ":"))
-    if escrever_se_mudou(os.path.join(PASTA, "resumo.json"), txt):
-        mudou.append("resumo.json")
+    # Em hora de Portugal, o último dia completo é a véspera do último dia de mercado (falta-lhe 23h–24h)
+    ultimo_pt = (date.fromisoformat(dias_todos[-1]) - timedelta(days=1)).isoformat()
+    for fuso, nome, ultimo in (("pt", "resumo.json", ultimo_pt), ("cet", "resumo_cet.json", dias_todos[-1])):
+        anos, meses_r, u12 = resumo(linhas.values(), dias_todos[0], ultimo, fuso)
+        res = dict(fuso=fuso, primeiro_dia=dias_todos[0], ultimo_dia=ultimo, grupos=ORDEM, nomes=NOMES, lados=LADO,
+                   u12=u12, anos=anos, meses=meses_r)
+        txt = json.dumps(res, ensure_ascii=False, separators=(",", ":"))
+        if escrever_se_mudou(os.path.join(PASTA, nome), txt):
+            mudou.append(nome)
 
     # parte das horas com alguma unidade por classificar ao preço, por ano e país
     por_classificar = {a: {c: _r(100 * x[1] / x[0], 1) if x[0] else 0.0 for c, x in sorted(v.items())}
@@ -738,7 +755,11 @@ def main():
     origens = defaultdict(int)
     for v in novas.values():
         origens[v["origem"]] += 1
-    meta = dict(ultima_data=dias_todos[-1], primeira_data=dias_todos[0], dias_em_falta=dias_em_falta(linhas),
+    meta = dict(ultima_data=dias_todos[-1], ultima_data_pt=ultimo_pt, primeira_data=dias_todos[0],
+                dias_em_falta=dias_em_falta(linhas),
+                resumos={"resumo.json": "Portugal pelo dia e pela hora de Portugal (até ultima_data_pt); Espanha "
+                                        "pelo dia e pela hora de Espanha",
+                         "resumo_cet.json": "Portugal e Espanha pelo dia de mercado, em hora CET (até ultima_data)"},
                 grupos=[dict(id=g, nome=n, lado=ld, descricao=d) for g, n, ld, d in GRUPOS],
                 unidades=len(novas), unidades_por_origem=dict(sorted(origens.items())),
                 por_classificar_pct=por_classificar,
