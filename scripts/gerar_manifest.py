@@ -261,6 +261,53 @@ REGISTO = [
                    "pipeline; formato pode mudar sem aviso.",
          cadencia="~5x/dia útil", tolerancia_dias=2, deteccao="csv_col_iso:Data",
          resolucao_nativa=RESOLUCAO_MIBEL, intermedio=True),
+    # Que tecnologias estão ao preço do mercado diário (página /quem-marca-o-preco do site). A OMIE
+    # só publica as curvas com as unidades 90 dias depois do dia de mercado, um dia de cada vez: a
+    # última data é sempre de há ~3 meses, e daí a tolerância de 100 dias. As três entradas leem a
+    # última data do metadata.json da pasta.
+    dict(id="omie-tecnologia-marginal", grupo="omie",
+         caminho="data/omie/tecnologia-marginal/tecnologia_marginal_*.csv",
+         titulo="Tecnologias ao preço do mercado diário (MIBEL)",
+         descricao="Em cada período do mercado diário, desde 2018, as unidades com ofertas casadas "
+                   "(de venda e de compra) exatamente ao preço de Portugal e ao de Espanha, e os grupos "
+                   "de tecnologia a que pertencem, separados por lado: hídrica, bombagem, gás natural, carvão, "
+                   "nuclear, solar, eólica, cogeração, baterias, comercializadores e consumidores, "
+                   "interligações… Um ficheiro por mês. Fonte: OMIE (curvas "
+                   "do mercado diário com as unidades, nomes das unidades nas ofertas e lista de unidades).",
+         cadencia="2x/dia (90 dias depois do dia de mercado)", tolerancia_dias=100,
+         deteccao="meta:ultima_data", resolucao_nativa=RESOLUCAO_MIBEL,
+         avisos=["Estar ao preço não é o mesmo que marcar o preço: num período podem estar várias "
+                 "tecnologias ao preço, e com o acoplamento europeu o preço pode vir de fora do MIBEL. "
+                 "tecnologias_pt/tecnologias_es vazias = nenhuma oferta casada exatamente ao preço.",
+                 "Em unidades_pt/unidades_es, /C no fim do código = a oferta ao preço era de compra; o "
+                 "grupo de cada oferta depende do lado (BOMC, ARMC, PRO, INTC e OUTC são de compra).",
+                 "dia_mercado e periodo são os da OMIE (hora de Espanha): o período 1 começa às 23:00 "
+                 "da véspera em Portugal. data_utc é o início do período.",
+                 "Os grupos de cada período são recalculados a partir de unidades.csv sempre que uma "
+                 "classificação muda. Faltam os dias em que o ficheiro da OMIE veio incompleto: "
+                 "metadata.json → dias_em_falta."]),
+    dict(id="omie-tecnologia-marginal-unidades", grupo="omie",
+         caminho="data/omie/tecnologia-marginal/unidades.csv",
+         titulo="Tecnologias ao preço — classificação das unidades",
+         descricao="As unidades de oferta que já estiveram ao preço do mercado diário desde 2018: "
+                   "código e nome da OMIE, lado (venda/compra), tipo e tecnologia da lista da OMIE, "
+                   "grupo de tecnologia, origem da classificação e o primeiro e o último dia ao preço.",
+         cadencia="2x/dia", tolerancia_dias=100, deteccao="meta:ultima_data",
+         avisos=["origem: lista (lista de unidades da OMIE), nome (o nome nas ofertas: C.T. = carvão, "
+                 "C.C. = ciclo combinado…), codigo (padrão do código: …VDnn e …REnn = vendas de "
+                 "representantes do regime especial, …RMnn e …Cnn = compras de comercializadores), "
+                 "lado (só compra = comercializadores e consumidores), interligacao (ligações entre zonas) "
+                 "ou sem. grupo é o da unidade; nos ficheiros mensais, o de cada oferta depende também do "
+                 "lado (uma bateria a carregar é ARMC, uma interligação a exportar é INTC)."]),
+    dict(id="omie-tecnologia-marginal-resumo", grupo="omie",
+         caminho="data/omie/tecnologia-marginal/resumo.json",
+         titulo="Tecnologias ao preço — totais por ano e por mês",
+         descricao="Para Portugal e Espanha, por ano, por mês e nos últimos 12 meses: horas com cada grupo "
+                   "ao preço (presença), horas com alguma oferta de venda e de compra ao preço, horas "
+                   "repartidas por igual pelos grupos de cada período, o preço médio "
+                   "quando cada grupo está ao preço, o mesmo nos 25 % de horas mais baratas e mais caras "
+                   "e, por ano, por hora do dia (hora de Portugal). É o que a página /quem-marca-o-preco lê.",
+         cadencia="2x/dia", tolerancia_dias=100, deteccao="meta:ultima_data"),
 
     # ---------- Produção ----------
     dict(id="producao-atuais", grupo="producao", caminho="data/producao/producao_dados_atuais.csv",

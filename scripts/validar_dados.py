@@ -192,6 +192,16 @@ REGRAS = {
         # Há dias com dois leilões e preços diferentes: a chave tem de os separar.
         chave=["data_iso", "leilao", "contrato"], cobertura="data_iso"),
 
+    # As tecnologias ao preço: as colunas e a chave de cada período. Sem 'cobertura': as
+    # tecnologias ficam vazias nos períodos sem nenhuma oferta exatamente ao preço.
+    "omie-tecnologia-marginal": dict(
+        colunas=["dia_mercado", "periodo", "minutos", "preco_pt", "preco_es", "tecnologias_pt",
+                 "tecnologias_es", "unidades_pt", "unidades_es", "data_utc"],
+        chave=["data_utc"], crescente=True),
+    "omie-tecnologia-marginal-unidades": dict(
+        colunas=["codigo", "nome", "lado", "grupo", "origem", "primeira", "ultima"],
+        chave=["codigo"]),
+
     # Os preços do Eurostat: as colunas que a página /europe-consumer-prices lê. Sem
     # 'cobertura': um país pode deixar de publicar uma faixa (fica confidencial).
     "precos-consumidor-eletricidade": dict(
