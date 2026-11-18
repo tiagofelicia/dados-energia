@@ -77,6 +77,9 @@ data/
 | `historico/omip_historico_AAAA.csv` | Histórico de sessões OMIP: uma linha por sessão × zona × contrato | Diária |
 | `records_omie.json` | Recordes históricos OMIE (dia/hora mais caro e mais barato, etc.) + agregados mensais e anuais | Diária (incremental) |
 | `MIBEL_ano_atual_ACUM.csv` | ⚙️ Intermédio de pipeline — preços horários PT/ES acumulados dos últimos 12 meses. Não recomendado para consumo direto | ~5×/dia útil |
+| `tecnologia-marginal/tecnologia_marginal_AAAA-MM.csv` | **Que tecnologias estão ao preço do mercado diário**, período a período, desde 2018 (ver abaixo) | 2×/dia, 90 dias depois do dia de mercado |
+| `tecnologia-marginal/unidades.csv` | A classificação de cada unidade que já esteve ao preço | 2×/dia |
+| `tecnologia-marginal/resumo.json` | Totais por ano e por mês para Portugal e Espanha (a página [/quem-marca-o-preco](https://www.tiagofelicia.pt/quem-marca-o-preco)) | 2×/dia |
 
 Schema de `omie_dados_atuais.csv` e dos históricos:
 
@@ -97,6 +100,19 @@ dia,hora,intervalo,Simples,BD,BS,TD,TS,preco_pt,preco_es,data_utc
 - **`precos-horarios.csv` não abre com `pd.read_csv` sem argumentos.** Tem duas tabelas concatenadas *horizontalmente* — `TABELA_HORARIA` a partir da coluna 11 e `TABELA_CONSTANTES` a partir da 19 — o que produz linhas de 10, 11, 16, 19 e 20 campos e um `ParserError`. A tabela quarto-horária acaba no `data_utc`, como os outros ficheiros, e a 2.ª passagem pela hora que se repete em outubro leva ` (2.ª)` no `intervalo`.
 
 Além disso, `omie_dados_atuais.csv` contém **datas futuras estimadas a partir dos futuros OMIP**, não preços de mercado. O último dia real está declarado em `futuros_omip.csv`, na chave `Data_Valores_OMIE` — as datas posteriores são estimativas. Os agregados e a intensidade carbónica já as excluem.
+
+#### `data/omie/tecnologia-marginal/` — Quem está ao preço do mercado diário
+
+Em cada período do mercado diário do MIBEL (uma hora até 30/09/2025, um quarto de hora desde 01/10/2025), as unidades com ofertas **casadas** — de venda ou de compra — cujo preço é **igual ao preço marginal** de Portugal, e as que são iguais ao de Espanha (a menos de 0,005 €/MWh). A OMIE publica as curvas com o código de cada unidade 90 dias depois do dia de mercado, por isso o último dia é sempre de há cerca de três meses. Desde janeiro de 2018, o primeiro mês que a OMIE tem no repositório público.
+
+Colunas de `tecnologia_marginal_AAAA-MM.csv` (um ficheiro por mês do dia de mercado): `dia_mercado` e `periodo` (os da OMIE, hora de Espanha: o período 1 começa às 23:00 da véspera em Portugal), `minutos` (60 ou 15), `preco_pt`, `preco_es` (€/MWh), `tecnologias_pt`, `tecnologias_es` (os grupos ao preço, separados por `+`; vazio = nenhuma oferta casada exatamente ao preço), `unidades_pt`, `unidades_es` (os códigos OMIE das unidades, separados por espaço; `/C` no fim = a oferta ao preço era de compra, porque a mesma unidade pode estar dos dois lados, como as ligações entre as zonas `MIE` e `MIP`) e `data_utc` (início do período).
+
+Grupos, primeiro os de venda e depois os de compra (o lado de cada um está em `resumo.json` → `lados` e em `metadata.json`). Venda: `HID` hídrica, `BOMP` bombagem a produzir, `GAS` gás natural (ciclo combinado), `CAR` carvão, `NUC` nuclear, `SOL` solar, `EOL` eólica, `TER` cogeração e outras térmicas, `REN` biomassa e outras renováveis, `ARM` baterias a descarregar, `REP` produção sem tecnologia identificada (vendas de representantes e de carteiras), `INT` interligações (venda), `OUT` outras ofertas de venda. Compra: `BOMC` bombagem a consumir, `ARMC` baterias a carregar, `PRO` comercializadores e consumidores, `INTC` interligações (compra), `OUTC` outras ofertas de compra.
+
+- **Classificação das unidades** (`unidades.csv`: `codigo`, `nome`, `lado` (V, C ou CV: os lados em que a unidade já esteve ao preço), `tipo_unidade`, `tecnologia_omie`, `zona`, `grupo`, `origem`, `primeira` e `ultima` vez ao preço): pela tecnologia da lista de unidades da OMIE (`origem` = `lista`); as que já lá não estão, pelo nome nas ofertas (`nome`: «C.T. SINES 4» = carvão, «C.C. TURBOGÁS 1» = ciclo combinado) ou pelo padrão do código (`codigo`: `…VDnn` e `…REnn` são vendas de representantes do regime especial, `…RMnn` e `…Cnn` compras de comercializadores); `lado` = só compra; `interligacao`; `sem`. Os grupos dos ficheiros mensais são recalculados sempre que uma classificação muda. A parte das horas por classificar, por ano, está em `metadata.json`.
+- **`resumo.json`**: por ano, por mês e nos últimos 12 meses (`u12`), para `PT` e `ES`: `h` (horas), `preco` (média), `pv` e `pc` (horas com alguma oferta de venda / de compra ao preço), `pres` (horas com cada grupo ao preço), `rep` (horas repartidas por igual pelos grupos de cada período; somam `h`), `pm` (preço médio quando o grupo está ao preço) e `q` (o mesmo nos 25 % de horas mais baratas e mais caras, com os limites em `lim`); por ano e em `u12` também `horas` (por hora do dia, hora de Portugal).
+- ⚠️ **Estar ao preço não é o mesmo que marcar o preço.** Num período podem estar várias tecnologias ao preço; com o acoplamento europeu o preço pode vir de fora do MIBEL; e uma hídrica ao preço oferece a água pelo que espera ganhar com ela, o que depende do preço do gás.
+- Faltam os dias em que o ficheiro da OMIE veio incompleto (12/08/2026, sem o preço): `metadata.json` → `dias_em_falta`. O workflow volta a tentar durante cerca de um mês.
 
 ### `data/producao/` — Produção elétrica
 
@@ -496,7 +512,7 @@ Onde o AR5 não publica valor (linhite, petróleo, resíduos, turfa), `gco2eq_kw
 
 Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
 
-- **[OMIE](https://www.omie.es)** — preços do mercado diário (MIBEL)
+- **[OMIE](https://www.omie.es)** — preços do mercado diário (MIBEL) e as curvas de oferta e procura com as unidades
 - **[OMIP](https://www.omip.pt)** — mercado a prazo / futuros
 - **[MIBGAS](https://www.mibgas.es)** — mercado ibérico de gás natural
 - **[REN](https://datahub.ren.pt)** — produção, consumo e bombagem em Portugal, e o balanço hidráulico (afluências, energia guardada e descarregamentos)
