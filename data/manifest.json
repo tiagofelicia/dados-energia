@@ -497,7 +497,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 27095,
+   "bytes": 27139,
    "cadencia": "3x/semana",
    "caminho": "data/producao/albufeiras_semanal.csv",
    "colunas": [
@@ -512,14 +512,14 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras",
-   "linhas": 619,
+   "linhas": 620,
    "titulo": "Albufeiras — energia guardada por semana",
    "tolerancia_dias": 21,
-   "ultima_data": "2026-11-02",
+   "ultima_data": "2026-11-09",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal.csv"
   },
   {
-   "bytes": 27358,
+   "bytes": 27402,
    "cadencia": "3x/semana",
    "caminho": "data/producao/albufeiras_semanal_es.csv",
    "colunas": [
@@ -534,10 +534,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-es",
-   "linhas": 619,
+   "linhas": 620,
    "titulo": "Albufeiras de Espanha — energia guardada por semana",
    "tolerancia_dias": 21,
-   "ultima_data": "2026-11-02",
+   "ultima_data": "2026-11-09",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal_es.csv"
   },
   {
@@ -1695,7 +1695,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-19T16:06:41+00:00",
+ "gerado_em": "2026-11-19T16:35:39+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1719,7 +1719,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 582481142,
+  "bytes": 582481230,
   "datasets": 57,
   "ficheiros": 2118
  }
