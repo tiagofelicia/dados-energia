@@ -8,7 +8,7 @@
     "As datas posteriores a ultima_data_real são estimativas OMIP, não preços de mercado.",
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 2460714,
+   "bytes": 2460540,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_dados_atuais.csv",
    "colunas": [
@@ -29,7 +29,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-atuais",
-   "linhas": 35205,
+   "linhas": 35203,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -134,7 +134,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/precos-horarios.csv"
   },
   {
-   "bytes": 3529,
+   "bytes": 3355,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/futuros_omip.csv",
    "colunas": [
@@ -145,7 +145,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-futuros",
-   "linhas": 71,
+   "linhas": 69,
    "titulo": "Futuros OMIP — sessão em curso",
    "tolerancia_dias": 3,
    "ultima_data": "2026-11-20",
@@ -158,7 +158,7 @@
     "Não passa de 1 de janeiro: nos primeiros dias do ano tem menos de 100 dias.",
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 750926,
+   "bytes": 750752,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/omie_recentes.csv",
    "colunas": [
@@ -179,7 +179,7 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-recentes",
-   "linhas": 10637,
+   "linhas": 10635,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -198,7 +198,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/omie_recentes.csv"
   },
   {
-   "bytes": 592691,
+   "bytes": 594671,
    "cadencia": "diária",
    "caminho": "data/omie/historico/",
    "colunas": [
@@ -215,7 +215,7 @@
    "padrao": "data/omie/historico/omip_historico_*.csv",
    "titulo": "Futuros OMIP — histórico de sessões",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-18",
+   "ultima_data": "2026-11-19",
    "url": "https://dados.tiagofelicia.pt/data/omie/historico/"
   },
   {
@@ -1695,7 +1695,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-19T17:46:11+00:00",
+ "gerado_em": "2026-11-19T18:46:37+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1719,7 +1719,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 582661429,
+  "bytes": 582662887,
   "datasets": 57,
   "ficheiros": 2118
  }
