@@ -614,7 +614,7 @@
     "Desde julho de 2026, os fluxos físicos Portugal–Espanha da ENTSO-E (12.1.G) ficam abaixo dos da REN.",
     "Um tipo que não veio num dia fica vazio, e não a zero; horas_producao, horas_consumo e horas_trocas dizem se o dia está completo."
    ],
-   "bytes": 581538,
+   "bytes": 581674,
    "cadencia": "diária",
    "caminho": "data/producao/entsoe-pt-diario/",
    "colunas": [
@@ -654,7 +654,7 @@
    "padrao": "data/producao/entsoe-pt-diario/entsoe_pt_diario_*.csv",
    "titulo": "Portugal segundo a ENTSO-E — totais diários",
    "tolerancia_dias": 3,
-   "ultima_data": "2026-11-18",
+   "ultima_data": "2026-11-19",
    "url": "https://dados.tiagofelicia.pt/data/producao/entsoe-pt-diario/"
   },
   {
@@ -1695,7 +1695,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-20T12:16:47+00:00",
+ "gerado_em": "2026-11-20T15:47:09+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1719,7 +1719,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 583221834,
+  "bytes": 583221970,
   "datasets": 57,
   "ficheiros": 2118
  }
