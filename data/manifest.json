@@ -229,11 +229,11 @@
    "id": "omie-records",
    "titulo": "Recordes OMIE",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-19",
+   "ultima_data": "2026-11-20",
    "url": "https://dados.tiagofelicia.pt/data/omie/records_omie.json"
   },
   {
-   "bytes": 7838,
+   "bytes": 6765,
    "cadencia": "a cada actualização",
    "caminho": "data/omie/hoje.json",
    "descricao": "Preços de hoje e de amanhã para dashboards e widgets (~8 KB).",
@@ -255,7 +255,7 @@
    ],
    "titulo": "Instantâneo OMIE do dia",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-19",
+   "ultima_data": "2026-11-20",
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
@@ -804,7 +804,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 13662,
+   "bytes": 13663,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -1695,7 +1695,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-19T23:37:14+00:00",
+ "gerado_em": "2026-11-20T00:03:20+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1719,7 +1719,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 583137066,
+  "bytes": 583135994,
   "datasets": 57,
   "ficheiros": 2118
  }
