@@ -570,7 +570,7 @@
     "GWh inteiros e % com uma casa, como a REN os publica. A energia afluente das albufeiras sai do balanço (variação = afluente − produção − descarregamento + bombagem) e pode ser negativa; nos fios de água e nas mini-hídricas é igual à produção do dia. A produção inclui a da água antes bombeada.",
     "A capacidade que conta como 100% foi subindo com as albufeiras novas (cerca de 3 080 GWh em 2015 e 3 250 GWh em 2026). A REN revê valores semanas depois de os publicar: o workflow volta a pedir os últimos 14 dias em cada corrida e os últimos 365 ao domingo."
    ],
-   "bytes": 502975,
+   "bytes": 503057,
    "cadencia": "3x/dia",
    "caminho": "data/producao/balanco_hidraulico_ren.csv",
    "colunas": [
@@ -602,10 +602,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-balanco-hidraulico",
-   "linhas": 6166,
+   "linhas": 6167,
    "titulo": "Balanço hidráulico — afluências, energia guardada e descarregamentos por dia",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-18",
+   "ultima_data": "2026-11-19",
    "url": "https://dados.tiagofelicia.pt/data/producao/balanco_hidraulico_ren.csv"
   },
   {
@@ -1695,7 +1695,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-20T15:54:47+00:00",
+ "gerado_em": "2026-11-20T17:15:14+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1719,7 +1719,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 583219413,
+  "bytes": 583219495,
   "datasets": 57,
   "ficheiros": 2118
  }
