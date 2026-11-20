@@ -259,7 +259,7 @@
    "url": "https://dados.tiagofelicia.pt/data/omie/hoje.json"
   },
   {
-   "bytes": 928506,
+   "bytes": 925949,
    "cadencia": "~5x/dia útil",
    "caminho": "data/omie/MIBEL_ano_atual_ACUM.csv",
    "colunas": [
@@ -274,7 +274,7 @@
    "grupo": "omie",
    "id": "mibel-acum",
    "intermedio": true,
-   "linhas": 35233,
+   "linhas": 35137,
    "resolucao_nativa": [
     {
      "ate": "2025-09-30",
@@ -1695,7 +1695,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-20T15:47:09+00:00",
+ "gerado_em": "2026-11-20T15:54:47+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1719,7 +1719,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 583221970,
+  "bytes": 583219413,
   "datasets": 57,
   "ficheiros": 2118
  }
