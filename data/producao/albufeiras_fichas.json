@@ -1,0 +1,3741 @@
+{
+ "alto_lindoso": {
+  "codigo": "02H/01A",
+  "barragem": {
+   "curso_agua": "RIO LIMA",
+   "ano": 1992,
+   "tipo": "Arco Abóboda",
+   "altura_m": 110,
+   "coroamento_m": 297,
+   "cota_coroamento_m": 339,
+   "escada_peixes": false,
+   "descarregador": "Poço Inclinado (dois descarregadores)",
+   "descarregador_m3s": 2760
+  },
+  "local": {
+   "distrito": "VIANA DO CASTELO",
+   "concelho": "ARCOS DE VALDEVEZ",
+   "freguesia": "SOAJO",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1992)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 390000,
+   "capacidade_util_dam3": 358900,
+   "volume_morto_dam3": 31100,
+   "npa_m": 338,
+   "nmc_m": 339,
+   "nme_m": 280,
+   "area_npa_ha": 1072,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 1510.93,
+   "area_propria_km2": 1510.94,
+   "precipitacao_mm": 2520,
+   "altitude_min_m": 275,
+   "altitude_media_m": 802,
+   "altitude_max_m": 1516
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "touvedo": {
+  "codigo": "03G/01A",
+  "barragem": {
+   "curso_agua": "RIO LIMA",
+   "ano": 1993,
+   "tipo": "Gravidade de betão aligeirada",
+   "altura_m": 42.5,
+   "coroamento_m": 133.5,
+   "cota_coroamento_m": 55,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 3200
+  },
+  "local": {
+   "distrito": "VIANA DO CASTELO",
+   "concelho": "PONTE DA BARCA",
+   "freguesia": "TOUVEDO (SALVADOR)",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 15500,
+   "capacidade_util_dam3": 4000,
+   "volume_morto_dam3": 11500,
+   "npa_m": 50,
+   "nmc_m": 55,
+   "nme_m": 48,
+   "area_npa_ha": 172,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 1686.48,
+   "area_propria_km2": 175.55,
+   "precipitacao_mm": 2466,
+   "altitude_min_m": 41,
+   "altitude_media_m": 524,
+   "altitude_max_m": 1404
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Defesa de Cheias"
+  ],
+  "fonte": "snirh"
+ },
+ "alto_rabagao": {
+  "codigo": "03J/03A",
+  "barragem": {
+   "curso_agua": "RIO RABAGÃO",
+   "ano": 1964,
+   "tipo": "Abóboda",
+   "altura_m": 94,
+   "coroamento_m": 1970,
+   "cota_coroamento_m": 880,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Margem",
+   "descarregador_m3s": 500
+  },
+  "local": {
+   "distrito": "VILA REAL",
+   "concelho": "MONTALEGRE",
+   "freguesia": "VIADE DE BAIXO",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO CÁVADO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 568690,
+   "capacidade_util_dam3": 557920,
+   "volume_morto_dam3": 10770,
+   "npa_m": 880,
+   "nmc_m": 880.1,
+   "nme_m": 829,
+   "area_npa_ha": 2212,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 103.12,
+   "area_propria_km2": 103.12,
+   "precipitacao_mm": 1637,
+   "altitude_min_m": 800,
+   "altitude_media_m": 952,
+   "altitude_max_m": 1271
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "referencial_local": true,
+  "fonte": "snirh"
+ },
+ "paradela": {
+  "codigo": "03J/01A",
+  "barragem": {
+   "curso_agua": "RIO CÁVADO",
+   "ano": 1956,
+   "tipo": "Enrocamento com cortina a montante",
+   "altura_m": 112,
+   "coroamento_m": 540,
+   "cota_coroamento_m": 743.5,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical - Canal Encosta",
+   "descarregador_m3s": 683
+  },
+  "local": {
+   "distrito": "VILA REAL",
+   "concelho": "MONTALEGRE",
+   "freguesia": "PARADELA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1956)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO CÁVADO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 164390,
+   "capacidade_util_dam3": 158170,
+   "volume_morto_dam3": 6220,
+   "npa_m": 740,
+   "nmc_m": 741.6,
+   "nme_m": 668,
+   "area_npa_ha": 380,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 216.9,
+   "area_propria_km2": 117.75,
+   "precipitacao_mm": 2141,
+   "altitude_min_m": 677,
+   "altitude_media_m": 1071,
+   "altitude_max_m": 1516
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Derivação"
+  ],
+  "referencial_local": true,
+  "fonte": "snirh"
+ },
+ "canicada": {
+  "codigo": "04H/01A",
+  "barragem": {
+   "curso_agua": "RIO CÁVADO",
+   "ano": 1955,
+   "tipo": "Arco",
+   "altura_m": 76,
+   "coroamento_m": 246,
+   "cota_coroamento_m": 163,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 1700
+  },
+  "local": {
+   "distrito": "BRAGA",
+   "concelho": "VIEIRA DO MINHO",
+   "freguesia": "PARADA DO BOURO",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO CÁVADO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 159300,
+   "capacidade_util_dam3": 147900,
+   "volume_morto_dam3": 11400,
+   "npa_m": 162,
+   "nmc_m": 163,
+   "nme_m": 118,
+   "area_npa_ha": 689,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 774.66,
+   "area_propria_km2": 159.61,
+   "precipitacao_mm": 2729,
+   "altitude_min_m": 123,
+   "altitude_media_m": 661,
+   "altitude_max_m": 1443
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "referencial_local": true,
+  "fonte": "snirh"
+ },
+ "vilarinho_das_furnas": {
+  "codigo": "03H/01A",
+  "barragem": {
+   "curso_agua": "RIO HOMEM",
+   "ano": 1972,
+   "tipo": "Abóboda",
+   "altura_m": 94,
+   "coroamento_m": 385,
+   "cota_coroamento_m": 570,
+   "escada_peixes": false,
+   "descarregador": "Afogado Lateral em Poço",
+   "descarregador_m3s": 280
+  },
+  "local": {
+   "distrito": "BRAGA",
+   "concelho": "TERRAS DE BOURO",
+   "freguesia": "CAMPO DO GERÊS",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO CÁVADO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 117690,
+   "capacidade_util_dam3": 116080,
+   "volume_morto_dam3": 1610,
+   "npa_m": 569.5,
+   "nmc_m": 570,
+   "nme_m": 503,
+   "area_npa_ha": 346,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 58.51,
+   "area_propria_km2": 58.52,
+   "precipitacao_mm": 3123,
+   "altitude_min_m": 497,
+   "altitude_media_m": 983,
+   "altitude_max_m": 1513
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Derivação"
+  ],
+  "fonte": "snirh"
+ },
+ "venda_nova": {
+  "codigo": "03J/04A",
+  "barragem": {
+   "curso_agua": "RIO RABAGÃO",
+   "ano": 1951,
+   "tipo": "Gravidade de betão",
+   "altura_m": 97,
+   "coroamento_m": 230,
+   "cota_coroamento_m": 701,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 1100
+  },
+  "local": {
+   "distrito": "BRAGA",
+   "concelho": "VIEIRA DO MINHO",
+   "freguesia": "CAMPOS",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A COYNE"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 94500,
+   "capacidade_util_dam3": 93000,
+   "volume_morto_dam3": 1500,
+   "npa_m": 700,
+   "nmc_m": 701,
+   "nme_m": 641,
+   "area_npa_ha": 400,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 239.35,
+   "area_propria_km2": 136.23,
+   "precipitacao_mm": 2086,
+   "altitude_min_m": 606,
+   "altitude_media_m": 906,
+   "altitude_max_m": 1269
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "salamonde": {
+  "codigo": "03I/01A",
+  "barragem": {
+   "curso_agua": "RIO CÁVADO",
+   "ano": 1953,
+   "tipo": "Arco Abóboda",
+   "altura_m": 75,
+   "coroamento_m": 284,
+   "cota_coroamento_m": 281,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 1700
+  },
+  "local": {
+   "distrito": "BRAGA",
+   "concelho": "VIEIRA DO MINHO",
+   "freguesia": "SALAMONDE",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1953)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A COYNE, J BELLIER"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 65000,
+   "capacidade_util_dam3": 56300,
+   "volume_morto_dam3": 8700,
+   "npa_m": 280,
+   "nmc_m": 280.5,
+   "nme_m": 240,
+   "area_npa_ha": 242,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 615.05,
+   "area_propria_km2": 158.8,
+   "precipitacao_mm": 2437,
+   "altitude_min_m": 239,
+   "altitude_media_m": 785,
+   "altitude_max_m": 1520
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "referencial_local": true,
+  "fonte": "snirh"
+ },
+ "guilhofrei": {
+  "codigo": "04I/01A",
+  "barragem": {
+   "curso_agua": "RIO AVE",
+   "ano": 1938,
+   "tipo": "Gravidade de betão",
+   "altura_m": 49,
+   "coroamento_m": 190,
+   "cota_coroamento_m": 337,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 445
+  },
+  "local": {
+   "distrito": "BRAGA",
+   "concelho": "VIEIRA DO MINHO",
+   "freguesia": "GUILHOFREI",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1938)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A STUCKY"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 21149,
+   "capacidade_util_dam3": 17077,
+   "volume_morto_dam3": 4072,
+   "npa_m": 333.35,
+   "nmc_m": 333.35,
+   "nme_m": 315,
+   "area_npa_ha": 163,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 120.86,
+   "area_propria_km2": 120.86,
+   "precipitacao_mm": 2374,
+   "altitude_min_m": 309,
+   "altitude_media_m": 613,
+   "altitude_max_m": 1257
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Recreio"
+  ],
+  "fonte": "snirh"
+ },
+ "baixo_sabor": {
+  "codigo": "06O/09A",
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "local": {
+   "distrito": "Bragança",
+   "concelho": "Torre de Moncorvo",
+   "dono_obra": "Movhera Engie",
+   "projetista": "CPPE - Companhia Portuguesa de Electricidade, S.A."
+  },
+  "barragem": {
+   "curso_agua": "Rio Sabor",
+   "ano_conclusao": 2015,
+   "altura_m": 123,
+   "cota_coroamento_m": 236,
+   "coroamento_m": 505,
+   "descarregador_m3s": 5000,
+   "tipo": "Betão, arco",
+   "descarregador": "Lâmina livre dividido em 4 vãos de 16m, com comportas de segmento"
+  },
+  "bacia": {
+   "area_total_km2": 3447
+  },
+  "albufeira": {
+   "area_npa_ha": 2820,
+   "capacidade_total_dam3": 1095000,
+   "capacidade_util_dam3": 630000,
+   "npa_m": 234,
+   "nmc_m": 235,
+   "nme_m": 227.4
+  },
+  "fonte": "cnpgb"
+ },
+ "carrapatelo": {
+  "codigo": "07I/01A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1972,
+   "tipo": "Gravidade de betão",
+   "altura_m": 57,
+   "coroamento_m": 400,
+   "cota_coroamento_m": 55,
+   "escada_peixes": true,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 22000
+  },
+  "local": {
+   "distrito": "VISEU",
+   "concelho": "CINFÃES",
+   "freguesia": "SÃO CRISTOVÃO DE NOGUEIRA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO DOURO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 148400,
+   "capacidade_util_dam3": 13840,
+   "volume_morto_dam3": 134560,
+   "npa_m": 46.5,
+   "nmc_m": 47.5,
+   "nme_m": 45,
+   "area_npa_ha": 952,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 92375.87,
+   "area_propria_km2": 708.5,
+   "precipitacao_mm": 1536,
+   "altitude_min_m": 0,
+   "altitude_media_m": 535,
+   "altitude_max_m": 1408
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Navegação"
+  ],
+  "fonte": "snirh"
+ },
+ "alto_tamega": {
+  "codigo": "04K/04A",
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "local": {
+   "distrito": "Vila Real",
+   "concelho": "Vila Pouca de Aguiar",
+   "dono_obra": "Iberdrola Generación, SA",
+   "projetista": "Granell; Aqualogus; Cenor; Ibersinsa"
+  },
+  "barragem": {
+   "curso_agua": "Rio Tâmega",
+   "ano_conclusao": 2024,
+   "altura_m": 104.5,
+   "cota_coroamento_m": 318,
+   "coroamento_m": 337.5,
+   "descarregador_m3s": 1826.75,
+   "tipo": "Betão, abóbada de dupla curvatura",
+   "descarregador": "Superfície com soleiras do tipo WES, com 4 comportas de segmento de 6 x 11,2 m"
+  },
+  "bacia": {
+   "area_total_km2": 1557,
+   "precipitacao_mm": 986
+  },
+  "albufeira": {
+   "area_npa_ha": 466.1,
+   "capacidade_total_dam3": 131700,
+   "npa_m": 315,
+   "nmc_m": 315.72,
+   "nme_m": 300
+  },
+  "fonte": "cnpgb"
+ },
+ "bemposta": {
+  "codigo": "06S/01A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1964,
+   "tipo": "Gravidade de betão",
+   "altura_m": 87,
+   "coroamento_m": 297,
+   "cota_coroamento_m": 408,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 11500
+  },
+  "local": {
+   "distrito": "BRAGANÇA",
+   "concelho": "MOGADOURO",
+   "freguesia": "BEMPOSTA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO DOURO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 128800,
+   "capacidade_util_dam3": 20000,
+   "volume_morto_dam3": 108800,
+   "npa_m": 402,
+   "nmc_m": 408,
+   "nme_m": 397,
+   "area_npa_ha": 405,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 64184.9,
+   "area_propria_km2": 165.97,
+   "precipitacao_mm": 637,
+   "altitude_min_m": 301,
+   "altitude_media_m": 653,
+   "altitude_max_m": 810
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "torrao": {
+  "codigo": "07H/01A",
+  "barragem": {
+   "curso_agua": "RIO TÂMEGA",
+   "ano": 1988,
+   "tipo": "Gravidade de betão",
+   "altura_m": 69,
+   "coroamento_m": 218,
+   "cota_coroamento_m": 69,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 4500
+  },
+  "local": {
+   "distrito": "PORTO",
+   "concelho": "MARCO DE CANAVESES",
+   "freguesia": "ALPENDURADA E MATOS",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 123990,
+   "capacidade_util_dam3": 77090,
+   "volume_morto_dam3": 46900,
+   "npa_m": 65,
+   "nmc_m": 69,
+   "nme_m": 49,
+   "area_npa_ha": 650,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 3268.28,
+   "area_propria_km2": 528.15,
+   "precipitacao_mm": 1574,
+   "altitude_min_m": 48,
+   "altitude_media_m": 384,
+   "altitude_max_m": 1336
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "crestuma_lever": {
+  "codigo": "07G/01A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1985,
+   "tipo": "Gravidade de betão",
+   "altura_m": 65,
+   "coroamento_m": 470,
+   "cota_coroamento_m": 25.5,
+   "escada_peixes": true,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 26000
+  },
+  "local": {
+   "distrito": "PORTO",
+   "concelho": "GONDOMAR",
+   "freguesia": "FOZ DO SOUSA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 110000,
+   "capacidade_util_dam3": 22500,
+   "volume_morto_dam3": 87500,
+   "npa_m": 13.2,
+   "nmc_m": 21.5,
+   "nme_m": 11.5,
+   "area_npa_ha": 1298,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 96932.81,
+   "area_propria_km2": 500.49,
+   "precipitacao_mm": 1596,
+   "altitude_min_m": 0,
+   "altitude_media_m": 280,
+   "altitude_max_m": 1095
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Abastecimento",
+   "Navegação"
+  ],
+  "fonte": "snirh"
+ },
+ "foz_tua": {
+  "codigo": "06M/06A",
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "local": {
+   "distrito": "Vila Real e Bragança",
+   "concelho": "Alijó e Carrazeda de Ansiães",
+   "dono_obra": "Movhera Engie",
+   "projetista": "EDP – Gestão da Produção de Energia SA/COBA/Quadrante/Arq. Souto Moura"
+  },
+  "barragem": {
+   "curso_agua": "Rio Tua",
+   "ano_conclusao": 2018,
+   "altura_m": 108,
+   "cota_coroamento_m": 172,
+   "coroamento_m": 275,
+   "descarregador_m3s": 5600,
+   "tipo": "Betão, abóbada de dupla curvatura",
+   "descarregador": "Lâmina livre, com 4 comportas de segmento"
+  },
+  "bacia": {
+   "area_total_km2": 3809
+  },
+  "albufeira": {
+   "area_npa_ha": 420.9,
+   "capacidade_total_dam3": 106100,
+   "capacidade_util_dam3": 10000,
+   "npa_m": 170,
+   "nmc_m": 171,
+   "nme_m": 167
+  },
+  "fonte": "cnpgb"
+ },
+ "vilar_tabuaco": {
+  "codigo": "08L/01A",
+  "barragem": {
+   "curso_agua": "RIO TÁVORA",
+   "ano": 1965,
+   "tipo": "Enrocamento com cortina a montante",
+   "altura_m": 58,
+   "coroamento_m": 240,
+   "cota_coroamento_m": 555,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 500
+  },
+  "local": {
+   "distrito": "VISEU",
+   "concelho": "SERNANCELHE",
+   "freguesia": "FONTE ARCADA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO DOURO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 99750,
+   "capacidade_util_dam3": 95270,
+   "volume_morto_dam3": 4480,
+   "npa_m": 552,
+   "nmc_m": 555,
+   "nme_m": 525,
+   "area_npa_ha": 670,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 357.39,
+   "area_propria_km2": 348.7,
+   "precipitacao_mm": 948,
+   "altitude_min_m": 502,
+   "altitude_media_m": 738,
+   "altitude_max_m": 982
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Derivação"
+  ],
+  "fonte": "snirh"
+ },
+ "valeira": {
+  "codigo": "07M/02A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1975,
+   "tipo": "Gravidade de betão",
+   "altura_m": 48,
+   "coroamento_m": 380,
+   "cota_coroamento_m": 113,
+   "escada_peixes": true,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 18000
+  },
+  "local": {
+   "distrito": "VISEU",
+   "concelho": "SÃO JOÃO DA PESQUEIRA",
+   "freguesia": "SÃO JOÃO DA PESQUEIRA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 98540,
+   "capacidade_util_dam3": 13040,
+   "volume_morto_dam3": 85500,
+   "npa_m": 105.2,
+   "nmc_m": 113,
+   "nme_m": 103.5,
+   "area_npa_ha": 795,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 85641.4,
+   "area_propria_km2": 828.42,
+   "precipitacao_mm": 626,
+   "altitude_min_m": 92,
+   "altitude_media_m": 474,
+   "altitude_max_m": 1039
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Navegação"
+  ],
+  "fonte": "snirh"
+ },
+ "regua": {
+  "codigo": "07K/01A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1973,
+   "tipo": "Gravidade de betão",
+   "altura_m": 41,
+   "coroamento_m": 350,
+   "cota_coroamento_m": 81,
+   "escada_peixes": true,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 21500
+  },
+  "local": {
+   "distrito": "VILA REAL",
+   "concelho": "PESO DA RÉGUA",
+   "freguesia": "CANELAS",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO DOURO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 95000,
+   "capacidade_util_dam3": 12000,
+   "volume_morto_dam3": 83000,
+   "npa_m": 73.5,
+   "nmc_m": 81,
+   "nme_m": 72,
+   "area_npa_ha": 850,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 91030.39,
+   "area_propria_km2": 1136.47,
+   "precipitacao_mm": 901,
+   "altitude_min_m": 47,
+   "altitude_media_m": 587,
+   "altitude_max_m": 1125
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Navegação"
+  ],
+  "fonte": "snirh"
+ },
+ "pocinho": {
+  "codigo": "07O/02A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1982,
+   "tipo": "Gravidade de betão",
+   "altura_m": 49,
+   "coroamento_m": 430,
+   "cota_coroamento_m": 139,
+   "escada_peixes": true,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 15000
+  },
+  "local": {
+   "distrito": "BRAGANÇA",
+   "concelho": "TORRE DE MONCORVO",
+   "freguesia": "AÇOREIRA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 83070,
+   "capacidade_util_dam3": 12240,
+   "volume_morto_dam3": 70830,
+   "npa_m": 125.5,
+   "nmc_m": 134.5,
+   "nme_m": 124,
+   "area_npa_ha": 829,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 81258.21,
+   "area_propria_km2": 14424.12,
+   "precipitacao_mm": 651,
+   "altitude_min_m": 104,
+   "altitude_media_m": 872,
+   "altitude_max_m": 2533
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Navegação"
+  ],
+  "fonte": "snirh"
+ },
+ "picote": {
+  "codigo": "05S/01A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1958,
+   "tipo": "Arco",
+   "altura_m": 100,
+   "coroamento_m": 139,
+   "cota_coroamento_m": 480,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 11000
+  },
+  "local": {
+   "distrito": "BRAGANÇA",
+   "concelho": "MIRANDA DO DOURO",
+   "freguesia": "PICOTE",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO DOURO / HIDRO-ELÉCTRICA DO ZÊZERE"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 62700,
+   "capacidade_util_dam3": 13350,
+   "volume_morto_dam3": 49350,
+   "npa_m": 471,
+   "nmc_m": 480,
+   "nme_m": 465,
+   "area_npa_ha": 244,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 64018.94,
+   "area_propria_km2": 353.83,
+   "precipitacao_mm": 654,
+   "altitude_min_m": 458,
+   "altitude_media_m": 736,
+   "altitude_max_m": 891
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "daivoes": {
+  "codigo": "04J/08A",
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "local": {
+   "distrito": "Vila Real",
+   "concelho": "Ribeira de Pena",
+   "dono_obra": "Iberdrola Generación, SA",
+   "projetista": "Granell; Aqualogus; Cenor; Ibersinsa"
+  },
+  "barragem": {
+   "curso_agua": "Rio Tâmega",
+   "ano_conclusao": 2020,
+   "altura_m": 77.5,
+   "cota_coroamento_m": 231,
+   "coroamento_m": 190,
+   "descarregador_m3s": 2944,
+   "tipo": "Betão, arco gravidade",
+   "descarregador": "4 soleiras WES, com comportas de segmento 11,50 m x 9,00 m"
+  },
+  "bacia": {
+   "area_total_km2": 1969,
+   "precipitacao_mm": 1177
+  },
+  "albufeira": {
+   "area_npa_ha": 340.1,
+   "capacidade_total_dam3": 55480,
+   "npa_m": 228,
+   "nmc_m": 229.36,
+   "nme_m": 223
+  },
+  "fonte": "cnpgb"
+ },
+ "feiticeiro": {
+  "codigo": "06O/10A",
+  "aproveitamentos": [
+   "Energia",
+   "Outros"
+  ],
+  "local": {
+   "distrito": "Bragança",
+   "concelho": "Torre de Moncorvo",
+   "dono_obra": "Movhera Engie",
+   "projetista": "EDP"
+  },
+  "barragem": {
+   "curso_agua": "Rio Sabor",
+   "ano_conclusao": 2016,
+   "altura_m": 45,
+   "cota_coroamento_m": 140,
+   "coroamento_m": 315,
+   "descarregador_m3s": 5000,
+   "tipo": "Betão, gravidade",
+   "descarregador": "Lâmina livre dividido em 4 vãos de 16m, com comportas"
+  },
+  "bacia": {
+   "area_total_km2": 3491
+  },
+  "albufeira": {
+   "area_npa_ha": 181,
+   "capacidade_total_dam3": 31000,
+   "capacidade_util_dam3": 12000,
+   "npa_m": 138,
+   "nmc_m": 138,
+   "nme_m": 130
+  },
+  "fonte": "cnpgb"
+ },
+ "miranda": {
+  "codigo": "05T/01A",
+  "barragem": {
+   "curso_agua": "RIO DOURO",
+   "ano": 1961,
+   "tipo": "Contrafortes",
+   "altura_m": 80,
+   "coroamento_m": 263,
+   "cota_coroamento_m": 535,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 11000
+  },
+  "local": {
+   "distrito": "BRAGANÇA",
+   "concelho": "MIRANDA DO DOURO",
+   "freguesia": "MIRANDA DO DOURO",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO DOURO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 28100,
+   "capacidade_util_dam3": 6660,
+   "volume_morto_dam3": 21440,
+   "npa_m": 528.05,
+   "nmc_m": 535,
+   "nme_m": 522,
+   "area_npa_ha": 122,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 63665.11,
+   "area_propria_km2": 63665.11,
+   "precipitacao_mm": 611,
+   "altitude_min_m": 481,
+   "altitude_media_m": 961,
+   "altitude_max_m": 2506
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "gouvaes": {
+  "codigo": "05K/02A",
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "local": {
+   "distrito": "Vila Real",
+   "concelho": "Vila Pouca de Aguiar",
+   "dono_obra": "Iberdrola Generación, SA",
+   "projetista": "TPF; Aqualogus"
+  },
+  "barragem": {
+   "curso_agua": "Rio Torno",
+   "ano_conclusao": 2021,
+   "altura_m": 33.9,
+   "cota_coroamento_m": 887.5,
+   "coroamento_m": 232.7,
+   "descarregador_m3s": 204.1,
+   "tipo": "Betão, gravidade",
+   "descarregador": "Lâmina livre com 3 soleiras WES, sem comportas"
+  },
+  "bacia": {
+   "area_total_km2": 40
+  },
+  "albufeira": {
+   "area_npa_ha": 182.06,
+   "capacidade_total_dam3": 14100,
+   "npa_m": 885,
+   "nmc_m": 886.24,
+   "nme_m": 875
+  },
+  "fonte": "cnpgb"
+ },
+ "varosa": {
+  "codigo": "07K/02A",
+  "barragem": {
+   "curso_agua": "RIO VAROSA",
+   "ano": 1934,
+   "tipo": "Arco Abóboda",
+   "coroamento_m": 213,
+   "cota_coroamento_m": 265,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 1200
+  },
+  "local": {
+   "distrito": "VISEU",
+   "concelho": "LAMEGO",
+   "freguesia": "VALDIGEM",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A STUCKY"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 12943,
+   "capacidade_util_dam3": 12937,
+   "volume_morto_dam3": 6,
+   "npa_m": 264,
+   "nmc_m": 265,
+   "nme_m": 224.05,
+   "area_npa_ha": 70,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 307.24,
+   "area_propria_km2": 307.25,
+   "precipitacao_mm": 1601,
+   "altitude_min_m": 250,
+   "altitude_media_m": 790,
+   "altitude_max_m": 1343
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "serra_serrada": {
+  "codigo": "02Q/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DAS ANDORINHAS",
+   "ano": 1989,
+   "tipo": "Gravidade de betão",
+   "altura_m": 25,
+   "coroamento_m": 170,
+   "cota_coroamento_m": 1253.5,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 31
+  },
+  "local": {
+   "distrito": "BRAGANÇA",
+   "concelho": "BRAGANÇA",
+   "freguesia": "FRANÇA",
+   "entidade_exploradora": "CÂMARA MUNICIPAL DE BRAGANÇA (01/01/1989)",
+   "dono_obra": "CÂMARA MUNICIPAL DE BRAGANÇA",
+   "projetista": "HIDROTÉCNICA-PORTUGUESA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 1680,
+   "capacidade_util_dam3": 1500,
+   "volume_morto_dam3": 180,
+   "npa_m": 1252,
+   "nmc_m": 1252.5,
+   "nme_m": 1241.5,
+   "area_npa_ha": 25,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 7.19,
+   "area_propria_km2": 7.2,
+   "precipitacao_mm": 1142,
+   "altitude_min_m": 1237,
+   "altitude_media_m": 1345,
+   "altitude_max_m": 1554
+  },
+  "aproveitamentos": [
+   "Abastecimento",
+   "Recreio",
+   "Energia"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Para reforço do abastecimento a Bragança."
+  ],
+  "fonte": "snirh"
+ },
+ "ribeiradio": {
+  "codigo": "09H/06A",
+  "aproveitamentos": [
+   "Energia",
+   "Outros"
+  ],
+  "local": {
+   "distrito": "Aveiro",
+   "concelho": "Sever do Vouga",
+   "dono_obra": "GREENVOUGA, SA",
+   "projetista": "Coba"
+  },
+  "barragem": {
+   "curso_agua": "Rio Vouga",
+   "ano_conclusao": 2016,
+   "altura_m": 76,
+   "cota_coroamento_m": 113,
+   "coroamento_m": 289.8,
+   "descarregador_m3s": 2750,
+   "tipo": "Betão, gravidade",
+   "descarregador": "Frontal, com comportas"
+  },
+  "bacia": {
+   "area_total_km2": 945
+  },
+  "albufeira": {
+   "area_npa_ha": 561,
+   "capacidade_total_dam3": 136400,
+   "capacidade_util_dam3": 49000,
+   "npa_m": 110,
+   "nme_m": 100
+  },
+  "fonte": "cnpgb"
+ },
+ "aguieira": {
+  "codigo": "11H/01A",
+  "barragem": {
+   "curso_agua": "RIO MONDEGO",
+   "ano": 1981,
+   "tipo": "Arcos Múltiplos",
+   "altura_m": 89,
+   "coroamento_m": 400,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 2080
+  },
+  "local": {
+   "distrito": "VISEU",
+   "concelho": "MORTÁGUA",
+   "freguesia": "ALMAÇA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 423030,
+   "capacidade_util_dam3": 216030,
+   "volume_morto_dam3": 207000,
+   "npa_m": 124.7,
+   "nmc_m": 126,
+   "nme_m": 110,
+   "area_npa_ha": 2000,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 3069.08,
+   "area_propria_km2": 2367.27,
+   "precipitacao_mm": 1155,
+   "altitude_min_m": 78,
+   "altitude_media_m": 441,
+   "altitude_max_m": 1591
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Defesa de Cheias",
+   "Abastecimento",
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "fronhas": {
+  "codigo": "12I/01A",
+  "barragem": {
+   "curso_agua": "RIO ALVA OU RIBEIRA DA FERVENÇA",
+   "ano": 1985,
+   "tipo": "Arco",
+   "altura_m": 62,
+   "coroamento_m": 250,
+   "cota_coroamento_m": 140,
+   "escada_peixes": false,
+   "descarregador": "Dois descarregadores de meio fundo com comportas.",
+   "descarregador_m3s": 500
+  },
+  "local": {
+   "distrito": "COIMBRA",
+   "concelho": "ARGANIL",
+   "freguesia": "POMBEIRO DA BEIRA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1985)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 62100,
+   "capacidade_util_dam3": 42500,
+   "volume_morto_dam3": 19600,
+   "npa_m": 134,
+   "nmc_m": 140,
+   "nme_m": 117,
+   "area_npa_ha": 535,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 640.85,
+   "area_propria_km2": 131.32,
+   "precipitacao_mm": 1170,
+   "altitude_min_m": 114,
+   "altitude_media_m": 285,
+   "altitude_max_m": 958
+  },
+  "aproveitamentos": [
+   "Derivação",
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "raiva": {
+  "codigo": "12H/01A",
+  "barragem": {
+   "curso_agua": "RIO MONDEGO",
+   "ano": 1981,
+   "tipo": "Gravidade de betão",
+   "altura_m": 36,
+   "coroamento_m": 200,
+   "cota_coroamento_m": 64.5,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 2000
+  },
+  "local": {
+   "distrito": "COIMBRA",
+   "concelho": "PENACOVA",
+   "freguesia": "PENACOVA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 24110,
+   "capacidade_util_dam3": 12030,
+   "volume_morto_dam3": 12080,
+   "npa_m": 61.5,
+   "nme_m": 55.85,
+   "area_npa_ha": 230,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 3294.35,
+   "area_propria_km2": 225.27,
+   "precipitacao_mm": 1434,
+   "altitude_min_m": 22,
+   "altitude_media_m": 248,
+   "altitude_max_m": 773
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Defesa de Cheias"
+  ],
+  "fonte": "snirh"
+ },
+ "lagoa_comprida": {
+  "codigo": "11L/03A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DA CANICA OU DA LAGOA OU DA PRAGUEIRA",
+   "ano": 1966,
+   "tipo": "Gravidade de betão",
+   "altura_m": 29,
+   "coroamento_m": 1200,
+   "cota_coroamento_m": 1600,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 92
+  },
+  "local": {
+   "distrito": "GUARDA",
+   "concelho": "SEIA",
+   "freguesia": "SÃO ROMÃO",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DA SERRA DA ESTRELA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 14000,
+   "capacidade_util_dam3": 13880,
+   "volume_morto_dam3": 120,
+   "npa_m": 1600,
+   "nmc_m": 1601,
+   "nme_m": 1571,
+   "area_npa_ha": 75,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 6.51,
+   "area_propria_km2": 6.52,
+   "precipitacao_mm": 1978,
+   "altitude_min_m": 1579,
+   "altitude_media_m": 1712,
+   "altitude_max_m": 1875
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "caldeirao": {
+  "codigo": "10M/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DO CALDEIRÃO",
+   "ano": 1993,
+   "tipo": "Arco",
+   "altura_m": 39,
+   "coroamento_m": 122,
+   "cota_coroamento_m": 707.1,
+   "escada_peixes": true,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 242
+  },
+  "local": {
+   "distrito": "GUARDA",
+   "concelho": "GUARDA",
+   "freguesia": "PÊRO SOARES",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1993)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "ELECTRICIDADE DE PORTUGAL, S.A."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 5520,
+   "capacidade_util_dam3": 3470,
+   "volume_morto_dam3": 2050,
+   "npa_m": 702,
+   "nmc_m": 703.7,
+   "nme_m": 695,
+   "area_npa_ha": 66,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 37.31,
+   "area_propria_km2": 37.32,
+   "precipitacao_mm": 999,
+   "altitude_min_m": 688,
+   "altitude_media_m": 885,
+   "altitude_max_m": 1121
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "vale_do_rossim": {
+  "codigo": "11L/02A",
+  "barragem": {
+   "curso_agua": "RIO ALVA OU RIBEIRA DA FERVENÇA",
+   "ano": 1956,
+   "tipo": "Gravidade de betão",
+   "altura_m": 27,
+   "coroamento_m": 375,
+   "cota_coroamento_m": 1437.5,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 66
+  },
+  "local": {
+   "distrito": "GUARDA",
+   "concelho": "GOUVEIA",
+   "freguesia": "MANGUALDE DA SERRA",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DA SERRA DA ESTRELA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 3500,
+   "capacidade_util_dam3": 3400,
+   "volume_morto_dam3": 167,
+   "npa_m": 1436,
+   "nmc_m": 1436.75,
+   "nme_m": 1422.87,
+   "area_npa_ha": 37,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 4.3,
+   "area_propria_km2": 4.31,
+   "precipitacao_mm": 1855,
+   "altitude_min_m": 1422,
+   "altitude_media_m": 1517,
+   "altitude_max_m": 1666
+  },
+  "aproveitamentos": [
+   "Energia",
+   "Derivação"
+  ],
+  "fonte": "snirh"
+ },
+ "alto_ceira": {
+  "codigo": "12J/01A",
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "local": {
+   "distrito": "Coimbra",
+   "concelho": "Pampilhosa da Serra",
+   "dono_obra": "EDP",
+   "projetista": "EDP"
+  },
+  "barragem": {
+   "curso_agua": "Rio Ceira",
+   "ano_conclusao": 2014,
+   "altura_m": 41,
+   "cota_coroamento_m": 668.5,
+   "coroamento_m": 137.5,
+   "descarregador_m3s": 197,
+   "tipo": "Betão convencional, abóbada de arcos parabólicos",
+   "descarregador": "Não equipado de lâmina livre (soleira tipo WES)"
+  },
+  "bacia": {
+   "area_total_km2": 33.5
+  },
+  "albufeira": {
+   "area_npa_ha": 33.5,
+   "capacidade_total_dam3": 1330,
+   "npa_m": 665.4,
+   "nmc_m": 667,
+   "nme_m": 661.34
+  },
+  "fonte": "cnpgb"
+ },
+ "lagoacho": {
+  "codigo": "11L/01A",
+  "aproveitamentos": [
+   "Energia",
+   "Derivação"
+  ],
+  "local": {
+   "distrito": "Guarda",
+   "concelho": "Gouveia",
+   "dono_obra": "Hidrocenel",
+   "projetista": "EDP, Electricidade de Portugal"
+  },
+  "barragem": {
+   "curso_agua": "Ribeira do Covão do Urso",
+   "ano_conclusao": 1993,
+   "altura_m": 38,
+   "cota_coroamento_m": 1439,
+   "coroamento_m": 360,
+   "descarregador_m3s": 105,
+   "tipo": "Aterro, enrocamento com cortina a montante",
+   "descarregador": "Canal de encosta, sem comportas"
+  },
+  "bacia": {
+   "area_total_km2": 4.8
+  },
+  "albufeira": {
+   "area_npa_ha": 23.7,
+   "capacidade_total_dam3": 1525,
+   "capacidade_util_dam3": 1525,
+   "npa_m": 1436,
+   "nmc_m": 1437.8,
+   "nme_m": 1425
+  },
+  "fonte": "cnpgb"
+ },
+ "castelo_de_bode": {
+  "codigo": "16H/01A",
+  "barragem": {
+   "curso_agua": "RIO ZÊZERE",
+   "ano": 1951,
+   "tipo": "Gravidade de betão",
+   "altura_m": 115,
+   "coroamento_m": 402,
+   "cota_coroamento_m": 124.3,
+   "escada_peixes": false,
+   "descarregador": "Orifícios",
+   "descarregador_m3s": 4200
+  },
+  "local": {
+   "distrito": "SANTARÉM",
+   "concelho": "TOMAR",
+   "freguesia": "SÃO PEDRO DE TOMAR",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A COYNE"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 1095000,
+   "capacidade_util_dam3": 902500,
+   "volume_morto_dam3": 192500,
+   "npa_m": 121.5,
+   "nmc_m": 122,
+   "nme_m": 79,
+   "area_npa_ha": 3291,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 3964.56,
+   "area_propria_km2": 1338.23,
+   "precipitacao_mm": 1166,
+   "altitude_min_m": 74,
+   "altitude_media_m": 390,
+   "altitude_max_m": 1080
+  },
+  "aproveitamentos": [
+   "Abastecimento",
+   "Energia",
+   "Defesa de Cheias",
+   "Recreio"
+  ],
+  "fonte": "snirh"
+ },
+ "cabril": {
+  "codigo": "14I/01A",
+  "barragem": {
+   "curso_agua": "RIO ZÊZERE",
+   "ano": 1954,
+   "tipo": "Abóboda",
+   "altura_m": 132,
+   "coroamento_m": 290,
+   "cota_coroamento_m": 297,
+   "escada_peixes": false,
+   "descarregador": "Poço Inclinado",
+   "descarregador_m3s": 2200
+  },
+  "local": {
+   "distrito": "LEIRIA",
+   "concelho": "PEDRÓGÃO GRANDE",
+   "freguesia": "PEDRÓGÃO GRANDE",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO ZÊZERE"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 720000,
+   "capacidade_util_dam3": 615000,
+   "volume_morto_dam3": 105000,
+   "npa_m": 296,
+   "nmc_m": 296.3,
+   "nme_m": 240,
+   "area_npa_ha": 2023,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 2416.32,
+   "area_propria_km2": 705.45,
+   "precipitacao_mm": 1261,
+   "altitude_min_m": 202,
+   "altitude_media_m": 554,
+   "altitude_max_m": 1170
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "maranhao": {
+  "codigo": "19J/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DA RAIA OU DE SEDA",
+   "ano": 1957,
+   "tipo": "Terra zonada",
+   "altura_m": 55,
+   "coroamento_m": 204,
+   "cota_coroamento_m": 133,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical",
+   "descarregador_m3s": 1600
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "AVIS",
+   "freguesia": "MARANHÃO",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO VALE DO SORRAIA",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO VALE DO SORRAIA",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 205400,
+   "capacidade_util_dam3": 180900,
+   "volume_morto_dam3": 24500,
+   "npa_m": 130,
+   "nmc_m": 130.13,
+   "nme_m": 85.47,
+   "area_npa_ha": 1960,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 2282.09,
+   "area_propria_km2": 2066,
+   "precipitacao_mm": 650,
+   "altitude_min_m": 78,
+   "altitude_media_m": 251,
+   "altitude_max_m": 513
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "montargil": {
+  "codigo": "19H/01A",
+  "barragem": {
+   "curso_agua": "RIO SÔR",
+   "ano": 1958,
+   "tipo": "Terra zonada",
+   "altura_m": 48,
+   "coroamento_m": 427,
+   "cota_coroamento_m": 83,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical",
+   "descarregador_m3s": 765
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "PONTE DE SOR",
+   "freguesia": "MONTARGIL",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO VALE DO SORRAIA",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO VALE DO SORRAIA",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 164300,
+   "capacidade_util_dam3": 142700,
+   "volume_morto_dam3": 21600,
+   "npa_m": 80,
+   "nmc_m": 80.75,
+   "nme_m": 65.05,
+   "area_npa_ha": 1495,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 1183.41,
+   "area_propria_km2": 1138.37,
+   "precipitacao_mm": 737,
+   "altitude_min_m": 61,
+   "altitude_media_m": 195,
+   "altitude_max_m": 339
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "pracana": {
+  "codigo": "16K/01A",
+  "barragem": {
+   "curso_agua": "RIO OCREZA",
+   "ano": 1950,
+   "tipo": "Contrafortes",
+   "altura_m": 60,
+   "coroamento_m": 245.5,
+   "cota_coroamento_m": 115,
+   "escada_peixes": false,
+   "descarregador": "Dois descarregadores em poço com quatro comportas, outro em orifício com uma comporta.",
+   "descarregador_m3s": 2560
+  },
+  "local": {
+   "distrito": "SANTARÉM",
+   "concelho": "MAÇÃO",
+   "freguesia": "ENVENDOS",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A STUCKY"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 111900,
+   "capacidade_util_dam3": 96000,
+   "volume_morto_dam3": 15900,
+   "npa_m": 114,
+   "nmc_m": 114.2,
+   "nme_m": 85,
+   "area_npa_ha": 550,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 1413.43,
+   "area_propria_km2": 444.24,
+   "precipitacao_mm": 1006,
+   "altitude_min_m": 93,
+   "altitude_media_m": 323,
+   "altitude_max_m": 955
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "fratel": {
+  "codigo": "16K/02A",
+  "barragem": {
+   "curso_agua": "RIO TEJO",
+   "ano": 1973,
+   "tipo": "Gravidade de betão",
+   "altura_m": 48,
+   "coroamento_m": 240,
+   "cota_coroamento_m": 87,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 16500
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "NISA",
+   "freguesia": "AMIEIRA DO TEJO",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO ZÊZERE"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 92500,
+   "capacidade_util_dam3": 21000,
+   "volume_morto_dam3": 71500,
+   "npa_m": 74,
+   "nmc_m": 76,
+   "nme_m": 71,
+   "area_npa_ha": 1000,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 59639.21,
+   "area_propria_km2": 58934.08,
+   "precipitacao_mm": 689,
+   "altitude_min_m": 59,
+   "altitude_media_m": 720,
+   "altitude_max_m": 2523
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "idanha": {
+  "codigo": "14N/01A",
+  "barragem": {
+   "curso_agua": "RIO PÔNSUL",
+   "ano": 1947,
+   "tipo": "Gravidade de betão",
+   "altura_m": 51,
+   "coroamento_m": 143,
+   "cota_coroamento_m": 258.5,
+   "escada_peixes": false,
+   "descarregador": "Soleira de entrada rectilínea seguida de poço.",
+   "descarregador_m3s": 700
+  },
+  "local": {
+   "distrito": "CASTELO BRANCO",
+   "concelho": "IDANHA-A-NOVA",
+   "freguesia": "IDANHA-A-NOVA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE IDANHA-A-NOVA",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE IDANHA-A-NOVA",
+   "projetista": "JUNTA AUTONOMA DAS OBRAS DE HIDRÁULICA AGRICOLA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 78100,
+   "capacidade_util_dam3": 77300,
+   "volume_morto_dam3": 800,
+   "npa_m": 255.5,
+   "nmc_m": 258.5,
+   "nme_m": 228,
+   "area_npa_ha": 678,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 364.34,
+   "area_propria_km2": 349.86,
+   "precipitacao_mm": 773,
+   "altitude_min_m": 227,
+   "altitude_media_m": 411,
+   "altitude_max_m": 761
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "santa_luzia": {
+  "codigo": "13J/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE UNHAIS OU PAMPILHOSA",
+   "ano": 1942,
+   "tipo": "Arco",
+   "altura_m": 76,
+   "coroamento_m": 115,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 230
+  },
+  "local": {
+   "distrito": "COIMBRA",
+   "concelho": "PAMPILHOSA DA SERRA",
+   "freguesia": "VIDUAL",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1942)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A COYNE"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 53700,
+   "capacidade_util_dam3": 50000,
+   "volume_morto_dam3": 3700,
+   "npa_m": 655.6,
+   "nmc_m": 655.88,
+   "nme_m": 620,
+   "area_npa_ha": 246,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 49.37,
+   "area_propria_km2": 49.38,
+   "precipitacao_mm": 1321,
+   "altitude_min_m": 604,
+   "altitude_media_m": 836,
+   "altitude_max_m": 1398
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "bouca": {
+  "codigo": "14H/01A",
+  "barragem": {
+   "curso_agua": "RIO ZÊZERE",
+   "ano": 1955,
+   "tipo": "Abóboda",
+   "altura_m": 63,
+   "coroamento_m": 175,
+   "cota_coroamento_m": 181,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 2200
+  },
+  "local": {
+   "distrito": "LEIRIA",
+   "concelho": "PEDRÓGÃO GRANDE",
+   "freguesia": "GRAÇA",
+   "entidade_exploradora": "COMPANHIA PORTUGUESA DE PRODUÇÃO DE ELECTRICIDADE S.A. e EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica (01/01/1955)",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO ZÊZERE"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 48400,
+   "capacidade_util_dam3": 15220,
+   "volume_morto_dam3": 33180,
+   "npa_m": 175,
+   "nmc_m": 179.8,
+   "nme_m": 167.1,
+   "area_npa_ha": 500,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 2601.71,
+   "area_propria_km2": 185.39,
+   "precipitacao_mm": 1392,
+   "altitude_min_m": 164,
+   "altitude_media_m": 464,
+   "altitude_max_m": 1196
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "povoa": {
+  "codigo": "17L/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE NISA",
+   "ano": 1928,
+   "tipo": "Arco Gravidade",
+   "altura_m": 32,
+   "coroamento_m": 400,
+   "cota_coroamento_m": 313.5,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 110
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "CASTELO DE VIDE",
+   "freguesia": "SANTIAGO MAIOR",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "HIDRO-ELÉCTRICA DO ALTO ALENTEJO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 19300,
+   "capacidade_util_dam3": 18800,
+   "volume_morto_dam3": 500,
+   "npa_m": 311.45,
+   "nmc_m": 313,
+   "area_npa_ha": 236,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 149.82,
+   "area_propria_km2": 149.82,
+   "precipitacao_mm": 802,
+   "altitude_min_m": 297,
+   "altitude_media_m": 441,
+   "altitude_max_m": 974
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "belver": {
+  "codigo": "17J/01A",
+  "barragem": {
+   "curso_agua": "RIO TEJO",
+   "ano": 1952,
+   "tipo": "Gravidade de betão",
+   "altura_m": 30,
+   "coroamento_m": 327.5,
+   "cota_coroamento_m": 47.5,
+   "escada_peixes": true,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 18000
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "GAVIÃO",
+   "freguesia": "GAVIÃO",
+   "entidade_exploradora": "EDP - Gestão da Produção de Energia, S.A. Direcção da Produção Hidraúlica",
+   "dono_obra": "EDP - Gestão da Produção de Energia S.A. Direcção da Produção Hidraúlica",
+   "projetista": "A STUCKY"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 12500,
+   "capacidade_util_dam3": 8500,
+   "volume_morto_dam3": 4000,
+   "npa_m": 46.15,
+   "nmc_m": 46.65,
+   "nme_m": 40,
+   "area_npa_ha": 286,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 61539.98,
+   "area_propria_km2": 370.1,
+   "precipitacao_mm": 875,
+   "altitude_min_m": 33,
+   "altitude_media_m": 256,
+   "altitude_max_m": 632
+  },
+  "aproveitamentos": [
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "alvito": {
+  "codigo": "24J/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE ODIVELAS OU ORIOLA OU ALVITO",
+   "ano": 1977,
+   "tipo": "Terra zonada",
+   "altura_m": 48.5,
+   "coroamento_m": 1105,
+   "cota_coroamento_m": 201.6,
+   "escada_peixes": false,
+   "descarregador": "Soleira de entrada rectilínea seguida de poço.",
+   "descarregador_m3s": 56
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "CUBA",
+   "freguesia": "VILA ALVA",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P. (01/01/1977)",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 132500,
+   "capacidade_util_dam3": 130000,
+   "volume_morto_dam3": 2500,
+   "npa_m": 197.5,
+   "nmc_m": 198.55,
+   "nme_m": 172,
+   "area_npa_ha": 1480,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 210.77,
+   "area_propria_km2": 188.97,
+   "precipitacao_mm": 640,
+   "altitude_min_m": 169,
+   "altitude_media_m": 245,
+   "altitude_max_m": 396
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Entidade exploradora da ETA: Associação de Muniçípios do Alentejo Central (AMCAL)"
+  ],
+  "fonte": "snirh"
+ },
+ "roxo": {
+  "codigo": "26I/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DO ROXO OU DE SANTA VITÓRIA",
+   "ano": 1967,
+   "tipo": "Contrafortes",
+   "altura_m": 49,
+   "coroamento_m": 847,
+   "cota_coroamento_m": 139.5,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 64
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "ALJUSTREL",
+   "freguesia": "ERVIDEL",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO ROXO",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO ROXO",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 96312,
+   "capacidade_util_dam3": 89512,
+   "volume_morto_dam3": 6800,
+   "npa_m": 136,
+   "nmc_m": 137,
+   "nme_m": 122,
+   "area_npa_ha": 1378,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 351.1,
+   "area_propria_km2": 351.1,
+   "precipitacao_mm": 559,
+   "altitude_min_m": 109,
+   "altitude_media_m": 177,
+   "altitude_max_m": 293
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "odivelas": {
+  "codigo": "24I/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE ODIVELAS OU ORIOLA OU ALVITO",
+   "ano": 1972,
+   "tipo": "Abóbodas múltiplas",
+   "altura_m": 55,
+   "coroamento_m": 491.5,
+   "cota_coroamento_m": 106,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 650
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "FERREIRA DO ALENTEJO",
+   "freguesia": "ODIVELAS",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DA OBRA DE REGA DE ODIVELAS (01/01/1972)",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DA OBRA DE REGA DE ODIVELAS",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 96000,
+   "capacidade_util_dam3": 70000,
+   "volume_morto_dam3": 26000,
+   "npa_m": 103,
+   "nmc_m": 104.55,
+   "nme_m": 91.3,
+   "area_npa_ha": 973,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 431.88,
+   "area_propria_km2": 221.11,
+   "precipitacao_mm": 622,
+   "altitude_min_m": 85,
+   "altitude_media_m": 179,
+   "altitude_max_m": 333
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "pego_do_altar": {
+  "codigo": "23G/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE ALCÁÇOVAS",
+   "ano": 1949,
+   "tipo": "Enrocamento com cortina a montante",
+   "altura_m": 63,
+   "coroamento_m": 192,
+   "cota_coroamento_m": 56,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical",
+   "descarregador_m3s": 1200
+  },
+  "local": {
+   "distrito": "SETÚBAL",
+   "concelho": "ALCÁCER DO SAL",
+   "freguesia": "SANTA SUSANA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO VALE DO SADO",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO VALE DO SADO",
+   "projetista": "JUNTA AUTONOMA DAS OBRAS DE HIDRÁULICA AGRICOLA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 94000,
+   "capacidade_util_dam3": 93600,
+   "volume_morto_dam3": 400,
+   "npa_m": 52.26,
+   "nmc_m": 52.26,
+   "nme_m": 15,
+   "area_npa_ha": 655,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 748.85,
+   "area_propria_km2": 662.04,
+   "precipitacao_mm": 722,
+   "altitude_min_m": 27,
+   "altitude_media_m": 196,
+   "altitude_max_m": 437
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "vale_do_gaio": {
+  "codigo": "24H/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DO XARRAMA",
+   "ano": 1949,
+   "tipo": "Enrocamento",
+   "altura_m": 51,
+   "coroamento_m": 368,
+   "cota_coroamento_m": 44.5,
+   "escada_peixes": false,
+   "descarregador": "Poço Inclinado",
+   "descarregador_m3s": 1000
+  },
+  "local": {
+   "distrito": "SETÚBAL",
+   "concelho": "ALCÁCER DO SAL",
+   "freguesia": "TORRÃO",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO VALE DO SADO",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO VALE DO SADO",
+   "projetista": "JUNTA AUTONOMA DAS OBRAS DE HIDRÁULICA AGRICOLA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 63000,
+   "capacidade_util_dam3": 63000,
+   "volume_morto_dam3": 0,
+   "npa_m": 40.5,
+   "nmc_m": 42.5,
+   "nme_m": 11,
+   "area_npa_ha": 550,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 513.29,
+   "area_propria_km2": 89.54,
+   "precipitacao_mm": 648,
+   "altitude_min_m": 7,
+   "altitude_media_m": 120,
+   "altitude_max_m": 271
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "alqueva": {
+  "codigo": "24M/07A",
+  "barragem": {
+   "curso_agua": "RIO GUADIANA",
+   "ano": 2002,
+   "tipo": "Abóboda",
+   "altura_m": 96,
+   "coroamento_m": 458,
+   "cota_coroamento_m": 154,
+   "descarregador": "Soleira tipo WES",
+   "descarregador_m3s": 6300
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "MOURA",
+   "freguesia": "MOURA (SÃO JOÃO BAPTISTA)",
+   "entidade_exploradora": "EMPRESA DE DESENVOLVIMENTO E INFRAESTRUTURAS DO ALQUEVA, S.A. (EDIA)",
+   "dono_obra": "EDIA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 4150000,
+   "capacidade_util_dam3": 3117000,
+   "volume_morto_dam3": 1033000,
+   "npa_m": 152,
+   "nmc_m": 152.8,
+   "nme_m": 130,
+   "area_npa_ha": 25000,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 55289,
+   "area_propria_km2": 53912.39,
+   "precipitacao_mm": 593,
+   "altitude_min_m": 74,
+   "altitude_media_m": 562,
+   "altitude_max_m": 1580
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento",
+   "Energia"
+  ],
+  "fonte": "snirh"
+ },
+ "caia": {
+  "codigo": "20O/01A",
+  "barragem": {
+   "curso_agua": "RIO CAIA",
+   "ano": 1967,
+   "tipo": "Contrafortes",
+   "altura_m": 52,
+   "coroamento_m": 949,
+   "cota_coroamento_m": 235.2,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 430
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "ELVAS",
+   "freguesia": "SÃO VICENTE E VENTOSA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO CAIA",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO CAIA",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 203000,
+   "capacidade_util_dam3": 192300,
+   "volume_morto_dam3": 10700,
+   "npa_m": 233.5,
+   "nmc_m": 233.9,
+   "nme_m": 192.4,
+   "area_npa_ha": 1970,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 567.55,
+   "area_propria_km2": 567.56,
+   "precipitacao_mm": 648,
+   "altitude_min_m": 206,
+   "altitude_media_m": 343,
+   "altitude_max_m": 1015
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "pedrogao": {
+  "codigo": "25L/01A",
+  "aproveitamentos": [
+   "Energia",
+   "Irrigação"
+  ],
+  "local": {
+   "distrito": "Beja",
+   "concelho": "Vidigueira",
+   "dono_obra": "EDIA - Empresa de Desenvolvimento e Infra-estruturas do Alqueva, SA",
+   "projetista": "EDP"
+  },
+  "barragem": {
+   "curso_agua": "Rio Guadiana",
+   "ano_conclusao": 2005,
+   "altura_m": 43,
+   "cota_coroamento_m": 94.1,
+   "coroamento_m": 448,
+   "descarregador_m3s": 12000,
+   "tipo": "Betão, gravidade",
+   "descarregador": "Soleira descarregadora WES seguida de degraus, sem comportas"
+  },
+  "bacia": {
+   "area_total_km2": 59160,
+   "precipitacao_mm": 560
+  },
+  "albufeira": {
+   "area_npa_ha": 1104,
+   "capacidade_total_dam3": 106000,
+   "capacidade_util_dam3": 54000,
+   "volume_morto_dam3": 52000,
+   "npa_m": 84.8,
+   "nmc_m": 91.8,
+   "nme_m": 79
+  },
+  "fonte": "cnpgb"
+ },
+ "arade": {
+  "codigo": "30G/02A",
+  "barragem": {
+   "curso_agua": "RIO ARADE",
+   "ano": 1956,
+   "tipo": "Terra zonada",
+   "altura_m": 50,
+   "coroamento_m": 246,
+   "cota_coroamento_m": 65,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical",
+   "descarregador_m3s": 500
+  },
+  "local": {
+   "distrito": "FARO",
+   "concelho": "SILVES",
+   "freguesia": "SILVES",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE SILVES, LAGOA E PORTIMÃO",
+   "dono_obra": "ASSOC. DE REG E BENEF DE SILVES LAGOA E PORTIMÃO",
+   "projetista": "JUNTA AUTONOMA DAS OBRAS DE HIDRÁULICA AGRICOLA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 28390,
+   "capacidade_util_dam3": 26981,
+   "volume_morto_dam3": 1409,
+   "npa_m": 61,
+   "nmc_m": 62.5,
+   "nme_m": 34.5,
+   "area_npa_ha": 182,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 224.98,
+   "area_propria_km2": 12.39,
+   "precipitacao_mm": 637,
+   "altitude_min_m": 36,
+   "altitude_media_m": 121,
+   "altitude_max_m": 266
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "bravura": {
+  "codigo": "30E/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRO DE ODEÁXERE",
+   "ano": 1958,
+   "tipo": "Arco",
+   "altura_m": 41,
+   "coroamento_m": 150,
+   "cota_coroamento_m": 86,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 21
+  },
+  "local": {
+   "distrito": "FARO",
+   "concelho": "LAGOS",
+   "freguesia": "BENSAFRIM",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO ALVOR",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO ALVOR",
+   "projetista": "HIDROTÉCNICA-PORTUGUESA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 34825,
+   "capacidade_util_dam3": 32325,
+   "volume_morto_dam3": 2500,
+   "npa_m": 84.1,
+   "nmc_m": 85,
+   "nme_m": 61,
+   "area_npa_ha": 285,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 76.58,
+   "area_propria_km2": 76.58,
+   "precipitacao_mm": 821,
+   "altitude_min_m": 70,
+   "altitude_media_m": 202,
+   "altitude_max_m": 554
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "odelouca": {
+  "codigo": "30G/11AE",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE ODELOUCA",
+   "ano": 2009,
+   "tipo": "Terra zonada",
+   "coroamento_m": 411,
+   "cota_coroamento_m": 106,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 1400
+  },
+  "local": {
+   "distrito": "FARO",
+   "concelho": "MONCHIQUE",
+   "freguesia": "ALFERCE",
+   "entidade_exploradora": "ÁGUAS DO ALGARVE, S.A. (24/11/2009)",
+   "dono_obra": "ÁGUAS DO ALGARVE S.A.",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 157000,
+   "capacidade_util_dam3": 134000,
+   "npa_m": 102,
+   "nmc_m": 102.35,
+   "nme_m": 72,
+   "bacia_em_espanha": false
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "funcho": {
+  "codigo": "30G/01A",
+  "barragem": {
+   "curso_agua": "RIO ARADE",
+   "ano": 1993,
+   "tipo": "Abóboda",
+   "altura_m": 48.8,
+   "coroamento_m": 165,
+   "cota_coroamento_m": 99.8,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 70
+  },
+  "local": {
+   "distrito": "FARO",
+   "concelho": "SILVES",
+   "freguesia": "SILVES",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 47720,
+   "capacidade_util_dam3": 42750,
+   "volume_morto_dam3": 4970,
+   "npa_m": 96,
+   "nmc_m": 96.8,
+   "nme_m": 65,
+   "area_npa_ha": 360,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 212.59,
+   "area_propria_km2": 212.6,
+   "precipitacao_mm": 744,
+   "altitude_min_m": 70,
+   "altitude_media_m": 223,
+   "altitude_max_m": 533
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "azibo": {
+  "codigo": "04P/01A",
+  "barragem": {
+   "curso_agua": "RIO AZIBO",
+   "ano": 1982,
+   "tipo": "Terra zonada",
+   "altura_m": 56,
+   "coroamento_m": 551,
+   "cota_coroamento_m": 606,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 170
+  },
+  "local": {
+   "distrito": "BRAGANÇA",
+   "concelho": "MACEDO DE CAVALEIROS",
+   "freguesia": "VALE DA PORCA",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 54470,
+   "capacidade_util_dam3": 46670,
+   "volume_morto_dam3": 7800,
+   "npa_m": 602,
+   "nmc_m": 603.65,
+   "nme_m": 580,
+   "area_npa_ha": 410,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 93.13,
+   "area_propria_km2": 93.13,
+   "precipitacao_mm": 1021,
+   "altitude_min_m": 585,
+   "altitude_media_m": 762,
+   "altitude_max_m": 1202
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento"
+  ],
+  "aproveitamentos_notas": [
+   "Irrigação - Associação de Regantes de Macedo de Cavaleiros",
+   "Abastecimento - Entidade exploradora da ETA: Águas de Trás-os-Montes e Alto Douro,S.A."
+  ],
+  "fonte": "snirh"
+ },
+ "alijo": {
+  "codigo": "06M/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DA CHA",
+   "ano": 1991,
+   "tipo": "Terra zonada",
+   "altura_m": 40,
+   "coroamento_m": 167,
+   "cota_coroamento_m": 660.9,
+   "escada_peixes": false,
+   "descarregador": "Frontal com comportas",
+   "descarregador_m3s": 52
+  },
+  "local": {
+   "distrito": "VILA REAL",
+   "concelho": "ALIJÓ",
+   "freguesia": "VILA CHÃ",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "HIDROTÉCNICA-PORTUGUESA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 1760,
+   "capacidade_util_dam3": 1660,
+   "volume_morto_dam3": 100,
+   "npa_m": 658.5,
+   "nmc_m": 660,
+   "nme_m": 613.3,
+   "area_npa_ha": 18,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 9.13,
+   "area_propria_km2": 9.13,
+   "precipitacao_mm": 974,
+   "altitude_min_m": 656,
+   "altitude_media_m": 761,
+   "altitude_max_m": 823
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Entidade exploradora da Eta: Águas de Trás-os -Montes e Alto Douro,S.A."
+  ],
+  "fonte": "snirh"
+ },
+ "odeleite": {
+  "codigo": "30L/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE ODELEITE",
+   "ano": 1997,
+   "tipo": "Enrocamento com cortina a montante",
+   "altura_m": 65,
+   "coroamento_m": 350,
+   "cota_coroamento_m": 55,
+   "escada_peixes": false,
+   "descarregador": "Poço Inclinado",
+   "descarregador_m3s": 1287
+  },
+  "local": {
+   "distrito": "FARO",
+   "concelho": "CASTRO MARIM",
+   "freguesia": "ODELEITE",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "HIDROPROJECTO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 130000,
+   "capacidade_util_dam3": 117000,
+   "volume_morto_dam3": 13000,
+   "npa_m": 52,
+   "nmc_m": 52.9,
+   "nme_m": 22,
+   "area_npa_ha": 720,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 347.51,
+   "area_propria_km2": 347.51,
+   "precipitacao_mm": 722,
+   "altitude_min_m": 27,
+   "altitude_media_m": 293,
+   "altitude_max_m": 541
+  },
+  "aproveitamentos": [
+   "Outros"
+  ],
+  "aproveitamentos_notas": [
+   "Outros - Constitui reforço da Barragem do Beliche."
+  ],
+  "fonte": "snirh"
+ },
+ "beliche": {
+  "codigo": "30L/02A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE BELICHE",
+   "ano": 1986,
+   "tipo": "Enrocamento com núcleo",
+   "altura_m": 54,
+   "coroamento_m": 527,
+   "cota_coroamento_m": 54.3,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 267
+  },
+  "local": {
+   "distrito": "FARO",
+   "concelho": "CASTRO MARIM",
+   "freguesia": "AZINHAL",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "HIDROPROJECTO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 48000,
+   "capacidade_util_dam3": 47600,
+   "volume_morto_dam3": 400,
+   "npa_m": 52,
+   "nmc_m": 52.5,
+   "nme_m": 15,
+   "area_npa_ha": 292,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 98.47,
+   "area_propria_km2": 98.48,
+   "precipitacao_mm": 644,
+   "altitude_min_m": 33,
+   "altitude_media_m": 198,
+   "altitude_max_m": 494
+  },
+  "aproveitamentos": [
+   "Abastecimento",
+   "Irrigação"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Entidade exploradora da ETA: Águas do Algarve,S.A.",
+   "Irrigação - Associação de Regantes do Sotavento Algarvio"
+  ],
+  "fonte": "snirh"
+ },
+ "abrilongo": {
+  "codigo": "19O/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DO ABRILONGO",
+   "ano": 2000,
+   "tipo": "Terra",
+   "altura_m": 30,
+   "cota_coroamento_m": 254.7,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 420
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "CAMPO MAIOR",
+   "freguesia": "NOSSA SENHORA DA GRAÇA DOS DEGOLADOS",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO XÉVORA (01/01/1990)",
+   "dono_obra": "DIRECÇÃO GERAL DA AGRICULTURA E DESENVOLVIMENTO RURAL (DGADR)"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 19900,
+   "volume_morto_dam3": 1000,
+   "npa_m": 252,
+   "nmc_m": 253.7,
+   "nme_m": 241.2,
+   "area_npa_ha": 295,
+   "bacia_em_espanha": true
+  },
+  "bacia": {
+   "area_total_km2": 123.35,
+   "area_propria_km2": 123.36,
+   "precipitacao_mm": 631,
+   "altitude_min_m": 231,
+   "altitude_media_m": 340,
+   "altitude_max_m": 531
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "vigia": {
+  "codigo": "22L/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DO VALE DO VASCO",
+   "ano": 1981,
+   "tipo": "Terra zonada",
+   "altura_m": 30,
+   "coroamento_m": 300,
+   "cota_coroamento_m": 226.25,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 250
+  },
+  "local": {
+   "distrito": "ÉVORA",
+   "concelho": "REDONDO",
+   "freguesia": "MONTOITO",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DA OBRA DA VIGIA",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DA OBRA DA VIGIA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 16725,
+   "capacidade_util_dam3": 15579,
+   "volume_morto_dam3": 1146,
+   "npa_m": 224,
+   "nmc_m": 224.75,
+   "nme_m": 210,
+   "area_npa_ha": 262,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 125.32,
+   "area_propria_km2": 125.33,
+   "precipitacao_mm": 619,
+   "altitude_min_m": 210,
+   "altitude_media_m": 264,
+   "altitude_max_m": 363
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento"
+  ],
+  "aproveitamentos_notas": [
+   "Irrigação - Entidade exploradora da ETA:Águas do Centro Alentejo S.A."
+  ],
+  "fonte": "snirh"
+ },
+ "monte_novo": {
+  "codigo": "22K/01A",
+  "barragem": {
+   "curso_agua": "RIO DEGEBE",
+   "ano": 1982,
+   "tipo": "Gravidade de betão",
+   "altura_m": 30,
+   "coroamento_m": 160,
+   "cota_coroamento_m": 199,
+   "escada_peixes": false,
+   "descarregador": "Soleira tipo WES",
+   "descarregador_m3s": 598
+  },
+  "local": {
+   "distrito": "ÉVORA",
+   "concelho": "ÉVORA",
+   "freguesia": "SÃO MANÇOS",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "DIRECÇÃO-GERAL DOS RECURSOS E APROVEITAMENTOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 15277,
+   "capacidade_util_dam3": 14780,
+   "volume_morto_dam3": 500,
+   "npa_m": 196,
+   "nmc_m": 196.8,
+   "nme_m": 183.5,
+   "area_npa_ha": 277.4,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 261.39,
+   "area_propria_km2": 261.4,
+   "precipitacao_mm": 582,
+   "altitude_min_m": 177,
+   "altitude_media_m": 254,
+   "altitude_max_m": 355
+  },
+  "aproveitamentos": [
+   "Abastecimento",
+   "Irrigação"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Entidade exploradora da ETA: Águas do Centro Alentejo,S.A."
+  ],
+  "fonte": "snirh"
+ },
+ "enxoe": {
+  "codigo": "26M/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DO ENXOÉ",
+   "ano": 1998,
+   "tipo": "Terra zonada",
+   "altura_m": 23,
+   "coroamento_m": 415,
+   "cota_coroamento_m": 179,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 33.4
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "SERPA",
+   "freguesia": "SERPA (SALVADOR)",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "ASSOCIAÇÃO DE MUNICÍPIOS DO ENXOÉ",
+   "projetista": "HIDROTÉCNICA-PORTUGUESA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 10400,
+   "capacidade_util_dam3": 9500,
+   "npa_m": 175,
+   "nmc_m": 176.5,
+   "nme_m": 165.5,
+   "area_npa_ha": 205,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 61.15,
+   "area_propria_km2": 61.16,
+   "precipitacao_mm": 555,
+   "altitude_min_m": 155,
+   "altitude_media_m": 225,
+   "altitude_max_m": 349
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Entidade exploradora da ETA: Associação de Muniçípios do Enxoé"
+  ],
+  "fonte": "snirh"
+ },
+ "lucefecit": {
+  "codigo": "22M/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA LUCEFÉCIT",
+   "ano": 1982,
+   "tipo": "Terra zonada",
+   "altura_m": 23,
+   "coroamento_m": 285,
+   "cota_coroamento_m": 185,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 390
+  },
+  "local": {
+   "distrito": "ÉVORA",
+   "concelho": "ALANDROAL",
+   "freguesia": "TERENA (SÃO PEDRO)",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENIFICIÁRIOS DO LUCEFECIT (01/01/1982)",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO LUCEFECIT",
+   "projetista": "APAGEL"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 10225,
+   "capacidade_util_dam3": 9000,
+   "volume_morto_dam3": 600,
+   "npa_m": 182,
+   "nmc_m": 183.5,
+   "nme_m": 170,
+   "area_npa_ha": 169,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 253.84,
+   "area_propria_km2": 253.85,
+   "precipitacao_mm": 653,
+   "altitude_min_m": 171,
+   "altitude_media_m": 310,
+   "altitude_max_m": 646
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "santa_clara": {
+  "codigo": "28G/01A",
+  "barragem": {
+   "curso_agua": "RIO MIRA",
+   "ano": 1968,
+   "tipo": "Terra zonada",
+   "altura_m": 87,
+   "coroamento_m": 428,
+   "cota_coroamento_m": 135,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical",
+   "descarregador_m3s": 208
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "ODEMIRA",
+   "freguesia": "SANTA CLARA-A-VELHA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO MIRA",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO MIRA",
+   "projetista": "JUNTA AUTONOMA DAS OBRAS DE HIDRÁULICA AGRICOLA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 485000,
+   "capacidade_util_dam3": 240300,
+   "volume_morto_dam3": 244700,
+   "npa_m": 130,
+   "nmc_m": 132,
+   "nme_m": 114.75,
+   "area_npa_ha": 1986,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 522.6,
+   "area_propria_km2": 496.4,
+   "precipitacao_mm": 719,
+   "altitude_min_m": 88,
+   "altitude_media_m": 243,
+   "altitude_max_m": 550
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento",
+   "Defesa de Cheias"
+  ],
+  "fonte": "snirh"
+ },
+ "corte_brique": {
+  "codigo": "28G/02A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DA CORTE BRIQUE",
+   "ano": 1993,
+   "tipo": "Terra homogénea",
+   "altura_m": 28,
+   "coroamento_m": 117,
+   "cota_coroamento_m": 137,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 62.9
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "ODEMIRA",
+   "freguesia": "SANTA CLARA-A-VELHA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO MIRA",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO MIRA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 1636,
+   "capacidade_util_dam3": 1460,
+   "volume_morto_dam3": 171,
+   "npa_m": 134.62,
+   "nmc_m": 135.8,
+   "nme_m": 120,
+   "area_npa_ha": 17.8,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 14.57,
+   "area_propria_km2": 14.57,
+   "precipitacao_mm": 803,
+   "altitude_min_m": 122,
+   "altitude_media_m": 256,
+   "altitude_max_m": 392
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "fagilde": {
+  "codigo": "10K/01A",
+  "barragem": {
+   "curso_agua": "RIO DÃO",
+   "ano": 1984,
+   "tipo": "Arco Abóboda",
+   "altura_m": 27,
+   "coroamento_m": 63.3,
+   "cota_coroamento_m": 312.5,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Margem",
+   "descarregador_m3s": 515
+  },
+  "local": {
+   "distrito": "VISEU",
+   "concelho": "VISEU",
+   "freguesia": "POVOLIDE",
+   "entidade_exploradora": "SERVIÇOS MUNICIPALIZADOS DE ÁGUA E SANEAMENTO DE VISEU",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "HIDROPROJECTO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 2800,
+   "npa_m": 310,
+   "nmc_m": 311.6,
+   "nme_m": 300,
+   "area_npa_ha": 8,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 426.75,
+   "area_propria_km2": 426.75,
+   "precipitacao_mm": 1112,
+   "altitude_min_m": 302,
+   "altitude_media_m": 586,
+   "altitude_max_m": 980
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "morgavel": {
+  "codigo": "26E/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE MORGAVÉL",
+   "ano": 1980,
+   "tipo": "Terra zonada",
+   "altura_m": 52,
+   "coroamento_m": 2700,
+   "cota_coroamento_m": 70,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 54
+  },
+  "local": {
+   "distrito": "SETÚBAL",
+   "concelho": "SINES",
+   "freguesia": "SINES",
+   "entidade_exploradora": "ÁGUAS DE SANTO ANDRÉ (01/01/1980)",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "HIDROPROJECTO"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 32500,
+   "capacidade_util_dam3": 27000,
+   "volume_morto_dam3": 5500,
+   "npa_m": 68.3,
+   "nme_m": 52,
+   "area_npa_ha": 340,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 24.91,
+   "area_propria_km2": 24.92,
+   "precipitacao_mm": 743,
+   "altitude_min_m": 57,
+   "altitude_media_m": 126,
+   "altitude_max_m": 207
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "sao_domingos": {
+  "codigo": "17B/01A",
+  "barragem": {
+   "curso_agua": "RIO DE SÃO DOMINGOS",
+   "ano": 1993,
+   "tipo": "Enrocamento com núcleo",
+   "altura_m": 39,
+   "coroamento_m": 280,
+   "cota_coroamento_m": 46,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 114.39
+  },
+  "local": {
+   "distrito": "LEIRIA",
+   "concelho": "PENICHE",
+   "freguesia": "ATOUGUIA DA BALEIA",
+   "entidade_exploradora": "SERVIÇOS MUNICIPALIZADOS DE PENICHE",
+   "dono_obra": "CÂMARA MUNICIPAL DE PENICHE",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 7900,
+   "capacidade_util_dam3": 7548,
+   "volume_morto_dam3": 352,
+   "npa_m": 42.5,
+   "nmc_m": 44.76,
+   "nme_m": 22,
+   "area_npa_ha": 96,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 39.43,
+   "area_propria_km2": 39.44,
+   "precipitacao_mm": 781,
+   "altitude_min_m": 30,
+   "altitude_media_m": 108,
+   "altitude_max_m": 204
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "monte_da_rocha": {
+  "codigo": "27H/01A",
+  "barragem": {
+   "curso_agua": "RIO SADO",
+   "ano": 1972,
+   "tipo": "Terra zonada",
+   "altura_m": 55,
+   "coroamento_m": 2000,
+   "cota_coroamento_m": 141.4,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical",
+   "descarregador_m3s": 260
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "OURIQUE",
+   "freguesia": "PANÓIAS",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 102760,
+   "capacidade_util_dam3": 97760,
+   "volume_morto_dam3": 5000,
+   "npa_m": 137,
+   "nmc_m": 138.45,
+   "nme_m": 113.25,
+   "area_npa_ha": 1100,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 244.93,
+   "area_propria_km2": 244.93,
+   "precipitacao_mm": 592,
+   "altitude_min_m": 119,
+   "altitude_media_m": 193,
+   "altitude_max_m": 268
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento",
+   "Defesa de Cheias"
+  ],
+  "fonte": "snirh"
+ },
+ "campilhas": {
+  "codigo": "26F/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE CAMPILHAS",
+   "ano": 1954,
+   "tipo": "Terra zonada com cortina",
+   "altura_m": 35,
+   "coroamento_m": 711,
+   "cota_coroamento_m": 111.5,
+   "escada_peixes": false,
+   "descarregador": "Poço",
+   "descarregador_m3s": 124
+  },
+  "local": {
+   "distrito": "SETÚBAL",
+   "concelho": "SANTIAGO DO CACÉM",
+   "freguesia": "VALE DE ÁGUA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "projetista": "JUNTA AUTONOMA DAS OBRAS DE HIDRÁULICA AGRICOLA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 27156,
+   "capacidade_util_dam3": 26156,
+   "volume_morto_dam3": 1000,
+   "npa_m": 108,
+   "nmc_m": 109.15,
+   "nme_m": 92.53,
+   "area_npa_ha": 333,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 106.94,
+   "area_propria_km2": 106.94,
+   "precipitacao_mm": 790,
+   "altitude_min_m": 84,
+   "altitude_media_m": 155,
+   "altitude_max_m": 320
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Defesa de Cheias"
+  ],
+  "fonte": "snirh"
+ },
+ "fonte_serne": {
+  "codigo": "26G/01AE",
+  "barragem": {
+   "curso_agua": "BARRANCO DE BENATELAR",
+   "ano": 1979,
+   "tipo": "Terra zonada",
+   "altura_m": 17,
+   "coroamento_m": 324,
+   "cota_coroamento_m": 81.4,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 35.8
+  },
+  "local": {
+   "distrito": "SETÚBAL",
+   "concelho": "SANTIAGO DO CACÉM",
+   "freguesia": "SÃO DOMINGOS",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 5150,
+   "capacidade_util_dam3": 3650,
+   "volume_morto_dam3": 1500,
+   "npa_m": 78.5,
+   "nmc_m": 79.55,
+   "nme_m": 73.45,
+   "area_npa_ha": 105,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 31.45,
+   "area_propria_km2": 31.46,
+   "precipitacao_mm": 716,
+   "altitude_min_m": 70,
+   "altitude_media_m": 100,
+   "altitude_max_m": 146
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Defesa de Cheias"
+  ],
+  "fonte": "snirh"
+ },
+ "monte_migueis": {
+  "codigo": "27H/03AE",
+  "barragem": {
+   "curso_agua": "RIBEIRA DOS MIGUEIS",
+   "ano": 1991,
+   "tipo": "Terra",
+   "altura_m": 11,
+   "coroamento_m": 355,
+   "cota_coroamento_m": 157.5,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 13
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "OURIQUE",
+   "freguesia": "CONCEIÇÃO",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "projetista": "DGHEA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 939,
+   "capacidade_util_dam3": 824,
+   "volume_morto_dam3": 114,
+   "npa_m": 156,
+   "nmc_m": 156.52,
+   "nme_m": 148.31,
+   "area_npa_ha": 27,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 12.7,
+   "area_propria_km2": 12.7,
+   "precipitacao_mm": 562,
+   "altitude_min_m": 144,
+   "altitude_media_m": 193,
+   "altitude_max_m": 248
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "monte_gato": {
+  "codigo": "27H/02AE",
+  "barragem": {
+   "curso_agua": "RIBEIRA DA FERRARIA OU BARRANCO DO MONTE DO GATO",
+   "ano": 1991,
+   "tipo": "Terra",
+   "altura_m": 13,
+   "coroamento_m": 155,
+   "cota_coroamento_m": 181,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 6.4
+  },
+  "local": {
+   "distrito": "BEJA",
+   "concelho": "OURIQUE",
+   "freguesia": "CONCEIÇÃO",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DE CAMPILHAS E ALTO SADO",
+   "projetista": "DGHEA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 596,
+   "capacidade_util_dam3": 540,
+   "volume_morto_dam3": 57,
+   "npa_m": 179.6,
+   "nmc_m": 180.1,
+   "nme_m": 169.73,
+   "area_npa_ha": 18,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 6.45,
+   "area_propria_km2": 6.46,
+   "precipitacao_mm": 561,
+   "altitude_min_m": 172,
+   "altitude_media_m": 207,
+   "altitude_max_m": 243
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "minutos": {
+  "codigo": "22I/01A",
+  "barragem": {
+   "curso_agua": "RIO ALMANSOR OU RIBEIRA DE SANTO ESTEVÃO OU DE CANHA",
+   "ano": 2003,
+   "tipo": "Terra homogénea",
+   "altura_m": 36,
+   "coroamento_m": 1293,
+   "cota_coroamento_m": 267.5,
+   "descarregador_m3s": 143
+  },
+  "local": {
+   "distrito": "ÉVORA",
+   "concelho": "MONTEMOR-O-NOVO",
+   "freguesia": "NOSSA SENHORA DA VILA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DA BARRAGEM DOS MINUTOS (01/01/2003)",
+   "dono_obra": "DIRECÇÃO GERAL DA AGRICULTURA E DESENVOLVIMENTO RURAL (DGADR)",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 52000,
+   "capacidade_util_dam3": 47400,
+   "volume_morto_dam3": 2100,
+   "npa_m": 264,
+   "nmc_m": 265.5,
+   "nme_m": 245,
+   "area_npa_ha": 530,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 94.85,
+   "area_propria_km2": 94.86,
+   "precipitacao_mm": 729,
+   "altitude_min_m": 238,
+   "altitude_media_m": 306,
+   "altitude_max_m": 411
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "meimoa": {
+  "codigo": "12O/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DA MEIMOA",
+   "ano": 1985,
+   "tipo": "Terra zonada",
+   "altura_m": 56,
+   "coroamento_m": 656,
+   "cota_coroamento_m": 571.5,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 124
+  },
+  "local": {
+   "distrito": "CASTELO BRANCO",
+   "concelho": "PENAMACOR",
+   "freguesia": "MEIMOA",
+   "entidade_exploradora": "ÁGUAS DO ZÊZERE E CÔA, S.A.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 39000,
+   "capacidade_util_dam3": 27000,
+   "volume_morto_dam3": 12000,
+   "npa_m": 568.5,
+   "nmc_m": 568.99,
+   "nme_m": 547,
+   "area_npa_ha": 222,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 60.27,
+   "area_propria_km2": 60.28,
+   "precipitacao_mm": 1014,
+   "altitude_min_m": 527,
+   "altitude_media_m": 775,
+   "altitude_max_m": 1076
+  },
+  "aproveitamentos": [
+   "Irrigação",
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "santa_agueda": {
+  "codigo": "14M/01A",
+  "barragem": {
+   "curso_agua": "RIO OCREZA",
+   "ano": 1991,
+   "tipo": "Terra homogénea",
+   "altura_m": 25,
+   "coroamento_m": 1054,
+   "cota_coroamento_m": 387.9,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 60
+  },
+  "local": {
+   "distrito": "CASTELO BRANCO",
+   "concelho": "CASTELO BRANCO",
+   "freguesia": "PÓVOA DE RIO DE MOINHOS",
+   "entidade_exploradora": "ÁGUAS DO CENTRO, S.A. (01/01/1991)",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "PROCESL, LDA."
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 37200,
+   "capacidade_util_dam3": 34200,
+   "volume_morto_dam3": 3000,
+   "npa_m": 385,
+   "nmc_m": 385.5,
+   "nme_m": 374.5,
+   "area_npa_ha": 634,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 61.4,
+   "area_propria_km2": 61.4,
+   "precipitacao_mm": 1087,
+   "altitude_min_m": 369,
+   "altitude_media_m": 505,
+   "altitude_max_m": 1205
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "fonte": "snirh"
+ },
+ "divor": {
+  "codigo": "21J/01A",
+  "barragem": {
+   "curso_agua": "RIO DIVÔR",
+   "ano": 1965,
+   "tipo": "Terra",
+   "altura_m": 23,
+   "coroamento_m": 636,
+   "cota_coroamento_m": 263.6,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 45
+  },
+  "local": {
+   "distrito": "ÉVORA",
+   "concelho": "ARRAIOLOS",
+   "freguesia": "IGREJINHA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO DIVOR (01/01/1965)",
+   "dono_obra": "ASSOCIAÇÃO DE BENEFICIÁRIOS DO DIVÔR",
+   "projetista": "DIRECÇÃO-GERAL DOS SERVIÇOS HIDRÁULICOS"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 11900,
+   "capacidade_util_dam3": 11890,
+   "volume_morto_dam3": 10,
+   "npa_m": 261.4,
+   "nmc_m": 262.2,
+   "nme_m": 249.5,
+   "area_npa_ha": 265,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 42.38,
+   "area_propria_km2": 42.39,
+   "precipitacao_mm": 649,
+   "altitude_min_m": 246,
+   "altitude_media_m": 296,
+   "altitude_max_m": 368
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "apartadura": {
+  "codigo": "17M/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DAS REVELADAS",
+   "ano": 1993,
+   "tipo": "Enrocamento com cortina a montante",
+   "altura_m": 46.5,
+   "coroamento_m": 284,
+   "cota_coroamento_m": 598,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 45
+  },
+  "local": {
+   "distrito": "PORTALEGRE",
+   "concelho": "MARVÃO",
+   "freguesia": "SÃO SALVADOR DA ARAMENHA",
+   "entidade_exploradora": "INSTITUTO DA ÁGUA, I.P.",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 7465,
+   "capacidade_util_dam3": 6980,
+   "volume_morto_dam3": 485,
+   "npa_m": 595,
+   "nmc_m": 595.9,
+   "nme_m": 568,
+   "area_npa_ha": 48,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 8.38,
+   "area_propria_km2": 8.39,
+   "precipitacao_mm": 947,
+   "altitude_min_m": 592,
+   "altitude_media_m": 720,
+   "altitude_max_m": 1019
+  },
+  "aproveitamentos": [
+   "Abastecimento",
+   "Irrigação"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Entidade exploradora da ETA-ÁGUAS do NORTE ALENTEJANO,S.A.",
+   "Irrigação - ASSOCIAÇÃO DE REGANTES DA APARTADURA."
+  ],
+  "fonte": "snirh"
+ },
+ "magos": {
+  "codigo": "20E/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DE MAGOS",
+   "ano": 1938,
+   "tipo": "Terra homogénea",
+   "altura_m": 17,
+   "coroamento_m": 400,
+   "cota_coroamento_m": 23,
+   "escada_peixes": false,
+   "descarregador": "Canal de Encosta",
+   "descarregador_m3s": 110
+  },
+  "local": {
+   "distrito": "SANTARÉM",
+   "concelho": "SALVATERRA DE MAGOS",
+   "freguesia": "FOROS DE SALVATERRA",
+   "entidade_exploradora": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO VALE DO SORRAIA",
+   "dono_obra": "ASSOCIAÇÃO DE REGANTES E BENEFICIÁRIOS DO VALE DO SORRAIA",
+   "projetista": "JUNTA AUTONOMA DAS OBRAS DE HIDRÁULICA AGRICOLA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 3384,
+   "capacidade_util_dam3": 2852,
+   "volume_morto_dam3": 180,
+   "npa_m": 16.68,
+   "nmc_m": 16.78,
+   "nme_m": 10.4,
+   "area_npa_ha": 124,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 105.5,
+   "area_propria_km2": 105.5,
+   "precipitacao_mm": 738,
+   "altitude_min_m": 8,
+   "altitude_media_m": 70,
+   "altitude_max_m": 120
+  },
+  "aproveitamentos": [
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ },
+ "cova_do_viriato": {
+  "codigo": "12L/02A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DO PAUL OU CORTES",
+   "ano": 1982,
+   "tipo": "Gravidade de betão",
+   "altura_m": 28,
+   "coroamento_m": 202,
+   "cota_coroamento_m": 1576,
+   "escada_peixes": false,
+   "descarregador": "Sobre a Barragem",
+   "descarregador_m3s": 3.8
+  },
+  "local": {
+   "distrito": "CASTELO BRANCO",
+   "concelho": "COVILHÃ",
+   "freguesia": "CORTES DO MEIO",
+   "entidade_exploradora": "INFRAESTRUTURAS E CONCESSÕES DA COVILHÃ, EEM (01/01/1982)",
+   "dono_obra": "INFRAESTRUTURAS E CONCESSÕES DA COVILHÃ EEM",
+   "projetista": "APAGEL"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 1500,
+   "capacidade_util_dam3": 1350,
+   "volume_morto_dam3": 150,
+   "npa_m": 1557,
+   "nmc_m": 1557.6,
+   "nme_m": 1541.2,
+   "area_npa_ha": 23.5,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 1.99,
+   "area_propria_km2": 2,
+   "precipitacao_mm": 1986,
+   "altitude_min_m": 1546,
+   "altitude_media_m": 1602,
+   "altitude_max_m": 1679
+  },
+  "aproveitamentos": [
+   "Abastecimento"
+  ],
+  "aproveitamentos_notas": [
+   "Abastecimento - Exploração em baixa-Águas da Covilhã EM Exploração em Alta -Infraestruturas e Concessões da Covilhã EEM"
+  ],
+  "fonte": "snirh"
+ },
+ "capinha": {
+  "codigo": "12M/01A",
+  "barragem": {
+   "curso_agua": "RIBEIRA DAS POLDRAS",
+   "ano": 1981,
+   "tipo": "Terra homogénea",
+   "altura_m": 18,
+   "coroamento_m": 231,
+   "cota_coroamento_m": 505,
+   "escada_peixes": false,
+   "descarregador": "Poço Vertical",
+   "descarregador_m3s": 26.3
+  },
+  "local": {
+   "distrito": "CASTELO BRANCO",
+   "concelho": "FUNDÃO",
+   "freguesia": "CAPINHA",
+   "entidade_exploradora": "ÁGUAS DO ZÊZERE E CÔA, S.A. (01/01/1981)",
+   "dono_obra": "Autoridade Nacional da Água",
+   "projetista": "COBA"
+  },
+  "albufeira": {
+   "capacidade_total_dam3": 500,
+   "capacidade_util_dam3": 320,
+   "volume_morto_dam3": 180,
+   "npa_m": 502.5,
+   "nmc_m": 503.37,
+   "nme_m": 498,
+   "area_npa_ha": 9.7,
+   "bacia_em_espanha": false
+  },
+  "bacia": {
+   "area_total_km2": 6.25,
+   "area_propria_km2": 6.26,
+   "precipitacao_mm": 1059,
+   "altitude_min_m": 495,
+   "altitude_media_m": 588,
+   "altitude_max_m": 729
+  },
+  "aproveitamentos": [
+   "Abastecimento",
+   "Irrigação"
+  ],
+  "fonte": "snirh"
+ }
+}
