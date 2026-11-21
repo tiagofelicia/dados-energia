@@ -188,11 +188,17 @@ const recordes = await r.json();</code></pre>
         <td>Reservas hidroelétricas de Espanha peninsular (GWh) e enchimento (% da capacidade), mês a mês, desde 1990: o total, as albufeiras anuais e as hiperanuais. Fonte: Red Eléctrica (REData).</td>
         <td>3×/semana (valor mensal)</td></tr>
     <tr><td><a href="data/producao/albufeiras_snirh_diario.csv">albufeiras_snirh_diario.csv</a></td>
-        <td>Água guardada em cada uma das 57 albufeiras com uso para energia (hm³), desde 2001: diária nas das centrais hidroelétricas, semanal nas de rega. Fonte: SNIRH (APA); recolhido num PC em Portugal.</td>
+        <td>Água guardada em cada uma de 86 albufeiras (hm³), desde 2001: as 57 com uso para energia e 29 sem central (rega, abastecimento e outros usos); diária nas das centrais hidroelétricas, diária ou semanal nas outras. Fonte: SNIRH (APA); recolhido num PC em Portugal.</td>
         <td>2×/dia</td></tr>
     <tr><td><a href="data/producao/albufeiras_snirh.csv">albufeiras_snirh.csv</a></td>
-        <td>As 57 albufeiras: código SNIRH, bacia, capacidade total, máximo registado, o volume que conta como 100%, se os valores são diários ou semanais e a localização da barragem.</td>
+        <td>As 86 albufeiras: código SNIRH, bacia, capacidade total, máximo registado, o volume que conta como 100%, se os valores são diários ou semanais, a localização da barragem, se tem uso para energia e o uso principal.</td>
         <td>2×/dia</td></tr>
+    <tr><td><a href="data/producao/albufeiras_agora.json">albufeiras_agora.json</a></td>
+        <td>As últimas 48 horas de cada estação de albufeira do InfoÁgua (62, 9 delas em Espanha, junto à fronteira), de hora a hora: volume armazenado (%), cota e caudais afluente e efluente. Fonte: InfoÁgua (APA).</td>
+        <td>de hora a hora</td></tr>
+    <tr><td><a href="data/producao/albufeiras-horario/">albufeiras-horario/</a></td>
+        <td>O histórico de hora a hora do InfoÁgua (o InfoÁgua só guarda 48 horas), desde novembro de 2026, um ficheiro por ano.</td>
+        <td>de hora a hora</td></tr>
     <tr><td><a href="data/producao/centrais_hidricas.csv">centrais_hidricas.csv</a></td>
         <td>As centrais de cada albufeira, e as outras grandes centrais hídricas do anuário: turbinas, potência e bombagem (MW) e produção de 2024 e 2025 (GWh). Fonte: APREN, Anuário 2026; CNPGB.</td>
         <td>Estático (anual)</td></tr>
