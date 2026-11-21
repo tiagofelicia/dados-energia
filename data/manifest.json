@@ -765,6 +765,25 @@
   },
   {
    "avisos": [
+    "As centrais mais recentes (Baixo Sabor, Feiticeiro, Foz Tua, as três do Tâmega, Ribeiradio, Alto Ceira, Lagoacho e Pedrógão) não estão no inventário do SNIRH e têm a ficha da CNPGB (fonte = cnpgb), com menos campos; o ano é o de conclusão da obra (barragem.ano_conclusao).",
+    "albufeira.bacia_em_espanha diz respeito à bacia própria (a parte da bacia entre a barragem e as de montante), não à bacia toda: o Touvedo, logo abaixo do Alto Lindoso, tem «não».",
+    "Nas albufeiras com referencial_local (Alto Rabagão, Caniçada, Paradela, Salamonde) as cotas estão num sistema local: subtrair 9,20 m para o sistema altimétrico nacional. As cotas de tempo real do producao-albufeiras-agora usam o mesmo referencial."
+   ],
+   "bytes": 94286,
+   "cadencia": "à mão (num PC em Portugal)",
+   "caminho": "data/producao/albufeiras_fichas.json",
+   "descricao": "Por albufeira do producao-albufeiras-snirh: capacidade total e útil, volume morto, cotas do NPA, do NMC e do NmE, área inundada, a barragem (rio, ano, tipo, altura, coroamento, descarregador), a localização e as entidades (dono da obra, exploração, projetista), a bacia hidrográfica (áreas, precipitação, altitudes) e os tipos de aproveitamento. Fonte: SNIRH (inventário de albufeiras); nas centrais que lá não estão, CNPGB (Comissão Nacional Portuguesa das Grandes Barragens, APA).",
+   "ficheiros": 1,
+   "formato": "json",
+   "grupo": "producao",
+   "id": "producao-albufeiras-fichas",
+   "titulo": "Albufeiras — ficha técnica",
+   "tolerancia_dias": 400,
+   "ultima_data": null,
+   "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_fichas.json"
+  },
+  {
+   "avisos": [
     "A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
     "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem em todas as horas."
    ],
@@ -1743,7 +1762,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-21T15:36:33+00:00",
+ "gerado_em": "2026-11-21T16:03:11+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1767,8 +1786,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 584292632,
-  "datasets": 59,
-  "ficheiros": 2120
+  "bytes": 584386918,
+  "datasets": 60,
+  "ficheiros": 2121
  }
 }
