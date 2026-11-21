@@ -15,6 +15,8 @@
 #
 # De hora a hora, aos 40 minutos: a APA publica a hora cheia com 30 a 90 minutos de
 # atraso. Com o atraso habitual dos crons do GitHub, o «Agora» fica com 1 a 3 horas.
+# Se o agendamento não arrancar depois de um envio (aconteceu com o primeiro, a 21/11/2026),
+# voltar a subir este ficheiro com uma alteração qualquer faz o GitHub registá-lo de novo.
 # Uma corrida demora ~2 min (a lista e 62 páginas, com 1 s entre pedidos).
 #
 # Não está no workflow_run do gerar_hoje.yml de propósito: refazer o manifesto 24 vezes
