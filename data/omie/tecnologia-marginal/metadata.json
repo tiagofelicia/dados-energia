@@ -1,6 +1,6 @@
 {
- "ultima_data": "2026-08-21",
- "ultima_data_pt": "2026-08-20",
+ "ultima_data": "2026-08-23",
+ "ultima_data_pt": "2026-08-22",
  "primeira_data": "2018-01-01",
  "dias_em_falta": [],
  "resumos": {
@@ -123,12 +123,12 @@
    "descricao": "Nenhuma oferta casada com o preço do período"
   }
  ],
- "unidades": 4099,
+ "unidades": 4101,
  "unidades_por_origem": {
   "codigo": 1000,
   "interligacao": 2,
   "lado": 6,
-  "lista": 2861,
+  "lista": 2863,
   "nome": 212,
   "sem": 18
  },
