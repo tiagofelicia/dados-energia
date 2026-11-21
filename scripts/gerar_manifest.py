@@ -423,6 +423,24 @@ REGISTO = [
                    "capacidade total (boletim semanal da APA; CNPGB nas que lá não estão), máximo registado, "
                    "o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico"),
+    # A ficha técnica de cada albufeira, do inventário do SNIRH; gerada à mão num PC em Portugal (gerar_fichas_albufeiras.py)
+    dict(id="producao-albufeiras-fichas", grupo="producao",
+         caminho="data/producao/albufeiras_fichas.json",
+         titulo="Albufeiras — ficha técnica",
+         descricao="Por albufeira do producao-albufeiras-snirh: capacidade total e útil, volume morto, cotas do NPA, "
+                   "do NMC e do NmE, área inundada, a barragem (rio, ano, tipo, altura, coroamento, descarregador), "
+                   "a localização e as entidades (dono da obra, exploração, projetista), a bacia hidrográfica (áreas, "
+                   "precipitação, altitudes) e os tipos de aproveitamento. Fonte: SNIRH (inventário de albufeiras); nas "
+                   "centrais que lá não estão, CNPGB (Comissão Nacional Portuguesa das Grandes Barragens, APA).",
+         cadencia="à mão (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico",
+         avisos=["As centrais mais recentes (Baixo Sabor, Feiticeiro, Foz Tua, as três do Tâmega, Ribeiradio, Alto "
+                 "Ceira, Lagoacho e Pedrógão) não estão no inventário do SNIRH e têm a ficha da CNPGB (fonte = cnpgb), "
+                 "com menos campos; o ano é o de conclusão da obra (barragem.ano_conclusao).",
+                 "albufeira.bacia_em_espanha diz respeito à bacia própria (a parte da bacia entre a barragem e as de "
+                 "montante), não à bacia toda: o Touvedo, logo abaixo do Alto Lindoso, tem «não».",
+                 "Nas albufeiras com referencial_local (Alto Rabagão, Caniçada, Paradela, Salamonde) as cotas estão num "
+                 "sistema local: subtrair 9,20 m para o sistema altimétrico nacional. As cotas de tempo real do "
+                 "producao-albufeiras-agora usam o mesmo referencial."]),
     # O nível «de agora»: os valores de hora a hora das últimas 48 h que a APA publica no InfoÁgua. Ao contrário
     # do SNIRH, o InfoÁgua aceita ligações de fora de Portugal: um workflow de hora a hora
     # (atualizar_albufeiras_agora.yml), que junta também cada hora ao histórico (o InfoÁgua só guarda 48 h).
