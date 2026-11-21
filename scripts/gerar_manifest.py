@@ -411,17 +411,50 @@ REGISTO = [
     dict(id="producao-albufeiras-snirh", grupo="producao",
          caminho="data/producao/albufeiras_snirh_diario.csv",
          titulo="Albufeiras — água guardada em cada uma, por dia",
-         descricao="Volume armazenado (hm3) em cada uma das 57 albufeiras com uso para energia "
+         descricao="Volume armazenado (hm3) em cada uma de 86 albufeiras: as 57 com uso para energia "
                    "(as das centrais hidroelétricas, diárias, e as de rega com central, semanais), desde "
                    "2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data"),
     dict(id="producao-albufeiras-snirh-lista", grupo="producao",
          caminho="data/producao/albufeiras_snirh.csv",
          titulo="Albufeiras — lista, capacidades e referência",
-         descricao="As 57 albufeiras do producao-albufeiras-snirh: código SNIRH, nome, bacia, "
+         descricao="As 86 albufeiras do producao-albufeiras-snirh (energia = sim nas 57 com uso para energia, "
+                   "não nas 29 sem central) e o uso principal: código SNIRH, nome, bacia, "
                    "capacidade total (boletim semanal da APA; CNPGB nas que lá não estão), máximo registado, "
                    "o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
          cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico"),
+    # O nível «de agora»: os valores de hora a hora das últimas 48 h que a APA publica no InfoÁgua. Ao contrário
+    # do SNIRH, o InfoÁgua aceita ligações de fora de Portugal: um workflow de hora a hora
+    # (atualizar_albufeiras_agora.yml), que junta também cada hora ao histórico (o InfoÁgua só guarda 48 h).
+    dict(id="producao-albufeiras-agora", grupo="producao",
+         caminho="data/producao/albufeiras_agora.json",
+         titulo="Albufeiras — as últimas 48 horas, de hora a hora",  # (algumas de 15 em 15 min)
+         descricao="Volume armazenado (% da capacidade, como a APA o publica), cota (m) e caudais afluente e "
+                   "efluente (m3/s), de hora a hora, nas últimas 48 horas, nas albufeiras do "
+                   "todas as estações de albufeira do InfoÁgua (62 em novembro de 2026, 9 delas em Espanha, junto à "
+                   "fronteira). Fonte: APA (InfoÁgua).",
+         # tolerancia_dias=1: corre de hora a hora e a última data é o dia (de Lisboa) do valor mais recente
+         cadencia="de hora a hora", tolerancia_dias=1, deteccao="meta:ultima_data",
+         avisos=["A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 "
+                 "minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada "
+                 "como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas "
+                 "que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
+                 "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco "
+                 "da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem "
+                 "em todas as horas."]),
+    dict(id="producao-albufeiras-horario", grupo="producao",
+         caminho="data/producao/albufeiras-horario/albufeiras_horario_*.csv",
+         titulo="Albufeiras — histórico de hora a hora",
+         descricao="Volume armazenado (%), cota (m) e caudais afluente e efluente (m3/s) de cada estação de albufeira "
+                   "do InfoÁgua, de hora a hora, desde novembro de 2026: uma linha por hora e "
+                   "albufeira, um ficheiro por ano. Fonte: APA (InfoÁgua).",
+         # tolerancia_dias=1: o mesmo workflow do producao-albufeiras-agora
+         cadencia="de hora a hora", tolerancia_dias=1, deteccao="csv_col_iso:data",
+         avisos=[AVISO_DATA_UTC,
+                 "Uma linha por valor publicado: na maioria das estações, um por hora; nalgumas, de 15 em 15 "
+                 "minutos; nas de rega do Alentejo, um por dia.",
+                 "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. "
+                 "Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."]),
     dict(id="producao-centrais-hidricas", grupo="producao",
          caminho="data/producao/centrais_hidricas.csv",
          titulo="Centrais hídricas de cada albufeira",

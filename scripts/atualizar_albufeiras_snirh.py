@@ -12,7 +12,8 @@ pede que se refira a origem dos dados.
 As albufeiras são as 57 com uso para energia: as do boletim semanal de albufeiras da APA que têm
 «energia» no uso (as das centrais hidroelétricas e as de rega ou abastecimento que também têm
 central) e as de centrais que não entram nesse boletim (as três do Tâmega, Feiticeiro, Alto Ceira e
-Pedrógão).
+Pedrógão). Desde 21/11/2026, também as 29 sem central que têm volume no SNIRH (rega, abastecimento e
+outros usos): a coluna energia do albufeiras_snirh.csv distingue-as (não), e uso dá o uso principal.
 As das centrais hidroelétricas têm um valor por dia; as de rega, um por semana, à segunda-feira.
 
 ONDE CORRE
@@ -42,7 +43,10 @@ SAÍDA
     referencia_hm3, referencia o volume que conta como 100% (a capacidade ou o máximo registado)
     inicio_serie, ultimo_dia  primeiro e último dia com valor
     frequencia                diária ou semanal (o intervalo mediano entre os últimos 9 valores)
-    latitude, longitude       a barragem (graus decimais, WGS84)
+    latitude, longitude       a barragem (graus decimais, WGS84); nas sem central, a estação do SNIRH
+    energia                   sim (as 57 com uso para energia) ou não
+    uso                       os usos, como no boletim semanal da APA («Abastecimento, energia e rega»; Energia
+                              nas centrais que lá não estão)
 
   As centrais de cada albufeira (potência e produção) estão em data/producao/centrais_hidricas.csv,
   um ficheiro estático, revisto à mão quando sai um anuário novo da APREN.
@@ -140,6 +144,37 @@ ALBUFEIRAS = [
     ("pedrogao", "25L/01A", 1627758944, "Pedrógão", "Guadiana", 106000),   # CNPGB
     ("arade", "30G/02A", 1627743460, "Arade", "Arade", 28380),
     ("bravura", "30E/01A", 1627743568, "Bravura", "Ribeiras do Algarve", 34825),
+    # Sem central (21/11/2026): as 29 com volume no SNIRH nos últimos 60 dias (a Ermida, com 1 valor, ficou de fora).
+    # Capacidade do boletim semanal de albufeiras da APA, como as outras (Semanal.pdf de 18/11/2026).
+    ("odelouca", "30G/11AE", 3507536920, "Odelouca", "Arade", 157000),
+    ("funcho", "30G/01A", 1627758670, "Funcho", "Arade", 47720),
+    ("azibo", "04P/01A", 1627743482, "Azibo", "Douro", 54470),
+    ("alijo", "06M/01A", 1627743406, "Alijó", "Douro", 1740),
+    ("odeleite", "30L/01A", 1627758894, "Odeleite", "Guadiana", 130000),
+    ("beliche", "30L/02A", 1627743538, "Beliche", "Guadiana", 48000),
+    ("abrilongo", "19O/01A", 1627743354, "Abrilongo", "Guadiana", 19900),
+    ("vigia", "22L/01A", 1627759534, "Vigia", "Guadiana", 16725),
+    ("monte_novo", "22K/01A", 1627758834, "Monte Novo", "Guadiana", 15280),
+    ("enxoe", "26M/01A", 1627752188, "Enxoé", "Guadiana", 12500),
+    ("lucefecit", "22M/01A", 1627758752, "Lucefécit", "Guadiana", 10225),
+    ("santa_clara", "28G/01A", 1627759384, "Santa Clara", "Mira", 485000),
+    ("corte_brique", "28G/02A", 1627751880, "Corte Brique", "Mira", 1636),
+    ("fagilde", "10K/01A", 1627758608, "Fagilde", "Mondego", 3841),
+    ("morgavel", "26E/01A", 1627758860, "Morgavél", "Ribeiras do Alentejo", 32500),
+    ("sao_domingos", "17B/01A", 1627759402, "São Domingos", "Ribeiras do Oeste", 7900),
+    ("monte_da_rocha", "27H/01A", 1627758846, "Monte da Rocha", "Sado", 104500),
+    ("campilhas", "26F/01A", 1627743668, "Campilhas", "Sado", 27150),
+    ("fonte_serne", "26G/01AE", 1627758624, "Fonte Serne", "Sado", 5150),
+    ("monte_migueis", "27H/03AE", 1627758832, "Monte Migueis", "Sado", 939),
+    ("monte_gato", "27H/02AE", 1627758830, "Monte Gato", "Sado", 653),
+    ("minutos", "22I/01A", 1627758784, "Minutos", "Tejo", 52100),
+    ("meimoa", "12O/01A", 1627758774, "Meimoa", "Tejo", 40900),
+    ("santa_agueda", "14M/01A", 1627759382, "Santa Águeda (Marateca)", "Tejo", 37200),
+    ("divor", "21J/01A", 1627752100, "Divôr", "Tejo", 11900),
+    ("apartadura", "17M/01A", 1627743458, "Apartadura", "Tejo", 7465),
+    ("magos", "20E/01A", 1627758756, "Magos", "Tejo", 3384),
+    ("cova_do_viriato", "12L/02A", 1627751888, "Cova do Viriato", "Tejo", 1500),
+    ("capinha", "12M/01A", 1627743678, "Capinha", "Tejo", 500),
 ]
 # Localização da barragem (latitude, longitude, WGS84): a lista de características de albufeiras do SNIRH, pelo
 # código da estação; as que lá não estão com este código, o mapa de barragens da CNPGB; o Baixo Sabor, o paredão
@@ -203,10 +238,131 @@ COORDENADAS = {
     "pedrogao": (38.1107, -7.6304),   # CNPGB
     "arade": (37.2395, -8.3763),
     "bravura": (37.2017, -8.6978),
+    # sem central: a estação na lista da rede hidrométrica do SNIRH (3 casas; a confirmar com os paredões do OSM)
+    "odelouca": (37.28694, -8.471098),
+    "funcho": (37.262333, -8.382806),
+    "azibo": (41.558333, -6.891),
+    "alijo": (41.308972, -7.490278),
+    "odeleite": (37.328556, -7.486222),
+    "beliche": (37.273722, -7.509778),
+    "abrilongo": (39.096, -7.121),
+    "vigia": (38.539147, -7.607769),
+    "monte_novo": (38.52625, -7.728639),
+    "enxoe": (37.993056, -7.463889),
+    "lucefecit": (38.636083, -7.407417),
+    "santa_clara": (37.515611, -8.441917),
+    "corte_brique": (37.609, -8.453),
+    "fagilde": (40.639, -7.783),
+    "morgavel": (37.898, -8.761),
+    "sao_domingos": (39.334333, -9.317278),
+    "monte_da_rocha": (37.727389, -8.288444),
+    "campilhas": (37.840556, -8.621667),
+    "fonte_serne": (37.881, -8.497),
+    "monte_migueis": (37.789, -8.265),
+    "monte_gato": (37.791, -8.237),
+    "minutos": (38.659, -8.098),
+    "meimoa": (40.263, -7.151),
+    "santa_agueda": (39.969, -7.481),
+    "divor": (38.70025, -7.923972),
+    "apartadura": (39.34975, -7.382528),
+    "magos": (38.995972, -8.688639),
+    "cova_do_viriato": (40.309, -7.561),
+    "capinha": (40.212, -7.387),
+}
+# As albufeiras sem central (energia = não no albufeiras_snirh.csv): as acrescentadas a 21/11/2026
+SEM_ENERGIA = {"odelouca", "funcho", "azibo", "alijo", "odeleite", "beliche", "abrilongo", "vigia", "monte_novo", "enxoe", "lucefecit", "santa_clara", "corte_brique", "fagilde", "morgavel", "sao_domingos", "monte_da_rocha", "campilhas", "fonte_serne", "monte_migueis", "monte_gato", "minutos", "meimoa", "santa_agueda", "divor", "apartadura", "magos", "cova_do_viriato", "capinha"}
+# O uso no boletim semanal de albufeiras da APA, com todos os usos (Energia nas centrais que lá não estão)
+USOS = {
+    "alto_lindoso": "Energia e lazer",
+    "touvedo": "Abastecimento e energia",
+    "alto_rabagao": "Abastecimento e energia",
+    "paradela": "Energia",
+    "canicada": "Energia e lazer",
+    "vilarinho_das_furnas": "Energia",
+    "venda_nova": "Energia",
+    "salamonde": "Energia",
+    "guilhofrei": "Energia e lazer",
+    "baixo_sabor": "Energia",
+    "carrapatelo": "Abastecimento, energia e lazer",
+    "alto_tamega": "Energia",
+    "bemposta": "Abastecimento e energia",
+    "torrao": "Abastecimento, energia e lazer",
+    "crestuma_lever": "Abastecimento, energia e lazer",
+    "foz_tua": "Energia",
+    "vilar_tabuaco": "Abastecimento e energia",
+    "valeira": "Energia",
+    "regua": "Abastecimento, energia e lazer",
+    "pocinho": "Abastecimento, energia e lazer",
+    "picote": "Abastecimento e energia",
+    "daivoes": "Energia",
+    "feiticeiro": "Energia",
+    "miranda": "Abastecimento e rega",
+    "gouvaes": "Energia",
+    "varosa": "Energia",
+    "serra_serrada": "Abastecimento e energia",
+    "ribeiradio": "Energia",
+    "aguieira": "Abastecimento, energia e rega",
+    "fronhas": "Abastecimento e energia",
+    "raiva": "Energia",
+    "lagoa_comprida": "Energia",
+    "caldeirao": "Abastecimento e energia",
+    "vale_do_rossim": "Energia",
+    "alto_ceira": "Energia",
+    "lagoacho": "Energia",
+    "castelo_de_bode": "Abastecimento e energia",
+    "cabril": "Abastecimento e energia",
+    "maranhao": "Energia e rega",
+    "montargil": "Energia e rega",
+    "pracana": "Energia",
+    "fratel": "Energia",
+    "idanha": "Energia e rega",
+    "santa_luzia": "Abastecimento e energia",
+    "bouca": "Energia",
+    "povoa": "Abastecimento e energia",
+    "belver": "Energia",
+    "alvito": "Abastecimento, energia e rega",
+    "roxo": "Abastecimento, energia e rega",
+    "odivelas": "Energia e rega",
+    "pego_do_altar": "Energia e rega",
+    "vale_do_gaio": "Abastecimento, energia e rega",
+    "alqueva": "Abastecimento, energia e rega",
+    "caia": "Abastecimento, energia e rega",
+    "pedrogao": "Energia",
+    "arade": "Energia e rega",
+    "bravura": "Abastecimento, energia e rega",
+    "odelouca": "Abastecimento",
+    "funcho": "Abastecimento e rega",
+    "azibo": "Abastecimento, rega e lazer",
+    "alijo": "Abastecimento",
+    "odeleite": "Abastecimento e rega",
+    "beliche": "Abastecimento e rega",
+    "abrilongo": "Rega",
+    "vigia": "Abastecimento e rega",
+    "monte_novo": "Abastecimento e rega",
+    "enxoe": "Abastecimento e rega",
+    "lucefecit": "Rega",
+    "santa_clara": "Abastecimento e rega",
+    "corte_brique": "Rega",
+    "fagilde": "Abastecimento",
+    "morgavel": "Abastecimento e industrial",
+    "sao_domingos": "Abastecimento",
+    "monte_da_rocha": "Abastecimento e rega",
+    "campilhas": "Rega",
+    "fonte_serne": "Rega",
+    "monte_migueis": "Rega",
+    "monte_gato": "Rega",
+    "minutos": "Rega",
+    "meimoa": "Abastecimento e rega",
+    "santa_agueda": "Abastecimento e rega",
+    "divor": "Rega",
+    "apartadura": "Abastecimento e rega",
+    "magos": "Rega",
+    "cova_do_viriato": "Abastecimento",
+    "capinha": "Abastecimento e rega",
 }
 COLUNAS_META = ["coluna", "codigo_snirh", "nome", "bacia", "capacidade_hm3", "maximo_registado_hm3",
                 "data_maximo", "referencia_hm3", "referencia", "inicio_serie", "ultimo_dia", "frequencia",
-                "latitude", "longitude"]
+                "latitude", "longitude", "energia", "uso"]
 
 
 def pedir(url):
@@ -357,7 +513,8 @@ def texto_meta(dias):
                     "referencia": ("capacidade" if usa_cap else "maximo_registado") if ref else "",
                     "inicio_serie": serie[0][0] if serie else "", "ultimo_dia": serie[-1][0] if serie else "",
                     "frequencia": freq,
-                    "latitude": COORDENADAS.get(col, ("", ""))[0], "longitude": COORDENADAS.get(col, ("", ""))[1]})
+                    "latitude": COORDENADAS.get(col, ("", ""))[0], "longitude": COORDENADAS.get(col, ("", ""))[1],
+                    "energia": "não" if col in SEM_ENERGIA else "sim", "uso": USOS.get(col, "")})
     return buf.getvalue()
 
 

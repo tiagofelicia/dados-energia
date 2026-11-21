@@ -142,6 +142,11 @@ REGRAS = {
         colunas=["semana_inicio", "energia_gwh", "data_utc"], chave=["semana_inicio"], crescente=True),
     "producao-albufeiras-es": dict(
         colunas=["semana_inicio", "energia_gwh", "data_utc"], chave=["semana_inicio"], crescente=True),
+    # O histórico de hora a hora do InfoÁgua: uma linha por hora e albufeira
+    "producao-albufeiras-horario": dict(
+        colunas=["data", "albufeira", "volume_pct", "cota_m", "caudal_afluente_m3s", "caudal_efluente_m3s",
+                 "data_utc"],
+        chave=["data_utc", "albufeira"]),
     "producao-balanco-hidraulico": dict(
         colunas=["data", "afluente_albufeiras_gwh", "afluente_total_gwh", "afluente_util_albufeiras_gwh",
                  "producao_albufeiras_gwh", "producao_total_gwh", "bombagem_gwh", "armazenamento_gwh",
