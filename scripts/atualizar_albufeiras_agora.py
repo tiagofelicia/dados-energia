@@ -19,6 +19,9 @@ Output:
       o histórico de hora a hora (o InfoÁgua só guarda 48 h): uma linha por hora e albufeira, um ficheiro por ano
       (o ano do dia de Lisboa); cada corrida junta as 48 h que vierem às que já lá estavam
 
+As de Espanha vêm sem coordenadas e com o nome sem acentos: ficam com o nome e com o sítio do paredão no
+OpenStreetMap (© colaboradores do OpenStreetMap, ODbL), em ESPANHA.
+
 Horas: o InfoÁgua dá a hora sem fuso; tratamo-la como hora de Lisboa (a das estações da APA). No inverno é igual à
 UTC. Se alguma hora tratada assim ficar no futuro, ou mais de 3 h atrás em todas as estações, o log avisa: é sinal
 de que a APA publica em UTC.
@@ -57,6 +60,14 @@ LISBOA = ZoneInfo("Europe/Lisbon")
 PARAMETROS = {7: "volume_pct", 3: "cota_m", 6: "caudal_afluente_m3s", 2: "caudal_efluente_m3s"}
 VALORES = list(PARAMETROS.values())
 COLUNAS_CSV = ["data", "albufeira"] + VALORES + ["data_utc"]
+# As albufeiras de Espanha do InfoÁgua (chave → nome, latitude e longitude do paredão no OpenStreetMap)
+ESPANHA = {
+    "alcantara": ("Alcántara", 39.72944, -6.88534), "cedillo": ("Cedillo", 39.66386, -7.54000),
+    "saucelle": ("Saucelle", 41.04723, -6.80440), "aldeadavila": ("Aldeadávila", 41.21163, -6.68619),
+    "almendra": ("Almendra", 41.26595, -6.32303), "castro": ("Castro", 41.57533, -6.18741),
+    "ricobayo": ("Ricobayo", 41.52649, -5.98472), "las_conchas": ("Las Conchas", 41.94402, -8.03493),
+    "las_salas": ("Las Salas", 41.92462, -7.94444),
+}
 
 
 def pedir(url):
@@ -136,7 +147,12 @@ def estacoes():
                      pais="PT" if e.get("dico") else "ES")
         if e.get("latitude") and e.get("longitude"):
             ficha["lat"], ficha["lon"] = round(float(e["latitude"]), 5), round(float(e["longitude"]), 5)
-        out.append((nossa[0] if nossa else chave_de(e.get("station_name") or str(site)), site, ficha))
+        chave = nossa[0] if nossa else chave_de(e.get("station_name") or str(site))
+        if ficha["pais"] == "ES" and chave in ESPANHA:
+            ficha["nome"], la, lo = ESPANHA[chave]
+            ficha.setdefault("lat", la)
+            ficha.setdefault("lon", lo)
+        out.append((chave, site, ficha))
     return out
 
 
