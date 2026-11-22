@@ -7,8 +7,12 @@ name: Atualizar Mapa de Producao
 
 on:
   schedule:
-    # Todos os dias às 14:30 e 23:00 UTC
-    - cron: '30 14 * * *'
+    # Os horários principais vêm de fora do GitHub: um agendador externo dispara este
+    # workflow pela API (workflow_dispatch), 3 vezes por dia, na hora de Lisboa. Uma
+    # corrida demora ~25 min (28 países), por isso não convém correr muito mais vezes.
+    # Desde agosto de 2026 o GitHub cria as corridas agendadas deste repositório 4 a 10
+    # horas depois da hora marcada, por isso o cron abaixo é só reserva, 1 vez por dia.
+    # Chega: cada corrida volta a pedir os últimos 7 dias e o dia seguinte.
     - cron: '00 23 * * *'
 
   workflow_dispatch: # Permite execução manual
