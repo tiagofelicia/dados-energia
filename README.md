@@ -171,6 +171,7 @@ Os ficheiros de `producao-entsoe/` têm um schema próprio e mais rico, com `tim
 | `mibgas_spot.csv` | Índices diários do mercado ibérico de gás, desde 17/12/2015 | 2×/dia |
 | `mibgas_futuros.csv` | Curva forward do gás ibérico em preço absoluto, do intradiário ao ano Y+2, desde 16/12/2015 | 2×/dia |
 | `mibgas_ttf_spread.csv` | Prémio do gás ibérico face ao benchmark europeu TTF, 15 produtos de D+1 a Y+2, desde 02/01/2024 | 2×/dia |
+| `consumo_gas_mensal.csv` | Consumo de gás natural em Portugal continental por mês, em GWh, desde 01/2014: total, mercado convencional e mercado elétrico (REN) | 1×/dia |
 | `hoje.json` | Instantâneo do dia: último índice PT e ES, variação diária, médias e extremos de 30 dias (~2 KB) | A cada atualização |
 | `metadata.json` | Última data, primeira data e cobertura | 2×/dia |
 
@@ -518,7 +519,7 @@ Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
 - **[OMIE](https://www.omie.es)** — preços do mercado diário (MIBEL) e as curvas de oferta e procura com as unidades
 - **[OMIP](https://www.omip.pt)** — mercado a prazo / futuros
 - **[MIBGAS](https://www.mibgas.es)** — mercado ibérico de gás natural
-- **[REN](https://datahub.ren.pt)** — produção, consumo e bombagem em Portugal, e o balanço hidráulico (afluências, energia guardada e descarregamentos)
+- **[REN](https://datahub.ren.pt)** — produção, consumo e bombagem em Portugal, o balanço hidráulico (afluências, energia guardada e descarregamentos) e o consumo de gás natural
 - **[SNIRH](https://snirh.apambiente.pt)** (Agência Portuguesa do Ambiente) — água guardada em cada albufeira
 - **[InfoÁgua](https://infoagua.apambiente.pt)** (Agência Portuguesa do Ambiente) — volume, cota e caudais das albufeiras de hora a hora (estações de tempo real)
 - **[Red Eléctrica — REData](https://www.ree.es/es/datos)** — reservas hidroelétricas de Espanha
