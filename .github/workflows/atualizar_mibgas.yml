@@ -29,10 +29,14 @@ name: Atualizar MIBGAS
 
 on:
   schedule:
-    # 11:40 e 19:40 UTC — dois horários livres, sem colisão com os outros bots.
-    # Duas corridas porque o MIBGAS republica índices com correções
-    # retroativas; a segunda apanha as do próprio dia.
-    - cron: '40 11 * * *'
+    # Os horários principais vêm de fora do GitHub: um agendador externo dispara este
+    # workflow pela API (workflow_dispatch), 3 vezes por dia, na hora de Lisboa — de
+    # manhã (correções retroativas), ao fim da tarde (os produtos dos dias seguintes,
+    # VTP/PVB, já negociados) e à noite (o índice MIBGAS do próprio dia, que só sai
+    # depois de as 19:16 e antes das 23:54, visto a 20 e 21/11/2026).
+    # Desde agosto de 2026 o GitHub cria as corridas agendadas deste repositório 4 a 10
+    # horas depois da hora marcada, por isso o cron abaixo é só reserva, 1 vez por dia.
+    # Chega: cada corrida lê o ano inteiro do ficheiro do MIBGAS.
     - cron: '40 19 * * *'
 
   workflow_dispatch:

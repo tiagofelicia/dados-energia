@@ -7,7 +7,11 @@
 # Requer o secret ENTSOE_TOKEN (o mesmo do Atualizar Producao (ENTSO-E)).
 #
 # Horários (UTC):
-#   - 40 6 * * *   -> últimos 14 dias (o último é ontem), todos os dias
+#   - (de fora)    -> últimos 14 dias (o último é ontem), todos os dias de manhã: um
+#                     agendador externo dispara este workflow pela API (workflow_dispatch,
+#                     sem inputs = 14 dias). Não há cron diário de reserva: desde agosto de
+#                     2026 o GitHub cria as corridas agendadas horas depois da hora marcada,
+#                     e a corrida de domingo (400 dias) tapa qualquer falha da semana.
 #   - 50 5 * * 0   -> últimos 400 dias, ao domingo: a ENTSO-E completa e revê dias antigos
 #                     (em 2026, agosto ficou semanas com horas de consumo em falta)
 # A execução manual (workflow_dispatch) usa os inputs abaixo. Sem ficheiros na pasta, o
@@ -20,9 +24,8 @@ name: Atualizar Portugal dia a dia (ENTSO-E)
 
 on:
   schedule:
-    # ATENÇÃO: estes literais aparecem também no passo que escolhe os argumentos e no
-    # timeout-minutes. Um literal que deixe de bater não dá erro: cai no ramo por omissão.
-    - cron: '40 6 * * *'
+    # ATENÇÃO: este literal aparece também no passo que escolhe os argumentos. Um
+    # literal que deixe de bater não dá erro: cai no ramo por omissão (14 dias).
     - cron: '50 5 * * 0'
 
   workflow_dispatch:
@@ -50,8 +53,10 @@ jobs:
   atualizar-entsoe-pt-diario:
     name: Recolher Portugal dia a dia (ENTSO-E)
     runs-on: ubuntu-26.04
-    # Diária ~2 min, domingo ~15 min, backfill (manual) ~1 h
-    timeout-minutes: ${{ github.event.schedule == '40 6 * * *' && 20 || github.event.schedule == '50 5 * * 0' && 60 || 180 }}
+    # Diária ~2 min, domingo ~15 min, backfill (manual) ~1 h. A diária chega de fora
+    # (workflow_dispatch) e fica com os 60 min do domingo, que também servem a uma
+    # corrida manual com muitos dias.
+    timeout-minutes: ${{ github.event.inputs.backfill == 'true' && 180 || 60 }}
     permissions:
       contents: write
 

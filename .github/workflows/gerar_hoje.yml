@@ -19,9 +19,11 @@
 # dispara quando eles TERMINAM — latência de segundos em vez de horas, e sem
 # tocar nos workflows existentes.
 #
-# O cron de 6 em 6 horas é só rede de segurança: cobre o caso de os workflows
-# de origem não correrem (fim de semana, no caso do OMIE à tarde) e garante que
-# o "e_hoje"/"dias_atraso" se mantêm verdadeiros à passagem da meia-noite.
+# O cron é só rede de segurança, 1 vez por dia: os workflows de origem correm
+# agora quase todos de fora do GitHub (agendador externo, pela API) e disparam este
+# dezenas de vezes por dia — a produção REN de 2 em 2 horas, também às 00:15 de
+# Lisboa, o que mantém o "e_hoje"/"dias_atraso" verdadeiros à passagem da meia-noite.
+# (Até 11/2026 era de 6 em 6 horas.)
 
 name: Gerar hoje.json e manifesto
 
@@ -58,7 +60,7 @@ on:
     paths: ['data/erc/**', 'data/producao/albufeiras_snirh*.csv']
 
   schedule:
-    - cron: '50 */6 * * *'
+    - cron: '50 0 * * *'
 
   workflow_dispatch:
 

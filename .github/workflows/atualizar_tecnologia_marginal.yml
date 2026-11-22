@@ -23,8 +23,10 @@ name: Atualizar tecnologias ao preço (OMIE)
 
 on:
   schedule:
-    # 2 vezes por dia: a hora a que a OMIE acrescenta o dia de há 90 dias varia
-    - cron: '35 7,16 * * *'
+    # 1 vez por dia: a hora a que a OMIE acrescenta o dia de há 90 dias varia, mas um
+    # dia de atraso não pesa em dados com 90 dias, e cada corrida volta a descarregar o
+    # zip do mês (até 11/2026 eram 2 corridas por dia, às 07:35 e às 16:35 UTC).
+    - cron: '35 16 * * *'
 
   workflow_dispatch:
     inputs:

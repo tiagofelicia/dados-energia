@@ -10,7 +10,7 @@
 #
 # O Eurostat publica o 1.º semestre em outubro e o 2.º em abril ou maio do ano
 # seguinte, e os componentes de um ano em outubro do ano seguinte; pelo meio, só
-# revisões. Por isso chegam duas corridas por semana: o script só reescreve um
+# revisões. Por isso chega uma corrida por semana: o script só reescreve um
 # ficheiro quando os valores mudam, e quase sempre não há commit.
 #
 # Não precisa de secrets: a API do Eurostat é pública.
@@ -19,10 +19,10 @@ name: Atualizar preços ao consumidor (Eurostat)
 
 on:
   schedule:
-    # 07:25 UTC às segundas e quintas. O Eurostat publica às 11:00 ou às 23:00 de
+    # 07:25 UTC às segundas. O Eurostat publica às 11:00 ou às 23:00 de
     # Luxemburgo; a hora não importa, porque a tolerância declarada no manifesto
     # é de meses.
-    - cron: '25 7 * * 1,4'
+    - cron: '25 7 * * 1'
 
   workflow_dispatch:
 

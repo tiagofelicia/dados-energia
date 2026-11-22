@@ -18,8 +18,9 @@ on:
   schedule:
     # 14:10 UTC — os leilões fecham às 11:00 CET, o que dá margem larga para o
     # relatório da EEX estar publicado. Um por dia chega: há no máximo um leilão
-    # por dia útil, e a tolerância declarada no manifesto é de 5 dias.
-    - cron: '10 14 * * *'
+    # por dia útil, e a tolerância declarada no manifesto é de 5 dias. Só nos dias
+    # úteis: ao fim de semana não há leilões.
+    - cron: '10 14 * * 1-5'
 
   workflow_dispatch:
     inputs:
