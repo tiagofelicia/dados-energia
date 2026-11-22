@@ -1,6 +1,13 @@
 # Atualiza o mix de produção elétrica por país europeu (Energy-Charts).
 #
 # atualizar_mapa_producao.py → data/mapas/producao/AAAA-MM.json + metadata.json
+#
+# A corrida normal pede os últimos 7 dias e o dia seguinte, para todos os países. Na
+# execução manual (Run workflow), «inicio» e «paises» recolhem de novo só alguns países
+# desde uma data (--start/--countries): o script carrega os ficheiros mensais e só
+# substitui os países pedidos. Serve para corrigir o histórico depois de mudar o
+# TYPE_MAP, ou para repor um país cuja fonte esteve parada mais de 7 dias (a Dinamarca
+# não tem dados na Energy-Charts desde 06/11/2026).
 
 
 name: Atualizar Mapa de Producao
@@ -16,6 +23,17 @@ on:
     - cron: '00 23 * * *'
 
   workflow_dispatch: # Permite execução manual
+    inputs:
+      inicio:
+        description: 'Recolher de novo desde esta data (AAAA-MM-DD). Vazio = corrida normal (últimos 7 dias e amanhã)'
+        type: string
+        required: false
+        default: ''
+      paises:
+        description: 'Só estes países, separados por espaço ou vírgula (ex.: ee fi). Vazio = todos'
+        type: string
+        required: false
+        default: ''
 
 # Antecipar o default de 2026-06-16 (e silenciar o aviso de deprecação Node 20)
 env:
@@ -62,7 +80,29 @@ jobs:
           pip install -r requirements.txt
 
       - name: Atualizar mix de produção europeu
-        run: python scripts/atualizar_mapa_producao.py
+        # Os inputs entram por variáveis de ambiente (e não diretamente no script)
+        # e são validados antes de chegarem à linha de comandos.
+        env:
+          INICIO: ${{ github.event.inputs.inicio }}
+          PAISES: ${{ github.event.inputs.paises }}
+        run: |
+          ARGS=()
+          RE_DATA='^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+          RE_PAISES='^[A-Za-z]{2}([ ,]+[A-Za-z]{2})*[ ,]*$'
+          if [ -n "$INICIO" ]; then
+            if ! [[ "$INICIO" =~ $RE_DATA ]]; then
+              echo "::error::inicio inválido: '$INICIO' (formato AAAA-MM-DD)"; exit 1
+            fi
+            ARGS+=(--start "$INICIO")
+          fi
+          if [ -n "$PAISES" ]; then
+            if ! [[ "$PAISES" =~ $RE_PAISES ]]; then
+              echo "::error::paises inválido: '$PAISES' (ex.: ee fi)"; exit 1
+            fi
+            ARGS+=(--countries $(echo "$PAISES" | tr ',' ' '))
+          fi
+          echo "Argumentos: ${ARGS[*]:-(corrida normal)}"
+          python scripts/atualizar_mapa_producao.py "${ARGS[@]}"
 
       # Consumo diário por país (real ou previsto), tirado dos ficheiros acabados
       # de escrever: pesa a média europeia do europe-prices.html
