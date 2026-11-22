@@ -1,0 +1,96 @@
+# O consumo de gás natural em Portugal (REN) e as reservas de gás de Portugal, de Espanha e da UE
+# (GIE AGSI), para a página /gas-consumo-reservas do site.
+#
+# scripts/atualizar_consumo_gas_ren.py
+#   -> data/gas/consumo_gas_mensal.csv   (por mês, desde 2014: total, convencional, elétrico, em GWh)
+# scripts/atualizar_reservas_gas_agsi.py
+#   -> data/gas/reservas_gas.csv         (por dia, desde 2011: PT, ES e UE, em TWh e %)
+#
+# A REN não precisa de chave e aceita ligações dos runners do GitHub. A AGSI precisa do secret
+# AGSI_KEY (chave pessoal e gratuita, com registo em https://agsi.gie.eu/account); sem ele, o passo
+# das reservas avisa e não faz nada, e o do consumo corre na mesma. A atribuição à GIE AGSI é
+# obrigatória junto dos dados.
+#
+# Uma corrida por dia chega: a REN publica o consumo de cada mês depois de ele acabar, e a AGSI
+# publica o dia anterior ao fim da tarde (CET). Cada corrida volta a pedir o ano corrente e o
+# anterior (REN) e os últimos 45 dias (AGSI), porque as duas reveem os valores recentes. Sem
+# ficheiro, ou com «tudo», cada script traz a série inteira (REN: 13 pedidos; AGSI: ~60).
+#
+# O nome não pode ter * ? + [ ] ! : é alvo do workflow_run do gerar_hoje.yml, que refaz o
+# manifesto depois de cada corrida.
+
+name: Atualizar consumo e reservas de gás
+
+on:
+  schedule:
+    - cron: '50 19 * * *'
+  workflow_dispatch:
+    inputs:
+      tudo:
+        description: 'Voltar a pedir tudo (REN desde 2014, AGSI desde 2011)'
+        type: boolean
+        required: false
+        default: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Grupo próprio: só impede que este workflow se sobreponha a si mesmo; as corridas
+# contra os outros bots resolvem-se no retry+rebase da commit-with-retry.
+concurrency:
+  group: commits-gas-consumo-reservas
+  cancel-in-progress: false
+
+jobs:
+  atualizar-gas-consumo-reservas:
+    name: Recolher o consumo (REN) e as reservas (GIE AGSI) de gás
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: python -m pip install --upgrade pip requests
+
+      # Os dois passos são independentes: uma falha num não impede o outro nem o commit.
+      - name: Consumo mensal de gás (REN)
+        continue-on-error: true
+        env:
+          TUDO: ${{ github.event.inputs.tudo }}
+        run: |
+          if [ "$TUDO" = "true" ]; then
+            python scripts/atualizar_consumo_gas_ren.py --tudo
+          else
+            python scripts/atualizar_consumo_gas_ren.py
+          fi
+
+      - name: Reservas de gás (GIE AGSI)
+        continue-on-error: true
+        env:
+          AGSI_KEY: ${{ secrets.AGSI_KEY }}
+          TUDO: ${{ github.event.inputs.tudo }}
+        run: |
+          if [ "$TUDO" = "true" ]; then
+            python scripts/atualizar_reservas_gas_agsi.py --tudo
+          else
+            python scripts/atualizar_reservas_gas_agsi.py
+          fi
+
+      # data/gas/*.csv e não os dois nomes: enquanto não houver a chave da AGSI, o reservas_gas.csv
+      # não existe, e um caminho explícito que não existe faz falhar o git add. Este workflow só
+      # escreve estes dois ficheiros; os outros CSV da pasta, intactos, não entram no commit.
+      - name: Fazer commit dos dados (com retry)
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/commit-with-retry
+        with:
+          commit_message: "🔥 BOT: Atualizar consumo (REN) e reservas (GIE AGSI) de gás"
+          file_pattern: "data/gas/*.csv"

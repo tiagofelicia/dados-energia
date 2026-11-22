@@ -47,6 +47,7 @@ on:
       - "Atualizar CO2 (EU ETS)"
       - "Atualizar preços ao consumidor (Eurostat)"
       - "Atualizar tecnologias ao preço (OMIE)"
+      - "Atualizar consumo e reservas de gás"
     types: [completed]
 
   # Os ERC da REN e as albufeiras do SNIRH não vêm de um workflow: os dois
