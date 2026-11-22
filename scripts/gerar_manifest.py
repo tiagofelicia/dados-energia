@@ -607,6 +607,17 @@ REGISTO = [
                  "A chave é (data_iso, produto, entrega_inicio): os produtos de "
                  "estação W e S cotam duas estações em simultâneo e aparecem "
                  "duas vezes na mesma sessão."]),
+    # tolerancia_dias=75: a última data é o dia 1 do último mês publicado, e a REN
+    # só publica um mês depois de ele acabar (o de outubro chega no início de novembro)
+    dict(id="gas-consumo", grupo="gas", caminho="data/gas/consumo_gas_mensal.csv",
+         titulo="Consumo mensal de gás natural em Portugal",
+         descricao="Consumo de gás natural em Portugal continental por mês, em GWh, "
+                   "desde janeiro de 2014: o total, o mercado convencional (consumo "
+                   "doméstico e industrial) e o mercado elétrico (centrais de ciclo "
+                   "combinado). Fonte: REN (Data Hub).",
+         cadencia="1x/dia (valor mensal)", tolerancia_dias=75, deteccao="csv_col_iso:mes",
+         avisos=["Os valores são os da REN, em GWh inteiros: o total pode diferir da "
+                 "soma dos dois mercados em 1 GWh por arredondamento."]),
 
     # ---------- Derivados ----------
     dict(id="agregados-omie", grupo="agregados", caminho="data/agregados/omie_*.csv",
