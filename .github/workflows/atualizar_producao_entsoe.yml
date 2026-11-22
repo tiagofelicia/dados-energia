@@ -10,7 +10,13 @@
 #                      principal, de 3 em 3 horas, vem de fora — ver abaixo)
 #   - 0 22 * * *    -> todos os países, semana ISO atual (--weeks 1), 1x/dia (reserva:
 #                      o principal, 2x/dia, vem de fora)
-#   - 0 6 * * 1     -> todos os países, 3 semanas ISO (--weeks 3), 1x/semana (segunda)
+#   A revisão semanal (todos os países, 3 semanas ISO, --weeks 3) já não tem cron: a 09
+#   e a 16/11/2026 chegou aos 350 min e foi cancelada, sem commit (e o GitHub corta
+#   qualquer job às 6 h). Faz-se de fora, à segunda de madrugada, em duas metades de
+#   países no modo manual, ~3 h cada uma:
+#     {"ref":"main","inputs":{"modo":"manual","weeks":"3","countries":"at,bg,cz,dk,es,fr,hr,ie,lt,me,no,pt,rs,si,al,xk,cy,md"}}
+#     {"ref":"main","inputs":{"modo":"manual","weeks":"3","countries":"be,ch,de,ee,fi,gr,hu,it,lv,nl,pl,ro,se,sk,mk,ba,ge"}}
+#   Ao acrescentar um país ao COUNTRIES do script, acrescentá-lo também a uma das metades.
 # A execução manual (workflow_dispatch) usa os inputs abaixo. Com o input 'modo', a
 # execução manual faz exatamente o mesmo que um dos três crons — é assim que um
 # agendador de fora do GitHub dispara este workflow pela API (os crons do GitHub
@@ -30,12 +36,11 @@ on:
     # cai silenciosamente no ramo por omissão.
     - cron: '30 10 * * *'    # PT+ES, ontem+hoje — 1x/dia (reserva do disparo de fora)
     - cron: '0 22 * * *'     # todos, 1 semana — 1x/dia (reserva do disparo de fora)
-    - cron: '0 6 * * 1'      # todos, 3 semanas — segunda-feira 06:00 UTC
 
   workflow_dispatch:
     inputs:
       modo:
-        description: 'Modo: manual (usa os campos abaixo), pt-es (PT+ES, ontem+hoje, o de 3 em 3 h), semana (todos, 1 semana) ou 3-semanas (todos, 3 semanas)'
+        description: 'Modo: manual (usa os campos abaixo), pt-es (PT+ES, ontem+hoje, o de 3 em 3 h), semana (todos, 1 semana) ou 3-semanas (todos, 3 semanas: já passa das 6 h e é cancelada; usar 2 metades de países no modo manual)'
         type: choice
         options:
           - manual
@@ -91,14 +96,16 @@ jobs:
     #
     #   30 10      PT+ES, 2 dias       2 países     p50 ~5 min      a maioria (com o modo pt-es)
     #   0 22       todos, 1 semana     35 países    ~2-3 h          2x/dia (com o modo semana)
-    #   0 6 * * 1  todos, 3 semanas    35 países    327 min medido   1 vez/semana
+    #   (fora)     metade, 3 semanas   17-18 países ~3 h            à segunda (modo manual)
+    #   3-semanas  todos, 3 semanas    35 países    >350 min         cancelada a 09 e 16/11/2026
     #
     # Disparado de fora com o input 'modo', vale o timeout do cron equivalente
     # (pt-es = 40, semana = 240, 3-semanas = 350).
     #
     # Os valores vêm do histórico real da API (execução do job, não tempo de
     # run — este workflow tem fila ~0, ao contrário do mapa de produção).
-    # O p50 de 5 min e o máximo de 327 estão medidos; a faixa intermédia está
+    # O p50 de 5 min e os 327 min das 3 semanas (outubro de 2026; em novembro já
+    # passavam dos 350) estão medidos; a faixa intermédia está
     # inferida pela proporção de trabalho, daí a margem mais folgada nela.
     #
     # A expressão: 'cond && valor || próximo' encadeado funciona como ternário
@@ -147,7 +154,6 @@ jobs:
           case "$SCHED" in
             "30 10 * * *")   MODO="pt-es" ;;      # PT+ES, ontem+hoje, 1x/dia (reserva)
             "0 22 * * *")    MODO="semana" ;;     # todos, semana atual, 1x/dia (reserva)
-            "0 6 * * 1")     MODO="3-semanas" ;;  # todos, 3 semanas, segunda
           esac
 
           # O modo (do cron ou do input) define o âmbito; 'manual' ou vazio usa os inputs
