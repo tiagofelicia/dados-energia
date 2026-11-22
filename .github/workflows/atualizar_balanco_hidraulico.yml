@@ -22,8 +22,11 @@ name: Atualizar Balanço Hidráulico (REN)
 
 on:
   schedule:
-    # 3 vezes por dia: a REN publica o dia anterior de manhã, a hora varia
-    - cron: '40 8,14,20 * * *'
+    # A REN publica o dia anterior de manhã, a hora varia. Os horários principais
+    # (10:40 e 14:40, na hora de Lisboa) vêm de fora do GitHub, de um agendador
+    # externo, pela API (workflow_dispatch); este cron é só reserva, 1 vez por dia
+    # (o GitHub cria as corridas agendadas horas depois da hora marcada).
+    - cron: '40 20 * * *'
     # domingo, 05:50 UTC: revisão dos últimos 365 dias
     - cron: '50 5 * * 0'
 

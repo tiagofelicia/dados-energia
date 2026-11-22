@@ -10,8 +10,12 @@ name: Atualizar Dados de Produção (REN)
 
 on:
   schedule:
-    # minuto 15, a cada 3 horas
-    - cron: '15 */3 * * *'
+    # Reserva, 1 vez por dia: os horários principais (de 2 em 2 horas, aos 15 minutos,
+    # na hora de Lisboa) vêm de fora do GitHub, de um agendador externo, pela API
+    # (workflow_dispatch). O GitHub cria as corridas agendadas horas depois e descarta
+    # muitas das frequentes (de 3 em 3 horas, só ~40% chegavam a correr, em 11/2026).
+    # Uma por dia chega como reserva: cada corrida volta a pedir os últimos 14 dias.
+    - cron: '15 20 * * *'
     # domingo, 04:45 UTC: revisão da bombagem dos últimos 365 dias (ver o passo da bombagem)
     - cron: '45 4 * * 0'
 

@@ -38,15 +38,27 @@
 # corre DEPOIS dos workflows que os escrevem — o OMIE fecha às 18:00 UTC e a
 # produção REN às 20:15, daí as 21:30.
 #
-# Uma vez por dia chega: são séries históricas para consulta, não dados
-# intra-diários. O script recalcula sempre os 17 anos do zero (~30 s), o que o
-# torna imune ao desvio que os modos incrementais acumulam.
+# Uma vez por dia chega para as séries históricas, que não são dados intra-diários.
+# O script recalcula sempre os 17 anos do zero (~30 s), o que o torna imune ao desvio
+# que os modos incrementais acumulam.
+#
+# As páginas /erc, /servicos-sistema e /quotas-agentes leem TUDO daqui. Por isso o
+# workflow corre também quando chegam ERC novos: a tarefa do PC em Portugal envia-os
+# por push (como no gerar_hoje.yml), e as páginas passam a mostrá-los minutos depois,
+# em vez de na corrida da noite (que, com o atraso dos crons do GitHub — 4 a 10 horas
+# desde agosto de 2026 —, só acontecia de madrugada). Não há ciclo: este workflow só
+# escreve em data/agregados/ e data/emissoes/, e os pushes feitos com o GITHUB_TOKEN
+# não disparam workflows.
 
 name: Gerar Agregados e Emissões
 
 on:
   schedule:
     - cron: '30 21 * * *'
+
+  push:
+    branches: [main]
+    paths: ['data/erc/**']
 
   workflow_dispatch:
 

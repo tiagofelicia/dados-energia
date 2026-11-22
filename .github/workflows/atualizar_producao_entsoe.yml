@@ -6,13 +6,15 @@
 # Requer o secret ENTSOE_TOKEN (token da API da Transparency Platform).
 #
 # Horários (UTC):
-#   - 0 */3 * * *   -> só PT+ES, ontem+hoje (--days 2), de 3 em 3 horas
-#   - 0 14,22 * * * -> todos os países, semana ISO atual (--weeks 1), 2x/dia
+#   - 30 10 * * *   -> só PT+ES, ontem+hoje (--days 2), 1 vez por dia (reserva: o
+#                      principal, de 3 em 3 horas, vem de fora — ver abaixo)
+#   - 0 22 * * *    -> todos os países, semana ISO atual (--weeks 1), 1x/dia (reserva:
+#                      o principal, 2x/dia, vem de fora)
 #   - 0 6 * * 1     -> todos os países, 3 semanas ISO (--weeks 3), 1x/semana (segunda)
 # A execução manual (workflow_dispatch) usa os inputs abaixo. Com o input 'modo', a
 # execução manual faz exatamente o mesmo que um dos três crons — é assim que um
 # agendador de fora do GitHub dispara este workflow pela API (os crons do GitHub
-# chegam com horas de atraso e, os de 3 em 3 horas, muitas vezes nem chegam):
+# chegam com horas de atraso e, os de 3 em 3 horas, muitas vezes nem chegavam):
 #   POST https://api.github.com/repos/tiagofelicia/dados-energia/actions/workflows/atualizar_producao_entsoe.yml/dispatches
 #   {"ref":"main","inputs":{"modo":"pt-es"}}       (ou "semana", ou "3-semanas")
 # Um 'modo' que não esteja na lista é recusado pela API (422), em vez de cair
@@ -26,8 +28,8 @@ on:
     # escolhe os argumentos e na expressão do timeout-minutes. Ao mudar um
     # cron, mudar nos três; um literal que deixe de bater não dá erro, apenas
     # cai silenciosamente no ramo por omissão.
-    - cron: '0 */3 * * *'    # PT+ES, ontem+hoje — de 3 em 3 horas
-    - cron: '0 14,22 * * *'  # todos, 1 semana — 2x/dia (14:00 e 22:00 UTC)
+    - cron: '30 10 * * *'    # PT+ES, ontem+hoje — 1x/dia (reserva do disparo de fora)
+    - cron: '0 22 * * *'     # todos, 1 semana — 1x/dia (reserva do disparo de fora)
     - cron: '0 6 * * 1'      # todos, 3 semanas — segunda-feira 06:00 UTC
 
   workflow_dispatch:
@@ -85,10 +87,10 @@ jobs:
 
     # Timeout por MODO, e não um valor único. Este workflow faz três trabalhos
     # de dimensão muito diferente com o mesmo job, e um timeout único ou mata o
-    # trabalho semanal ou não protege as corridas de 3 em 3 horas:
+    # trabalho semanal ou não protege as corridas curtas (PT+ES):
     #
-    #   0 */3      PT+ES, 2 dias       2 países     p50 ~5 min      80% das corridas
-    #   0 14,22    todos, 1 semana     35 países    ~2-3 h          20%
+    #   30 10      PT+ES, 2 dias       2 países     p50 ~5 min      a maioria (com o modo pt-es)
+    #   0 22       todos, 1 semana     35 países    ~2-3 h          2x/dia (com o modo semana)
     #   0 6 * * 1  todos, 3 semanas    35 países    327 min medido   1 vez/semana
     #
     # Disparado de fora com o input 'modo', vale o timeout do cron equivalente
@@ -104,7 +106,7 @@ jobs:
     # nem modo (workflow_dispatch manual, incluindo backfill) cai no ramo mais
     # generoso. Fora do workflow_dispatch, github.event.inputs não existe e as
     # comparações com o modo dão falso.
-    timeout-minutes: ${{ (github.event.schedule == '0 */3 * * *' || github.event.inputs.modo == 'pt-es') && 40 || (github.event.schedule == '0 14,22 * * *' || github.event.inputs.modo == 'semana') && 240 || 350 }}
+    timeout-minutes: ${{ (github.event.schedule == '30 10 * * *' || github.event.inputs.modo == 'pt-es') && 40 || (github.event.schedule == '0 22 * * *' || github.event.inputs.modo == 'semana') && 240 || 350 }}
     permissions:
       contents: write
 
@@ -143,8 +145,8 @@ jobs:
 
           # Quando disparado por agendamento, o horário define o modo
           case "$SCHED" in
-            "0 */3 * * *")   MODO="pt-es" ;;      # PT+ES, ontem+hoje, 3 em 3h
-            "0 14,22 * * *") MODO="semana" ;;     # todos, semana atual, 2x/dia
+            "30 10 * * *")   MODO="pt-es" ;;      # PT+ES, ontem+hoje, 1x/dia (reserva)
+            "0 22 * * *")    MODO="semana" ;;     # todos, semana atual, 1x/dia (reserva)
             "0 6 * * 1")     MODO="3-semanas" ;;  # todos, 3 semanas, segunda
           esac
 

@@ -13,8 +13,12 @@
 # fora de Portugal (verificado a 21/11/2026 a partir da Alemanha, de Espanha e dos EUA).
 # Se um dia deixar de aceitar, a corrida falha sem tocar nos ficheiros.
 #
-# De hora a hora, aos 40 minutos: a APA publica a hora cheia com 30 a 90 minutos de
-# atraso. Com o atraso habitual dos crons do GitHub, o «Agora» fica com 1 a 3 horas.
+# De hora a hora, aos 40 minutos (a APA publica a hora cheia com 30 a 90 minutos de
+# atraso), disparado de fora do GitHub por um agendador externo, pela API
+# (workflow_dispatch). O cron abaixo é só reserva, 1 vez por dia: o GitHub cria as
+# corridas agendadas horas depois e descarta a maioria das de hora a hora (só ~15%
+# chegaram a correr a 21–22/11/2026). Como o InfoÁgua guarda 48 h, uma corrida por dia
+# chega para o histórico não ficar com buracos se o disparo de fora falhar.
 # Se o agendamento não arrancar depois de um envio (aconteceu com o primeiro, a 21/11/2026),
 # voltar a subir este ficheiro com uma alteração qualquer faz o GitHub registá-lo de novo.
 # Uma corrida demora ~2 min (a lista e 62 páginas, com 1 s entre pedidos).
@@ -27,7 +31,7 @@ name: Atualizar Albufeiras Agora (APA)
 
 on:
   schedule:
-    - cron: '40 * * * *'
+    - cron: '50 11 * * *'
 
   workflow_dispatch:
 
