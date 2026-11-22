@@ -74,9 +74,17 @@ TYPE_MAP = {
     "Fossil brown coal/Lignite": "coal_lignite",
     "Fossil oil": "oil",
     "Oil": "oil",
+    # Xisto betuminoso (Estonia, ate ~16% da producao no outono e no inverno).
+    # Ate 11/2026 caia em "other"; a referencia de tecnologias do projeto
+    # (gerar_referencia_tecnologias.py, grupo "petroleo") ja o junta ao petroleo.
+    "Fossil oil shale": "oil",
     "Others": "other",
     "Other": "other",
     "other": "other",
+    # Turfa (Finlandia, ~1%). Na referencia de tecnologias e um grupo a parte
+    # ("turfa"), sem categoria no mapa: fica em "other" de proposito, e assim
+    # deixa de aparecer o aviso de tipo desconhecido.
+    "Fossil peat": "other",
     # Armazenamento em bateria. Tratado como a bombagem hidroelectrica: a
     # descarga conta como producao (mas NAO como renovavel — e energia
     # armazenada de origem mista) e a carga vai para as categorias extra.
