@@ -84,6 +84,19 @@
    "min_5a_pct": 70.06,
    "primeiro_dia": "2011-01-01"
   },
+  "DK": {
+   "armazenado_twh": 7.0859,
+   "capacidade_twh": 8.19,
+   "cheio_pct": 86.52,
+   "data": "2026-11-21",
+   "estado": "C",
+   "ha_um_ano_data": "2025-11-21",
+   "ha_um_ano_pct": 61.7,
+   "max_5a_pct": 98.39,
+   "media_5a_pct": 80.68,
+   "min_5a_pct": 61.7,
+   "primeiro_dia": "2011-01-01"
+  },
   "ES": {
    "armazenado_twh": 28.663,
    "capacidade_twh": 35.8318,
@@ -215,15 +228,15 @@
    "primeiro_dia": "2011-01-01"
   },
   "PT": {
-   "armazenado_twh": 3.439,
+   "armazenado_twh": 3.437,
    "capacidade_twh": 3.57,
-   "cheio_pct": 96.33,
-   "data": "2026-11-22",
+   "cheio_pct": 96.27,
+   "data": "2026-11-21",
    "estado": "R",
-   "ha_um_ano_data": "2025-11-22",
-   "ha_um_ano_pct": 87.95,
+   "ha_um_ano_data": "2025-11-21",
+   "ha_um_ano_pct": 87.26,
    "max_5a_pct": 109.25,
-   "media_5a_pct": 96.05,
+   "media_5a_pct": 95.91,
    "min_5a_pct": 74.07,
    "primeiro_dia": "2011-11-12"
   },
@@ -253,6 +266,19 @@
    "min_5a_pct": 6.72,
    "primeiro_dia": "2017-03-18"
   },
+  "SK": {
+   "armazenado_twh": 18.0622,
+   "capacidade_twh": 37.803,
+   "cheio_pct": 47.78,
+   "data": "2026-11-21",
+   "estado": "C",
+   "ha_um_ano_data": "2025-11-21",
+   "ha_um_ano_pct": 71.66,
+   "max_5a_pct": 96.71,
+   "media_5a_pct": 84.07,
+   "min_5a_pct": 68.01,
+   "primeiro_dia": "2011-01-01"
+  },
   "UA": {
    "armazenado_twh": 111.9254,
    "capacidade_twh": 320.9834,
@@ -270,16 +296,14 @@
  "sem_dados": [
   "HR",
   "CY",
-  "DK",
   "EE",
   "FI",
   "GR",
   "LT",
   "LU",
   "MT",
-  "SK",
   "SI",
   "RS"
  ],
- "ultima_data": "2026-11-22"
+ "ultima_data": "2026-11-21"
 }
