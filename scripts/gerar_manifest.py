@@ -731,6 +731,24 @@ REGISTO = [
                  "EUR positivo = custo, negativo = receita. A soma dos códigos de um dia dá a "
                  "soma das componentes; o total publicado fica abaixo dela nalguns quartos de "
                  "hora, na fonte."]),
+    dict(id="agregados-mercados-trimestral", grupo="agregados",
+         caminho="data/agregados/mercados_trimestral.csv",
+         titulo="Mercados de energia por trimestre",
+         descricao="Médias por trimestre, desde 2010: OMIE PT e ES, horas com o OMIE PT "
+                   "negativo, ERC, futuros OMIP PT do trimestre e do ano seguintes, índices "
+                   "MIBGAS PT e ES, futuros MIBGAS ES do trimestre e do ano seguintes e CO2 "
+                   "(EUA) nos leilões da EEX. Uma linha por trimestre e indicador. Derivado de "
+                   "data/agregados/, data/omie/historico/, data/gas/ e data/emissoes/.",
+         cadencia="1x/dia", tolerancia_dias=3, deteccao="csv_col_iso:ate",
+         avisos=["n, de e ate dizem que dias (ou leilões) entraram em cada média: no "
+                 "trimestre corrente e nos primeiros trimestres de cada indicador a média "
+                 "é parcial (MIBGAS ES desde 17/12/2015, futuros MIBGAS desde 2018, CO2 desde "
+                 "2020, MIBGAS PT desde 2021, ERC desde 14/03/2024, OMIP desde 20/10/2025).",
+                 "Os futuros são a média dos fechos diários DURANTE o trimestre, do contrato "
+                 "do trimestre ou do ano SEGUINTE (escolhido pela data de entrega).",
+                 "OMIE: média simples dos quartos de hora, dias em hora de Portugal. ERC: "
+                 "pesado pelo consumo, por dia de mercado. CO2: pesado pelo volume de cada "
+                 "leilão, só EUA."]),
     dict(id="emissoes", grupo="emissoes", caminho="data/emissoes/intensidade_*.csv",
          titulo="Intensidade carbónica da produção elétrica",
          descricao="gCO2eq/kWh da produção nacional, a 15 minutos desde 2010, "
