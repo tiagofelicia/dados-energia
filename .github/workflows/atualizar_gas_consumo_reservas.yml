@@ -5,6 +5,8 @@
 #   -> data/gas/consumo_gas_mensal.csv   (por mês, desde 2014: total, convencional, elétrico, em GWh)
 # scripts/atualizar_reservas_gas_agsi.py
 #   -> data/gas/reservas_gas.csv         (por dia, desde 2011: PT, ES e UE, em TWh e %)
+#   -> data/mapas/reservas-gas/          (todos os países europeus da AGSI, um ficheiro por ano, e o
+#                                         metadata.json do mapa /europe-gas-storage)
 #
 # A REN não precisa de chave e aceita ligações dos runners do GitHub. A AGSI precisa do secret
 # AGSI_KEY (chave pessoal e gratuita, com registo em https://agsi.gie.eu/account); sem ele, o passo
@@ -45,7 +47,8 @@ jobs:
   atualizar-gas-consumo-reservas:
     name: Recolher o consumo (REN) e as reservas (GIE AGSI) de gás
     runs-on: ubuntu-26.04
-    timeout-minutes: 20
+    # A 1.ª corrida com os países europeus pede tudo desde 2011 (~600 pedidos, uns 10 minutos)
+    timeout-minutes: 45
     permissions:
       contents: write
 
@@ -85,12 +88,11 @@ jobs:
             python scripts/atualizar_reservas_gas_agsi.py
           fi
 
-      # data/gas/*.csv e não os dois nomes: enquanto não houver a chave da AGSI, o reservas_gas.csv
-      # não existe, e um caminho explícito que não existe faz falhar o git add. Este workflow só
-      # escreve estes dois ficheiros; os outros CSV da pasta, intactos, não entram no commit.
+      # Padrões e não nomes: um caminho explícito que não exista faz falhar o git add. Este workflow
+      # só escreve estes ficheiros; os outros da pasta data/gas, intactos, não entram no commit.
       - name: Fazer commit dos dados (com retry)
         if: ${{ !cancelled() }}
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "🔥 BOT: Atualizar consumo (REN) e reservas (GIE AGSI) de gás"
-          file_pattern: "data/gas/*.csv"
+          file_pattern: "data/gas/*.csv data/mapas/reservas-gas/*.json"
