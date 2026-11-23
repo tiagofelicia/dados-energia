@@ -11,8 +11,9 @@ dia, segundo a GIE AGSI (Gas Infrastructure Europe — Aggregated Gas Storage In
      {"ano", "primeiro_dia", "campos": [cheio_pct, armazenado_twh, capacidade_twh, estado],
       "paises": {"AT": [[95.5, 3.41, 3.57, "C"], null, …]}}   (posição i = primeiro_dia + i dias)
   -> data/mapas/reservas-gas/metadata.json
-     a ultima_data e, por país, o último dia, o mesmo dia de há um ano e o mínimo, a média e o máximo
-     desse dia nos cinco anos anteriores (o que o mapa precisa para abrir sem ler os ficheiros por ano)
+     a ultima_data (o dia do mapa: o último da UE na AGSI) e, por país, o último dia até esse, o mesmo
+     dia de há um ano e o mínimo, a média e o máximo desse dia nos cinco anos anteriores (o que o mapa
+     precisa para abrir sem ler os ficheiros por ano)
 
 Requer o secret AGSI_KEY: a chave pessoal e gratuita do registo em https://agsi.gie.eu/account. Sem a
 chave o script avisa e sai sem erro (o resto do workflow continua). A chave vai no cabeçalho x-key e
@@ -35,6 +36,12 @@ Notas sobre a fonte:
     Uma falha num desses países só dá um aviso; uma falha em PT, ES ou na UE faz a corrida acabar com erro.
   • Sem os ficheiros da Europa (a 1.ª corrida), os países europeus pedem-se desde 2011, mesmo sem --tudo
     (~600 pedidos, com 1 s entre eles: uns 10 minutos). PT, ES e a UE vêm do reservas_gas.csv.
+  • Um país sem nenhum dia nos ficheiros da Europa volta a pedir-se desde 2011 em cada corrida: assim um
+    país que falhou na 1.ª (na de 23/11/2026, a Croácia, a Dinamarca e a Eslováquia) entra sozinho na
+    seguinte. Os que não têm armazenamento custam um pedido curto cada.
+  • O dia do mapa (ultima_data do metadata.json) é o último da UE na AGSI. Os dias R de Portugal podem ir
+    um dia à frente (de manhã a REN já publicou ontem e a AGSI ainda não): ficam nos ficheiros, mas não
+    passam a ser o dia do mapa, onde só Portugal teria valor.
 O script só reescreve os ficheiros que mudam.
 """
 import argparse
@@ -279,13 +286,20 @@ def escrever_europa(linhas):
         if gravar(os.path.join(PASTA_EUROPA, f"{ano}.json"), texto):
             mudados += 1
 
-    # metadata.json: o que o mapa precisa para abrir
+    # metadata.json: o que o mapa precisa para abrir. O dia do mapa é o último da UE na AGSI (sem a UE,
+    # o último que não seja da REN): os dias R de Portugal podem ir um dia à frente e não o arrastam.
+    if serie.get("EU"):
+        dia_mapa = max(serie["EU"])
+    else:
+        agsi = [d for s in serie.values() for d, v in s.items() if v[3] != "R"]
+        dia_mapa = max(agsi) if agsi else None
     paises = {}
     for zona in zonas:
         s = serie.get(zona)
         if not s:
             continue
-        ult = max(s)
+        ate_mapa = [d for d in s if dia_mapa is None or d <= dia_mapa]
+        ult = max(ate_mapa) if ate_mapa else max(s)
         pct, twh, cap, est = s[ult]
         a, m, d = (int(x) for x in ult.split("-"))
         def no_dia(ano):
@@ -306,7 +320,7 @@ def escrever_europa(linhas):
             "max_5a_pct": max(anteriores) if len(anteriores) >= 3 else None,
             "primeiro_dia": min(s),
         }
-    meta = {"ultima_data": max(p["data"] for p in paises.values()) if paises else None,
+    meta = {"ultima_data": dia_mapa,
             "fonte": FONTE_EUROPA, "anos": anos,
             "sem_dados": [z for z in PAISES_EUROPA if z not in serie], "paises": paises}
     if gravar(os.path.join(PASTA_EUROPA, "metadata.json"),
@@ -361,10 +375,12 @@ def main():
     # O CSV manda nas suas zonas (tem a injeção e a extração); os ficheiros da Europa nas outras
     novas = dict(europa)
     novas.update(atual)
+    # Um país sem nenhum dia guardado pede-se desde 2011: se falhou numa corrida, entra na seguinte
+    com_dados = {z for (_, z) in europa}
     mudadas, falhas, vazios = 0, [], []
     for zona in ["EU"] + [z for z in PAISES_EUROPA]:
         nucleo = zona in ZONAS
-        desde = INICIO_TUDO if (tudo_csv if nucleo else tudo_eu) else recente
+        desde = INICIO_TUDO if (tudo_csv if nucleo else (tudo_eu or zona not in com_dados)) else recente
         try:
             dias = recolher(chave, zona, desde, ate)
         except (ErroAGSI, requests.RequestException, ValueError) as e:
