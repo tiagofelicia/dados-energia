@@ -172,6 +172,7 @@ Os ficheiros de `producao-entsoe/` têm um schema próprio e mais rico, com `tim
 | `mibgas_futuros.csv` | Curva forward do gás ibérico em preço absoluto, do intradiário ao ano Y+2, desde 16/12/2015 | 2×/dia |
 | `mibgas_ttf_spread.csv` | Prémio do gás ibérico face ao benchmark europeu TTF, 15 produtos de D+1 a Y+2, desde 02/01/2024 | 2×/dia |
 | `consumo_gas_mensal.csv` | Consumo de gás natural em Portugal continental por mês, em GWh, desde 01/2014: total, mercado convencional e mercado elétrico (REN) | 1×/dia |
+| `reservas_gas.csv` | Reservas de gás natural de Portugal, de Espanha e da UE por dia de gás, desde 2011: TWh armazenados, capacidade, enchimento (%), injeção e extração (GWh/dia). **Fonte: GIE AGSI** (atribuição obrigatória); em Portugal, nos dias que a AGSI ainda não confirmou, o valor é o da REN (`estado` = R) | 1×/dia |
 | `hoje.json` | Instantâneo do dia: último índice PT e ES, variação diária, médias e extremos de 30 dias (~2 KB) | A cada atualização |
 | `metadata.json` | Última data, primeira data e cobertura | 2×/dia |
 
@@ -292,6 +293,8 @@ dia,data_iso,produto,entrega_inicio,entrega_fim,spread,ttf_derivado
 | `producao/metadata.json` | `{"ultima_data": "AAAA-MM-DD"}` | 2×/dia |
 | `captura/AAAA-MM.json` | Preço capturado por zona e dia, desde 2026-01: `{dia: {zona: {"s": [€/MWh, GWh], "w": [€/MWh, GWh]}}}` — o preço day-ahead pesado pela produção solar (`s`) e eólica (`w`, onshore + offshore) do país, e essa produção. Nas zonas de um mesmo país usa-se a produção do país. Para um período: Σ(preço × GWh) / Σ GWh | cada 4h · 2×/dia |
 | `captura/metadata.json` | `{"ultima_data": "AAAA-MM-DD"}` | cada 4h · 2×/dia |
+| `reservas-gas/AAAA.json` | Reservas de gás natural por país europeu e da UE, por dia de gás, desde 2011 (**fonte: GIE AGSI**, atribuição obrigatória; Portugal com a REN nos dias que a AGSI ainda não confirmou): `{"paises": {"AT": [[cheio_pct, armazenado_twh, capacidade_twh, estado], …]}}`, posição i = `primeiro_dia` + i dias | 1×/dia |
+| `reservas-gas/metadata.json` | `ultima_data` e, por país: o último dia, o mesmo dia de há um ano e o mínimo, a média e o máximo desse dia nos cinco anos anteriores; `sem_dados` com os países sem armazenamento | 1×/dia |
 | `consumo_paises.json` | Consumo de eletricidade por país (GWh/dia), desde 2026-01: `dias` com o real, `previsao` com a previsão day-ahead onde ainda não há real (o dia seguinte e o dia a meio), e `quotas` com o peso fixo de cada país (consumo médio diário real nos últimos 365 dias, a dividir pela soma). Gerado a partir de `producao/` e usado para pesar pelo consumo a média europeia do europe-prices. AL, MK e XK não têm consumo na fonte | 2×/dia |
 
 - O campo `resolution` diz sempre `PT15M`, mesmo no histórico horário: os valores horários são replicados pelos 4 quartos, para uniformidade.
@@ -528,6 +531,7 @@ Os dados são recolhidos e processados a partir de fontes oficiais e públicas:
 - **[Energy-Charts](https://www.energy-charts.info)** (Fraunhofer ISE) — mix de produção europeu
 - **[ERSE](https://www.erse.pt)** e **[E-Redes](https://www.e-redes.pt)** — perfis, perdas e tarifas reguladas
 - **[IPCC AR5](https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_annex-iii.pdf)** (WG3, Annex III) — fatores de emissão de ciclo de vida
+- **[GIE AGSI](https://agsi.gie.eu)** (Gas Infrastructure Europe) — reservas de gás natural de Portugal, de Espanha e da UE (a indicação da fonte é obrigatória)
 - **[Eurostat](https://ec.europa.eu/eurostat/web/energy/database)** — preços da eletricidade e do gás nas famílias e nas empresas, por país (reutilização livre com indicação da fonte)
 
 Os dados originais pertencem às respetivas entidades e podem estar sujeitos aos seus próprios termos de utilização. Este repositório disponibiliza **compilações e séries derivadas** desses dados, organizadas para consumo direto.
