@@ -1,5 +1,5 @@
 {
- "atribuicao": "Dados: Tiago Felícia — www.tiagofelicia.pt (fontes originais: OMIE, REN, ENTSO-E, MIBGAS), via dados.tiagofelicia.pt",
+ "atribuicao": "Dados: Tiago Felícia — www.tiagofelicia.pt (fontes originais: OMIE, REN, ENTSO-E, MIBGAS, GIE AGSI), via dados.tiagofelicia.pt",
  "base_url": "https://dados.tiagofelicia.pt",
  "datasets": [
   {
@@ -389,7 +389,7 @@
    "avisos": [
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 4025427,
+   "bytes": 4025531,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -818,7 +818,7 @@
     "A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
     "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem em todas as horas."
    ],
-   "bytes": 113800,
+   "bytes": 113636,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras_agora.json",
    "descricao": "Volume armazenado (% da capacidade, como a APA o publica), cota (m) e caudais afluente e efluente (m3/s), de hora a hora, nas últimas 48 horas, nas albufeiras do todas as estações de albufeira do InfoÁgua (62 em novembro de 2026, 9 delas em Espanha, junto à fronteira). Fonte: APA (InfoÁgua).",
@@ -837,7 +837,7 @@
     "Uma linha por valor publicado: na maioria das estações, um por hora; nalgumas, de 15 em 15 minutos; nas de rega do Alentejo, um por dia.",
     "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."
    ],
-   "bytes": 292177,
+   "bytes": 295763,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras-horario/",
    "colunas": [
@@ -854,7 +854,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-horario",
-   "linhas": 4530,
+   "linhas": 4586,
    "padrao": "data/producao/albufeiras-horario/albufeiras_horario_*.csv",
    "titulo": "Albufeiras — histórico de hora a hora",
    "tolerancia_dias": 1,
@@ -902,7 +902,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
-   "bytes": 6244,
+   "bytes": 7326,
    "cadencia": "a cada actualização",
    "caminho": "data/producao/hoje.json",
    "descricao": "Mix quarto-horário, resumo diário e estado no último intervalo, para dashboards (~15 KB).",
@@ -991,7 +991,7 @@
    "url": "https://dados.tiagofelicia.pt/data/mapas/precos_qh/"
   },
   {
-   "bytes": 5028966,
+   "bytes": 5033413,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/producao/",
    "descricao": "Produção diária por país e tecnologia (GWh) e quota renovável, para 28 países, desde 2026-01.",
@@ -1027,11 +1027,31 @@
   },
   {
    "avisos": [
+    "A atribuição à fonte é obrigatória: «Fonte: GIE AGSI».",
+    "Em cada ano, a posição i de cada país é o dia primeiro_dia + i; null = sem valor. Os países sem armazenamento estão em metadata.json → sem_dados.",
+    "estado: E estimado, C confirmado, R valor da REN (só Portugal, nos dias que a AGSI ainda não confirmou)."
+   ],
+   "bytes": 2594766,
+   "cadencia": "1x/dia",
+   "caminho": "data/mapas/reservas-gas/",
+   "descricao": "Gás guardado nos armazenamentos subterrâneos de cada país europeu coberto pela GIE AGSI e da UE, por dia de gás, desde 2011: enchimento (%), TWh armazenados e capacidade. Um ficheiro por ano e um metadata.json com o último dia, o mesmo dia de há um ano e o mínimo, a média e o máximo dos cinco anos anteriores. Fonte: GIE AGSI.",
+   "ficheiros": 17,
+   "formato": "json",
+   "grupo": "mapas",
+   "id": "mapas-reservas-gas",
+   "padrao": "data/mapas/reservas-gas/*.json",
+   "titulo": "Reservas de gás natural na Europa",
+   "tolerancia_dias": 4,
+   "ultima_data": "2026-11-22",
+   "url": "https://dados.tiagofelicia.pt/data/mapas/reservas-gas/"
+  },
+  {
+   "avisos": [
     "Tirado de data/mapas/producao (Energy-Charts): 'dias' tem o consumo real, 'previsao' a previsão day-ahead onde ainda não há real (o dia seguinte e o dia a meio).",
     "quotas é o consumo médio diário real de cada país nos últimos 365 dias, a dividir pela soma dos países: serve os dias sem dados (antes de 2026) e os países sem valor num dia.",
     "AL, MK e XK não têm consumo na fonte."
    ],
-   "bytes": 111444,
+   "bytes": 111554,
    "cadencia": "2x/dia",
    "caminho": "data/mapas/consumo_paises.json",
    "descricao": "Consumo de eletricidade por país europeu (GWh/dia), real e previsto para o dia seguinte, e a quota fixa de cada país. Pesa pelo consumo a média europeia do europe-prices. 28 países, desde 2026-01.",
@@ -1171,6 +1191,36 @@
    "tolerancia_dias": 75,
    "ultima_data": "2026-10-01",
    "url": "https://dados.tiagofelicia.pt/data/gas/consumo_gas_mensal.csv"
+  },
+  {
+   "avisos": [
+    "A atribuição à fonte é obrigatória: «Fonte: GIE AGSI».",
+    "Uma linha por dia e zona (PT, ES, EU); EU é o agregado da própria AGSI. Portugal só tem valores desde 12/11/2011.",
+    "estado: E estimado, C confirmado (a AGSI revê os dias recentes), R valor da REN — só Portugal, nos dias que a AGSI ainda não confirmou."
+   ],
+   "bytes": 793710,
+   "cadencia": "1x/dia",
+   "caminho": "data/gas/reservas_gas.csv",
+   "colunas": [
+    "data",
+    "zona",
+    "armazenado_twh",
+    "capacidade_twh",
+    "cheio_pct",
+    "injecao_gwh",
+    "extracao_gwh",
+    "estado"
+   ],
+   "descricao": "Gás guardado nos armazenamentos subterrâneos de Portugal, de Espanha e da União Europeia, por dia de gás, desde 2011: TWh armazenados, capacidade, enchimento em %, injeção e extração em GWh/dia. Fonte: GIE AGSI (Gas Infrastructure Europe).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "gas",
+   "id": "gas-reservas",
+   "linhas": 17098,
+   "titulo": "Reservas de gás natural de Portugal, de Espanha e da UE",
+   "tolerancia_dias": 4,
+   "ultima_data": "2026-11-22",
+   "url": "https://dados.tiagofelicia.pt/data/gas/reservas_gas.csv"
   },
   {
    "bytes": 2018557,
@@ -1817,7 +1867,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-23T09:19:42+00:00",
+ "gerado_em": "2026-11-23T10:27:48+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1841,8 +1891,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 586367988,
-  "datasets": 61,
-  "ficheiros": 2153
+  "bytes": 589765629,
+  "datasets": 63,
+  "ficheiros": 2171
  }
 }
