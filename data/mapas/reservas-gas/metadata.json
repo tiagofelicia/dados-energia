@@ -149,6 +149,19 @@
    "min_5a_pct": 70.69,
    "primeiro_dia": "2012-05-01"
   },
+  "HR": {
+   "armazenado_twh": 3.6161,
+   "capacidade_twh": 4.7725,
+   "cheio_pct": 75.77,
+   "data": "2026-11-21",
+   "estado": "C",
+   "ha_um_ano_data": "2025-11-21",
+   "ha_um_ano_pct": 50.61,
+   "max_5a_pct": 96.25,
+   "media_5a_pct": 79.34,
+   "min_5a_pct": 50.61,
+   "primeiro_dia": "2014-04-01"
+  },
   "HU": {
    "armazenado_twh": 50.4941,
    "capacidade_twh": 68.0767,
@@ -294,7 +307,6 @@
   }
  },
  "sem_dados": [
-  "HR",
   "CY",
   "EE",
   "FI",
