@@ -34,6 +34,12 @@
 #     por dia, e por hora em cada mês, para a página /quotas-agentes) e o
 #     metadata.json com os nomes (de data/erc/erc_agentes.csv) e as cores
 #
+# gerar_mercados_trimestral.py (no fim: lê o omie_diario.csv e o erc_diario/ acabados de escrever)
+#   → data/agregados/mercados_trimestral.csv (médias por trimestre do OMIE PT e ES, do ERC,
+#     dos futuros OMIP PT, do MIBGAS PT e ES e dos seus futuros e do CO2, para a página
+#     /mercados-trimestre). Os futuros, o MIBGAS e o CO2 chegam por outros workflows: o
+#     ficheiro apanha-os na corrida seguinte deste (no máximo umas horas depois).
+#
 # Não recolhe nada de fora: deriva dos CSV que já estão no repositório. Por isso
 # corre DEPOIS dos workflows que os escrevem — o OMIE fecha às 18:00 UTC e a
 # produção REN às 20:15, daí as 21:30.
@@ -131,6 +137,11 @@ jobs:
         run: |
           set -o pipefail
           python scripts/gerar_quotas_agentes.py 2>&1 | tee -a logs/agregados.log
+
+      - name: Gerar médias por trimestre dos mercados
+        run: |
+          set -o pipefail
+          python scripts/gerar_mercados_trimestral.py 2>&1 | tee -a logs/agregados.log
 
       # Os scripts não reescrevem os ficheiros que não mudaram, por isso a action
       # não deteta alterações e não commita — nenhum commit vazio.
