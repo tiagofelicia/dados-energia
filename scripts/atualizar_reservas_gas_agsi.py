@@ -39,6 +39,12 @@ Notas sobre a fonte:
   • Um país sem nenhum dia nos ficheiros da Europa volta a pedir-se desde 2011 em cada corrida: assim um
     país que falhou na 1.ª (na de 23/11/2026, a Croácia, a Dinamarca e a Eslováquia) entra sozinho na
     seguinte. Os que não têm armazenamento custam um pedido curto cada.
+  • Um pedido desde 2011 que dá erro (a Croácia dava «Try/Catch error» em todas as corridas) tenta os
+    últimos 45 dias: se a AGSI os der, o resto pede-se ano a ano e guardam-se os anos que respondem; se nem
+    esses der, a AGSI não serve o país (a Grécia e Malta, sem armazenamento, também dão erro).
+  • Um país com dados recentes que vem vazio (a Áustria, numa corrida de 23/11/2026) tenta outra vez daqui
+    a 10 s e, se continuar vazio, deixa um aviso: senão ficava parado no último dia sem ninguém saber.
+  • A mensagem de erro da AGSI traz a chave: sem_chave() apaga-a antes de qualquer mensagem ir para o registo.
   • O dia do mapa (ultima_data do metadata.json) é o último da UE na AGSI. Os dias R de Portugal podem ir
     um dia à frente (de manhã a REN já publicou ontem e a AGSI ainda não): ficam nos ficheiros, mas não
     passam a ser o dia do mapa, onde só Portugal teria valor.
@@ -88,6 +94,11 @@ class ErroAGSI(Exception):
     pass
 
 
+def sem_chave(texto, chave):
+    """A mensagem de erro da AGSI traz a chave («Try/Catch error API key: …»): apaga-a antes do registo."""
+    return texto.replace(chave, "***") if chave else texto
+
+
 def pedir(chave, params):
     hdr = {"x-key": chave, "User-Agent": "dados-energia (+https://dados.tiagofelicia.pt)"}
     for tentativa in range(1, TENTATIVAS + 1):
@@ -100,12 +111,12 @@ def pedir(chave, params):
             r.raise_for_status()
             j = r.json()
             if j.get("error") or j.get("message") and not j.get("data"):
-                raise ErroAGSI(f"{j.get('error') or ''} {j.get('message') or ''}".strip())
+                raise ErroAGSI(sem_chave(f"{j.get('error') or ''} {j.get('message') or ''}".strip(), chave))
             return j
         except requests.RequestException as e:
             if tentativa == TENTATIVAS:
                 raise
-            print(f"  {type(e).__name__}: nova tentativa daqui a {5 * tentativa} s")
+            print(sem_chave(f"  {type(e).__name__}: nova tentativa daqui a {5 * tentativa} s", chave))
             time.sleep(5 * tentativa)
 
 
@@ -141,6 +152,33 @@ def recolher(chave, zona, desde, ate):
         pagina += 1
         time.sleep(1)
     return out
+
+
+def recolher_zona(chave, zona, desde, ate, recente):
+    """(dias, nota) de uma zona, com duas defesas:
+      • um pedido desde 2011 que dá erro tenta os últimos 45 dias; se a AGSI os der, o resto pede-se ano a ano
+        (ficam os anos que respondem); se nem esses der, sobe o erro (a AGSI não serve o país);
+      • se vier vazio quando se esperavam dias recentes (recente=True), tenta outra vez daqui a 10 s."""
+    try:
+        dias = recolher(chave, zona, desde, ate)
+    except (ErroAGSI, requests.RequestException, ValueError):
+        if desde != INICIO_TUDO:
+            raise
+        dias = recolher(chave, zona, ate - timedelta(days=DIAS_NORMAL), ate)     # se também falhar, sobe
+        falhados = []
+        for ano in range(desde.year, ate.year + 1):
+            try:
+                dias.update(recolher(chave, zona, max(desde, date(ano, 1, 1)), min(ate, date(ano, 12, 31))))
+            except (ErroAGSI, requests.RequestException, ValueError):
+                falhados.append(ano)
+        return dias, (f" (pedido ano a ano; sem resposta em {', '.join(map(str, falhados))})"
+                      if falhados else " (pedido ano a ano)")
+    if not dias and recente:
+        time.sleep(10)
+        dias = recolher(chave, zona, desde, ate)
+        if dias:
+            return dias, " (à 2.ª tentativa)"
+    return dias, ""
 
 
 def sem_dados(linha):
@@ -377,32 +415,50 @@ def main():
     novas.update(atual)
     # Um país sem nenhum dia guardado pede-se desde 2011: se falhou numa corrida, entra na seguinte
     com_dados = {z for (_, z) in europa}
-    mudadas, falhas, vazios = 0, [], []
+    # O último dia guardado de cada zona: com ele recente, um pedido vazio é uma falha e não «sem dados»
+    guardado = {}
+    for (dia, z) in list(europa) + list(atual):
+        if dia > guardado.get(z, ""):
+            guardado[z] = dia
+    mudadas, falhas, vazios, erros, sumidos = 0, [], [], [], []
     for zona in ["EU"] + [z for z in PAISES_EUROPA]:
         nucleo = zona in ZONAS
         desde = INICIO_TUDO if (tudo_csv if nucleo else (tudo_eu or zona not in com_dados)) else recente
+        esperado = guardado.get(zona, "") >= recente.isoformat()
         try:
-            dias = recolher(chave, zona, desde, ate)
+            dias, nota = recolher_zona(chave, zona, desde, ate, esperado)
         except (ErroAGSI, requests.RequestException, ValueError) as e:
-            # A mensagem da AGSI nunca traz a chave; o URL do requests também não (vai no cabeçalho)
+            msg = sem_chave(f"{type(e).__name__}: {e}", chave)
             if nucleo:
                 falhas.append(zona)
-                print(f"::warning::{zona}: {type(e).__name__}: {e}")
+                print(f"::warning::{zona}: {msg}")
             else:
-                vazios.append(zona)
-                print(f"  {zona}: sem dados ({type(e).__name__}: {e})")
+                erros.append(zona)
+                print(f"  {zona}: erro da AGSI ({msg})")
             continue
         if not dias:
-            vazios.append(zona)
+            if nucleo:
+                falhas.append(zona)
+                print(f"::warning::{zona}: a AGSI não devolveu nenhum dia, nem à 2.ª tentativa")
+            elif esperado:
+                sumidos.append(zona)
+                print(f"::warning::{zona}: a AGSI não devolveu nenhum dia, nem à 2.ª tentativa "
+                      f"(os ficheiros têm até {guardado[zona]}; fica parado nesse dia)")
+            else:
+                vazios.append(zona)
             continue
         for dia, r in dias.items():
             linha = linha_csv(dia, zona, r)
             if novas.get((dia, zona)) != linha:
                 mudadas += 1
             novas[(dia, zona)] = linha
-        print(f"  {zona}: {len(dias)} dias, o último {max(dias)}")
+        print(f"  {zona}: {len(dias)} dias, o último {max(dias)}{nota}")
     if vazios:
-        print(f"  sem dados na AGSI (sem armazenamento?): {', '.join(vazios)}")
+        print(f"  sem dados na AGSI (sem armazenamento ou sem dados recentes): {', '.join(vazios)}")
+    if erros:
+        print(f"  com erro da AGSI (países que a AGSI não serve?): {', '.join(erros)}")
+    if sumidos:
+        print(f"::warning::Vazios nesta corrida, com dados recentes nos ficheiros: {', '.join(sumidos)}")
 
     if len(falhas) == len(ZONAS):
         print("::error::A AGSI não respondeu para nenhuma das zonas principais — nada foi escrito.")
