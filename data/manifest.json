@@ -1031,7 +1031,7 @@
     "Em cada ano, a posição i de cada país é o dia primeiro_dia + i; null = sem valor. Os países sem armazenamento estão em metadata.json → sem_dados.",
     "estado: E estimado, C confirmado, R valor da REN (só Portugal, nos dias que a AGSI ainda não confirmou)."
    ],
-   "bytes": 2594766,
+   "bytes": 2902863,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/reservas-gas/",
    "descricao": "Gás guardado nos armazenamentos subterrâneos de cada país europeu coberto pela GIE AGSI e da UE, por dia de gás, desde 2011: enchimento (%), TWh armazenados e capacidade. Um ficheiro por ano e um metadata.json com o último dia, o mesmo dia de há um ano e o mínimo, a média e o máximo dos cinco anos anteriores. Fonte: GIE AGSI.",
@@ -1042,7 +1042,7 @@
    "padrao": "data/mapas/reservas-gas/*.json",
    "titulo": "Reservas de gás natural na Europa",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-22",
+   "ultima_data": "2026-11-21",
    "url": "https://dados.tiagofelicia.pt/data/mapas/reservas-gas/"
   },
   {
@@ -1198,7 +1198,7 @@
     "Uma linha por dia e zona (PT, ES, EU); EU é o agregado da própria AGSI. Portugal só tem valores desde 12/11/2011.",
     "estado: E estimado, C confirmado (a AGSI revê os dias recentes), R valor da REN — só Portugal, nos dias que a AGSI ainda não confirmou."
    ],
-   "bytes": 793710,
+   "bytes": 793712,
    "cadencia": "1x/dia",
    "caminho": "data/gas/reservas_gas.csv",
    "colunas": [
@@ -1419,6 +1419,35 @@
    "tolerancia_dias": 6,
    "ultima_data": "2026-11-18",
    "url": "https://dados.tiagofelicia.pt/data/agregados/erc_tipo/"
+  },
+  {
+   "avisos": [
+    "n, de e ate dizem que dias (ou leilões) entraram em cada média: no trimestre corrente e nos primeiros trimestres de cada indicador a média é parcial (MIBGAS ES desde 17/12/2015, futuros MIBGAS desde 2018, CO2 desde 2020, MIBGAS PT desde 2021, ERC desde 14/03/2024, OMIP desde 20/10/2025).",
+    "Os futuros são a média dos fechos diários DURANTE o trimestre, do contrato do trimestre ou do ano SEGUINTE (escolhido pela data de entrega).",
+    "OMIE: média simples dos quartos de hora, dias em hora de Portugal. ERC: pesado pelo consumo, por dia de mercado. CO2: pesado pelo volume de cada leilão, só EUA."
+   ],
+   "bytes": 22901,
+   "cadencia": "1x/dia",
+   "caminho": "data/agregados/mercados_trimestral.csv",
+   "colunas": [
+    "trimestre",
+    "indicador",
+    "valor",
+    "unidade",
+    "n",
+    "de",
+    "ate"
+   ],
+   "descricao": "Médias por trimestre, desde 2010: OMIE PT e ES, horas com o OMIE PT negativo, ERC, futuros OMIP PT do trimestre e do ano seguintes, índices MIBGAS PT e ES, futuros MIBGAS ES do trimestre e do ano seguintes e CO2 (EUA) nos leilões da EEX. Uma linha por trimestre e indicador. Derivado de data/agregados/, data/omie/historico/, data/gas/ e data/emissoes/.",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "agregados",
+   "id": "agregados-mercados-trimestral",
+   "linhas": 390,
+   "titulo": "Mercados de energia por trimestre",
+   "tolerancia_dias": 3,
+   "ultima_data": "2026-11-24",
+   "url": "https://dados.tiagofelicia.pt/data/agregados/mercados_trimestral.csv"
   },
   {
    "avisos": [
@@ -1867,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-23T16:19:49+00:00",
+ "gerado_em": "2026-11-23T16:36:36+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1891,8 +1920,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 589832523,
-  "datasets": 63,
-  "ficheiros": 2171
+  "bytes": 590163523,
+  "datasets": 64,
+  "ficheiros": 2172
  }
 }
