@@ -7,6 +7,12 @@ dia, segundo a GIE AGSI (Gas Infrastructure Europe — Aggregated Gas Storage In
 
   -> data/gas/reservas_gas.csv
      data, zona (PT | ES | EU), armazenado_twh, capacidade_twh, cheio_pct, injecao_gwh, extracao_gwh, estado
+  -> data/mapas/reservas-gas/AAAA.json   (todos os países europeus da AGSI e a UE, um ficheiro por ano)
+     {"ano", "primeiro_dia", "campos": [cheio_pct, armazenado_twh, capacidade_twh, estado],
+      "paises": {"AT": [[95.5, 3.41, 3.57, "C"], null, …]}}   (posição i = primeiro_dia + i dias)
+  -> data/mapas/reservas-gas/metadata.json
+     a ultima_data e, por país, o último dia, o mesmo dia de há um ano e o mínimo, a média e o máximo
+     desse dia nos cinco anos anteriores (o que o mapa precisa para abrir sem ler os ficheiros por ano)
 
 Requer o secret AGSI_KEY: a chave pessoal e gratuita do registo em https://agsi.gie.eu/account. Sem a
 chave o script avisa e sai sem erro (o resto do workflow continua). A chave vai no cabeçalho x-key e
@@ -18,11 +24,23 @@ Notas sobre a fonte:
   • A UE é o agregado da própria AGSI (type=eu), não uma soma feita aqui.
   • Unidades: armazenado e capacidade em TWh, injeção e extração em GWh/dia, cheio em %.
   • A atribuição é obrigatória: «Fonte: GIE AGSI» junto dos dados.
-O script só reescreve o ficheiro quando alguma coisa muda.
+  • Portugal (o Carriço) só tem valores desde 12/11/2011; os dias antes disso vêm a zeros e ficam de fora.
+  • Portugal, nos dias que a AGSI ainda não confirmou: o valor é o da REN (Data Hub → Gás → Balanço diário →
+    Balanço do armazenamento subterrâneo, modelo 2638), com estado R. Em 2026 a AGSI ficou semanas com
+    Portugal «estimado» e o valor congelado no último dia confirmado (3,4097 TWh de 07/10 a 21/11), enquanto
+    a REN tinha os valores reais; nos dias confirmados as duas coincidem a ±2 GWh. Quando a AGSI confirma o
+    dia (nos últimos 45 dias), o valor da AGSI volta a mandar.
+  • Os países: a UE a 27 e os vizinhos que a AGSI cobre (PAISES_EUROPA). Os que não têm armazenamento,
+    ou não estão na AGSI, vêm vazios e ficam na lista sem_dados do metadata.json (a cinzento no mapa).
+    Uma falha num desses países só dá um aviso; uma falha em PT, ES ou na UE faz a corrida acabar com erro.
+  • Sem os ficheiros da Europa (a 1.ª corrida), os países europeus pedem-se desde 2011, mesmo sem --tudo
+    (~600 pedidos, com 1 s entre eles: uns 10 minutos). PT, ES e a UE vêm do reservas_gas.csv.
+O script só reescreve os ficheiros que mudam.
 """
 import argparse
 import csv
 import io
+import json
 import os
 import sys
 import time
@@ -38,7 +56,14 @@ except (AttributeError, OSError):
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FICHEIRO = os.path.join(ROOT_DIR, "data", "gas", "reservas_gas.csv")
 URL = os.environ.get("AGSI_URL", "https://agsi.gie.eu/api")   # AGSI_URL só para testes
-ZONAS = {"PT": {"country": "PT"}, "ES": {"country": "ES"}, "EU": {"type": "eu"}}
+ZONAS = {"PT": {"country": "PT"}, "ES": {"country": "ES"}, "EU": {"type": "eu"}}   # as do reservas_gas.csv
+PASTA_EUROPA = os.path.join(ROOT_DIR, "data", "mapas", "reservas-gas")
+# A UE a 27 e os vizinhos que a AGSI cobre. Os que não têm armazenamento vêm vazios (ver o cabeçalho).
+PAISES_EUROPA = ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT",
+                 "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "GB", "UA", "RS"]
+FONTE_EUROPA = ("GIE AGSI (Gas Infrastructure Europe); Portugal: REN nos dias que a AGSI ainda não "
+                "confirmou (estado R)")
+ANOS_MEDIA = 5                      # anos anteriores no mínimo / média / máximo do metadata.json
 INICIO_TUDO = date(2011, 1, 1)
 DIAS_NORMAL = 45
 TAMANHO = 300                       # linhas por página
@@ -47,6 +72,9 @@ COLUNAS = ["data", "zona", "armazenado_twh", "capacidade_twh", "cheio_pct",
 CAMPOS = {"armazenado_twh": "gasInStorage", "capacidade_twh": "workingGasVolume", "cheio_pct": "full",
           "injecao_gwh": "injection", "extracao_gwh": "withdrawal"}
 TENTATIVAS = 3
+REN_URL = "https://datahub.ren.pt/service/exports/csv"
+REN_MODELO = 2638                   # Gás → Balanço diário → Balanço do armazenamento subterrâneo
+REN_MAX_DIAS = 120                  # no máximo tantos dias da REN por corrida (um pedido por dia)
 
 
 class ErroAGSI(Exception):
@@ -90,8 +118,8 @@ def recolher(chave, zona, desde, ate):
     """{data_iso: {coluna: valor, 'estado': str}} de uma zona, página a página."""
     out, pagina, ultima = {}, 1, 1
     while pagina <= ultima:
-        params = dict(ZONAS[zona], **{"from": desde.isoformat(), "to": ate.isoformat(),
-                                      "size": TAMANHO, "page": pagina})
+        params = dict(ZONAS.get(zona) or {"country": zona},
+                      **{"from": desde.isoformat(), "to": ate.isoformat(), "size": TAMANHO, "page": pagina})
         j = pedir(chave, params)
         ultima = int(j.get("last_page") or 1)
         for d in j.get("data") or []:
@@ -99,13 +127,68 @@ def recolher(chave, zona, desde, ate):
             if len(dia) != 10:
                 continue
             linha = {col: num(d.get(campo)) for col, campo in CAMPOS.items()}
-            if linha["armazenado_twh"] is None and linha["cheio_pct"] is None:
+            if sem_dados(linha):
                 continue
             linha["estado"] = (d.get("status") or "").strip()
             out[dia] = linha
         pagina += 1
         time.sleep(1)
     return out
+
+
+def sem_dados(linha):
+    """Dia sem dados: sem valores, ou capacidade a zero (Portugal vem a zeros até 11/11/2011)."""
+    if linha.get("armazenado_twh") is None and linha.get("cheio_pct") is None:
+        return True
+    return not linha.get("capacidade_twh")
+
+
+def ren_pt(dia):
+    """(existências, injeção, extração) do Carriço num dia, em GWh, segundo a REN; None se não houver."""
+    params = {"startDateString": dia, "endDateString": dia, "culture": "pt-PT", "country": "PT",
+              "modelId": REN_MODELO}
+    r = requests.get(REN_URL, params=params, timeout=60,
+                     headers={"User-Agent": "dados-energia (+https://dados.tiagofelicia.pt)"})
+    if r.status_code in (400, 404):                       # o dia ainda não foi publicado (hoje, ontem)
+        return None
+    r.raise_for_status()
+    val = {}
+    for c in csv.reader(io.StringIO(r.content.decode("utf-8-sig"))):
+        if len(c) > 1 and c[0].strip():
+            val.setdefault(c[0].strip(), c[1])
+    ex = num(val.get("EXISTÊNCIAS"))
+    if not ex:
+        return None
+    return ex, num(val.get("Injeção")) or 0.0, num(val.get("Extração")) or 0.0
+
+
+def completar_pt_com_ren(linhas, ate):
+    """Põe os valores da REN nos dias de Portugal que a AGSI não confirmou (depois do último confirmado)."""
+    confirmados = sorted(k[0] for k, v in linhas.items() if k[1] == "PT" and v[7] == "C")
+    if not confirmados:
+        return
+    ult_c = confirmados[-1]
+    cap = num(linhas[(ult_c, "PT")][3])                   # TWh: a capacidade declarada à AGSI
+    dia = max(date.fromisoformat(ult_c) + timedelta(days=1), ate - timedelta(days=REN_MAX_DIAS))
+    n = 0
+    while dia <= ate and cap:
+        k = (dia.isoformat(), "PT")
+        if k not in linhas or linhas[k][7] != "C":
+            try:
+                v = ren_pt(dia.isoformat())
+            except requests.RequestException as e:
+                print(f"::warning::REN (Portugal, {dia.isoformat()}): {type(e).__name__}: {e}")
+                break
+            if v:
+                ex, inj, ext = v
+                twh = ex / 1000
+                linhas[k] = [dia.isoformat(), "PT", fmt(twh, 4), fmt(cap, 4), fmt(100 * twh / cap, 2),
+                             fmt(inj, 2), fmt(ext, 2), "R"]
+                n += 1
+            time.sleep(0.5)
+        dia += timedelta(days=1)
+    if n:
+        print(f"  PT: {n} dia(s) com o valor da REN (a AGSI só tem confirmados até {ult_c})")
 
 
 def fmt(v, casas):
@@ -128,12 +211,120 @@ def ler_ficheiro():
         return {(r["data"], r["zona"]): [r[c] for c in COLUNAS] for r in csv.DictReader(f)}
 
 
+def ler_europa():
+    """As linhas já guardadas nos ficheiros da Europa, no formato das do CSV (sem injeção nem extração)."""
+    out = {}
+    if not os.path.isdir(PASTA_EUROPA):
+        return out
+    for nome in sorted(os.listdir(PASTA_EUROPA)):
+        if not (len(nome) == 9 and nome[:4].isdigit() and nome.endswith(".json")):
+            continue
+        with open(os.path.join(PASTA_EUROPA, nome), encoding="utf-8") as f:
+            j = json.load(f)
+        d0 = date.fromisoformat(j["primeiro_dia"])
+        for zona, valores in j["paises"].items():
+            for i, v in enumerate(valores):
+                if v:
+                    dia = (d0 + timedelta(days=i)).isoformat()
+                    out[(dia, zona)] = [dia, zona, fmt(v[1], 4), fmt(v[2], 4), fmt(v[0], 2), "", "", v[3]]
+    return out
+
+
+def gravar(caminho, texto):
+    """Escreve só se mudou; devolve True se escreveu."""
+    if os.path.exists(caminho):
+        with open(caminho, encoding="utf-8", newline="") as f:
+            if f.read() == texto:
+                return False
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+    with open(caminho, "w", encoding="utf-8", newline="") as f:
+        f.write(texto)
+    return True
+
+
+def _valores(v):
+    """[cheio_pct, armazenado_twh, capacidade_twh, estado] de uma linha, ou None se não tiver dados."""
+    pct, twh, cap = num(v[4]), num(v[2]), num(v[3])
+    if sem_dados({"armazenado_twh": twh, "cheio_pct": pct, "capacidade_twh": cap}):
+        return None
+    return [round(pct, 2), round(twh, 4), round(cap, 4), v[7]]
+
+
+def escrever_europa(linhas):
+    """data/mapas/reservas-gas/AAAA.json (só os anos que mudam) e metadata.json; devolve quantos mudaram."""
+    zonas = ["EU"] + PAISES_EUROPA
+    serie = {}                                              # zona -> {dia: valores}
+    for (dia, zona), v in linhas.items():
+        if zona in zonas:
+            val = _valores(v)
+            if val:
+                serie.setdefault(zona, {})[dia] = val
+    mudados = 0
+    anos = sorted({int(d[:4]) for s in serie.values() for d in s})
+    for ano in anos:
+        d0 = date(ano, 1, 1)
+        partes = []
+        for zona in zonas:
+            dias = {d: v for d, v in serie.get(zona, {}).items() if d.startswith(str(ano))}
+            if not dias:
+                continue
+            arr = [None] * ((date.fromisoformat(max(dias)) - d0).days + 1)
+            for d, v in dias.items():
+                arr[(date.fromisoformat(d) - d0).days] = v
+            partes.append(f'"{zona}":' + json.dumps(arr, separators=(",", ":"), ensure_ascii=False))
+        # Uma linha por país: um dia novo só muda as linhas dos países que o têm (diffs pequenos no git)
+        texto = ('{"ano":%d,"primeiro_dia":"%s","campos":["cheio_pct","armazenado_twh","capacidade_twh","estado"],'
+                 '"fonte":%s,"paises":{\n' % (ano, d0.isoformat(), json.dumps(FONTE_EUROPA, ensure_ascii=False))
+                 + ",\n".join(partes) + "\n}}\n")
+        if gravar(os.path.join(PASTA_EUROPA, f"{ano}.json"), texto):
+            mudados += 1
+
+    # metadata.json: o que o mapa precisa para abrir
+    paises = {}
+    for zona in zonas:
+        s = serie.get(zona)
+        if not s:
+            continue
+        ult = max(s)
+        pct, twh, cap, est = s[ult]
+        a, m, d = (int(x) for x in ult.split("-"))
+        def no_dia(ano):
+            # o mesmo dia noutro ano (29/02 -> 28/02), ou até 3 dias antes se faltar
+            base = date(ano, m, 28 if (m == 2 and d == 29) else d)
+            for k in range(4):
+                x = (base - timedelta(days=k)).isoformat()
+                if x in s:
+                    return x, s[x][0]
+            return None, None
+        dia_ant, pct_ant = no_dia(a - 1)
+        anteriores = [p for p in (no_dia(a - k)[1] for k in range(1, ANOS_MEDIA + 1)) if p is not None]
+        paises[zona] = {
+            "data": ult, "cheio_pct": pct, "armazenado_twh": twh, "capacidade_twh": cap, "estado": est,
+            "ha_um_ano_data": dia_ant, "ha_um_ano_pct": pct_ant,
+            "media_5a_pct": round(sum(anteriores) / len(anteriores), 2) if len(anteriores) >= 3 else None,
+            "min_5a_pct": min(anteriores) if len(anteriores) >= 3 else None,
+            "max_5a_pct": max(anteriores) if len(anteriores) >= 3 else None,
+            "primeiro_dia": min(s),
+        }
+    meta = {"ultima_data": max(p["data"] for p in paises.values()) if paises else None,
+            "fonte": FONTE_EUROPA, "anos": anos,
+            "sem_dados": [z for z in PAISES_EUROPA if z not in serie], "paises": paises}
+    if gravar(os.path.join(PASTA_EUROPA, "metadata.json"),
+              json.dumps(meta, ensure_ascii=False, indent=1, sort_keys=True) + "\n"):
+        mudados += 1
+    return mudados
+
+
 def escrever(linhas):
     buf = io.StringIO()
     w = csv.writer(buf, lineterminator="\n")
     w.writerow(COLUNAS)
     ordem = {z: i for i, z in enumerate(ZONAS)}
-    for k in sorted(linhas, key=lambda k: (k[0], ordem.get(k[1], 9))):
+    for k in sorted((k for k in linhas if k[1] in ZONAS), key=lambda k: (k[0], ordem.get(k[1], 9))):
+        # As linhas antigas também passam pelo filtro: o ficheiro de 23/11/2026 tinha os zeros de 2011
+        if sem_dados({"armazenado_twh": num(linhas[k][2]), "cheio_pct": num(linhas[k][4]),
+                      "capacidade_twh": num(linhas[k][3])}):
+            continue
         w.writerow(linhas[k])
     novo = "﻿" + buf.getvalue()
     if os.path.exists(FICHEIRO):
@@ -158,35 +349,55 @@ def main():
         return 0
 
     atual = ler_ficheiro()
+    europa = ler_europa()
     ate = date.today()
-    desde = INICIO_TUDO if (args.tudo or not atual) else ate - timedelta(days=DIAS_NORMAL)
-    print(f"🛢️ Reservas de gás (GIE AGSI): {desde.isoformat()} a {ate.isoformat()}"
-          f"{' (sem ficheiro: tudo)' if not atual else ''}")
+    recente = ate - timedelta(days=DIAS_NORMAL)
+    tudo_csv = args.tudo or not atual            # PT, ES e a UE
+    tudo_eu = args.tudo or not europa            # os outros países (a 1.ª corrida com o mapa da Europa)
+    print(f"🛢️ Reservas de gás (GIE AGSI) até {ate.isoformat()}: PT/ES/UE "
+          f"{'desde ' + INICIO_TUDO.isoformat() if tudo_csv else 'os últimos ' + str(DIAS_NORMAL) + ' dias'}; "
+          f"outros países {'desde ' + INICIO_TUDO.isoformat() if tudo_eu else 'os últimos ' + str(DIAS_NORMAL) + ' dias'}")
 
-    novas, mudadas, falhas = dict(atual), 0, []
-    for zona in ZONAS:
+    # O CSV manda nas suas zonas (tem a injeção e a extração); os ficheiros da Europa nas outras
+    novas = dict(europa)
+    novas.update(atual)
+    mudadas, falhas, vazios = 0, [], []
+    for zona in ["EU"] + [z for z in PAISES_EUROPA]:
+        nucleo = zona in ZONAS
+        desde = INICIO_TUDO if (tudo_csv if nucleo else tudo_eu) else recente
         try:
             dias = recolher(chave, zona, desde, ate)
         except (ErroAGSI, requests.RequestException, ValueError) as e:
             # A mensagem da AGSI nunca traz a chave; o URL do requests também não (vai no cabeçalho)
-            falhas.append(zona)
-            print(f"::warning::{zona}: {type(e).__name__}: {e}")
+            if nucleo:
+                falhas.append(zona)
+                print(f"::warning::{zona}: {type(e).__name__}: {e}")
+            else:
+                vazios.append(zona)
+                print(f"  {zona}: sem dados ({type(e).__name__}: {e})")
+            continue
+        if not dias:
+            vazios.append(zona)
             continue
         for dia, r in dias.items():
             linha = linha_csv(dia, zona, r)
             if novas.get((dia, zona)) != linha:
                 mudadas += 1
             novas[(dia, zona)] = linha
-        ultimo = max(dias) if dias else "—"
-        print(f"  {zona}: {len(dias)} dias, o último {ultimo}")
+        print(f"  {zona}: {len(dias)} dias, o último {max(dias)}")
+    if vazios:
+        print(f"  sem dados na AGSI (sem armazenamento?): {', '.join(vazios)}")
 
     if len(falhas) == len(ZONAS):
-        print("::error::A AGSI não respondeu para nenhuma zona — nada foi escrito.")
+        print("::error::A AGSI não respondeu para nenhuma das zonas principais — nada foi escrito.")
         return 1
+    completar_pt_com_ren(novas, ate)
     if escrever(novas):
-        print(f"✓ {os.path.relpath(FICHEIRO, ROOT_DIR)}: {len(novas)} linhas ({mudadas} novas ou revistas)")
+        print(f"✓ {os.path.relpath(FICHEIRO, ROOT_DIR)} ({mudadas} linhas novas ou revistas no total)")
     else:
-        print("= sem alterações")
+        print(f"= {os.path.relpath(FICHEIRO, ROOT_DIR)} sem alterações")
+    n = escrever_europa(novas)
+    print(f"{'✓' if n else '='} {os.path.relpath(PASTA_EUROPA, ROOT_DIR)}: {n} ficheiro(s) atualizado(s)")
     return 1 if falhas else 0
 
 

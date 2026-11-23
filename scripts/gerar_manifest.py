@@ -553,6 +553,20 @@ REGISTO = [
                  "Só entram dias com a produção real completa; eólica = onshore + "
                  "offshore.",
                  "Para somar dias: preço capturado do período = Σ(preço × GWh) / Σ GWh."]),
+    # tolerancia_dias=4: o mesmo workflow do gas-reservas
+    dict(id="mapas-reservas-gas", grupo="mapas", caminho="data/mapas/reservas-gas/*.json",
+         titulo="Reservas de gás natural na Europa",
+         descricao="Gás guardado nos armazenamentos subterrâneos de cada país europeu "
+                   "coberto pela GIE AGSI e da UE, por dia de gás, desde 2011: enchimento "
+                   "(%), TWh armazenados e capacidade. Um ficheiro por ano e um "
+                   "metadata.json com o último dia, o mesmo dia de há um ano e o mínimo, a "
+                   "média e o máximo dos cinco anos anteriores. Fonte: GIE AGSI.",
+         cadencia="1x/dia", tolerancia_dias=4, deteccao="meta:ultima_data",
+         avisos=["A atribuição à fonte é obrigatória: «Fonte: GIE AGSI».",
+                 "Em cada ano, a posição i de cada país é o dia primeiro_dia + i; null = sem "
+                 "valor. Os países sem armazenamento estão em metadata.json → sem_dados.",
+                 "estado: E estimado, C confirmado, R valor da REN (só Portugal, nos dias que "
+                 "a AGSI ainda não confirmou)."]),
     dict(id="mapas-consumo", grupo="mapas", caminho="data/mapas/consumo_paises.json",
          titulo="Consumo diário por país",
          descricao="Consumo de eletricidade por país europeu (GWh/dia), real e "
@@ -618,6 +632,20 @@ REGISTO = [
          cadencia="1x/dia (valor mensal)", tolerancia_dias=75, deteccao="csv_col_iso:mes",
          avisos=["Os valores são os da REN, em GWh inteiros: o total pode diferir da "
                  "soma dos dois mercados em 1 GWh por arredondamento."]),
+    # tolerancia_dias=4: a AGSI publica o dia anterior ao fim da tarde (CET) e o
+    # workflow corre uma vez por dia (com o atraso dos crons do GitHub)
+    dict(id="gas-reservas", grupo="gas", caminho="data/gas/reservas_gas.csv",
+         titulo="Reservas de gás natural de Portugal, de Espanha e da UE",
+         descricao="Gás guardado nos armazenamentos subterrâneos de Portugal, de Espanha "
+                   "e da União Europeia, por dia de gás, desde 2011: TWh armazenados, "
+                   "capacidade, enchimento em %, injeção e extração em GWh/dia. "
+                   "Fonte: GIE AGSI (Gas Infrastructure Europe).",
+         cadencia="1x/dia", tolerancia_dias=4, deteccao="csv_col_iso:data",
+         avisos=["A atribuição à fonte é obrigatória: «Fonte: GIE AGSI».",
+                 "Uma linha por dia e zona (PT, ES, EU); EU é o agregado da própria "
+                 "AGSI. Portugal só tem valores desde 12/11/2011.",
+                 "estado: E estimado, C confirmado (a AGSI revê os dias recentes), R valor "
+                 "da REN — só Portugal, nos dias que a AGSI ainda não confirmou."]),
 
     # ---------- Derivados ----------
     dict(id="agregados-omie", grupo="agregados", caminho="data/agregados/omie_*.csv",
@@ -1206,7 +1234,7 @@ def main():
         "licenca": "CC BY 4.0",
         "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
         "atribuicao": "Dados: Tiago Felícia — www.tiagofelicia.pt "
-                      "(fontes originais: OMIE, REN, ENTSO-E, MIBGAS), "
+                      "(fontes originais: OMIE, REN, ENTSO-E, MIBGAS, GIE AGSI), "
                       "via dados.tiagofelicia.pt",
         # data/simuladores/ fica de fora da CC BY 4.0 e do catálogo (ver a NOTA no topo)
         "licenca_excecoes": [{
