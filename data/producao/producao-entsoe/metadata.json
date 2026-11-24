@@ -1,12 +1,12 @@
 {
   "al": {
-    "actualizado_em": "2026-11-23T17:31:27+00:00",
+    "actualizado_em": "2026-11-24T01:56:01+00:00",
     "eic": "10YAL-KESH-----5",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
   },
   "at": {
-    "actualizado_em": "2026-11-23T14:12:21+00:00",
+    "actualizado_em": "2026-11-24T00:42:52+00:00",
     "eic": "10YAT-APG------L",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -24,7 +24,7 @@
     "ultima_iso_year": 2026
   },
   "bg": {
-    "actualizado_em": "2026-11-23T14:26:54+00:00",
+    "actualizado_em": "2026-11-24T00:50:07+00:00",
     "eic": "10YCA-BULGARIA-R",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -36,13 +36,13 @@
     "ultima_iso_year": 2026
   },
   "cy": {
-    "actualizado_em": "2026-11-23T17:39:27+00:00",
+    "actualizado_em": "2026-11-24T01:58:29+00:00",
     "eic": "10YCY-1001A0003J",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
   },
   "cz": {
-    "actualizado_em": "2026-11-23T14:40:09+00:00",
+    "actualizado_em": "2026-11-24T00:55:44+00:00",
     "eic": "10YCZ-CEPS-----N",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -54,7 +54,7 @@
     "ultima_iso_year": 2026
   },
   "dk": {
-    "actualizado_em": "2026-11-23T14:56:01+00:00",
+    "actualizado_em": "2026-11-24T00:56:15+00:00",
     "eic": "10YDK-1--------W",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -66,7 +66,7 @@
     "ultima_iso_year": 2026
   },
   "es": {
-    "actualizado_em": "2026-11-24T00:07:18+00:00",
+    "actualizado_em": "2026-11-24T00:59:51+00:00",
     "eic": "10YES-REE------0",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -78,7 +78,7 @@
     "ultima_iso_year": 2026
   },
   "fr": {
-    "actualizado_em": "2026-11-23T15:26:40+00:00",
+    "actualizado_em": "2026-11-24T01:13:21+00:00",
     "eic": "10YFR-RTE------C",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -96,7 +96,7 @@
     "ultima_iso_year": 2026
   },
   "hr": {
-    "actualizado_em": "2026-11-23T15:41:24+00:00",
+    "actualizado_em": "2026-11-24T01:22:36+00:00",
     "eic": "10YHR-HEP------M",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -108,7 +108,7 @@
     "ultima_iso_year": 2026
   },
   "ie": {
-    "actualizado_em": "2026-11-23T15:52:30+00:00",
+    "actualizado_em": "2026-11-24T01:25:48+00:00",
     "eic": "10Y1001A1001A59C",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -120,7 +120,7 @@
     "ultima_iso_year": 2026
   },
   "lt": {
-    "actualizado_em": "2026-11-23T16:03:58+00:00",
+    "actualizado_em": "2026-11-24T01:29:30+00:00",
     "eic": "10YLT-1001A0008Q",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -132,13 +132,13 @@
     "ultima_iso_year": 2026
   },
   "md": {
-    "actualizado_em": "2026-11-23T17:41:08+00:00",
+    "actualizado_em": "2026-11-24T01:59:23+00:00",
     "eic": "10Y1001A1001A990",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
   },
   "me": {
-    "actualizado_em": "2026-11-23T16:22:34+00:00",
+    "actualizado_em": "2026-11-24T01:34:56+00:00",
     "eic": "10YCS-CG-TSO---S",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -156,7 +156,7 @@
     "ultima_iso_year": 2026
   },
   "no": {
-    "actualizado_em": "2026-11-23T16:41:10+00:00",
+    "actualizado_em": "2026-11-24T01:39:54+00:00",
     "eic": "10YNO-1--------2",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -168,7 +168,7 @@
     "ultima_iso_year": 2026
   },
   "pt": {
-    "actualizado_em": "2026-11-24T00:03:30+00:00",
+    "actualizado_em": "2026-11-24T01:42:10+00:00",
     "eic": "10YPT-REN------W",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -180,7 +180,7 @@
     "ultima_iso_year": 2026
   },
   "rs": {
-    "actualizado_em": "2026-11-23T17:11:07+00:00",
+    "actualizado_em": "2026-11-24T01:49:42+00:00",
     "eic": "10YCS-SERBIATSOV",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -192,7 +192,7 @@
     "ultima_iso_year": 2026
   },
   "si": {
-    "actualizado_em": "2026-11-23T17:26:57+00:00",
+    "actualizado_em": "2026-11-24T01:55:00+00:00",
     "eic": "10YSI-ELES-----O",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
@@ -204,7 +204,7 @@
     "ultima_iso_year": 2026
   },
   "xk": {
-    "actualizado_em": "2026-11-23T17:33:32+00:00",
+    "actualizado_em": "2026-11-24T01:57:25+00:00",
     "eic": "10Y1001C--00100H",
     "ultima_iso_week": 48,
     "ultima_iso_year": 2026
