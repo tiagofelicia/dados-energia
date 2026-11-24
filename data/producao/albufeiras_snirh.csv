@@ -1,87 +1,87 @@
 ﻿coluna,codigo_snirh,nome,bacia,capacidade_hm3,maximo_registado_hm3,data_maximo,referencia_hm3,referencia,inicio_serie,ultimo_dia,frequencia,latitude,longitude,energia,uso
-alto_lindoso,02H/01A,Alto Lindoso,Lima,379.00,378.69,2001-03-21,379.00,capacidade,2001-01-01,2026-11-22,diária,41.8722,-8.2027,sim,Energia e lazer
-touvedo,03G/01A,Touvedo,Lima,15.50,15.77,2009-01-31,15.50,capacidade,2001-01-01,2026-11-22,diária,41.8122,-8.3538,sim,Abastecimento e energia
-alto_rabagao,03J/03A,Alto Rabagão,Cávado,568.70,568.00,2026-04-06,568.70,capacidade,2001-01-01,2026-11-22,diária,41.7379,-7.854,sim,Abastecimento e energia
-paradela,03J/01A,Paradela,Cávado,164.40,169.13,2001-03-21,164.40,capacidade,2001-01-01,2026-11-22,diária,41.7669,-7.9501,sim,Energia
-canicada,04H/01A,Caniçada,Cávado,159.30,162.44,2010-12-05,159.30,capacidade,2001-01-01,2026-11-22,diária,41.6525,-8.2313,sim,Energia e lazer
-vilarinho_das_furnas,03H/01A,Vilarinho das Furnas,Cávado,117.69,117.17,2026-02-19,117.69,capacidade,2001-01-01,2026-11-22,diária,41.7634,-8.2098,sim,Energia
-venda_nova,03J/04A,Venda Nova,Cávado,94.50,95.06,2003-08-12,94.50,capacidade,2001-01-01,2026-11-22,diária,41.6812,-7.9848,sim,Energia
-salamonde,03I/01A,Salamonde,Cávado,65.00,65.31,2001-03-20,65.00,capacidade,2001-01-01,2026-11-22,diária,41.6915,-8.0915,sim,Energia
-guilhofrei,04I/01A,Guilhofrei,Ave,21.20,21.65,2018-03-14,21.20,capacidade,2001-01-31,2026-11-22,diária,41.5856,-8.1377,sim,Energia e lazer
-baixo_sabor,06O/09A,Baixo Sabor,Douro,1095.00,1093.30,2025-05-15,1095.00,capacidade,2016-09-13,2026-11-22,diária,41.2283,-7.0128,sim,Energia
-carrapatelo,07I/01A,Carrapatelo,Douro,150.20,150.88,2016-03-15,150.20,capacidade,2001-01-01,2026-11-22,diária,41.0856,-8.131,sim,"Abastecimento, energia e lazer"
-alto_tamega,04K/04A,Alto Tâmega,Douro,131.70,131.20,2024-02-25,131.70,capacidade,2024-01-28,2026-11-22,diária,41.5743,-7.7312,sim,Energia
-bemposta,06S/01A,Bemposta,Douro,128.80,129.27,2007-05-24,128.80,capacidade,2001-01-01,2026-11-22,diária,41.3012,-6.4699,sim,Abastecimento e energia
-torrao,07H/01A,Torrão,Douro,123.90,105.81,2001-01-01,123.90,capacidade,2001-01-01,2026-11-22,diária,41.0971,-8.2614,sim,"Abastecimento, energia e lazer"
-crestuma_lever,07G/01A,Crestuma-Lever,Douro,110.00,113.18,2018-08-15,110.00,capacidade,2001-01-01,2026-11-22,diária,41.0729,-8.4868,sim,"Abastecimento, energia e lazer"
-foz_tua,06M/06A,Foz Tua,Douro,106.10,106.00,2021-02-12,106.10,capacidade,2019-12-19,2026-11-16,semanal,41.2189,-7.4222,sim,Energia
-vilar_tabuaco,08L/01A,Vilar-Tabuaço,Douro,99.75,100.71,2003-01-02,99.75,capacidade,2001-01-31,2026-11-22,diária,40.9872,-7.5348,sim,Abastecimento e energia
-valeira,07M/02A,Valeira,Douro,98.50,98.63,2025-04-04,98.50,capacidade,2001-01-01,2026-11-22,diária,41.1603,-7.3751,sim,Energia
-regua,07K/01A,Régua,Douro,95.00,95.52,2012-12-28,95.00,capacidade,2001-01-01,2026-11-22,diária,41.1462,-7.7399,sim,"Abastecimento, energia e lazer"
-pocinho,07O/02A,Pocinho,Douro,82.90,83.29,2011-03-29,82.90,capacidade,2001-01-01,2026-11-22,diária,41.1352,-7.1143,sim,"Abastecimento, energia e lazer"
-picote,05S/01A,Picote,Douro,62.70,62.97,2004-04-01,62.70,capacidade,2001-01-01,2026-11-22,diária,41.3802,-6.3518,sim,Abastecimento e energia
-daivoes,04J/08A,Daivões,Douro,55.48,54.40,2026-02-07,55.48,capacidade,2022-12-04,2026-11-22,diária,41.5256,-7.8634,sim,Energia
-feiticeiro,06O/10A,Feiticeiro,Douro,31.00,30.81,2020-05-27,31.00,capacidade,2017-07-01,2026-11-22,diária,41.2022,-7.0931,sim,Energia
-miranda,05T/01A,Miranda,Douro,28.00,28.07,2010-04-28,28.00,capacidade,2001-01-01,2026-11-22,diária,41.489,-6.2639,sim,Abastecimento e rega
-gouvaes,05K/02A,Gouvães,Douro,14.10,14.56,2024-02-19,14.10,capacidade,2022-11-29,2026-11-22,diária,41.4942,-7.7271,sim,Energia
-varosa,07K/02A,Varosa,Douro,12.94,14.52,2009-12-30,12.94,capacidade,2001-01-31,2026-11-22,diária,41.1204,-7.7756,sim,Energia
-serra_serrada,02Q/01A,Serra Serrada,Douro,1.68,1.72,2018-12-21,1.68,capacidade,2001-01-31,2026-11-16,semanal,41.9613,-6.7722,sim,Abastecimento e energia
-ribeiradio,09H/06A,Ribeiradio,Vouga,136.40,136.12,2026-02-18,136.40,capacidade,2016-09-13,2026-11-22,diária,40.7437,-8.3197,sim,Energia
-aguieira,11H/01A,Aguieira,Mondego,423.00,428.00,2024-05-27,423.00,capacidade,2001-01-01,2026-11-22,diária,40.3407,-8.1967,sim,"Abastecimento, energia e rega"
-fronhas,12I/01A,Fronhas,Mondego,62.10,68.58,2019-12-21,62.10,capacidade,2001-01-01,2026-11-22,diária,40.2463,-8.1638,sim,Abastecimento e energia
-raiva,12H/01A,Raiva,Mondego,24.40,24.89,2014-11-13,24.40,capacidade,2001-01-01,2026-11-22,diária,40.3097,-8.249,sim,Energia
-lagoa_comprida,11L/03A,Lagoa Comprida,Mondego,13.88,14.07,2019-12-20,13.88,capacidade,2001-01-31,2026-11-22,diária,40.364,-7.6492,sim,Energia
-caldeirao,10M/01A,Caldeirão,Mondego,5.50,5.86,2016-05-08,5.50,capacidade,2001-01-31,2026-11-22,diária,40.5317,-7.3302,sim,Abastecimento e energia
-vale_do_rossim,11L/02A,Vale do Rossim,Mondego,3.50,4.02,2009-05-29,3.50,capacidade,2001-01-31,2026-11-22,diária,40.3996,-7.5885,sim,Energia
-alto_ceira,12J/01A,Alto Ceira,Mondego,,1.40,2019-12-20,1.40,maximo_registado,2016-09-13,2026-11-22,diária,40.1892,-7.8473,sim,Energia
-lagoacho,11L/01A,Lagoacho,Mondego,1.52,3.03,2026-05-30,1.52,capacidade,2001-01-31,2026-11-22,diária,40.3861,-7.6203,sim,Energia
-castelo_de_bode,16H/01A,Castelo de Bode,Tejo,1095.00,1099.06,2016-05-11,1095.00,capacidade,2001-01-01,2026-11-22,diária,39.543,-8.3189,sim,Abastecimento e energia
-cabril,14I/01A,Cabril,Tejo,720.00,719.00,2016-05-18,720.00,capacidade,2001-01-01,2026-11-22,diária,39.9178,-8.1328,sim,Abastecimento e energia
-maranhao,19J/01A,Maranhão,Tejo,205.40,205.40,2001-01-31,205.40,capacidade,2001-01-31,2026-11-16,semanal,39.015,-7.9759,sim,Energia e rega
-montargil,19H/01A,Montargil,Tejo,164.30,164.37,2001-01-31,164.30,capacidade,2001-01-31,2026-11-16,semanal,39.0532,-8.1753,sim,Energia e rega
-pracana,16K/01A,Pracana,Tejo,111.90,111.48,2006-11-24,111.90,capacidade,2001-01-01,2026-11-22,diária,39.565,-7.812,sim,Energia
-fratel,16K/02A,Fratel,Tejo,93.00,91.89,2009-12-30,93.00,capacidade,2001-01-01,2026-11-22,diária,39.5434,-7.8027,sim,Energia
-idanha,14N/01A,Idanha,Tejo,78.10,82.02,2026-02-05,78.10,capacidade,2001-01-31,2026-11-16,semanal,39.9451,-7.2014,sim,Energia e rega
-santa_luzia,13J/01A,Santa Luzia,Tejo,53.70,53.78,2019-12-20,53.70,capacidade,2001-01-31,2026-11-22,diária,40.0897,-7.8582,sim,Abastecimento e energia
-bouca,14H/01A,Bouçã,Tejo,48.40,55.77,2001-01-27,48.40,capacidade,2001-01-01,2026-11-22,diária,39.8537,-8.2198,sim,Energia
-povoa,17L/01A,Póvoa,Tejo,22.00,22.00,2026-02-09,22.00,capacidade,2001-01-31,2026-10-31,semanal,39.4769,-7.5554,sim,Abastecimento e energia
-belver,17J/01A,Belver,Tejo,20.57,20.37,2026-02-04,20.57,capacidade,2001-01-31,2026-11-22,diária,39.4797,-7.9985,sim,Energia
-alvito,24J/01A,Alvito,Sado,132.50,132.50,2001-01-31,132.50,capacidade,2001-01-31,2026-11-13,semanal,38.279,-7.9106,sim,"Abastecimento, energia e rega"
-roxo,26I/01A,Roxo,Sado,96.31,103.38,2026-02-13,96.31,capacidade,2001-01-31,2026-11-15,diária,37.9296,-8.0819,sim,"Abastecimento, energia e rega"
-odivelas,24I/01A,Odivelas,Sado,96.00,96.59,2026-02-11,96.00,capacidade,2001-01-31,2026-11-16,semanal,38.1848,-8.1153,sim,Energia e rega
-pego_do_altar,23G/01A,Pego do Altar,Sado,94.00,94.00,2003-04-15,94.00,capacidade,2001-01-31,2026-11-16,semanal,38.4187,-8.392,sim,Energia e rega
-vale_do_gaio,24H/01A,Vale do Gaio,Sado,63.00,63.00,2001-01-31,63.00,capacidade,2001-01-31,2026-11-16,semanal,38.2481,-8.2955,sim,"Abastecimento, energia e rega"
-alqueva,24M/07A,Alqueva,Guadiana,4150.00,4256.80,2013-05-31,4150.00,capacidade,2002-12-30,2026-11-22,diária,38.1973,-7.4953,sim,"Abastecimento, energia e rega"
-caia,20O/01A,Caia,Guadiana,203.00,205.86,2026-02-06,203.00,capacidade,2001-01-31,2026-11-16,diária,38.9978,-7.1493,sim,"Abastecimento, energia e rega"
-pedrogao,25L/01A,Pedrógão,Guadiana,106.00,141.39,2026-02-05,106.00,capacidade,2006-05-08,2026-11-22,diária,38.1107,-7.6304,sim,Energia
-arade,30G/02A,Arade,Arade,28.38,26.13,2001-01-31,28.38,capacidade,2001-01-31,2026-11-16,semanal,37.2395,-8.3763,sim,Energia e rega
-bravura,30E/01A,Bravura,Ribeiras do Algarve,34.83,37.14,2026-02-05,34.83,capacidade,2001-01-31,2026-11-16,diária,37.2017,-8.6978,sim,"Abastecimento, energia e rega"
-odelouca,30G/11AE,Odelouca,Arade,157.00,144.30,2025-05-05,157.00,capacidade,2009-12-31,2026-11-16,diária,37.28694,-8.471098,não,Abastecimento
-funcho,30G/01A,Funcho,Arade,47.72,46.28,2026-05-25,47.72,capacidade,2007-01-08,2026-11-16,semanal,37.262333,-8.382806,não,Abastecimento e rega
-azibo,04P/01A,Azibo,Douro,54.47,52.17,2016-04-15,54.47,capacidade,2001-01-31,2026-11-16,semanal,41.558333,-6.891,não,"Abastecimento, rega e lazer"
-alijo,06M/01A,Alijó,Douro,1.74,1.89,2012-03-30,1.74,capacidade,2001-01-31,2026-11-16,semanal,41.308972,-7.490278,não,Abastecimento
-odeleite,30L/01A,Odeleite,Guadiana,130.00,134.06,2010-04-17,130.00,capacidade,2001-01-01,2026-11-16,diária,37.328556,-7.486222,não,Abastecimento e rega
-beliche,30L/02A,Beliche,Guadiana,48.00,46.93,2001-03-03,48.00,capacidade,2001-01-01,2026-11-16,diária,37.273722,-7.509778,não,Abastecimento e rega
+alto_lindoso,02H/01A,Alto Lindoso,Lima,379.00,378.69,2001-03-21,379.00,capacidade,2001-01-01,2026-11-23,diária,41.8722,-8.2027,sim,Energia e lazer
+touvedo,03G/01A,Touvedo,Lima,15.50,15.77,2009-01-31,15.50,capacidade,2001-01-01,2026-11-23,diária,41.8122,-8.3538,sim,Abastecimento e energia
+alto_rabagao,03J/03A,Alto Rabagão,Cávado,568.70,568.00,2026-04-06,568.70,capacidade,2001-01-01,2026-11-23,diária,41.7379,-7.854,sim,Abastecimento e energia
+paradela,03J/01A,Paradela,Cávado,164.40,169.13,2001-03-21,164.40,capacidade,2001-01-01,2026-11-23,diária,41.7669,-7.9501,sim,Energia
+canicada,04H/01A,Caniçada,Cávado,159.30,162.44,2010-12-05,159.30,capacidade,2001-01-01,2026-11-23,diária,41.6525,-8.2313,sim,Energia e lazer
+vilarinho_das_furnas,03H/01A,Vilarinho das Furnas,Cávado,117.69,117.17,2026-02-19,117.69,capacidade,2001-01-01,2026-11-23,diária,41.7634,-8.2098,sim,Energia
+venda_nova,03J/04A,Venda Nova,Cávado,94.50,95.06,2003-08-12,94.50,capacidade,2001-01-01,2026-11-23,diária,41.6812,-7.9848,sim,Energia
+salamonde,03I/01A,Salamonde,Cávado,65.00,65.31,2001-03-20,65.00,capacidade,2001-01-01,2026-11-23,diária,41.6915,-8.0915,sim,Energia
+guilhofrei,04I/01A,Guilhofrei,Ave,21.20,21.65,2018-03-14,21.20,capacidade,2001-01-31,2026-11-23,diária,41.5856,-8.1377,sim,Energia e lazer
+baixo_sabor,06O/09A,Baixo Sabor,Douro,1095.00,1093.30,2025-05-15,1095.00,capacidade,2016-09-13,2026-11-23,diária,41.2283,-7.0128,sim,Energia
+carrapatelo,07I/01A,Carrapatelo,Douro,150.20,150.88,2016-03-15,150.20,capacidade,2001-01-01,2026-11-23,diária,41.0856,-8.131,sim,"Abastecimento, energia e lazer"
+alto_tamega,04K/04A,Alto Tâmega,Douro,131.70,131.20,2024-02-25,131.70,capacidade,2024-01-28,2026-11-23,diária,41.5743,-7.7312,sim,Energia
+bemposta,06S/01A,Bemposta,Douro,128.80,129.27,2007-05-24,128.80,capacidade,2001-01-01,2026-11-23,diária,41.3012,-6.4699,sim,Abastecimento e energia
+torrao,07H/01A,Torrão,Douro,123.90,105.81,2001-01-01,123.90,capacidade,2001-01-01,2026-11-23,diária,41.0971,-8.2614,sim,"Abastecimento, energia e lazer"
+crestuma_lever,07G/01A,Crestuma-Lever,Douro,110.00,113.18,2018-08-15,110.00,capacidade,2001-01-01,2026-11-23,diária,41.0729,-8.4868,sim,"Abastecimento, energia e lazer"
+foz_tua,06M/06A,Foz Tua,Douro,106.10,106.00,2021-02-12,106.10,capacidade,2019-12-19,2026-11-23,semanal,41.2189,-7.4222,sim,Energia
+vilar_tabuaco,08L/01A,Vilar-Tabuaço,Douro,99.75,100.71,2003-01-02,99.75,capacidade,2001-01-31,2026-11-23,diária,40.9872,-7.5348,sim,Abastecimento e energia
+valeira,07M/02A,Valeira,Douro,98.50,98.63,2025-04-04,98.50,capacidade,2001-01-01,2026-11-23,diária,41.1603,-7.3751,sim,Energia
+regua,07K/01A,Régua,Douro,95.00,95.52,2012-12-28,95.00,capacidade,2001-01-01,2026-11-23,diária,41.1462,-7.7399,sim,"Abastecimento, energia e lazer"
+pocinho,07O/02A,Pocinho,Douro,82.90,83.29,2011-03-29,82.90,capacidade,2001-01-01,2026-11-23,diária,41.1352,-7.1143,sim,"Abastecimento, energia e lazer"
+picote,05S/01A,Picote,Douro,62.70,62.97,2004-04-01,62.70,capacidade,2001-01-01,2026-11-23,diária,41.3802,-6.3518,sim,Abastecimento e energia
+daivoes,04J/08A,Daivões,Douro,55.48,54.40,2026-02-07,55.48,capacidade,2022-12-04,2026-11-23,diária,41.5256,-7.8634,sim,Energia
+feiticeiro,06O/10A,Feiticeiro,Douro,31.00,30.81,2020-05-27,31.00,capacidade,2017-07-01,2026-11-23,diária,41.2022,-7.0931,sim,Energia
+miranda,05T/01A,Miranda,Douro,28.00,28.07,2010-04-28,28.00,capacidade,2001-01-01,2026-11-23,diária,41.489,-6.2639,sim,Abastecimento e rega
+gouvaes,05K/02A,Gouvães,Douro,14.10,14.56,2024-02-19,14.10,capacidade,2022-11-29,2026-11-23,diária,41.4942,-7.7271,sim,Energia
+varosa,07K/02A,Varosa,Douro,12.94,14.52,2009-12-30,12.94,capacidade,2001-01-31,2026-11-23,diária,41.1204,-7.7756,sim,Energia
+serra_serrada,02Q/01A,Serra Serrada,Douro,1.68,1.72,2018-12-21,1.68,capacidade,2001-01-31,2026-11-23,semanal,41.9613,-6.7722,sim,Abastecimento e energia
+ribeiradio,09H/06A,Ribeiradio,Vouga,136.40,136.12,2026-02-18,136.40,capacidade,2016-09-13,2026-11-23,diária,40.7437,-8.3197,sim,Energia
+aguieira,11H/01A,Aguieira,Mondego,423.00,428.00,2024-05-27,423.00,capacidade,2001-01-01,2026-11-23,diária,40.3407,-8.1967,sim,"Abastecimento, energia e rega"
+fronhas,12I/01A,Fronhas,Mondego,62.10,68.58,2019-12-21,62.10,capacidade,2001-01-01,2026-11-23,diária,40.2463,-8.1638,sim,Abastecimento e energia
+raiva,12H/01A,Raiva,Mondego,24.40,24.89,2014-11-13,24.40,capacidade,2001-01-01,2026-11-23,diária,40.3097,-8.249,sim,Energia
+lagoa_comprida,11L/03A,Lagoa Comprida,Mondego,13.88,14.07,2019-12-20,13.88,capacidade,2001-01-31,2026-11-23,diária,40.364,-7.6492,sim,Energia
+caldeirao,10M/01A,Caldeirão,Mondego,5.50,5.86,2016-05-08,5.50,capacidade,2001-01-31,2026-11-23,diária,40.5317,-7.3302,sim,Abastecimento e energia
+vale_do_rossim,11L/02A,Vale do Rossim,Mondego,3.50,4.02,2009-05-29,3.50,capacidade,2001-01-31,2026-11-23,diária,40.3996,-7.5885,sim,Energia
+alto_ceira,12J/01A,Alto Ceira,Mondego,,1.40,2019-12-20,1.40,maximo_registado,2016-09-13,2026-11-23,diária,40.1892,-7.8473,sim,Energia
+lagoacho,11L/01A,Lagoacho,Mondego,1.52,3.03,2026-05-30,1.52,capacidade,2001-01-31,2026-11-23,diária,40.3861,-7.6203,sim,Energia
+castelo_de_bode,16H/01A,Castelo de Bode,Tejo,1095.00,1099.06,2016-05-11,1095.00,capacidade,2001-01-01,2026-11-23,diária,39.543,-8.3189,sim,Abastecimento e energia
+cabril,14I/01A,Cabril,Tejo,720.00,719.00,2016-05-18,720.00,capacidade,2001-01-01,2026-11-23,diária,39.9178,-8.1328,sim,Abastecimento e energia
+maranhao,19J/01A,Maranhão,Tejo,205.40,205.40,2001-01-31,205.40,capacidade,2001-01-31,2026-11-23,semanal,39.015,-7.9759,sim,Energia e rega
+montargil,19H/01A,Montargil,Tejo,164.30,164.37,2001-01-31,164.30,capacidade,2001-01-31,2026-11-23,semanal,39.0532,-8.1753,sim,Energia e rega
+pracana,16K/01A,Pracana,Tejo,111.90,111.48,2006-11-24,111.90,capacidade,2001-01-01,2026-11-23,diária,39.565,-7.812,sim,Energia
+fratel,16K/02A,Fratel,Tejo,93.00,91.89,2009-12-30,93.00,capacidade,2001-01-01,2026-11-23,diária,39.5434,-7.8027,sim,Energia
+idanha,14N/01A,Idanha,Tejo,78.10,82.02,2026-02-05,78.10,capacidade,2001-01-31,2026-11-23,semanal,39.9451,-7.2014,sim,Energia e rega
+santa_luzia,13J/01A,Santa Luzia,Tejo,53.70,53.78,2019-12-20,53.70,capacidade,2001-01-31,2026-11-23,diária,40.0897,-7.8582,sim,Abastecimento e energia
+bouca,14H/01A,Bouçã,Tejo,48.40,55.77,2001-01-27,48.40,capacidade,2001-01-01,2026-11-23,diária,39.8537,-8.2198,sim,Energia
+povoa,17L/01A,Póvoa,Tejo,22.00,22.00,2026-02-09,22.00,capacidade,2001-01-31,2026-11-23,semanal,39.4769,-7.5554,sim,Abastecimento e energia
+belver,17J/01A,Belver,Tejo,20.57,20.37,2026-02-04,20.57,capacidade,2001-01-31,2026-11-23,diária,39.4797,-7.9985,sim,Energia
+alvito,24J/01A,Alvito,Sado,132.50,132.50,2001-01-31,132.50,capacidade,2001-01-31,2026-11-23,semanal,38.279,-7.9106,sim,"Abastecimento, energia e rega"
+roxo,26I/01A,Roxo,Sado,96.31,103.38,2026-02-13,96.31,capacidade,2001-01-31,2026-11-22,diária,37.9296,-8.0819,sim,"Abastecimento, energia e rega"
+odivelas,24I/01A,Odivelas,Sado,96.00,96.59,2026-02-11,96.00,capacidade,2001-01-31,2026-11-23,semanal,38.1848,-8.1153,sim,Energia e rega
+pego_do_altar,23G/01A,Pego do Altar,Sado,94.00,94.00,2003-04-15,94.00,capacidade,2001-01-31,2026-11-23,semanal,38.4187,-8.392,sim,Energia e rega
+vale_do_gaio,24H/01A,Vale do Gaio,Sado,63.00,63.00,2001-01-31,63.00,capacidade,2001-01-31,2026-11-23,semanal,38.2481,-8.2955,sim,"Abastecimento, energia e rega"
+alqueva,24M/07A,Alqueva,Guadiana,4150.00,4256.80,2013-05-31,4150.00,capacidade,2002-12-30,2026-11-23,diária,38.1973,-7.4953,sim,"Abastecimento, energia e rega"
+caia,20O/01A,Caia,Guadiana,203.00,205.86,2026-02-06,203.00,capacidade,2001-01-31,2026-11-23,diária,38.9978,-7.1493,sim,"Abastecimento, energia e rega"
+pedrogao,25L/01A,Pedrógão,Guadiana,106.00,141.39,2026-02-05,106.00,capacidade,2006-05-08,2026-11-23,diária,38.1107,-7.6304,sim,Energia
+arade,30G/02A,Arade,Arade,28.38,26.13,2001-01-31,28.38,capacidade,2001-01-31,2026-11-23,semanal,37.2395,-8.3763,sim,Energia e rega
+bravura,30E/01A,Bravura,Ribeiras do Algarve,34.83,37.14,2026-02-05,34.83,capacidade,2001-01-31,2026-11-23,diária,37.2017,-8.6978,sim,"Abastecimento, energia e rega"
+odelouca,30G/11AE,Odelouca,Arade,157.00,144.30,2025-05-05,157.00,capacidade,2009-12-31,2026-11-23,diária,37.28694,-8.471098,não,Abastecimento
+funcho,30G/01A,Funcho,Arade,47.72,46.28,2026-05-25,47.72,capacidade,2007-01-08,2026-11-23,semanal,37.262333,-8.382806,não,Abastecimento e rega
+azibo,04P/01A,Azibo,Douro,54.47,52.17,2016-04-15,54.47,capacidade,2001-01-31,2026-11-23,semanal,41.558333,-6.891,não,"Abastecimento, rega e lazer"
+alijo,06M/01A,Alijó,Douro,1.74,1.89,2012-03-30,1.74,capacidade,2001-01-31,2026-11-23,semanal,41.308972,-7.490278,não,Abastecimento
+odeleite,30L/01A,Odeleite,Guadiana,130.00,134.06,2010-04-17,130.00,capacidade,2001-01-01,2026-11-23,diária,37.328556,-7.486222,não,Abastecimento e rega
+beliche,30L/02A,Beliche,Guadiana,48.00,46.93,2001-03-03,48.00,capacidade,2001-01-01,2026-11-23,diária,37.273722,-7.509778,não,Abastecimento e rega
 abrilongo,19O/01A,Abrilongo,Guadiana,19.90,20.16,2014-02-21,19.90,capacidade,2005-03-07,2026-11-16,semanal,39.096,-7.121,não,Rega
-vigia,22L/01A,Vigia,Guadiana,16.73,17.43,2010-02-16,16.73,capacidade,2001-01-31,2026-11-13,diária,38.539147,-7.607769,não,Abastecimento e rega
-monte_novo,22K/01A,Monte Novo,Guadiana,15.28,17.62,2025-03-10,15.28,capacidade,2001-01-31,2026-11-16,semanal,38.52625,-7.728639,não,Abastecimento e rega
-enxoe,26M/01A,Enxoé,Guadiana,12.50,13.27,2013-03-31,12.50,capacidade,2003-10-31,2026-11-16,semanal,37.993056,-7.463889,não,Abastecimento e rega
-lucefecit,22M/01A,Lucefécit,Guadiana,10.22,10.22,2001-01-31,10.22,capacidade,2001-01-31,2026-11-16,semanal,38.636083,-7.407417,não,Rega
-santa_clara,28G/01A,Santa Clara,Mira,485.00,488.09,2011-02-28,485.00,capacidade,2001-01-31,2026-11-16,diária,37.515611,-8.441917,não,Abastecimento e rega
-corte_brique,28G/02A,Corte Brique,Mira,1.64,1.66,2010-02-28,1.64,capacidade,2001-01-31,2026-11-16,diária,37.609,-8.453,não,Rega
-fagilde,10K/01A,Fagilde,Mondego,3.84,4.87,2023-06-12,4.87,maximo_registado,2005-01-31,2026-11-16,semanal,40.639,-7.783,não,Abastecimento
-morgavel,26E/01A,Morgavél,Ribeiras do Alentejo,32.50,30.79,2010-03-08,32.50,capacidade,2001-01-31,2026-11-13,semanal,37.898,-8.761,não,Abastecimento e industrial
+vigia,22L/01A,Vigia,Guadiana,16.73,17.43,2010-02-16,16.73,capacidade,2001-01-31,2026-11-20,diária,38.539147,-7.607769,não,Abastecimento e rega
+monte_novo,22K/01A,Monte Novo,Guadiana,15.28,17.62,2025-03-10,15.28,capacidade,2001-01-31,2026-11-23,semanal,38.52625,-7.728639,não,Abastecimento e rega
+enxoe,26M/01A,Enxoé,Guadiana,12.50,13.27,2013-03-31,12.50,capacidade,2003-10-31,2026-11-23,semanal,37.993056,-7.463889,não,Abastecimento e rega
+lucefecit,22M/01A,Lucefécit,Guadiana,10.22,10.22,2001-01-31,10.22,capacidade,2001-01-31,2026-11-23,semanal,38.636083,-7.407417,não,Rega
+santa_clara,28G/01A,Santa Clara,Mira,485.00,488.09,2011-02-28,485.00,capacidade,2001-01-31,2026-11-23,diária,37.515611,-8.441917,não,Abastecimento e rega
+corte_brique,28G/02A,Corte Brique,Mira,1.64,1.66,2010-02-28,1.64,capacidade,2001-01-31,2026-11-23,diária,37.609,-8.453,não,Rega
+fagilde,10K/01A,Fagilde,Mondego,3.84,4.87,2023-06-12,4.87,maximo_registado,2005-01-31,2026-11-23,semanal,40.639,-7.783,não,Abastecimento
+morgavel,26E/01A,Morgavél,Ribeiras do Alentejo,32.50,30.79,2010-03-08,32.50,capacidade,2001-01-31,2026-11-23,semanal,37.898,-8.761,não,Abastecimento e industrial
 sao_domingos,17B/01A,São Domingos,Ribeiras do Oeste,7.90,8.11,2026-07-27,7.90,capacidade,2001-01-31,2026-11-16,semanal,39.334333,-9.317278,não,Abastecimento
-monte_da_rocha,27H/01A,Monte da Rocha,Sado,104.50,107.61,2011-02-17,104.50,capacidade,2001-01-31,2026-11-16,diária,37.727389,-8.288444,não,Abastecimento e rega
-campilhas,26F/01A,Campilhas,Sado,27.15,29.31,2026-02-05,27.15,capacidade,2001-01-31,2026-11-16,diária,37.840556,-8.621667,não,Rega
-fonte_serne,26G/01AE,Fonte Serne,Sado,5.15,5.42,2026-02-05,5.15,capacidade,2001-01-31,2026-11-16,diária,37.881,-8.497,não,Rega
-monte_migueis,27H/03AE,Monte Migueis,Sado,0.94,1.03,2013-03-20,0.94,capacidade,2001-01-31,2026-11-16,diária,37.789,-8.265,não,Rega
-monte_gato,27H/02AE,Monte Gato,Sado,0.65,0.68,2002-12-31,0.65,capacidade,2001-01-31,2026-11-16,diária,37.791,-8.237,não,Rega
-minutos,22I/01A,Minutos,Tejo,52.10,52.20,2011-04-22,52.10,capacidade,2005-03-14,2026-11-16,semanal,38.659,-8.098,não,Rega
+monte_da_rocha,27H/01A,Monte da Rocha,Sado,104.50,107.61,2011-02-17,104.50,capacidade,2001-01-31,2026-11-23,diária,37.727389,-8.288444,não,Abastecimento e rega
+campilhas,26F/01A,Campilhas,Sado,27.15,29.31,2026-02-05,27.15,capacidade,2001-01-31,2026-11-23,diária,37.840556,-8.621667,não,Rega
+fonte_serne,26G/01AE,Fonte Serne,Sado,5.15,5.42,2026-02-05,5.15,capacidade,2001-01-31,2026-11-23,diária,37.881,-8.497,não,Rega
+monte_migueis,27H/03AE,Monte Migueis,Sado,0.94,1.03,2013-03-20,0.94,capacidade,2001-01-31,2026-11-23,diária,37.789,-8.265,não,Rega
+monte_gato,27H/02AE,Monte Gato,Sado,0.65,0.68,2002-12-31,0.65,capacidade,2001-01-31,2026-11-23,diária,37.791,-8.237,não,Rega
+minutos,22I/01A,Minutos,Tejo,52.10,52.20,2011-04-22,52.10,capacidade,2005-03-14,2026-11-23,semanal,38.659,-8.098,não,Rega
 meimoa,12O/01A,Meimoa,Tejo,40.90,38.75,2003-04-30,40.90,capacidade,2001-01-05,2026-10-31,semanal,40.263,-7.151,não,Abastecimento e rega
-santa_agueda,14M/01A,Santa Águeda (Marateca),Tejo,37.20,37.20,2001-01-31,37.20,capacidade,2001-01-31,2026-10-31,semanal,39.969,-7.481,não,Abastecimento e rega
+santa_agueda,14M/01A,Santa Águeda (Marateca),Tejo,37.20,37.20,2001-01-31,37.20,capacidade,2001-01-31,2026-11-23,semanal,39.969,-7.481,não,Abastecimento e rega
 divor,21J/01A,Divôr,Tejo,11.90,12.42,2026-02-09,11.90,capacidade,2001-01-31,2026-11-16,semanal,38.70025,-7.923972,não,Rega
-apartadura,17M/01A,Apartadura,Tejo,7.46,7.51,2001-03-03,7.46,capacidade,2001-01-01,2026-11-16,semanal,39.34975,-7.382528,não,Abastecimento e rega
-magos,20E/01A,Magos,Tejo,3.38,3.51,2001-04-30,3.38,capacidade,2001-01-31,2026-11-16,semanal,38.995972,-8.688639,não,Rega
-cova_do_viriato,12L/02A,Cova do Viriato,Tejo,1.50,1.50,2001-01-07,1.50,capacidade,2001-01-07,2026-11-16,semanal,40.309,-7.561,não,Abastecimento
-capinha,12M/01A,Capinha,Tejo,0.50,0.50,2001-01-31,0.50,capacidade,2001-01-31,2026-11-13,semanal,40.212,-7.387,não,Abastecimento e rega
+apartadura,17M/01A,Apartadura,Tejo,7.46,7.51,2001-03-03,7.46,capacidade,2001-01-01,2026-11-23,semanal,39.34975,-7.382528,não,Abastecimento e rega
+magos,20E/01A,Magos,Tejo,3.38,3.51,2001-04-30,3.38,capacidade,2001-01-31,2026-11-23,semanal,38.995972,-8.688639,não,Rega
+cova_do_viriato,12L/02A,Cova do Viriato,Tejo,1.50,1.58,2026-11-23,1.50,capacidade,2001-01-07,2026-11-23,semanal,40.309,-7.561,não,Abastecimento
+capinha,12M/01A,Capinha,Tejo,0.50,0.50,2001-01-31,0.50,capacidade,2001-01-31,2026-11-23,semanal,40.212,-7.387,não,Abastecimento e rega
