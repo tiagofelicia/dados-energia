@@ -1,6 +1,6 @@
 {
  "agora": {
-  "consumo_mw": 5133.0,
+  "consumo_mw": 5132.9,
   "fontes_mw": {
    "baterias_consumo": 13.8,
    "baterias_injecao": 0.5,
@@ -11,7 +11,7 @@
    "exportacao": 0.0,
    "gas_ciclo_combinado": 487.5,
    "gas_cogeracao": 61.3,
-   "hidrica": 1100.9,
+   "hidrica": 1100.8,
    "importacao": 146.5,
    "ondas": 0.0,
    "outra_termica": 9.9,
@@ -25,7 +25,7 @@
  "dias_atraso": 0,
  "e_hoje": true,
  "fonte": "REN Data Hub",
- "gerado_em": "2026-11-25T20:17:21+00:00",
+ "gerado_em": "2026-11-25T22:17:30+00:00",
  "horas": [
   "00:00",
   "00:15",
@@ -41,12 +41,12 @@
  "intervalos": 9,
  "intervalos_no_ficheiro": 96,
  "resumo": {
-  "consumo_gwh": 12.58,
-  "perc_renovavel": 90.94,
-  "pico_consumo_hora": "00:15",
-  "pico_consumo_mw": 6031.6,
-  "producao_nac_gwh": 14.28,
-  "renovavel_gwh": 12.99,
+  "consumo_gwh": 12.63,
+  "perc_renovavel": 90.97,
+  "pico_consumo_hora": "00:30",
+  "pico_consumo_mw": 6108.2,
+  "producao_nac_gwh": 14.33,
+  "renovavel_gwh": 13.04,
   "saldo_importador_gwh": 0.03
  },
  "series_mw": {
@@ -85,7 +85,7 @@
   ],
   "bombagem": [
    115.7,
-   194.5,
+   172.3,
    465.8,
    827.4,
    1037.3,
@@ -106,19 +106,19 @@
    0.0
   ],
   "consumo": [
-   6031.6,
-   5910.3,
+   6031.5,
+   6108.2,
    5869.1,
    5686.0,
-   5569.2,
-   5483.4,
-   5363.0,
-   5268.5,
-   5133.0
+   5569.3,
+   5483.3,
+   5362.9,
+   5268.3,
+   5132.9
   ],
   "eolica": [
    4396.6,
-   4375.0,
+   4572.8,
    4363.0,
    4333.2,
    4304.0,
@@ -129,7 +129,7 @@
   ],
   "exportacao": [
    431.0,
-   337.1,
+   343.6,
    73.6,
    0.0,
    0.0,
@@ -151,7 +151,7 @@
   ],
   "gas_cogeracao": [
    65.5,
-   63.1,
+   64.8,
    61.7,
    60.6,
    61.0,
@@ -162,14 +162,14 @@
   ],
   "hidrica": [
    1295.0,
-   1169.8,
-   1175.3,
+   1169.3,
+   1175.4,
    1188.8,
    1192.6,
-   1124.7,
-   1109.1,
-   1117.4,
-   1100.9
+   1124.6,
+   1108.9,
+   1117.3,
+   1100.8
   ],
   "importacao": [
    0.0,
