@@ -299,7 +299,7 @@
     "dia_mercado e periodo são os da OMIE (hora de Espanha): o período 1 começa às 23:00 da véspera em Portugal. data_utc é o início do período.",
     "Os grupos de cada período são recalculados a partir de unidades.csv sempre que uma classificação muda. Faltam os dias em que o ficheiro da OMIE veio incompleto: metadata.json → dias_em_falta."
    ],
-   "bytes": 17488069,
+   "bytes": 17537356,
    "cadencia": "2x/dia (90 dias depois do dia de mercado)",
    "caminho": "data/omie/tecnologia-marginal/",
    "colunas": [
@@ -334,14 +334,14 @@
    ],
    "titulo": "Tecnologias ao preço do mercado diário (MIBEL)",
    "tolerancia_dias": 100,
-   "ultima_data": "2026-08-25",
+   "ultima_data": "2026-08-26",
    "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/"
   },
   {
    "avisos": [
     "origem: lista (lista de unidades da OMIE), nome (o nome nas ofertas: C.T. = carvão, C.C. = ciclo combinado…), codigo (padrão do código: …VDnn e …REnn = vendas de representantes do regime especial, …RMnn e …Cnn = compras de comercializadores), lado (só compra = comercializadores e consumidores), interligacao (ligações entre zonas) ou sem. grupo é o da unidade; nos ficheiros mensais, o de cada oferta depende também do lado (uma bateria a carregar é ARMC, uma interligação a exportar é INTC)."
    ],
-   "bytes": 397898,
+   "bytes": 398001,
    "cadencia": "2x/dia",
    "caminho": "data/omie/tecnologia-marginal/unidades.csv",
    "colunas": [
@@ -361,17 +361,17 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-tecnologia-marginal-unidades",
-   "linhas": 4101,
+   "linhas": 4102,
    "titulo": "Tecnologias ao preço — classificação das unidades",
    "tolerancia_dias": 100,
-   "ultima_data": "2026-08-25",
+   "ultima_data": "2026-08-26",
    "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/unidades.csv"
   },
   {
    "avisos": [
     "Em hora de Portugal (resumo.json) o último dia é a véspera do último dia de mercado (metadata.json → ultima_data_pt): a última hora do dia português, 23h–24h, pertence ao dia de mercado seguinte."
    ],
-   "bytes": 726361,
+   "bytes": 726428,
    "cadencia": "2x/dia",
    "caminho": "data/omie/tecnologia-marginal/",
    "descricao": "Para Portugal e Espanha, por ano, por mês e nos últimos 12 meses: horas com cada grupo ao preço (presença), horas com alguma oferta de venda e de compra ao preço, horas repartidas por igual pelos grupos de cada período, o preço médio quando cada grupo está ao preço, o mesmo nos 25 % de horas mais baratas e mais caras e, por ano, por hora do dia. É o que a página /quem-marca-o-preco lê. resumo.json conta Portugal pelo dia e pela hora de Portugal; resumo_cet.json, pelo dia de mercado (hora CET). Espanha conta sempre pelo dia e pela hora de Espanha.",
@@ -382,7 +382,7 @@
    "padrao": "data/omie/tecnologia-marginal/resumo*.json",
    "titulo": "Tecnologias ao preço — totais por ano e por mês (hora de Portugal e hora CET)",
    "tolerancia_dias": 100,
-   "ultima_data": "2026-08-25",
+   "ultima_data": "2026-08-26",
    "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/"
   },
   {
@@ -818,7 +818,7 @@
     "A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
     "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem em todas as horas."
    ],
-   "bytes": 114942,
+   "bytes": 114735,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras_agora.json",
    "descricao": "Volume armazenado (% da capacidade, como a APA o publica), cota (m) e caudais afluente e efluente (m3/s), de hora a hora, nas últimas 48 horas, nas albufeiras do todas as estações de albufeira do InfoÁgua (62 em novembro de 2026, 9 delas em Espanha, junto à fronteira). Fonte: APA (InfoÁgua).",
@@ -828,7 +828,7 @@
    "id": "producao-albufeiras-agora",
    "titulo": "Albufeiras — as últimas 48 horas, de hora a hora",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-24",
+   "ultima_data": "2026-11-25",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_agora.json"
   },
   {
@@ -837,7 +837,7 @@
     "Uma linha por valor publicado: na maioria das estações, um por hora; nalgumas, de 15 em 15 minutos; nas de rega do Alentejo, um por dia.",
     "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."
    ],
-   "bytes": 418845,
+   "bytes": 421619,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras-horario/",
    "colunas": [
@@ -854,11 +854,11 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-horario",
-   "linhas": 6484,
+   "linhas": 6527,
    "padrao": "data/producao/albufeiras-horario/albufeiras_horario_*.csv",
    "titulo": "Albufeiras — histórico de hora a hora",
    "tolerancia_dias": 1,
-   "ultima_data": "2026-11-24",
+   "ultima_data": "2026-11-25",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras-horario/"
   },
   {
@@ -1896,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-25T00:17:15+00:00",
+ "gerado_em": "2026-11-25T01:00:44+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,7 +1920,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 592325370,
+  "bytes": 592377394,
   "datasets": 64,
   "ficheiros": 2174
  }
