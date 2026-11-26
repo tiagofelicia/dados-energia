@@ -1,50 +1,53 @@
 {
  "agora": {
-  "consumo_mw": 5583.3,
+  "consumo_mw": 5412.1,
   "fontes_mw": {
-   "baterias_consumo": 15.1,
-   "baterias_injecao": 0.0,
-   "biomassa": 290.1,
-   "bombagem": 175.5,
+   "baterias_consumo": 27.1,
+   "baterias_injecao": 1.0,
+   "biomassa": 287.1,
+   "bombagem": 118.5,
    "carvao": 0.0,
-   "eolica": 901.2,
+   "eolica": 889.2,
    "exportacao": 0.0,
-   "gas_ciclo_combinado": 511.0,
-   "gas_cogeracao": 63.0,
-   "hidrica": 1366.6,
-   "importacao": 2612.3,
+   "gas_ciclo_combinado": 518.9,
+   "gas_cogeracao": 62.3,
+   "hidrica": 1236.5,
+   "importacao": 2534.8,
    "ondas": 0.0,
-   "outra_termica": 10.4,
+   "outra_termica": 9.5,
    "solar": 0.0
   },
-  "hora": "01:15",
-  "perc_renovavel": 81.4
+  "hora": "02:00",
+  "perc_renovavel": 80.31
  },
  "completo": false,
  "data": "2026-11-26",
  "dias_atraso": 0,
  "e_hoje": true,
  "fonte": "REN Data Hub",
- "gerado_em": "2026-11-26T02:17:30+00:00",
+ "gerado_em": "2026-11-26T02:54:48+00:00",
  "horas": [
   "00:00",
   "00:15",
   "00:30",
   "00:45",
   "01:00",
-  "01:15"
+  "01:15",
+  "01:30",
+  "01:45",
+  "02:00"
  ],
  "interval_minutes": 15,
- "intervalos": 6,
+ "intervalos": 9,
  "intervalos_no_ficheiro": 96,
  "resumo": {
-  "consumo_gwh": 8.83,
-  "perc_renovavel": 82.56,
+  "consumo_gwh": 13.13,
+  "perc_renovavel": 81.91,
   "pico_consumo_hora": "00:15",
   "pico_consumo_mw": 6176.4,
-  "producao_nac_gwh": 5.28,
-  "renovavel_gwh": 4.36,
-  "saldo_importador_gwh": 3.9
+  "producao_nac_gwh": 7.65,
+  "renovavel_gwh": 6.26,
+  "saldo_importador_gwh": 5.99
  },
  "series_mw": {
   "baterias_consumo": [
@@ -53,7 +56,10 @@
    0.0,
    16.6,
    19.9,
-   15.1
+   15.5,
+   25.0,
+   27.5,
+   27.1
   ],
   "baterias_injecao": [
    0.0,
@@ -61,7 +67,10 @@
    0.2,
    0.0,
    0.0,
-   0.0
+   0.0,
+   0.0,
+   1.5,
+   1.0
   ],
   "biomassa": [
    291.4,
@@ -69,7 +78,10 @@
    292.4,
    291.7,
    287.2,
-   290.1
+   290.1,
+   289.6,
+   291.3,
+   287.1
   ],
   "bombagem": [
    268.4,
@@ -77,9 +89,15 @@
    268.8,
    268.4,
    222.5,
-   175.5
+   177.0,
+   223.2,
+   267.2,
+   118.5
   ],
   "carvao": [
+   0.0,
+   0.0,
+   0.0,
    0.0,
    0.0,
    0.0,
@@ -92,8 +110,11 @@
    6046.7,
    5893.5,
    5990.0,
-   5615.0,
-   5583.3
+   5912.8,
+   5824.6,
+   5755.4,
+   5498.2,
+   5412.1
   ],
   "eolica": [
    930.6,
@@ -101,9 +122,15 @@
    831.6,
    830.9,
    888.4,
-   901.2
+   899.7,
+   885.3,
+   903.1,
+   889.2
   ],
   "exportacao": [
+   0.0,
+   0.0,
+   0.0,
    0.0,
    0.0,
    0.0,
@@ -117,7 +144,10 @@
    568.8,
    558.0,
    507.1,
-   511.0
+   514.3,
+   568.6,
+   540.3,
+   518.9
   ],
   "gas_cogeracao": [
    64.3,
@@ -125,7 +155,10 @@
    62.7,
    63.0,
    62.4,
-   63.0
+   63.0,
+   62.9,
+   62.9,
+   62.3
   ],
   "hidrica": [
    2254.8,
@@ -133,17 +166,26 @@
    1709.7,
    1749.1,
    1443.7,
-   1366.6
+   1406.1,
+   1445.3,
+   1357.4,
+   1236.5
   ],
   "importacao": [
    2337.2,
    2584.8,
    2667.5,
    2752.9,
-   2638.9,
-   2612.3
+   2936.6,
+   2813.3,
+   2722.4,
+   2609.3,
+   2534.8
   ],
   "ondas": [
+   0.0,
+   0.0,
+   0.0,
    0.0,
    0.0,
    0.0,
@@ -157,9 +199,15 @@
    10.2,
    10.1,
    9.9,
-   10.4
+   10.4,
+   10.0,
+   10.0,
+   9.5
   ],
   "solar": [
+   0.0,
+   0.0,
+   0.0,
    0.0,
    0.0,
    0.0,
