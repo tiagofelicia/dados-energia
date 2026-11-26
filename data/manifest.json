@@ -389,7 +389,7 @@
    "avisos": [
     "A última coluna, data_utc, é o início do intervalo em UTC (AAAA-MM-DD HH:MM). Nos dias de mudança de hora o 'intervalo' repete-se (outubro) ou salta (março); o data_utc não."
    ],
-   "bytes": 4050767,
+   "bytes": 4050829,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_dados_atuais.csv",
    "colunas": [
@@ -478,7 +478,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/historico/"
   },
   {
-   "bytes": 105966,
+   "bytes": 105983,
    "cadencia": "cada 4h",
    "caminho": "data/producao/producao_bombagem_diaria.csv",
    "colunas": [
@@ -490,10 +490,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-bombagem",
-   "linhas": 6173,
+   "linhas": 6174,
    "titulo": "Bombagem hidroelétrica diária",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-25",
+   "ultima_data": "2026-11-26",
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
@@ -898,7 +898,7 @@
    "id": "producao-records",
    "titulo": "Recordes de produção",
    "tolerancia_dias": 2,
-   "ultima_data": "2026-11-25",
+   "ultima_data": "2026-11-26",
    "url": "https://dados.tiagofelicia.pt/data/producao/records_producao.json"
   },
   {
@@ -1896,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-26T00:07:43+00:00",
+ "gerado_em": "2026-11-26T00:17:13+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,7 +1920,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 593199150,
+  "bytes": 593199229,
   "datasets": 64,
   "ficheiros": 2175
  }
