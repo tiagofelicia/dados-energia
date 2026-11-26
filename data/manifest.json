@@ -818,7 +818,7 @@
     "A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
     "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem em todas as horas."
    ],
-   "bytes": 113242,
+   "bytes": 113461,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras_agora.json",
    "descricao": "Volume armazenado (% da capacidade, como a APA o publica), cota (m) e caudais afluente e efluente (m3/s), de hora a hora, nas últimas 48 horas, nas albufeiras do todas as estações de albufeira do InfoÁgua (62 em novembro de 2026, 9 delas em Espanha, junto à fronteira). Fonte: APA (InfoÁgua).",
@@ -837,7 +837,7 @@
     "Uma linha por valor publicado: na maioria das estações, um por hora; nalgumas, de 15 em 15 minutos; nas de rega do Alentejo, um por dia.",
     "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."
    ],
-   "bytes": 500159,
+   "bytes": 503703,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras-horario/",
    "colunas": [
@@ -854,7 +854,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-horario",
-   "linhas": 7748,
+   "linhas": 7803,
    "padrao": "data/producao/albufeiras-horario/albufeiras_horario_*.csv",
    "titulo": "Albufeiras — histórico de hora a hora",
    "tolerancia_dias": 1,
@@ -1031,7 +1031,7 @@
     "Em cada ano, a posição i de cada país é o dia primeiro_dia + i; null = sem valor. Os países sem armazenamento estão em metadata.json → sem_dados.",
     "estado: E estimado, C confirmado, R valor da REN (só Portugal, nos dias que a AGSI ainda não confirmou)."
    ],
-   "bytes": 3023889,
+   "bytes": 3024426,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/reservas-gas/",
    "descricao": "Gás guardado nos armazenamentos subterrâneos de cada país europeu coberto pela GIE AGSI e da UE, por dia de gás, desde 2011: enchimento (%), TWh armazenados e capacidade. Um ficheiro por ano e um metadata.json com o último dia, o mesmo dia de há um ano e o mínimo, a média e o máximo dos cinco anos anteriores. Fonte: GIE AGSI.",
@@ -1042,7 +1042,7 @@
    "padrao": "data/mapas/reservas-gas/*.json",
    "titulo": "Reservas de gás natural na Europa",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-23",
+   "ultima_data": "2026-11-24",
    "url": "https://dados.tiagofelicia.pt/data/mapas/reservas-gas/"
   },
   {
@@ -1198,7 +1198,7 @@
     "Uma linha por dia e zona (PT, ES, EU); EU é o agregado da própria AGSI. Portugal só tem valores desde 12/11/2011.",
     "estado: E estimado, C confirmado (a AGSI revê os dias recentes), R valor da REN — só Portugal, nos dias que a AGSI ainda não confirmou."
    ],
-   "bytes": 793944,
+   "bytes": 794076,
    "cadencia": "1x/dia",
    "caminho": "data/gas/reservas_gas.csv",
    "colunas": [
@@ -1216,10 +1216,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-reservas",
-   "linhas": 17103,
+   "linhas": 17106,
    "titulo": "Reservas de gás natural de Portugal, de Espanha e da UE",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-23",
+   "ultima_data": "2026-11-24",
    "url": "https://dados.tiagofelicia.pt/data/gas/reservas_gas.csv"
   },
   {
@@ -1896,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-26T02:17:31+00:00",
+ "gerado_em": "2026-11-26T02:43:43+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,7 +1920,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 593229899,
+  "bytes": 593234331,
   "datasets": 64,
   "ficheiros": 2175
  }
