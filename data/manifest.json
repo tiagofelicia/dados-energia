@@ -1031,7 +1031,7 @@
     "Em cada ano, a posição i de cada país é o dia primeiro_dia + i; null = sem valor. Os países sem armazenamento estão em metadata.json → sem_dados.",
     "estado: E estimado, C confirmado, R valor da REN (só Portugal, nos dias que a AGSI ainda não confirmou)."
    ],
-   "bytes": 3024426,
+   "bytes": 3024971,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/reservas-gas/",
    "descricao": "Gás guardado nos armazenamentos subterrâneos de cada país europeu coberto pela GIE AGSI e da UE, por dia de gás, desde 2011: enchimento (%), TWh armazenados e capacidade. Um ficheiro por ano e um metadata.json com o último dia, o mesmo dia de há um ano e o mínimo, a média e o máximo dos cinco anos anteriores. Fonte: GIE AGSI.",
@@ -1042,7 +1042,7 @@
    "padrao": "data/mapas/reservas-gas/*.json",
    "titulo": "Reservas de gás natural na Europa",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-24",
+   "ultima_data": "2026-11-25",
    "url": "https://dados.tiagofelicia.pt/data/mapas/reservas-gas/"
   },
   {
@@ -1198,7 +1198,7 @@
     "Uma linha por dia e zona (PT, ES, EU); EU é o agregado da própria AGSI. Portugal só tem valores desde 12/11/2011.",
     "estado: E estimado, C confirmado (a AGSI revê os dias recentes), R valor da REN — só Portugal, nos dias que a AGSI ainda não confirmou."
    ],
-   "bytes": 794076,
+   "bytes": 794222,
    "cadencia": "1x/dia",
    "caminho": "data/gas/reservas_gas.csv",
    "colunas": [
@@ -1216,10 +1216,10 @@
    "formato": "csv",
    "grupo": "gas",
    "id": "gas-reservas",
-   "linhas": 17106,
+   "linhas": 17109,
    "titulo": "Reservas de gás natural de Portugal, de Espanha e da UE",
    "tolerancia_dias": 4,
-   "ultima_data": "2026-11-24",
+   "ultima_data": "2026-11-25",
    "url": "https://dados.tiagofelicia.pt/data/gas/reservas_gas.csv"
   },
   {
@@ -1896,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-27T02:17:32+00:00",
+ "gerado_em": "2026-11-27T02:40:15+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,7 +1920,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 594113350,
+  "bytes": 594114041,
   "datasets": 64,
   "ficheiros": 2175
  }
