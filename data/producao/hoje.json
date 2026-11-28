@@ -25,7 +25,7 @@
  "dias_atraso": 1,
  "e_hoje": false,
  "fonte": "REN Data Hub",
- "gerado_em": "2026-11-28T00:07:46+00:00",
+ "gerado_em": "2026-11-28T10:17:21+00:00",
  "horas": [
   "00:00",
   "00:15",
@@ -95,11 +95,11 @@
  "intervalos_no_ficheiro": 96,
  "resumo": {
   "consumo_gwh": 105.34,
-  "perc_renovavel": 85.04,
+  "perc_renovavel": 83.65,
   "pico_consumo_hora": "11:45",
   "pico_consumo_mw": 8475.7,
   "producao_nac_gwh": 71.94,
-  "renovavel_gwh": 61.18,
+  "renovavel_gwh": 60.18,
   "saldo_importador_gwh": 34.22
  },
  "series_mw": {
