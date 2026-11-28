@@ -22,6 +22,8 @@ Num PC em Portugal, por tarefa agendada, e não no GitHub Actions: o SNIRH só a
 Portugal (verificado a 31/10/2026 com o check-host.net: responde de PT; de Espanha, França,
 Alemanha, Reino Unido e EUA dá Forbidden ou timeout). Os dados chegam ao GitHub por push.
 Se os 3 primeiros pedidos ficarem sem resposta, o script desiste logo (PC fora de Portugal).
+Corre uma vez por dia (10:50), com 3 s entre pedidos: a 26/11/2026, com duas corridas por dia e
+0,5 s entre pedidos, o servidor da APA deixou de aceitar ligações do PC que faz a recolha.
 
 USO
 ---
@@ -80,8 +82,8 @@ URL_CSV = ("https://snirh.apambiente.pt/snirh/_dadosbase/site/paraCSV/dados_csv.
            "?sites={site}&pars={par}&tmin={tmin}&tmax={tmax}&formato=csv")
 PAR_VOLUME_DIARIO = "354895398"   # Volume armazenado na última hora (dam3)
 INICIO_BACKFILL = date(2001, 1, 1)   # antes de 2001 o SNIRH só tem um valor por mês
-DIAS_INCREMENTAL = 30
-PAUSA = 0.5   # segundos entre pedidos
+DIAS_INCREMENTAL = 30   # as albufeiras semanais recebem valores até 30 dias depois: não encurtar
+PAUSA = 3     # segundos entre pedidos (eram 0,5: ver ONDE CORRE)
 
 # coluna, código SNIRH, site (id interno do SNIRH), nome, bacia, capacidade total (dam3, do boletim semanal
 # de albufeiras da APA de 19/10/2026; nas que lá não estão, a da CNPGB, assinalada; None = sem capacidade

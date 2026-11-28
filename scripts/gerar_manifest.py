@@ -414,7 +414,7 @@ REGISTO = [
          descricao="Volume armazenado (hm3) em cada uma de 86 albufeiras: as 57 com uso para energia "
                    "(as das centrais hidroelétricas, diárias, e as de rega com central, semanais), desde "
                    "2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
-         cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data"),
+         cadencia="1x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data"),
     dict(id="producao-albufeiras-snirh-lista", grupo="producao",
          caminho="data/producao/albufeiras_snirh.csv",
          titulo="Albufeiras — lista, capacidades e referência",
@@ -422,7 +422,7 @@ REGISTO = [
                    "não nas 29 sem central) e o uso principal: código SNIRH, nome, bacia, "
                    "capacidade total (boletim semanal da APA; CNPGB nas que lá não estão), máximo registado, "
                    "o volume usado como 100%, se os valores são diários ou semanais e a localização da barragem.",
-         cadencia="2x/dia (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico"),
+         cadencia="1x/dia (num PC em Portugal)", tolerancia_dias=400, deteccao="estatico"),
     # A ficha técnica de cada albufeira, do inventário do SNIRH; gerada à mão num PC em Portugal (gerar_fichas_albufeiras.py)
     dict(id="producao-albufeiras-fichas", grupo="producao",
          caminho="data/producao/albufeiras_fichas.json",
