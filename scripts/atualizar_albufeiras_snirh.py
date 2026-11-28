@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 atualizar_albufeiras_snirh.py
-Água guardada em cada albufeira hidroelétrica, dia a dia.
+Água guardada em cada albufeira com volume no SNIRH, dia a dia.
 
 Fonte: SNIRH — Sistema Nacional de Informação de Recursos Hídricos, da Agência Portuguesa do
 Ambiente (snirh.apambiente.pt), «Dados de base» da rede hidrométrica: o parâmetro «Volume

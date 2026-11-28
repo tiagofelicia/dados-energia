@@ -411,9 +411,10 @@ REGISTO = [
     dict(id="producao-albufeiras-snirh", grupo="producao",
          caminho="data/producao/albufeiras_snirh_diario.csv",
          titulo="Albufeiras — água guardada em cada uma, por dia",
-         descricao="Volume armazenado (hm3) em cada uma de 86 albufeiras: as 57 com uso para energia "
-                   "(as das centrais hidroelétricas, diárias, e as de rega com central, semanais), desde "
-                   "2001. Fonte: SNIRH (Agência Portuguesa do Ambiente).",
+         descricao="Volume armazenado (hm3) em cada uma de 86 albufeiras, desde 2001: as 57 com uso para "
+                   "energia (as das centrais hidroelétricas, diárias, e as de rega com central, semanais) e "
+                   "29 sem central, de rega, de abastecimento e de outros usos (diárias ou semanais). "
+                   "Fonte: SNIRH (Agência Portuguesa do Ambiente).",
          cadencia="1x/dia (num PC em Portugal)", tolerancia_dias=5, deteccao="csv_col_iso:data"),
     dict(id="producao-albufeiras-snirh-lista", grupo="producao",
          caminho="data/producao/albufeiras_snirh.csv",
