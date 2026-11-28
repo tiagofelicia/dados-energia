@@ -473,6 +473,23 @@ REGISTO = [
                  "minutos; nas de rega do Alentejo, um por dia.",
                  "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. "
                  "Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."]),
+    # Os dias que o SNIRH ainda não publicou, com o valor do InfoÁgua: gerado pelo mesmo workflow de hora a hora
+    # (gerar_albufeiras_provisorio.py). Com o SNIRH em dia fica só o cabeçalho: por isso «estatico» (sem
+    # verificação de frescura; a do producao-albufeiras-snirh é que diz se o SNIRH parou).
+    dict(id="producao-albufeiras-provisorio", grupo="producao",
+         caminho="data/producao/albufeiras_provisorio_diario.csv",
+         titulo="Albufeiras — valores provisórios dos dias que o SNIRH ainda não publicou",
+         descricao="Para cada albufeira com um valor por dia no producao-albufeiras-snirh e com estação no InfoÁgua, "
+                   "os dias depois do último valor do SNIRH: a % das 23:00 (hora de Lisboa) do "
+                   "producao-albufeiras-horario convertida em hm3 com a capacidade que bate com o SNIRH nos dias em "
+                   "comum (a mediana dos últimos 30). Fonte: APA (InfoÁgua; SNIRH para a conversão).",
+         cadencia="de hora a hora (só há linhas com o SNIRH atrasado)", tolerancia_dias=400, deteccao="estatico",
+         avisos=["Provisório: quando o SNIRH publica um dia, esse dia sai deste ficheiro na corrida seguinte. "
+                 "Com o SNIRH em dia, o ficheiro só tem o cabeçalho.",
+                 "Às 23:00 os dois batem: de 19 a 25/11/2026, erro mediano de 0,003 p.p.; nas albufeiras de fio de "
+                 "água pequenas (Belver, Picote, Miranda) houve dias com vários p.p. de diferença.",
+                 "Ficam de fora as albufeiras semanais, as que o InfoÁgua só dá às 07:00 e as que têm menos de "
+                 "3 dias em comum com o SNIRH."]),
     dict(id="producao-centrais-hidricas", grupo="producao",
          caminho="data/producao/centrais_hidricas.csv",
          titulo="Centrais hídricas de cada albufeira",

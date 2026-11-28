@@ -147,6 +147,10 @@ REGRAS = {
         colunas=["data", "albufeira", "volume_pct", "cota_m", "caudal_afluente_m3s", "caudal_efluente_m3s",
                  "data_utc"],
         chave=["data_utc", "albufeira"]),
+    # Os valores provisórios do InfoÁgua (pode ter só o cabeçalho, com o SNIRH em dia)
+    "producao-albufeiras-provisorio": dict(
+        colunas=["data", "albufeira", "volume_hm3", "volume_pct", "capacidade_hm3"],
+        chave=["data", "albufeira"]),
     "producao-balanco-hidraulico": dict(
         colunas=["data", "afluente_albufeiras_gwh", "afluente_total_gwh", "afluente_util_albufeiras_gwh",
                  "producao_albufeiras_gwh", "producao_total_gwh", "bombagem_gwh", "armazenamento_gwh",
