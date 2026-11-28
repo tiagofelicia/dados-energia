@@ -299,7 +299,7 @@
     "dia_mercado e periodo são os da OMIE (hora de Espanha): o período 1 começa às 23:00 da véspera em Portugal. data_utc é o início do período.",
     "Os grupos de cada período são recalculados a partir de unidades.csv sempre que uma classificação muda. Faltam os dias em que o ficheiro da OMIE veio incompleto: metadata.json → dias_em_falta."
    ],
-   "bytes": 17601226,
+   "bytes": 17631655,
    "cadencia": "2x/dia (90 dias depois do dia de mercado)",
    "caminho": "data/omie/tecnologia-marginal/",
    "colunas": [
@@ -334,14 +334,14 @@
    ],
    "titulo": "Tecnologias ao preço do mercado diário (MIBEL)",
    "tolerancia_dias": 100,
-   "ultima_data": "2026-08-28",
+   "ultima_data": "2026-08-29",
    "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/"
   },
   {
    "avisos": [
     "origem: lista (lista de unidades da OMIE), nome (o nome nas ofertas: C.T. = carvão, C.C. = ciclo combinado…), codigo (padrão do código: …VDnn e …REnn = vendas de representantes do regime especial, …RMnn e …Cnn = compras de comercializadores), lado (só compra = comercializadores e consumidores), interligacao (ligações entre zonas) ou sem. grupo é o da unidade; nos ficheiros mensais, o de cada oferta depende também do lado (uma bateria a carregar é ARMC, uma interligação a exportar é INTC)."
    ],
-   "bytes": 398395,
+   "bytes": 398502,
    "cadencia": "2x/dia",
    "caminho": "data/omie/tecnologia-marginal/unidades.csv",
    "colunas": [
@@ -361,17 +361,17 @@
    "formato": "csv",
    "grupo": "omie",
    "id": "omie-tecnologia-marginal-unidades",
-   "linhas": 4105,
+   "linhas": 4106,
    "titulo": "Tecnologias ao preço — classificação das unidades",
    "tolerancia_dias": 100,
-   "ultima_data": "2026-08-28",
+   "ultima_data": "2026-08-29",
    "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/unidades.csv"
   },
   {
    "avisos": [
     "Em hora de Portugal (resumo.json) o último dia é a véspera do último dia de mercado (metadata.json → ultima_data_pt): a última hora do dia português, 23h–24h, pertence ao dia de mercado seguinte."
    ],
-   "bytes": 726497,
+   "bytes": 726514,
    "cadencia": "2x/dia",
    "caminho": "data/omie/tecnologia-marginal/",
    "descricao": "Para Portugal e Espanha, por ano, por mês e nos últimos 12 meses: horas com cada grupo ao preço (presença), horas com alguma oferta de venda e de compra ao preço, horas repartidas por igual pelos grupos de cada período, o preço médio quando cada grupo está ao preço, o mesmo nos 25 % de horas mais baratas e mais caras e, por ano, por hora do dia. É o que a página /quem-marca-o-preco lê. resumo.json conta Portugal pelo dia e pela hora de Portugal; resumo_cet.json, pelo dia de mercado (hora CET). Espanha conta sempre pelo dia e pela hora de Espanha.",
@@ -382,7 +382,7 @@
    "padrao": "data/omie/tecnologia-marginal/resumo*.json",
    "titulo": "Tecnologias ao preço — totais por ano e por mês (hora de Portugal e hora CET)",
    "tolerancia_dias": 100,
-   "ultima_data": "2026-08-28",
+   "ultima_data": "2026-08-29",
    "url": "https://dados.tiagofelicia.pt/data/omie/tecnologia-marginal/"
   },
   {
@@ -1896,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-28T00:07:47+00:00",
+ "gerado_em": "2026-11-28T00:12:31+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,7 +1920,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 594938862,
+  "bytes": 594969415,
   "datasets": 64,
   "ficheiros": 2175
  }
