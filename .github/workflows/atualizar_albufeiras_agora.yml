@@ -8,6 +8,9 @@
 #   -> data/producao/albufeiras_agora.json                         (as últimas 48 h)
 #   -> data/producao/albufeiras-horario/albufeiras_horario_AAAA.csv (o histórico; o
 #      InfoÁgua só guarda 48 h, por isso cada corrida junta o que vier ao que já lá está)
+# scripts/gerar_albufeiras_provisorio.py
+#   -> data/producao/albufeiras_provisorio_diario.csv (os dias que o SNIRH ainda não publicou,
+#      com a % das 23:00 do InfoÁgua convertida em hm3; só o cabeçalho com o SNIRH em dia)
 #
 # Ao contrário do SNIRH (recolhido num PC em Portugal), o InfoÁgua aceita ligações de
 # fora de Portugal (verificado a 21/11/2026 a partir da Alemanha, de Espanha e dos EUA).
@@ -67,9 +70,13 @@ jobs:
       - name: Recolher o InfoÁgua
         run: python scripts/atualizar_albufeiras_agora.py
 
+      # Os dias que o SNIRH ainda não publicou (a recolha do SNIRH corre num PC em Portugal e pode parar)
+      - name: Valores provisórios das albufeiras (InfoÁgua)
+        run: python scripts/gerar_albufeiras_provisorio.py
+
       - name: Fazer commit dos dados (com retry)
         if: ${{ !cancelled() }}
         uses: ./.github/actions/commit-with-retry
         with:
           commit_message: "💧 BOT: Atualizar albufeiras agora (APA)"
-          file_pattern: "data/producao/albufeiras_agora.json data/producao/albufeiras-horario/*.csv"
+          file_pattern: "data/producao/albufeiras_agora.json data/producao/albufeiras-horario/*.csv data/producao/albufeiras_provisorio_diario.csv"
