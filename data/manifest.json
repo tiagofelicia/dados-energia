@@ -497,7 +497,7 @@
    "url": "https://dados.tiagofelicia.pt/data/producao/producao_bombagem_diaria.csv"
   },
   {
-   "bytes": 27139,
+   "bytes": 27183,
    "cadencia": "3x/semana",
    "caminho": "data/producao/albufeiras_semanal.csv",
    "colunas": [
@@ -512,14 +512,14 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras",
-   "linhas": 620,
+   "linhas": 621,
    "titulo": "Albufeiras — energia guardada por semana",
    "tolerancia_dias": 21,
-   "ultima_data": "2026-11-09",
+   "ultima_data": "2026-11-16",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal.csv"
   },
   {
-   "bytes": 27402,
+   "bytes": 27446,
    "cadencia": "3x/semana",
    "caminho": "data/producao/albufeiras_semanal_es.csv",
    "colunas": [
@@ -534,10 +534,10 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-es",
-   "linhas": 620,
+   "linhas": 621,
    "titulo": "Albufeiras de Espanha — energia guardada por semana",
    "tolerancia_dias": 21,
-   "ultima_data": "2026-11-09",
+   "ultima_data": "2026-11-16",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_semanal_es.csv"
   },
   {
@@ -818,7 +818,7 @@
     "A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
     "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem em todas as horas."
    ],
-   "bytes": 106868,
+   "bytes": 106921,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras_agora.json",
    "descricao": "Volume armazenado (% da capacidade, como a APA o publica), cota (m) e caudais afluente e efluente (m3/s), de hora a hora, nas últimas 48 horas, nas albufeiras do todas as estações de albufeira do InfoÁgua (62 em novembro de 2026, 9 delas em Espanha, junto à fronteira). Fonte: APA (InfoÁgua).",
@@ -837,7 +837,7 @@
     "Uma linha por valor publicado: na maioria das estações, um por hora; nalgumas, de 15 em 15 minutos; nas de rega do Alentejo, um por dia.",
     "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."
    ],
-   "bytes": 688290,
+   "bytes": 691514,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras-horario/",
    "colunas": [
@@ -854,7 +854,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-horario",
-   "linhas": 10666,
+   "linhas": 10716,
    "padrao": "data/producao/albufeiras-horario/albufeiras_horario_*.csv",
    "titulo": "Albufeiras — histórico de hora a hora",
    "tolerancia_dias": 1,
@@ -1896,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-28T15:29:48+00:00",
+ "gerado_em": "2026-11-28T16:13:07+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,7 +1920,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 595265505,
+  "bytes": 595268870,
   "datasets": 64,
   "ficheiros": 2175
  }
