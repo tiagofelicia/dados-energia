@@ -659,7 +659,7 @@
   },
   {
    "bytes": 3389528,
-   "cadencia": "2x/dia (num PC em Portugal)",
+   "cadencia": "1x/dia (num PC em Portugal)",
    "caminho": "data/producao/albufeiras_snirh_diario.csv",
    "colunas": [
     "data",
@@ -763,7 +763,7 @@
   },
   {
    "bytes": 12441,
-   "cadencia": "2x/dia (num PC em Portugal)",
+   "cadencia": "1x/dia (num PC em Portugal)",
    "caminho": "data/producao/albufeiras_snirh.csv",
    "colunas": [
     "coluna",
@@ -818,7 +818,7 @@
     "A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
     "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem em todas as horas."
    ],
-   "bytes": 106839,
+   "bytes": 106868,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras_agora.json",
    "descricao": "Volume armazenado (% da capacidade, como a APA o publica), cota (m) e caudais afluente e efluente (m3/s), de hora a hora, nas últimas 48 horas, nas albufeiras do todas as estações de albufeira do InfoÁgua (62 em novembro de 2026, 9 delas em Espanha, junto à fronteira). Fonte: APA (InfoÁgua).",
@@ -837,7 +837,7 @@
     "Uma linha por valor publicado: na maioria das estações, um por hora; nalgumas, de 15 em 15 minutos; nas de rega do Alentejo, um por dia.",
     "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."
    ],
-   "bytes": 685109,
+   "bytes": 688290,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras-horario/",
    "colunas": [
@@ -854,7 +854,7 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-horario",
-   "linhas": 10616,
+   "linhas": 10666,
    "padrao": "data/producao/albufeiras-horario/albufeiras_horario_*.csv",
    "titulo": "Albufeiras — histórico de hora a hora",
    "tolerancia_dias": 1,
@@ -948,7 +948,7 @@
     "Até 24/10/2026, os dias de mudança de hora tinham sempre 96 posições (só a 1.ª passagem pela hora repetida; a hora que não existe preenchida com o valor anterior). Nesse dia foram refeitos a partir das fontes; só os 6 dias da IT-Calabria de 2018 a 2020 ficaram em 96, porque a ENTSO-E já não os tem.",
     "RO até 17/06/2021, PL até 19/11/2019 e BG até 21/01/2022 vinham da ENTSO-E na moeda local (RON, PLN e BGN) e foram convertidos para euros em outubro de 2026: BGN à taxa fixa de 1,95583; RON à taxa do BNR publicada antes do dia do leilão (a que o OPCOM usou); PLN à taxa de referência do BCE do dia. Esses zona-dias têm moeda_original e taxa_cambio (euros = valor original / taxa_cambio)."
    ],
-   "bytes": 103222450,
+   "bytes": 103229390,
    "cadencia": "1x/dia",
    "caminho": "data/mapas/precos_qh/",
    "descricao": "Preços por zona de mercado europeia (48 zonas), um ficheiro por mês desde 2018-01. Por dia e zona: média, mínimo, máximo e a série quarto-horária do dia local (96 valores; 92 e 100 nos dias de mudança de hora).",
@@ -1896,7 +1896,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-28T14:17:21+00:00",
+ "gerado_em": "2026-11-28T15:29:48+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,7 +1920,7 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 595255355,
+  "bytes": 595265505,
   "datasets": 64,
   "ficheiros": 2175
  }
