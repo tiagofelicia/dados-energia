@@ -818,7 +818,7 @@
     "A maioria das estações dá um valor por hora; algumas (as de Espanha, por exemplo) de 15 em 15 minutos e as de rega do Alentejo um por dia. As horas são o início do intervalo, em UTC (data_utc). O InfoÁgua dá a hora sem fuso: é tratada como hora de Lisboa. A chave de cada albufeira é a coluna do producao-albufeiras-snirh ou, nas que lá não estão, o nome com a mesma regra (minúsculas, sem acentos, «_»).",
     "Valores de tempo real, como a APA os publica no InfoÁgua: a percentagem pode diferir um pouco da do producao-albufeiras-snirh (valor diário do SNIRH), e o caudal afluente nem sempre vem em todas as horas."
    ],
-   "bytes": 107018,
+   "bytes": 105406,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras_agora.json",
    "descricao": "Volume armazenado (% da capacidade, como a APA o publica), cota (m) e caudais afluente e efluente (m3/s), de hora a hora, nas últimas 48 horas, nas albufeiras do todas as estações de albufeira do InfoÁgua (62 em novembro de 2026, 9 delas em Espanha, junto à fronteira). Fonte: APA (InfoÁgua).",
@@ -837,7 +837,7 @@
     "Uma linha por valor publicado: na maioria das estações, um por hora; nalgumas, de 15 em 15 minutos; nas de rega do Alentejo, um por dia.",
     "Começa com as 48 horas antes da primeira recolha (21/11/2026): o InfoÁgua não guarda mais. Uma hora que a APA não publicou, ou que caiu numa corrida falhada há mais de 48 h, fica em falta."
    ],
-   "bytes": 698019,
+   "bytes": 698584,
    "cadencia": "de hora a hora",
    "caminho": "data/producao/albufeiras-horario/",
    "colunas": [
@@ -854,12 +854,39 @@
    "formato": "csv",
    "grupo": "producao",
    "id": "producao-albufeiras-horario",
-   "linhas": 10816,
+   "linhas": 10825,
    "padrao": "data/producao/albufeiras-horario/albufeiras_horario_*.csv",
    "titulo": "Albufeiras — histórico de hora a hora",
    "tolerancia_dias": 1,
    "ultima_data": "2026-11-28",
    "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras-horario/"
+  },
+  {
+   "avisos": [
+    "Provisório: quando o SNIRH publica um dia, esse dia sai deste ficheiro na corrida seguinte. Com o SNIRH em dia, o ficheiro só tem o cabeçalho.",
+    "Às 23:00 os dois batem: de 19 a 25/11/2026, erro mediano de 0,003 p.p.; nas albufeiras de fio de água pequenas (Belver, Picote, Miranda) houve dias com vários p.p. de diferença.",
+    "Ficam de fora as albufeiras semanais, as que o InfoÁgua só dá às 07:00 e as que têm menos de 3 dias em comum com o SNIRH."
+   ],
+   "bytes": 2558,
+   "cadencia": "de hora a hora (só há linhas com o SNIRH atrasado)",
+   "caminho": "data/producao/albufeiras_provisorio_diario.csv",
+   "colunas": [
+    "data",
+    "albufeira",
+    "volume_hm3",
+    "volume_pct",
+    "capacidade_hm3"
+   ],
+   "descricao": "Para cada albufeira com um valor por dia no producao-albufeiras-snirh e com estação no InfoÁgua, os dias depois do último valor do SNIRH: a % das 23:00 (hora de Lisboa) do producao-albufeiras-horario convertida em hm3 com a capacidade que bate com o SNIRH nos dias em comum (a mediana dos últimos 30). Fonte: APA (InfoÁgua; SNIRH para a conversão).",
+   "ficheiros": 1,
+   "formato": "csv",
+   "grupo": "producao",
+   "id": "producao-albufeiras-provisorio",
+   "linhas": 63,
+   "titulo": "Albufeiras — valores provisórios dos dias que o SNIRH ainda não publicou",
+   "tolerancia_dias": 400,
+   "ultima_data": null,
+   "url": "https://dados.tiagofelicia.pt/data/producao/albufeiras_provisorio_diario.csv"
   },
   {
    "bytes": 4279,
@@ -1896,7 +1923,7 @@
    "url": "https://dados.tiagofelicia.pt/data/regulado/tos_municipios.json"
   }
  ],
- "gerado_em": "2026-11-28T18:15:38+00:00",
+ "gerado_em": "2026-11-28T18:35:58+00:00",
  "grupos": {
   "agregados": "Séries pré-calculadas",
   "emissoes": "Emissões",
@@ -1920,8 +1947,8 @@
  "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
  "repositorio": "https://github.com/tiagofelicia/dados-energia",
  "totais": {
-  "bytes": 595590026,
-  "datasets": 64,
-  "ficheiros": 2175
+  "bytes": 595591537,
+  "datasets": 65,
+  "ficheiros": 2176
  }
 }
